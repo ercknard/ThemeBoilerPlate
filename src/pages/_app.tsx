@@ -58,35 +58,39 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <>
-      <Head>
-        <meta
-          id="meta-description"
-          name="description"
-          content="Next.js Boilerplate"
-        />
-        <meta id="og-title" property="og:title" content="Next.js Boilerplate" />
-        <meta
-          id="og-image"
-          property="og:image"
-          content="https://example.com/static/imgs/og-image.png"
-        />
+      <ThemeProvider>
+        <Head>
+          <meta
+            id="meta-description"
+            name="description"
+            content="Next.js Boilerplate"
+          />
+          <meta
+            id="og-title"
+            property="og:title"
+            content="Next.js Boilerplate"
+          />
+          <meta
+            id="og-image"
+            property="og:image"
+            content="https://example.com/static/imgs/og-image.png"
+          />
 
-        <meta name="twitter:card" content="summary" />
-        <meta name="twitter:site" content="@example" />
-        <meta name="twitter:title" content="Next.js Boilerplate" />
-        <meta name="twitter:description" content="Next.js Boilerplate" />
-        <meta
-          name="twitter:image"
-          content="https://example.com/static/imgs/og-image.png"
-        />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </Head>
+          <meta name="twitter:card" content="summary" />
+          <meta name="twitter:site" content="@example" />
+          <meta name="twitter:title" content="Next.js Boilerplate" />
+          <meta name="twitter:description" content="Next.js Boilerplate" />
+          <meta
+            name="twitter:image"
+            content="https://example.com/static/imgs/og-image.png"
+          />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+        </Head>
 
-      <main>
-        <ThemeProvider>
+        <main>
           <Component {...pageProps} />
-        </ThemeProvider>
-      </main>
+        </main>
+      </ThemeProvider>
     </>
   );
 }
