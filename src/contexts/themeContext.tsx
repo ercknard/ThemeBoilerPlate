@@ -30,23 +30,20 @@ const STORAGE_KEY = 'theme-mode';
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
   const [mode, setModeState] = useState<PaletteMode>('light');
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     const savedMode = localStorage.getItem(STORAGE_KEY);
 
     if (savedMode === 'light' || savedMode === 'dark') {
       setModeState(savedMode);
-    } else {
-      const systemMode = window.matchMedia('(prefers-color-scheme: dark)')
-        .matches
-        ? 'dark'
-        : 'light';
-
-      setModeState(systemMode);
+      return;
     }
 
-    setMounted(true);
+    const systemMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light';
+
+    setModeState(systemMode);
   }, []);
 
   const setMode = useCallback((newMode: PaletteMode) => {
@@ -55,8 +52,14 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   }, []);
 
   const toggleTheme = useCallback(() => {
-    setMode(mode === 'light' ? 'dark' : 'light');
-  }, [mode]);
+    setModeState((currentMode) => {
+      const newMode = currentMode === 'light' ? 'dark' : 'light';
+
+      localStorage.setItem(STORAGE_KEY, newMode);
+
+      return newMode;
+    });
+  }, []);
 
   const theme = useMemo(() => getTheme(mode), [mode]);
 
@@ -70,19 +73,6 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     [mode, toggleTheme, setMode]
   );
 
-  /*
-   * Prevent hydration mismatch caused by reading localStorage
-   * during the initial render.
-   */
-  if (!mounted) {
-    return (
-      <MuiThemeProvider theme={theme}>
-        <CssBaseline />
-        {children}
-      </MuiThemeProvider>
-    );
-  }
-
   return (
     <ThemeContext.Provider value={contextValue}>
       <MuiThemeProvider theme={theme}>
@@ -93,7 +83,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   );
 }
 
-export function useThemeContext() {
+export function useThemeContext(): ThemeContextType {
   const context = useContext(ThemeContext);
 
   if (!context) {
