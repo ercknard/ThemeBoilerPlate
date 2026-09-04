@@ -67,8 +67,8 @@ export default function Home() {
           background: `
             radial-gradient(
               circle at top,
-              ${theme.backgroundScale[6]},
-              ${theme.colorScale[3]} 65%
+              ${theme.colorScale[2]},
+              ${theme.colorScale[5]} 50%
             )
           `,
 
