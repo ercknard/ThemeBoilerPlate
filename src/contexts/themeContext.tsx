@@ -36,6 +36,12 @@ type ThemeContextType = {
   customColors: CustomColors;
   setCustomColors: (colors: CustomColors) => void;
 
+  /* Font */
+  fontUrl: string;
+  fontFamily: string;
+  setFont: (url: string) => void;
+  resetFont: () => void;
+
   toggleTheme: () => void;
   setMode: (mode: PaletteMode) => void;
 };
@@ -54,6 +60,9 @@ const STORAGE_KEY = 'theme-mode';
 const THEME_SET_STORAGE_KEY = 'theme-set';
 const CUSTOM_COLORS_STORAGE_KEY = 'theme-custom-colors';
 
+const FONT_URL_STORAGE_KEY = 'theme-font-url';
+const FONT_FAMILY_STORAGE_KEY = 'theme-font-family';
+
 /* ========================================================================== */
 /* DEFAULTS                                                                   */
 /* ========================================================================== */
@@ -66,6 +75,8 @@ const DEFAULT_CUSTOM_COLORS: CustomColors = {
   gray: THEME_SETS[DEFAULT_THEME_SET].gray,
   background: THEME_SETS[DEFAULT_THEME_SET].background
 };
+
+const DEFAULT_FONT_FAMILY = 'Inter';
 
 /* ========================================================================== */
 /* VALIDATION                                                                 */
@@ -91,15 +102,96 @@ function isValidCustomColors(value: unknown): value is CustomColors {
 }
 
 /* ========================================================================== */
+/* GOOGLE FONT HELPERS                                                        */
+/* ========================================================================== */
+
+function isGoogleFontUrl(url: string): boolean {
+  try {
+    const parsedUrl = new URL(url);
+
+    return (
+      parsedUrl.protocol === 'https:' &&
+      (parsedUrl.hostname === 'fonts.googleapis.com' ||
+        parsedUrl.hostname === 'fonts.googleapis.com.')
+    );
+  } catch {
+    return false;
+  }
+}
+
+function getFontFamilyFromUrl(url: string): string | null {
+  try {
+    const parsedUrl = new URL(url);
+
+    if (
+      parsedUrl.hostname !== 'fonts.googleapis.com' &&
+      parsedUrl.hostname !== 'fonts.googleapis.com.'
+    ) {
+      return null;
+    }
+
+    const family = parsedUrl.searchParams.get('family');
+
+    if (!family) {
+      return null;
+    }
+
+    /*
+     * Example:
+     *
+     * family=Roboto:wght@400;500;700
+     *
+     * -> Roboto
+     */
+    const firstFamily = family
+      .split('&')[0]
+      .split(':')[0]
+      .replace(/\+/g, ' ')
+      .trim();
+
+    return firstFamily || null;
+  } catch {
+    return null;
+  }
+}
+
+function loadGoogleFont(url: string): void {
+  const existing = document.getElementById('theme-google-font');
+
+  if (existing) {
+    existing.remove();
+  }
+
+  if (!url) {
+    return;
+  }
+
+  const link = document.createElement('link');
+
+  link.id = 'theme-google-font';
+  link.rel = 'stylesheet';
+  link.href = url;
+
+  document.head.appendChild(link);
+}
+
+function unloadGoogleFont(): void {
+  const existing = document.getElementById('theme-google-font');
+
+  if (existing) {
+    existing.remove();
+  }
+}
+
+/* ========================================================================== */
 /* PROVIDER                                                                   */
 /* ========================================================================== */
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
-  /*
-   * Keep the initial state identical between server and client.
-   *
-   * localStorage is loaded only after hydration.
-   */
+  /* ------------------------------------------------------------------------ */
+  /* Theme state                                                              */
+  /* ------------------------------------------------------------------------ */
+
   const [mode, setModeState] = useState<PaletteMode>('light');
 
   const [themeSet, setThemeSetState] =
@@ -109,15 +201,24 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     DEFAULT_CUSTOM_COLORS
   );
 
-  /*
-   * Prevent the application from rendering with the default theme
-   * before saved settings have been restored.
-   */
-  const [initialized, setInitialized] = useState(false);
+  /* ------------------------------------------------------------------------ */
+  /* Font state                                                               */
+  /* ------------------------------------------------------------------------ */
+
+  const [fontUrl, setFontUrlState] = useState<string>('');
+
+  const [fontFamily, setFontFamilyState] =
+    useState<string>(DEFAULT_FONT_FAMILY);
 
   /* ------------------------------------------------------------------------ */
-  /* Load saved settings                                                      */
+  /* Hydration                                                               */
   /* ------------------------------------------------------------------------ */
+
+  const [initialized, setInitialized] = useState(false);
+
+  /* ======================================================================== */
+  /* LOAD SAVED SETTINGS                                                      */
+  /* ======================================================================== */
 
   useEffect(() => {
     /* ---------------------------------------------------------------------- */
@@ -164,29 +265,46 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
           setCustomColorsState(parsedColors);
         }
       } catch {
-        // Ignore invalid saved color data.
+        // Ignore invalid saved colors.
       }
     }
 
-    /*
-     * Settings are now restored.
-     */
+    /* ---------------------------------------------------------------------- */
+    /* Google font                                                             */
+    /* ---------------------------------------------------------------------- */
+
+    const savedFontUrl = localStorage.getItem(FONT_URL_STORAGE_KEY);
+
+    const savedFontFamily = localStorage.getItem(FONT_FAMILY_STORAGE_KEY);
+
+    if (savedFontUrl && savedFontFamily && isGoogleFontUrl(savedFontUrl)) {
+      setFontUrlState(savedFontUrl);
+      setFontFamilyState(savedFontFamily);
+
+      loadGoogleFont(savedFontUrl);
+    } else {
+      /*
+       * Clean up invalid old font settings.
+       */
+      localStorage.removeItem(FONT_URL_STORAGE_KEY);
+      localStorage.removeItem(FONT_FAMILY_STORAGE_KEY);
+    }
+
+    /* ---------------------------------------------------------------------- */
+    /* Initialized                                                            */
+    /* ---------------------------------------------------------------------- */
+
     setInitialized(true);
   }, []);
 
-  /* ------------------------------------------------------------------------ */
-  /* Set mode                                                                 */
-  /* ------------------------------------------------------------------------ */
+  /* ======================================================================== */
+  /* MODE                                                                     */
+  /* ======================================================================== */
 
   const setMode = useCallback((newMode: PaletteMode) => {
     setModeState(newMode);
-
     localStorage.setItem(STORAGE_KEY, newMode);
   }, []);
-
-  /* ------------------------------------------------------------------------ */
-  /* Toggle mode                                                              */
-  /* ------------------------------------------------------------------------ */
 
   const toggleTheme = useCallback(() => {
     setModeState((currentMode) => {
@@ -198,9 +316,9 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     });
   }, []);
 
-  /* ------------------------------------------------------------------------ */
-  /* Set color theme                                                          */
-  /* ------------------------------------------------------------------------ */
+  /* ======================================================================== */
+  /* THEME SET                                                                 */
+  /* ======================================================================== */
 
   const setThemeSet = useCallback((newThemeSet: ThemeSetName) => {
     setThemeSetState(newThemeSet);
@@ -221,9 +339,9 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     localStorage.setItem(CUSTOM_COLORS_STORAGE_KEY, JSON.stringify(colors));
   }, []);
 
-  /* ------------------------------------------------------------------------ */
-  /* Set custom colors                                                        */
-  /* ------------------------------------------------------------------------ */
+  /* ======================================================================== */
+  /* CUSTOM COLORS                                                             */
+  /* ======================================================================== */
 
   const setCustomColors = useCallback((colors: CustomColors) => {
     if (!isValidCustomColors(colors)) {
@@ -235,31 +353,98 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     localStorage.setItem(CUSTOM_COLORS_STORAGE_KEY, JSON.stringify(colors));
   }, []);
 
-  /* ------------------------------------------------------------------------ */
-  /* Generate MUI theme                                                       */
-  /* ------------------------------------------------------------------------ */
+  /* ======================================================================== */
+  /* FONT                                                                      */
+  /* ======================================================================== */
+
+  const setFont = useCallback((url: string) => {
+    const trimmedUrl = url.trim();
+
+    /* Empty = reset */
+    if (!trimmedUrl) {
+      unloadGoogleFont();
+
+      setFontUrlState('');
+      setFontFamilyState(DEFAULT_FONT_FAMILY);
+
+      localStorage.removeItem(FONT_URL_STORAGE_KEY);
+
+      localStorage.removeItem(FONT_FAMILY_STORAGE_KEY);
+
+      return;
+    }
+
+    /* Validate URL */
+    if (!isGoogleFontUrl(trimmedUrl)) {
+      return;
+    }
+
+    /* Extract family */
+    const family = getFontFamilyFromUrl(trimmedUrl);
+
+    if (!family) {
+      return;
+    }
+
+    /* Load font */
+    loadGoogleFont(trimmedUrl);
+
+    /* Update state */
+    setFontUrlState(trimmedUrl);
+    setFontFamilyState(family);
+
+    /* Persist */
+    localStorage.setItem(FONT_URL_STORAGE_KEY, trimmedUrl);
+
+    localStorage.setItem(FONT_FAMILY_STORAGE_KEY, family);
+  }, []);
+
+  /* ======================================================================== */
+  /* RESET FONT                                                                */
+  /* ======================================================================== */
+
+  const resetFont = useCallback(() => {
+    unloadGoogleFont();
+
+    setFontUrlState('');
+    setFontFamilyState(DEFAULT_FONT_FAMILY);
+
+    localStorage.removeItem(FONT_URL_STORAGE_KEY);
+
+    localStorage.removeItem(FONT_FAMILY_STORAGE_KEY);
+  }, []);
+
+  /* ======================================================================== */
+  /* MUI THEME                                                                 */
+  /* ======================================================================== */
 
   const theme = useMemo(
     () =>
-      getThemeFromSet(mode, themeSet, {
-        color: customColors.color,
-        gray: customColors.gray,
-        secondary: customColors.secondary,
-        background: customColors.background
-      }),
+      getThemeFromSet(
+        mode,
+        themeSet,
+        {
+          color: customColors.color,
+          gray: customColors.gray,
+          secondary: customColors.secondary,
+          background: customColors.background
+        },
+        fontFamily
+      ),
     [
       mode,
       themeSet,
       customColors.color,
       customColors.gray,
       customColors.secondary,
-      customColors.background
+      customColors.background,
+      fontFamily
     ]
   );
 
-  /* ------------------------------------------------------------------------ */
-  /* Context value                                                            */
-  /* ------------------------------------------------------------------------ */
+  /* ======================================================================== */
+  /* CONTEXT                                                                  */
+  /* ======================================================================== */
 
   const contextValue = useMemo(
     () => ({
@@ -272,6 +457,11 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       customColors,
       setCustomColors,
 
+      fontUrl,
+      fontFamily,
+      setFont,
+      resetFont,
+
       toggleTheme,
       setMode
     }),
@@ -281,14 +471,18 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       setThemeSet,
       customColors,
       setCustomColors,
+      fontUrl,
+      fontFamily,
+      setFont,
+      resetFont,
       toggleTheme,
       setMode
     ]
   );
 
-  /* ------------------------------------------------------------------------ */
-  /* Prevent default-theme flash                                              */
-  /* ------------------------------------------------------------------------ */
+  /* ======================================================================== */
+  /* PROVIDER                                                                  */
+  /* ======================================================================== */
 
   if (!initialized) {
     return (
@@ -299,10 +493,6 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       </ThemeContext.Provider>
     );
   }
-
-  /* ------------------------------------------------------------------------ */
-  /* Provider                                                                 */
-  /* ------------------------------------------------------------------------ */
 
   return (
     <ThemeContext.Provider value={contextValue}>

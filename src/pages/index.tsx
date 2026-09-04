@@ -13,6 +13,7 @@ import { useThemeContext } from '@/contexts/themeContext';
 import ThemeToggle from '@/theme/ThemeToggle';
 
 import { AppButton, AppChip } from '@/theme/CustomComponents';
+import SkyEffects from '@/theme/SkyEffects';
 
 const GITHUB_URL = process.env.NEXT_PUBLIC_GITHUB_URL;
 
@@ -74,137 +75,7 @@ export default function Home() {
           transition: 'background 0.8s ease-in-out'
         }}
       >
-        {/* ================================================================ */}
-        {/* BACKGROUND CONNECTION NETWORK                                    */}
-        {/* ================================================================ */}
-
-        <Box
-          sx={{
-            position: 'absolute',
-            inset: 0,
-
-            overflow: 'hidden',
-
-            pointerEvents: 'none',
-
-            zIndex: 0,
-
-            opacity: 0,
-
-            '& svg': {
-              position: 'absolute',
-              inset: 0,
-
-              width: '100%',
-              height: '100%'
-            }
-          }}
-        >
-          <svg viewBox="0 0 1200 560" preserveAspectRatio="none">
-            {/* ============================================================ */}
-            {/* SECONDARY CONNECTION LINES — 30%                             */}
-            {/* ============================================================ */}
-
-            <g
-              fill="none"
-              stroke={theme.secondaryScale[7]}
-              strokeWidth="1.2"
-              opacity="0.55"
-            >
-              <path d="M20 120 L180 175 L350 90 L540 150 L735 75 L920 145 L1180 90" />
-
-              <path d="M20 425 L190 350 L365 440 L545 350 L750 455 L950 365 L1180 430" />
-
-              <path d="M180 175 L190 350" />
-
-              <path d="M350 90 L365 440" />
-
-              <path d="M540 150 L545 350" />
-
-              <path d="M735 75 L750 455" />
-
-              <path d="M920 145 L950 365" />
-
-              <path d="M350 90 L545 350" />
-
-              <path d="M735 75 L545 350" />
-
-              <path d="M540 150 L950 365" />
-            </g>
-
-            {/* ============================================================ */}
-            {/* SECONDARY HIGHLIGHTS                                         */}
-            {/* ============================================================ */}
-
-            <g
-              fill="none"
-              stroke={theme.secondaryScale[9]}
-              strokeWidth="2"
-              opacity="0.5"
-            >
-              <path d="M20 120 L180 175 L350 90 L540 150" />
-
-              <path d="M545 350 L750 455 L950 365 L1180 430" />
-
-              <path d="M350 90 L735 75" />
-
-              <path d="M545 350 L920 145" />
-            </g>
-
-            {/* ============================================================ */}
-            {/* SECONDARY NODES                                              */}
-            {/* ============================================================ */}
-
-            <g fill={theme.secondaryScale[9]}>
-              <circle cx="20" cy="120" r="4" />
-              <circle cx="180" cy="175" r="5" />
-              <circle cx="350" cy="90" r="4" />
-              <circle cx="540" cy="150" r="6" />
-              <circle cx="735" cy="75" r="5" />
-              <circle cx="920" cy="145" r="4" />
-              <circle cx="1180" cy="90" r="4" />
-
-              <circle cx="20" cy="425" r="4" />
-              <circle cx="190" cy="350" r="5" />
-              <circle cx="365" cy="440" r="4" />
-              <circle cx="545" cy="350" r="6" />
-              <circle cx="750" cy="455" r="5" />
-              <circle cx="950" cy="365" r="4" />
-              <circle cx="1180" cy="430" r="4" />
-            </g>
-
-            {/* ============================================================ */}
-            {/* NODE HALOS                                                   */}
-            {/* ============================================================ */}
-
-            <g
-              fill="none"
-              stroke={theme.secondaryScale[6]}
-              strokeWidth="1"
-              opacity="0.5"
-            >
-              <circle cx="180" cy="175" r="12" />
-
-              <circle cx="540" cy="150" r="16" />
-
-              <circle cx="735" cy="75" r="12" />
-
-              <circle cx="545" cy="350" r="16" />
-
-              <circle cx="750" cy="455" r="12" />
-            </g>
-
-            {/* ============================================================ */}
-            {/* PRIMARY NODES — 10%                                          */}
-            {/* ============================================================ */}
-
-            <g fill={theme.colorScale[9]} opacity="0.5">
-              <circle cx="540" cy="150" r="2.5" />
-
-              <circle cx="545" cy="350" r="2.5" />
-            </g>
-          </svg>
-        </Box>
+        <SkyEffects color={theme.colorScale[9]} />
 
         {/* ================================================================ */}
         {/* BRAND / HEADER                                                   */}
@@ -236,7 +107,21 @@ export default function Home() {
                 sm: 160
               },
 
-              position: 'relative'
+              position: 'relative',
+
+              '@keyframes logoFloat': {
+                '0%': {
+                  transform: 'translateY(0) scale(1)'
+                },
+
+                '50%': {
+                  transform: 'translateY(-8px) scale(1.03)'
+                },
+
+                '100%': {
+                  transform: 'translateY(0) scale(1)'
+                }
+              }
             }}
           >
             <Image
@@ -245,7 +130,15 @@ export default function Home() {
               fill
               priority
               style={{
-                objectFit: 'contain'
+                objectFit: 'contain',
+
+                filter: `
+        drop-shadow(0 0 8px ${theme.colorScale[8]})
+        drop-shadow(0 0 20px ${theme.colorScale[6]})
+        drop-shadow(0 0 40px ${theme.colorScale[4]})
+      `,
+
+                animation: 'logoFloat 4s ease-in-out infinite'
               }}
             />
           </Box>
@@ -265,47 +158,9 @@ export default function Home() {
               CryptechServices Theme System
             </Typography>
 
-            <Typography variant="h3">THEME BOILERPLATE</Typography>
+            <Typography variant="h3">Theme Boilerplate</Typography>
 
             <ThemeToggle />
-          </Stack>
-
-          {/* ============================================================ */}
-          {/* LINKS                                                        */}
-          {/* ============================================================ */}
-
-          <Stack
-            direction={{
-              xs: 'row',
-              sm: 'row'
-            }}
-            spacing={2}
-          >
-            {/* PRIMARY — 10% */}
-
-            <AppButton
-              component="a"
-              href="/theme"
-              variant="contained"
-              color="primary"
-              startIcon={<PaletteIcon />}
-            >
-              Theme
-            </AppButton>
-
-            {/* SECONDARY — 30% */}
-
-            <AppButton
-              component="a"
-              href={GITHUB_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              variant="outlined"
-              color="secondary"
-              startIcon={<GitHubIcon />}
-            >
-              GitHub
-            </AppButton>
           </Stack>
         </Stack>
 
@@ -323,7 +178,7 @@ export default function Home() {
 
             mt: {
               xs: 7,
-              md: 10
+              md: 5
             }
           }}
         >
@@ -664,51 +519,6 @@ export default function Home() {
                 `
               }}
             >
-              {/* ======================================================== */}
-              {/* PREVIEW CONNECTIONS                                      */}
-              {/* ======================================================== */}
-
-              <Box
-                sx={{
-                  position: 'absolute',
-
-                  inset: 0,
-
-                  pointerEvents: 'none',
-
-                  opacity: 0.25
-                }}
-              >
-                <svg width="100%" height="100%" viewBox="0 0 300 360">
-                  <g
-                    fill="none"
-                    stroke={theme.secondaryScale[7]}
-                    strokeWidth="1"
-                    opacity="0.25"
-                  >
-                    <path d="M10 55 L90 95 L150 50 L230 100 L290 70" />
-
-                    <path d="M20 285 L90 240 L155 290 L220 250 L290 285" />
-
-                    <path d="M90 95 L90 240" />
-
-                    <path d="M150 50 L155 290" />
-
-                    <path d="M230 100 L220 250" />
-                  </g>
-
-                  <g fill={theme.secondaryScale[9]}>
-                    <circle cx="90" cy="95" r="4" />
-
-                    <circle cx="150" cy="50" r="4" />
-
-                    <circle cx="155" cy="290" r="4" />
-
-                    <circle cx="220" cy="250" r="4" />
-                  </g>
-                </svg>
-              </Box>
-
               <Stack
                 spacing={2}
                 sx={{
@@ -880,6 +690,45 @@ export default function Home() {
             </Box>
           </Box>
         </Box>
+
+        {/* ============================================================ */}
+        {/* LINKS                                                        */}
+        {/* ============================================================ */}
+
+        <Stack
+          direction={{
+            xs: 'row',
+            sm: 'row'
+          }}
+          spacing={2}
+          sx={{ mt: 4, position: 'relative', zIndex: 2 }}
+        >
+          {/* PRIMARY — 10% */}
+
+          <AppButton
+            component="a"
+            href="/theme"
+            variant="contained"
+            color="primary"
+            startIcon={<PaletteIcon />}
+          >
+            Theme
+          </AppButton>
+
+          {/* SECONDARY — 30% */}
+
+          <AppButton
+            component="a"
+            href={GITHUB_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            variant="outlined"
+            color="secondary"
+            startIcon={<GitHubIcon />}
+          >
+            GitHub
+          </AppButton>
+        </Stack>
       </Box>
     </>
   );

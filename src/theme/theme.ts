@@ -707,7 +707,8 @@ export type CustomThemeColors = {
 export const getThemeFromSet = (
   mode: PaletteMode,
   set: ThemeSetName = 'blue',
-  customColors?: CustomThemeColors
+  customColors?: CustomThemeColors,
+  fontFamily = 'Inter'
 ) => {
   const colors = customColors ?? THEME_SETS[set] ?? THEME_SETS.blue;
 
@@ -833,6 +834,7 @@ export const getThemeFromSet = (
 
     typography: {
       fontFamily: [
+        `"${fontFamily}"`,
         'Inter',
         'Roboto',
         'Helvetica Neue',

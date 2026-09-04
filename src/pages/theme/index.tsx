@@ -344,7 +344,7 @@ export default function TypographyShowcase() {
             background: `
   radial-gradient(
     circle at top,
-    ${alpha(theme.backgroundScale[6], 0.5)},
+    ${alpha(theme.backgroundScale[7], 0.75)},
     ${alpha(theme.colorScale[3], 1)} 55%, ${alpha(theme.colorScale[3], 0)} 75%
   )
 `,
