@@ -5,7 +5,7 @@ import { Box, Button, Stack, Typography } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import PaletteIcon from '@mui/icons-material/Palette';
 
-const GITHUB_URL = 'https://github.com/ercknard/ThemeBoilerPlate';
+const GITHUB_URL = process.env.NEXT_PUBLIC_GITHUB_URL;
 
 export default function Home() {
   return (

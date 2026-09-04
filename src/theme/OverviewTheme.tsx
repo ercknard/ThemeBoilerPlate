@@ -15,7 +15,7 @@ import PaletteIcon from '@mui/icons-material/Palette';
 
 import ThemeToggle from '@/theme/ThemeToggle';
 
-const GITHUB_URL = 'https://github.com/ercknard/ThemeBoilerPlate';
+const GITHUB_URL = process.env.NEXT_PUBLIC_GITHUB_URL;
 
 export default function OverViewTheme() {
   return (
@@ -198,63 +198,6 @@ export default function OverViewTheme() {
                 </Stack>
               </CardContent>
             </Card>
-          </Box>
-
-          {/* Footer */}
-          <Box sx={{ mt: '3rem' }}>
-            <Divider />
-
-            <Box
-              sx={{
-                mt: '3rem',
-                display: 'flex',
-                justifyContent: 'center'
-              }}
-            >
-              <Stack
-                direction="row"
-                spacing={2}
-                sx={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexWrap: 'wrap'
-                }}
-                useFlexGap
-              >
-                <Typography
-                  variant="small"
-                  sx={{
-                    color: 'text.secondary'
-                  }}
-                >
-                  CryptechServices Design System
-                </Typography>
-
-                <Typography variant="small" color="text.disabled">
-                  •
-                </Typography>
-
-                <Button
-                  component="a"
-                  href="/theme"
-                  size="small"
-                  startIcon={<PaletteIcon />}
-                >
-                  Theme
-                </Button>
-
-                <Button
-                  component="a"
-                  href={GITHUB_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  size="small"
-                  startIcon={<GitHubIcon />}
-                >
-                  GitHub
-                </Button>
-              </Stack>
-            </Box>
           </Box>
         </Box>
       </Box>

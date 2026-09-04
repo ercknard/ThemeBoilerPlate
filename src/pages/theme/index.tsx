@@ -31,6 +31,8 @@ import {
 import { useTheme } from '@mui/material/styles';
 import { useState } from 'react';
 import OverviewTheme from '@/theme/OverviewTheme';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import PaletteIcon from '@mui/icons-material/Palette';
 
 import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
@@ -257,6 +259,8 @@ const showcaseTabs: {
 /* ========================================================================== */
 /* PAGE                                                                       */
 /* ========================================================================== */
+
+const GITHUB_URL = process.env.NEXT_PUBLIC_GITHUB_URL;
 
 export default function TypographyShowcase() {
   const theme = useTheme();
@@ -2203,18 +2207,61 @@ const colorScale = theme.colorScale;
             {/* ============================================================ */}
             {/* FOOTER                                                        */}
             {/* ============================================================ */}
-            <Divider />
-            <Box>
-              <Typography
-                variant="small"
+            {/* Footer */}
+            <Box sx={{ mt: '3rem' }}>
+              <Divider />
+
+              <Box
                 sx={{
-                  color: 'text.secondary',
-                  textAlign: 'center',
-                  display: 'block'
+                  mt: '3rem',
+                  display: 'flex',
+                  justifyContent: 'center'
                 }}
               >
-                CryptechServices Design System
-              </Typography>
+                <Stack
+                  direction="row"
+                  spacing={2}
+                  sx={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexWrap: 'wrap'
+                  }}
+                  useFlexGap
+                >
+                  <Typography
+                    variant="small"
+                    sx={{
+                      color: 'text.secondary'
+                    }}
+                  >
+                    CryptechServices Design System
+                  </Typography>
+
+                  <Typography variant="small" color="text.disabled">
+                    •
+                  </Typography>
+
+                  <Button
+                    component="a"
+                    href="/theme"
+                    size="small"
+                    startIcon={<PaletteIcon />}
+                  >
+                    Theme
+                  </Button>
+
+                  <Button
+                    component="a"
+                    href={GITHUB_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    size="small"
+                    startIcon={<GitHubIcon />}
+                  >
+                    GitHub
+                  </Button>
+                </Stack>
+              </Box>
             </Box>
           </Stack>
         </Container>
