@@ -1153,11 +1153,11 @@ export const getThemeFromSet = (
           },
 
           '::-webkit-scrollbar-track': {
-            backgroundColor: grayScale[2]
+            backgroundColor: colorScale[2]
           },
 
           '::-webkit-scrollbar-thumb': {
-            backgroundColor: grayScale[7],
+            backgroundColor: colorScale[7],
             borderRadius: 999
           }
         }

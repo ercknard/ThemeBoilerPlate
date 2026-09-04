@@ -13,6 +13,27 @@ import { useTheme } from '@mui/material/styles';
 
 import ThemeToggle from '@/theme/ThemeToggle';
 
+/* ========================================================================== */
+/* TYPES                                                                      */
+/* ========================================================================== */
+
+type ColorStep = {
+  step: number;
+  title: string;
+  description: string;
+};
+
+type ColorScale = Record<number, string> & {
+  surface?: string;
+  indicator?: string;
+  track?: string;
+  contrast?: string;
+};
+
+/* ========================================================================== */
+/* CUSTOM TYPOGRAPHY                                                          */
+/* ========================================================================== */
+
 const customTypography = [
   {
     variant: 'display' as const,
@@ -66,11 +87,9 @@ const customTypography = [
   }
 ];
 
-type ColorStep = {
-  step: number;
-  title: string;
-  description: string;
-};
+/* ========================================================================== */
+/* COLOR GROUPS                                                               */
+/* ========================================================================== */
 
 const colorGroups: {
   title: string;
@@ -169,10 +188,16 @@ const colorGroups: {
   }
 ];
 
+/* ========================================================================== */
+/* PAGE                                                                       */
+/* ========================================================================== */
+
 export default function TypographyShowcase() {
   const theme = useTheme();
 
-  const colorScale = theme.colorScale;
+  const colorScale = theme.colorScale as ColorScale;
+  const grayScale = theme.grayScale as ColorScale;
+  const backgroundScale = theme.backgroundScale as ColorScale;
 
   return (
     <>
@@ -185,7 +210,10 @@ export default function TypographyShowcase() {
         />
       </Head>
 
-      {/* Theme Toggle */}
+      {/* ================================================================== */}
+      {/* THEME TOGGLE                                                        */}
+      {/* ================================================================== */}
+
       <Box
         sx={{
           position: 'fixed',
@@ -196,6 +224,10 @@ export default function TypographyShowcase() {
       >
         <ThemeToggle />
       </Box>
+
+      {/* ================================================================== */}
+      {/* PAGE                                                                */}
+      {/* ================================================================== */}
 
       <Box
         sx={{
@@ -212,9 +244,9 @@ export default function TypographyShowcase() {
       >
         <Container maxWidth="xl">
           <Stack spacing={{ xs: 5, md: 8 }}>
-            {/* ====================================================== */}
-            {/* HEADER */}
-            {/* ====================================================== */}
+            {/* ============================================================ */}
+            {/* HEADER                                                        */}
+            {/* ============================================================ */}
 
             <Stack>
               <Typography variant="overlineCustom" color="primary">
@@ -239,16 +271,16 @@ export default function TypographyShowcase() {
                 }}
               >
                 A complete showcase of the typography variants, semantic color
-                scale, spacing, components, and responsive behavior used
+                scales, spacing, components, and responsive behavior used
                 throughout the application.
               </Typography>
             </Stack>
 
             <Divider />
 
-            {/* ====================================================== */}
-            {/* STANDARD TYPOGRAPHY */}
-            {/* ====================================================== */}
+            {/* ============================================================ */}
+            {/* STANDARD TYPOGRAPHY                                           */}
+            {/* ============================================================ */}
 
             <Box>
               <Typography variant="title" gutterBottom>
@@ -320,9 +352,9 @@ export default function TypographyShowcase() {
               </Paper>
             </Box>
 
-            {/* ====================================================== */}
-            {/* CUSTOM TYPOGRAPHY */}
-            {/* ====================================================== */}
+            {/* ============================================================ */}
+            {/* CUSTOM TYPOGRAPHY                                             */}
+            {/* ============================================================ */}
 
             <Box>
               <Typography variant="title" gutterBottom>
@@ -383,9 +415,9 @@ export default function TypographyShowcase() {
               </Stack>
             </Box>
 
-            {/* ====================================================== */}
-            {/* COLORS */}
-            {/* ====================================================== */}
+            {/* ============================================================ */}
+            {/* COLORS                                                         */}
+            {/* ============================================================ */}
 
             <Box>
               <Typography variant="title" gutterBottom>
@@ -400,143 +432,53 @@ export default function TypographyShowcase() {
                   maxWidth: 850
                 }}
               >
-                A semantic 12-step color scale inspired by Radix Colors. The
-                same scale is used across backgrounds, interactive components,
-                borders, solid colors, and accessible text.
+                Complete color system showing the primary accent, neutral gray,
+                and application background scales. Each scale follows the same
+                12-step semantic structure.
               </Typography>
 
-              <Paper
-                variant="outlined"
-                sx={{
-                  overflow: 'hidden'
-                }}
-              >
-                {/* ================================================== */}
-                {/* COLOR SCALE HEADER */}
-                {/* ================================================== */}
+              <Stack spacing={4}>
+                {/* ====================================================== */}
+                {/* PRIMARY COLOR SCALE                                     */}
+                {/* ====================================================== */}
 
-                <Box
-                  sx={{
-                    p: {
-                      xs: 2,
-                      sm: 3,
-                      md: 4
-                    }
-                  }}
-                >
-                  <Typography variant="h4">Color Scale</Typography>
+                <ColorScaleSection
+                  title="Color Scale"
+                  description="Primary accent color used for interactive elements, buttons, links, states, and emphasis."
+                  scale={colorScale}
+                  colorName="Primary"
+                  semanticGroups={colorGroups}
+                />
 
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{
-                      mt: 1
-                    }}
-                  >
-                    Generated from the active theme color.
-                  </Typography>
-                </Box>
+                {/* ====================================================== */}
+                {/* GRAY SCALE                                              */}
+                {/* ====================================================== */}
 
-                {/* ================================================== */}
-                {/* FULL 1–12 SCALE */}
-                {/* ================================================== */}
+                <ColorScaleSection
+                  title="Gray Scale"
+                  description="Neutral gray scale used for text, borders, dividers, disabled states, and supporting UI."
+                  scale={grayScale}
+                  colorName="Gray"
+                  semanticGroups={colorGroups}
+                />
 
-                <Box
-                  sx={{
-                    display: 'grid',
-                    gridTemplateColumns: {
-                      xs: 'repeat(3, 1fr)',
-                      sm: 'repeat(4, 1fr)',
-                      md: 'repeat(6, 1fr)',
-                      lg: 'repeat(12, 1fr)'
-                    }
-                  }}
-                >
-                  {Array.from({ length: 12 }, (_, index) => index + 1).map(
-                    (step) => {
-                      const color = colorScale[step as keyof typeof colorScale];
+                {/* ====================================================== */}
+                {/* BACKGROUND SCALE                                        */}
+                {/* ====================================================== */}
 
-                      return (
-                        <ColorScaleItem key={step} step={step} color={color} />
-                      );
-                    }
-                  )}
-                </Box>
-
-                <Divider />
-
-                {/* ================================================== */}
-                {/* SEMANTIC GROUPS */}
-                {/* ================================================== */}
-
-                {colorGroups.map((group, groupIndex) => (
-                  <Box key={group.title}>
-                    {groupIndex > 0 && <Divider />}
-
-                    <Box
-                      sx={{
-                        p: {
-                          xs: 2,
-                          sm: 3,
-                          md: 4
-                        },
-                        pb: {
-                          xs: 2,
-                          sm: 2,
-                          md: 3
-                        }
-                      }}
-                    >
-                      <Typography variant="h5">{group.title}</Typography>
-
-                      <Typography
-                        variant="small"
-                        color="text.secondary"
-                        sx={{
-                          mt: 0.5,
-                          display: 'block'
-                        }}
-                      >
-                        {group.description}
-                      </Typography>
-                    </Box>
-
-                    <Box
-                      sx={{
-                        display: 'grid',
-                        gridTemplateColumns: {
-                          xs:
-                            group.steps.length === 2
-                              ? 'repeat(2, 1fr)'
-                              : 'repeat(3, 1fr)',
-                          sm: `repeat(${group.steps.length}, 1fr)`
-                        }
-                      }}
-                    >
-                      {group.steps.map((item) => {
-                        const color =
-                          colorScale[item.step as keyof typeof colorScale];
-
-                        return (
-                          <ColorScaleItem
-                            key={item.step}
-                            step={item.step}
-                            title={item.title}
-                            description={item.description}
-                            color={color}
-                            large
-                          />
-                        );
-                      })}
-                    </Box>
-                  </Box>
-                ))}
-              </Paper>
+                <ColorScaleSection
+                  title="Background Scale"
+                  description="Background-specific scale used for application surfaces, cards, dialogs, menus, and recessed areas."
+                  scale={backgroundScale}
+                  colorName="Background"
+                  semanticGroups={colorGroups}
+                />
+              </Stack>
             </Box>
 
-            {/* ====================================================== */}
-            {/* COLOR USAGE EXAMPLES */}
-            {/* ====================================================== */}
+            {/* ============================================================ */}
+            {/* COLOR USAGE EXAMPLES                                         */}
+            {/* ============================================================ */}
 
             <Box>
               <Typography variant="title" gutterBottom>
@@ -565,7 +507,10 @@ export default function TypographyShowcase() {
                 }}
               >
                 <Stack spacing={4}>
-                  {/* Background */}
+                  {/* ================================================== */}
+                  {/* BACKGROUND                                          */}
+                  {/* ================================================== */}
+
                   <Box>
                     <Typography
                       variant="label"
@@ -582,16 +527,77 @@ export default function TypographyShowcase() {
                         p: 3,
                         borderRadius: 2,
                         backgroundColor: colorScale[2],
-                        border: `1px solid ${colorScale[6]}`
+                        border: `1px solid ${grayScale[6]}`
                       }}
                     >
                       <Typography variant="body1">
-                        Subtle background using color step 2.
+                        Subtle background using primary color step 2.
                       </Typography>
                     </Box>
                   </Box>
 
-                  {/* Interactive */}
+                  {/* ================================================== */}
+                  {/* GRAY BACKGROUND                                     */}
+                  {/* ================================================== */}
+
+                  <Box>
+                    <Typography
+                      variant="label"
+                      sx={{
+                        display: 'block',
+                        mb: 1
+                      }}
+                    >
+                      Gray Surface
+                    </Typography>
+
+                    <Box
+                      sx={{
+                        p: 3,
+                        borderRadius: 2,
+                        backgroundColor: grayScale[3],
+                        border: `1px solid ${grayScale[6]}`
+                      }}
+                    >
+                      <Typography variant="body1">
+                        Neutral surface using gray step 3.
+                      </Typography>
+                    </Box>
+                  </Box>
+
+                  {/* ================================================== */}
+                  {/* BACKGROUND SCALE                                    */}
+                  {/* ================================================== */}
+
+                  <Box>
+                    <Typography
+                      variant="label"
+                      sx={{
+                        display: 'block',
+                        mb: 1
+                      }}
+                    >
+                      Application Surface
+                    </Typography>
+
+                    <Box
+                      sx={{
+                        p: 3,
+                        borderRadius: 2,
+                        backgroundColor: backgroundScale[2],
+                        border: `1px solid ${grayScale[6]}`
+                      }}
+                    >
+                      <Typography variant="body1">
+                        Application surface using background step 2.
+                      </Typography>
+                    </Box>
+                  </Box>
+
+                  {/* ================================================== */}
+                  {/* INTERACTIVE                                         */}
+                  {/* ================================================== */}
+
                   <Box>
                     <Typography
                       variant="label"
@@ -626,7 +632,7 @@ export default function TypographyShowcase() {
                       <Button
                         variant="outlined"
                         sx={{
-                          borderColor: colorScale[7],
+                          borderColor: grayScale[7],
                           color: colorScale[11],
                           '&:hover': {
                             borderColor: colorScale[8],
@@ -651,7 +657,10 @@ export default function TypographyShowcase() {
                     </Box>
                   </Box>
 
-                  {/* Chips */}
+                  {/* ================================================== */}
+                  {/* CHIPS                                               */}
+                  {/* ================================================== */}
+
                   <Box>
                     <Typography
                       variant="label"
@@ -666,14 +675,16 @@ export default function TypographyShowcase() {
                     <Stack
                       direction="row"
                       spacing={1}
-                      sx={{ flexWrap: 'wrap' }}
+                      sx={{
+                        flexWrap: 'wrap'
+                      }}
                     >
                       <Chip
                         label="Default"
                         sx={{
-                          backgroundColor: colorScale[3],
-                          color: colorScale[11],
-                          border: `1px solid ${colorScale[6]}`
+                          backgroundColor: grayScale[3],
+                          color: grayScale[11],
+                          border: `1px solid ${grayScale[6]}`
                         }}
                       />
 
@@ -699,7 +710,10 @@ export default function TypographyShowcase() {
                     </Stack>
                   </Box>
 
-                  {/* Text */}
+                  {/* ================================================== */}
+                  {/* TEXT                                                */}
+                  {/* ================================================== */}
+
                   <Box>
                     <Typography
                       variant="label"
@@ -729,15 +743,33 @@ export default function TypographyShowcase() {
                       >
                         Step 11 — Lower contrast text for supporting content.
                       </Typography>
+
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          color: grayScale[11]
+                        }}
+                      >
+                        Gray 11 — Neutral supporting text.
+                      </Typography>
+
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          color: grayScale[12]
+                        }}
+                      >
+                        Gray 12 — Neutral high contrast text.
+                      </Typography>
                     </Stack>
                   </Box>
                 </Stack>
               </Paper>
             </Box>
 
-            {/* ====================================================== */}
-            {/* TEXT COLORS */}
-            {/* ====================================================== */}
+            {/* ============================================================ */}
+            {/* TEXT COLORS                                                   */}
+            {/* ============================================================ */}
 
             <Box>
               <Typography variant="title" gutterBottom>
@@ -771,7 +803,7 @@ export default function TypographyShowcase() {
                       color: colorScale[12]
                     }}
                   >
-                    colorScale.12 — High contrast text.
+                    colorScale.12 — High contrast accent text.
                   </Typography>
 
                   <Typography
@@ -780,15 +812,33 @@ export default function TypographyShowcase() {
                       color: colorScale[11]
                     }}
                   >
-                    colorScale.11 — Lower contrast text.
+                    colorScale.11 — Lower contrast accent text.
+                  </Typography>
+
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      color: grayScale[12]
+                    }}
+                  >
+                    grayScale.12 — High contrast neutral text.
+                  </Typography>
+
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      color: grayScale[11]
+                    }}
+                  >
+                    grayScale.11 — Lower contrast neutral text.
                   </Typography>
                 </Stack>
               </Paper>
             </Box>
 
-            {/* ====================================================== */}
-            {/* RESPONSIVE SHOWCASE */}
-            {/* ====================================================== */}
+            {/* ============================================================ */}
+            {/* RESPONSIVE SHOWCASE                                           */}
+            {/* ============================================================ */}
 
             <Box>
               <Typography variant="title" gutterBottom>
@@ -829,9 +879,9 @@ export default function TypographyShowcase() {
               </Paper>
             </Box>
 
-            {/* ====================================================== */}
-            {/* FOOTER */}
-            {/* ====================================================== */}
+            {/* ============================================================ */}
+            {/* FOOTER                                                        */}
+            {/* ============================================================ */}
 
             <Divider />
 
@@ -854,9 +904,264 @@ export default function TypographyShowcase() {
   );
 }
 
-/* ================================================================ */
-/* COLOR SCALE ITEM */
-/* ================================================================ */
+/* ========================================================================== */
+/* COLOR SCALE SECTION                                                        */
+/* ========================================================================== */
+
+function ColorScaleSection({
+  title,
+  description,
+  scale,
+  colorName,
+  semanticGroups
+}: {
+  title: string;
+  description: string;
+  scale: ColorScale;
+  colorName: string;
+  semanticGroups: {
+    title: string;
+    description: string;
+    steps: ColorStep[];
+  }[];
+}) {
+  return (
+    <Paper
+      variant="outlined"
+      sx={{
+        overflow: 'hidden'
+      }}
+    >
+      {/* ================================================================== */}
+      {/* HEADER                                                              */}
+      {/* ================================================================== */}
+
+      <Box
+        sx={{
+          p: {
+            xs: 2,
+            sm: 3,
+            md: 4
+          }
+        }}
+      >
+        <Stack spacing={0.5}>
+          <Typography variant="h4">{title}</Typography>
+
+          <Typography variant="body2" color="text.secondary">
+            {description}
+          </Typography>
+        </Stack>
+      </Box>
+
+      {/* ================================================================== */}
+      {/* FULL 1–12 SCALE                                                     */}
+      {/* ================================================================== */}
+
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: {
+            xs: 'repeat(3, 1fr)',
+            sm: 'repeat(4, 1fr)',
+            md: 'repeat(6, 1fr)',
+            lg: 'repeat(12, 1fr)'
+          }
+        }}
+      >
+        {Array.from(
+          {
+            length: 12
+          },
+          (_, index) => index + 1
+        ).map((step) => {
+          const color = scale[step];
+
+          return <ColorScaleItem key={step} step={step} color={color} />;
+        })}
+      </Box>
+
+      <Divider />
+
+      {/* ================================================================== */}
+      {/* SEMANTIC GROUPS                                                     */}
+      {/* ================================================================== */}
+
+      {semanticGroups.map((group, groupIndex) => (
+        <Box key={group.title}>
+          {groupIndex > 0 && <Divider />}
+
+          <Box
+            sx={{
+              p: {
+                xs: 2,
+                sm: 3,
+                md: 4
+              },
+              pb: {
+                xs: 2,
+                sm: 2,
+                md: 3
+              }
+            }}
+          >
+            <Typography variant="h5">{group.title}</Typography>
+
+            <Typography
+              variant="small"
+              color="text.secondary"
+              sx={{
+                mt: 0.5,
+                display: 'block'
+              }}
+            >
+              {group.description}
+            </Typography>
+          </Box>
+
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: {
+                xs:
+                  group.steps.length === 2
+                    ? 'repeat(2, 1fr)'
+                    : 'repeat(3, 1fr)',
+                sm: `repeat(${group.steps.length}, 1fr)`
+              }
+            }}
+          >
+            {group.steps.map((item) => {
+              const color = scale[item.step];
+
+              return (
+                <ColorScaleItem
+                  key={item.step}
+                  step={item.step}
+                  title={item.title}
+                  description={item.description}
+                  color={color}
+                  large
+                />
+              );
+            })}
+          </Box>
+        </Box>
+      ))}
+
+      {/* ================================================================== */}
+      {/* SEMANTIC TOKENS                                                     */}
+      {/* ================================================================== */}
+
+      <Divider />
+
+      <Box
+        sx={{
+          p: {
+            xs: 2,
+            sm: 3,
+            md: 4
+          }
+        }}
+      >
+        <Typography variant="h5">Semantic Tokens</Typography>
+
+        <Typography
+          variant="small"
+          color="text.secondary"
+          sx={{
+            mt: 0.5,
+            mb: 3,
+            display: 'block'
+          }}
+        >
+          Additional semantic aliases generated from the{' '}
+          {colorName.toLowerCase()} scale.
+        </Typography>
+
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: {
+              xs: 'repeat(2, 1fr)',
+              sm: 'repeat(4, 1fr)'
+            },
+            gap: 2
+          }}
+        >
+          {[
+            {
+              name: 'surface',
+              color: scale.surface
+            },
+            {
+              name: 'indicator',
+              color: scale.indicator
+            },
+            {
+              name: 'track',
+              color: scale.track
+            },
+            {
+              name: 'contrast',
+              color: scale.contrast
+            }
+          ].map((item) => (
+            <Box
+              key={item.name}
+              sx={{
+                border: '1px solid',
+                borderColor: 'divider',
+                borderRadius: 2,
+                overflow: 'hidden'
+              }}
+            >
+              <Box
+                sx={{
+                  height: 90,
+                  backgroundColor: item.color,
+                  display: 'flex',
+                  alignItems: 'flex-end',
+                  p: 1.5
+                }}
+              >
+                <Typography
+                  sx={{
+                    color:
+                      item.color && isLightColor(item.color) ? '#000' : '#fff',
+                    fontWeight: 700
+                  }}
+                >
+                  {item.name}
+                </Typography>
+              </Box>
+
+              <Box
+                sx={{
+                  p: 1.5
+                }}
+              >
+                <Typography
+                  variant="code"
+                  color="text.secondary"
+                  sx={{
+                    wordBreak: 'break-all'
+                  }}
+                >
+                  {item.color}
+                </Typography>
+              </Box>
+            </Box>
+          ))}
+        </Box>
+      </Box>
+    </Paper>
+  );
+}
+
+/* ========================================================================== */
+/* COLOR SCALE ITEM                                                           */
+/* ========================================================================== */
 
 function ColorScaleItem({
   step,
@@ -871,13 +1176,7 @@ function ColorScaleItem({
   description?: string;
   large?: boolean;
 }) {
-  /*
-   * Steps 1–10 are generally background/UI colors.
-   * Steps 11–12 are text colors.
-   *
-   * This is only for making the number visible in the showcase.
-   */
-  const useLightText = step >= 9;
+  const useLightText = !isLightColor(color);
 
   return (
     <Box
@@ -888,6 +1187,10 @@ function ColorScaleItem({
         borderColor: 'divider'
       }}
     >
+      {/* ================================================================== */}
+      {/* COLOR                                                               */}
+      {/* ================================================================== */}
+
       <Box
         sx={{
           height: large
@@ -924,6 +1227,10 @@ function ColorScaleItem({
           {step}
         </Typography>
       </Box>
+
+      {/* ================================================================== */}
+      {/* INFORMATION                                                         */}
+      {/* ================================================================== */}
 
       <Box
         sx={{
@@ -976,4 +1283,30 @@ function ColorScaleItem({
       </Box>
     </Box>
   );
+}
+
+/* ========================================================================== */
+/* COLOR CONTRAST                                                             */
+/* ========================================================================== */
+
+function isLightColor(color: string): boolean {
+  if (!color) {
+    return false;
+  }
+
+  const hex = color.replace('#', '');
+
+  if (hex.length !== 6) {
+    return false;
+  }
+
+  const r = parseInt(hex.slice(0, 2), 16);
+
+  const g = parseInt(hex.slice(2, 4), 16);
+
+  const b = parseInt(hex.slice(4, 6), 16);
+
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+
+  return luminance > 0.55;
 }
