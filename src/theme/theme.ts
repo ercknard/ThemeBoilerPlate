@@ -57,12 +57,14 @@ export type NeutralScale = {
 declare module '@mui/material/styles' {
   interface Theme {
     colorScale: RadixScale;
+    secondaryScale: RadixScale;
     backgroundScale: RadixScale;
     grayScale: RadixScale;
   }
 
   interface ThemeOptions {
     colorScale: RadixScale;
+    secondaryScale: RadixScale;
     backgroundScale: RadixScale;
     grayScale: RadixScale;
   }
@@ -616,6 +618,48 @@ export function createRadixScale(color: string, mode: PaletteMode): RadixScale {
 }
 
 /* ========================================================================== */
+/* SECONDARY COLOR SCALE                                                      */
+/* ========================================================================== */
+
+/**
+ * Creates a secondary palette derived from the primary color.
+ *
+ * The secondary color:
+ * - keeps the primary's general hue
+ * - shifts the hue slightly
+ * - reduces chroma
+ * - preserves the same lightness relationships
+ *
+ * This creates a color that visually belongs to the primary theme.
+ */
+export function createSecondaryScale(
+  color: string,
+  mode: PaletteMode
+): RadixScale {
+  const base = hexToOklch(normalizeHex(color));
+
+  /*
+   * Shift the hue slightly.
+   *
+   * This creates a neighboring color rather than simply
+   * making the primary lighter/darker.
+   */
+  let hue = base.H + 35;
+
+  if (hue >= 360) {
+    hue -= 360;
+  }
+
+  /*
+   * Secondary should feel related to primary,
+   * but slightly less dominant.
+   */
+  const secondaryColor = oklchToHex(base.L, Math.min(base.C * 0.72, 0.2), hue);
+
+  return createRadixScale(secondaryColor, mode);
+}
+
+/* ========================================================================== */
 /* NEUTRAL SCALE                                                              */
 /* ========================================================================== */
 
@@ -681,44 +725,52 @@ export const createBackgroundScale = (
 
   if (mode === 'dark') {
     return {
-      1: oklchToHex(0.105, base.C * 0.025, hue),
-      2: oklchToHex(0.135, base.C * 0.035, hue),
-      3: oklchToHex(0.17, base.C * 0.045, hue),
-      4: oklchToHex(0.205, base.C * 0.055, hue),
-      5: oklchToHex(0.24, base.C * 0.065, hue),
-      6: oklchToHex(0.29, base.C * 0.075, hue),
-      7: oklchToHex(0.35, base.C * 0.085, hue),
-      8: oklchToHex(0.42, base.C * 0.095, hue),
-      9: oklchToHex(0.5, base.C * 0.11, hue),
-      10: oklchToHex(0.57, base.C * 0.1, hue),
-      11: oklchToHex(0.76, base.C * 0.08, hue),
-      12: oklchToHex(0.93, base.C * 0.05, hue),
+      // Very dark → clearly tinted by the input color
+      1: oklchToHex(0.09, base.C * 0.1, hue),
+      2: oklchToHex(0.12, base.C * 0.14, hue),
+      3: oklchToHex(0.16, base.C * 0.18, hue),
+      4: oklchToHex(0.2, base.C * 0.22, hue),
+      5: oklchToHex(0.24, base.C * 0.26, hue),
+      6: oklchToHex(0.29, base.C * 0.3, hue),
+      7: oklchToHex(0.35, base.C * 0.36, hue),
+      8: oklchToHex(0.42, base.C * 0.44, hue),
 
-      surface: oklchToHex(0.17, base.C * 0.045, hue),
-      indicator: oklchToHex(0.5, base.C * 0.11, hue),
-      track: oklchToHex(0.29, base.C * 0.075, hue),
-      contrast: oklchToHex(0.93, base.C * 0.05, hue)
+      // Strong representation of the input color
+      9: oklchToHex(0.5, base.C * 0.55, hue),
+
+      10: oklchToHex(0.58, base.C * 0.5, hue),
+      11: oklchToHex(0.76, base.C * 0.38, hue),
+      12: oklchToHex(0.93, base.C * 0.22, hue),
+
+      surface: oklchToHex(0.16, base.C * 0.18, hue),
+      indicator: oklchToHex(0.5, base.C * 0.55, hue),
+      track: oklchToHex(0.29, base.C * 0.3, hue),
+      contrast: oklchToHex(0.93, base.C * 0.22, hue)
     };
   }
 
   return {
-    1: oklchToHex(0.99, base.C * 0.08, hue),
-    2: oklchToHex(0.97, base.C * 0.1, hue),
-    3: oklchToHex(0.94, base.C * 0.12, hue),
-    4: oklchToHex(0.9, base.C * 0.14, hue),
-    5: oklchToHex(0.85, base.C * 0.16, hue),
-    6: oklchToHex(0.78, base.C * 0.18, hue),
-    7: oklchToHex(0.7, base.C * 0.2, hue),
-    8: oklchToHex(0.61, base.C * 0.22, hue),
-    9: oklchToHex(0.52, base.C * 0.24, hue),
-    10: oklchToHex(0.44, base.C * 0.22, hue),
-    11: oklchToHex(0.34, base.C * 0.18, hue),
-    12: oklchToHex(0.22, base.C * 0.12, hue),
+    // Light → increasingly visible tint
+    1: oklchToHex(0.985, base.C * 0.1, hue),
+    2: oklchToHex(0.965, base.C * 0.14, hue),
+    3: oklchToHex(0.935, base.C * 0.18, hue),
+    4: oklchToHex(0.9, base.C * 0.22, hue),
+    5: oklchToHex(0.85, base.C * 0.26, hue),
+    6: oklchToHex(0.78, base.C * 0.3, hue),
+    7: oklchToHex(0.7, base.C * 0.36, hue),
+    8: oklchToHex(0.61, base.C * 0.44, hue),
 
-    surface: oklchToHex(0.97, base.C * 0.1, hue),
-    indicator: oklchToHex(0.52, base.C * 0.24, hue),
-    track: oklchToHex(0.85, base.C * 0.16, hue),
-    contrast: oklchToHex(0.22, base.C * 0.12, hue)
+    // Strong representation of the input color
+    9: oklchToHex(0.52, base.C * 0.55, hue),
+
+    10: oklchToHex(0.44, base.C * 0.5, hue),
+    11: oklchToHex(0.34, base.C * 0.38, hue),
+    12: oklchToHex(0.22, base.C * 0.22, hue),
+
+    surface: oklchToHex(0.965, base.C * 0.14, hue),
+    indicator: oklchToHex(0.52, base.C * 0.55, hue),
+    track: oklchToHex(0.85, base.C * 0.26, hue),
+    contrast: oklchToHex(0.22, base.C * 0.22, hue)
   };
 };
 
@@ -791,24 +843,28 @@ export const createGrayScale = (
 export const THEME_SETS = {
   blue: {
     color: '#4967C9',
+    secondary: '#aeaeae',
     gray: '#1e1e1e',
     background: '#0A0A0A'
   },
 
   purple: {
     color: '#8B5CF6',
+    secondary: '#aeaeae',
     gray: '#1e1e1e',
     background: '#100B1A'
   },
 
   gold: {
     color: '#F2C94C',
+    secondary: '#aeaeae',
     gray: '#1e1e1e',
     background: '#171205'
   },
 
   green: {
     color: '#30A46C',
+    secondary: '#aeaeae',
     gray: '#1e1e1e',
     background: '#07140D'
   }
@@ -823,6 +879,7 @@ export type ThemeSetName = keyof typeof THEME_SETS;
 export type CustomThemeColors = {
   color: string;
   gray: string;
+  secondary: string;
   background: string;
 };
 
@@ -848,6 +905,8 @@ export const getThemeFromSet = (
 
   const colorScale = createRadixScale(colors.color, mode);
 
+  const secondaryScale = createRadixScale(colors.secondary, mode);
+
   const backgroundScale = createBackgroundScale(mode, colors.background);
 
   const grayScale = createGrayScale(mode, colors.gray);
@@ -871,6 +930,7 @@ export const getThemeFromSet = (
     },
 
     colorScale,
+    secondaryScale,
     backgroundScale,
     grayScale,
 
@@ -888,13 +948,10 @@ export const getThemeFromSet = (
       },
 
       secondary: {
-        main: grayScale[9],
-
-        light: grayScale[10],
-
-        dark: grayScale[8],
-
-        contrastText: grayScale.contrast
+        main: secondaryScale[9],
+        light: secondaryScale[10],
+        dark: secondaryScale[8],
+        contrastText: secondaryScale.contrast
       },
 
       error: {

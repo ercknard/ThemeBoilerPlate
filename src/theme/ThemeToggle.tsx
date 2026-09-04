@@ -32,7 +32,7 @@ export default function ThemeToggle() {
   };
 
   const handleColorChange = (
-    key: 'color' | 'gray' | 'background',
+    key: 'color' | 'secondary' | 'gray' | 'background',
     value: string
   ) => {
     setCustomColors({
@@ -86,6 +86,27 @@ export default function ThemeToggle() {
           size="small"
           value={customColors.color}
           onChange={(event) => handleColorChange('color', event.target.value)}
+          sx={{
+            width: 44,
+
+            '& input': {
+              cursor: 'pointer',
+              height: 40,
+              padding: 0.5
+            }
+          }}
+        />
+      </Tooltip>
+
+      {/* CUSTOM GRAY */}
+      <Tooltip title="Secondary color">
+        <TextField
+          type="color"
+          size="small"
+          value={customColors.secondary}
+          onChange={(event) =>
+            handleColorChange('secondary', event.target.value)
+          }
           sx={{
             width: 44,
 

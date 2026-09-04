@@ -21,6 +21,7 @@ import { getThemeFromSet, THEME_SETS, type ThemeSetName } from '@/theme/theme';
 
 export type CustomColors = {
   color: string;
+  secondary: string;
   gray: string;
   background: string;
 };
@@ -61,6 +62,7 @@ const DEFAULT_THEME_SET: ThemeSetName = 'blue';
 
 const DEFAULT_CUSTOM_COLORS: CustomColors = {
   color: THEME_SETS[DEFAULT_THEME_SET].color,
+  secondary: THEME_SETS[DEFAULT_THEME_SET].secondary,
   gray: THEME_SETS[DEFAULT_THEME_SET].gray,
   background: THEME_SETS[DEFAULT_THEME_SET].background
 };
@@ -82,6 +84,7 @@ function isValidCustomColors(value: unknown): value is CustomColors {
 
   return (
     isValidHexColor(colors.color) &&
+    isValidHexColor(colors.secondary) &&
     isValidHexColor(colors.gray) &&
     isValidHexColor(colors.background)
   );
@@ -208,6 +211,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
 
     const colors: CustomColors = {
       color: preset.color,
+      secondary: preset.secondary,
       gray: preset.gray,
       background: preset.background
     };
@@ -240,6 +244,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       getThemeFromSet(mode, themeSet, {
         color: customColors.color,
         gray: customColors.gray,
+        secondary: customColors.secondary,
         background: customColors.background
       }),
     [
@@ -247,6 +252,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       themeSet,
       customColors.color,
       customColors.gray,
+      customColors.secondary,
       customColors.background
     ]
   );

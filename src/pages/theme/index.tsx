@@ -269,6 +269,7 @@ export default function TypographyShowcase() {
 
   const colorScale = theme.colorScale as ColorScale;
   const grayScale = theme.grayScale as ColorScale;
+  const secondaryScale = theme.secondaryScale as ColorScale;
   const backgroundScale = theme.backgroundScale as ColorScale;
 
   return (
@@ -335,7 +336,7 @@ export default function TypographyShowcase() {
 
               <Typography
                 variant="lead"
-                color="text.secondary"
+                color="secondary"
                 sx={{
                   maxWidth: 800,
                   mt: 2
@@ -407,7 +408,7 @@ export default function TypographyShowcase() {
 
                   <Typography
                     variant="body1"
-                    color="text.secondary"
+                    color="secondary"
                     sx={{
                       mb: 4
                     }}
@@ -483,7 +484,7 @@ export default function TypographyShowcase() {
 
                   <Typography
                     variant="body1"
-                    color="text.secondary"
+                    color="secondary"
                     sx={{
                       mb: 4
                     }}
@@ -507,7 +508,7 @@ export default function TypographyShowcase() {
                         <Stack>
                           <Typography
                             variant="caption"
-                            color="text.secondary"
+                            color="secondary"
                             sx={{
                               display: 'block',
                               mb: 1
@@ -522,7 +523,7 @@ export default function TypographyShowcase() {
 
                           <Typography
                             variant="small"
-                            color="text.secondary"
+                            color="secondary"
                             sx={{
                               mt: 1
                             }}
@@ -551,7 +552,7 @@ export default function TypographyShowcase() {
 
                   <Typography
                     variant="body1"
-                    color="text.secondary"
+                    color="secondary"
                     sx={{
                       mb: 4
                     }}
@@ -577,7 +578,7 @@ export default function TypographyShowcase() {
                         Resize the window
                       </Typography>
 
-                      <Typography variant="lead" color="text.secondary">
+                      <Typography variant="lead" color="secondary">
                         The typography automatically scales between its minimum
                         and maximum sizes without requiring additional
                         breakpoints.
@@ -601,7 +602,7 @@ export default function TypographyShowcase() {
 
                   <Typography
                     variant="body1"
-                    color="text.secondary"
+                    color="secondary"
                     sx={{
                       mb: 4,
                       maxWidth: 850
@@ -622,6 +623,18 @@ export default function TypographyShowcase() {
                       description="Primary accent color used for interactive elements, buttons, links, states, and emphasis."
                       scale={colorScale}
                       colorName="Primary"
+                      semanticGroups={colorGroups}
+                    />
+
+                    {/* ====================================================== */}
+                    {/* Secondary COLOR SCALE                                     */}
+                    {/* ====================================================== */}
+
+                    <ColorScaleSection
+                      title="Secondary Scale"
+                      description="Secondary accent color used for interactive elements, buttons, links, states, and emphasis."
+                      scale={secondaryScale}
+                      colorName="Secondary"
                       semanticGroups={colorGroups}
                     />
 
@@ -665,7 +678,7 @@ export default function TypographyShowcase() {
 
                     <Typography
                       variant="body1"
-                      color="text.secondary"
+                      color="secondary"
                       sx={{
                         maxWidth: 850
                       }}
@@ -699,7 +712,7 @@ export default function TypographyShowcase() {
                         <Stack spacing={1}>
                           <Typography variant="h5">Primary / Color</Typography>
 
-                          <Typography variant="small" color="text.secondary">
+                          <Typography variant="small" color="secondary">
                             Use <code>colorScale</code> for your primary accent
                             color.
                           </Typography>
@@ -796,7 +809,7 @@ const colorScale = theme.colorScale;
                         <Stack spacing={1}>
                           <Typography variant="h5">Gray / Neutral</Typography>
 
-                          <Typography variant="small" color="text.secondary">
+                          <Typography variant="small" color="secondary">
                             Use <code>grayScale</code> for neutral surfaces,
                             text, borders, and dividers.
                           </Typography>
@@ -896,7 +909,7 @@ const colorScale = theme.colorScale;
                         <Stack spacing={1}>
                           <Typography variant="h5">Background</Typography>
 
-                          <Typography variant="small" color="text.secondary">
+                          <Typography variant="small" color="secondary">
                             Use <code>backgroundScale</code> for application
                             backgrounds and surfaces.
                           </Typography>
@@ -995,7 +1008,7 @@ const colorScale = theme.colorScale;
 
                         <Typography
                           variant="small"
-                          color="text.secondary"
+                          color="secondary"
                           sx={{
                             display: 'block',
                             mt: 0.5,
@@ -1095,7 +1108,7 @@ const colorScale = theme.colorScale;
 
                   <Typography
                     variant="body1"
-                    color="text.secondary"
+                    color="secondary"
                     sx={{
                       mb: 4
                     }}
@@ -1400,8 +1413,8 @@ const colorScale = theme.colorScale;
                         text.primary — Main application content.
                       </Typography>
 
-                      <Typography variant="body1" color="text.secondary">
-                        text.secondary — Supporting and less prominent content.
+                      <Typography variant="body1" color="secondary">
+                        secondary — Supporting and less prominent content.
                       </Typography>
 
                       <Typography
@@ -1458,7 +1471,7 @@ const colorScale = theme.colorScale;
 
                   <Typography
                     variant="body1"
-                    color="text.secondary"
+                    color="secondary"
                     sx={{
                       mb: 4,
                       maxWidth: 850
@@ -1603,7 +1616,7 @@ const colorScale = theme.colorScale;
                               Uploading files
                             </Typography>
 
-                            <Typography variant="small" color="text.secondary">
+                            <Typography variant="small" color="secondary">
                               72%
                             </Typography>
                           </Stack>
@@ -1630,7 +1643,7 @@ const colorScale = theme.colorScale;
                           >
                             <Typography variant="small">Storage</Typography>
 
-                            <Typography variant="small" color="text.secondary">
+                            <Typography variant="small" color="secondary">
                               42%
                             </Typography>
                           </Stack>
@@ -1806,7 +1819,7 @@ const colorScale = theme.colorScale;
 
                             <Typography
                               variant="small"
-                              color="text.secondary"
+                              color="secondary"
                               sx={{
                                 display: 'block',
                                 mt: 0.5
@@ -1975,7 +1988,7 @@ const colorScale = theme.colorScale;
 
                                     <Typography
                                       variant="small"
-                                      color="text.secondary"
+                                      color="secondary"
                                     >
                                       {row.progress}%
                                     </Typography>
@@ -1983,10 +1996,7 @@ const colorScale = theme.colorScale;
                                 </TableCell>
 
                                 <TableCell align="right">
-                                  <Typography
-                                    variant="small"
-                                    color="text.secondary"
-                                  >
+                                  <Typography variant="small" color="secondary">
                                     {row.updated}
                                   </Typography>
                                 </TableCell>
@@ -2231,7 +2241,7 @@ const colorScale = theme.colorScale;
                   <Typography
                     variant="small"
                     sx={{
-                      color: 'text.secondary'
+                      color: 'secondary'
                     }}
                   >
                     CryptechServices Design System
@@ -2314,7 +2324,7 @@ function ColorScaleSection({
         <Stack spacing={0.5}>
           <Typography variant="h4">{title}</Typography>
 
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" color="secondary">
             {description}
           </Typography>
         </Stack>
@@ -2375,7 +2385,7 @@ function ColorScaleSection({
 
             <Typography
               variant="small"
-              color="text.secondary"
+              color="secondary"
               sx={{
                 mt: 0.5,
                 display: 'block'
@@ -2434,7 +2444,7 @@ function ColorScaleSection({
 
         <Typography
           variant="small"
-          color="text.secondary"
+          color="secondary"
           sx={{
             mt: 0.5,
             mb: 3,
@@ -2509,7 +2519,7 @@ function ColorScaleSection({
               >
                 <Typography
                   variant="code"
-                  color="text.secondary"
+                  color="secondary"
                   sx={{
                     wordBreak: 'break-all'
                   }}
@@ -2620,7 +2630,7 @@ function ColorScaleItem({
         {description && (
           <Typography
             variant="small"
-            color="text.secondary"
+            color="secondary"
             sx={{
               display: 'block',
               mt: 0.5,
@@ -2633,7 +2643,7 @@ function ColorScaleItem({
 
         <Typography
           variant="code"
-          color="text.secondary"
+          color="secondary"
           sx={{
             display: 'block',
             mt: 1,
@@ -2718,7 +2728,7 @@ function ShowcaseCard({
 
         <Typography
           variant="small"
-          color="text.secondary"
+          color="secondary"
           sx={{
             display: 'block',
             mt: 0.5
@@ -2824,7 +2834,7 @@ function SampleCard({
 
           <Typography
             variant="small"
-            color="text.secondary"
+            color="secondary"
             sx={{
               display: 'block',
               mt: 0.75,
@@ -2882,7 +2892,7 @@ function StatCard({
             alignItems: 'center'
           }}
         >
-          <Typography variant="small" color="text.secondary">
+          <Typography variant="small" color="secondary">
             {title}
           </Typography>
 
@@ -3023,11 +3033,7 @@ function TypographyUsageSection() {
 
         <Typography variant="title">How to Add Typography</Typography>
 
-        <Typography
-          variant="lead"
-          color="text.secondary"
-          sx={{ maxWidth: 760 }}
-        >
+        <Typography variant="lead" color="secondary" sx={{ maxWidth: 760 }}>
           Use the predefined typography variants directly with MUI's Typography
           component. The theme handles font size, weight, line height, and
           responsive behavior for you.
@@ -3059,7 +3065,7 @@ function TypographyUsageSection() {
 
                   <Typography
                     variant="small"
-                    color="text.secondary"
+                    color="secondary"
                     sx={{ mt: 0.5 }}
                   >
                     {sample.description}

@@ -42,15 +42,9 @@ export default function OverViewTheme() {
               CryptechServices Theme System
             </Typography>
 
-            <Typography variant="title" color="text.secondary">
-              Theme BoilerPlate
-            </Typography>
+            <Typography variant="title">Theme BoilerPlate</Typography>
 
-            <Typography
-              variant="lead"
-              color="text.secondary"
-              sx={{ maxWidth: 700 }}
-            >
+            <Typography variant="lead" color="secondary" sx={{ maxWidth: 700 }}>
               A dynamic theme powered by custom color, gray, and background
               scales.
             </Typography>
@@ -106,7 +100,7 @@ export default function OverViewTheme() {
                 <Stack spacing={2}>
                   <Typography variant="sectionTitle">Color</Typography>
 
-                  <Typography color="text.secondary">
+                  <Typography color="secondary">
                     Your custom primary color scale.
                   </Typography>
 
@@ -130,16 +124,14 @@ export default function OverViewTheme() {
                 <Stack spacing={2}>
                   <Typography variant="sectionTitle">Gray</Typography>
 
-                  <Typography color="text.secondary">
+                  <Typography color="secondary">
                     Your custom neutral and text scale.
                   </Typography>
 
                   <Stack spacing={1}>
                     <Typography>Primary text</Typography>
 
-                    <Typography color="text.secondary">
-                      Secondary text
-                    </Typography>
+                    <Typography color="secondary">Secondary text</Typography>
 
                     <Typography color="text.disabled">Disabled text</Typography>
                   </Stack>
@@ -153,7 +145,7 @@ export default function OverViewTheme() {
                 <Stack spacing={2}>
                   <Typography variant="sectionTitle">Background</Typography>
 
-                  <Typography color="text.secondary">
+                  <Typography color="secondary">
                     Your custom background scale.
                   </Typography>
 
