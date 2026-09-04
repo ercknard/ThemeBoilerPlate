@@ -7,11 +7,47 @@ import {
   Divider,
   Paper,
   Stack,
-  Typography
+  Typography,
+  Alert,
+  Badge,
+  CircularProgress,
+  LinearProgress,
+  Rating,
+  Slider,
+  Switch,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Tabs,
+  Tab,
+  ToggleButton,
+  ToggleButtonGroup,
+  Tooltip,
+  IconButton
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
+import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
+import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
+import DownloadOutlinedIcon from '@mui/icons-material/DownloadOutlined';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PauseIcon from '@mui/icons-material/Pause';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import PeopleIcon from '@mui/icons-material/People';
+import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
+import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
+import Checkbox from '@mui/material/Checkbox';
+
 import ThemeToggle from '@/theme/ThemeToggle';
+import { semanticColors } from '@/theme/theme';
 
 /* ========================================================================== */
 /* TYPES                                                                      */
@@ -880,6 +916,747 @@ export default function TypographyShowcase() {
             </Box>
 
             {/* ============================================================ */}
+            {/* COMPONENT SHOWCASE                                            */}
+            {/* ============================================================ */}
+
+            <Box>
+              <Typography variant="title" gutterBottom>
+                Component Showcase
+              </Typography>
+
+              <Typography
+                variant="body1"
+                color="text.secondary"
+                sx={{
+                  mb: 4,
+                  maxWidth: 850
+                }}
+              >
+                Additional interface examples showing how the color scales,
+                typography, surfaces, borders, states, and semantic colors work
+                together in real components.
+              </Typography>
+
+              <Stack spacing={4}>
+                {/* ========================================================== */}
+                {/* ALERTS                                                       */}
+                {/* ========================================================== */}
+
+                <ShowcaseCard
+                  title="Alerts"
+                  description="Feedback messages using the semantic color system."
+                >
+                  <Stack spacing={2}>
+                    <Alert
+                      icon={<InfoOutlinedIcon />}
+                      severity="info"
+                      sx={{
+                        border: '1px solid',
+                        borderColor: colorScale[6]
+                      }}
+                    >
+                      Your account has been successfully updated.
+                    </Alert>
+
+                    <Alert
+                      icon={<CheckCircleOutlineOutlinedIcon />}
+                      severity="success"
+                      sx={{
+                        border: '1px solid',
+                        borderColor: semanticColors.success
+                      }}
+                    >
+                      Changes were saved successfully.
+                    </Alert>
+
+                    <Alert
+                      icon={<WarningAmberOutlinedIcon />}
+                      severity="warning"
+                      sx={{
+                        border: '1px solid',
+                        borderColor: semanticColors.warning
+                      }}
+                    >
+                      Your subscription will expire soon.
+                    </Alert>
+
+                    <Alert
+                      icon={<ErrorOutlineOutlinedIcon />}
+                      severity="error"
+                      sx={{
+                        border: '1px solid',
+                        borderColor: semanticColors.error
+                      }}
+                    >
+                      Something went wrong. Please try again.
+                    </Alert>
+                  </Stack>
+                </ShowcaseCard>
+
+                {/* ========================================================== */}
+                {/* BADGES                                                       */}
+                {/* ========================================================== */}
+
+                <ShowcaseCard
+                  title="Badges & Status"
+                  description="Status indicators, notifications, and semantic states."
+                >
+                  <Stack
+                    direction="row"
+                    spacing={4}
+                    sx={{
+                      alignItems: 'center',
+                      flexWrap: 'wrap'
+                    }}
+                    useFlexGap
+                  >
+                    <Badge badgeContent={4} color="primary">
+                      <Paper
+                        variant="outlined"
+                        sx={{
+                          p: 2,
+                          borderRadius: 2
+                        }}
+                      >
+                        <Typography variant="small">Notifications</Typography>
+                      </Paper>
+                    </Badge>
+
+                    <Badge variant="dot" color="success">
+                      <Paper
+                        variant="outlined"
+                        sx={{
+                          p: 2,
+                          borderRadius: 2
+                        }}
+                      >
+                        <Typography variant="small">Online</Typography>
+                      </Paper>
+                    </Badge>
+
+                    <StatusDot color={semanticColors.success} label="Online" />
+
+                    <StatusDot color={semanticColors.warning} label="Away" />
+
+                    <StatusDot color={semanticColors.error} label="Offline" />
+                  </Stack>
+                </ShowcaseCard>
+
+                {/* ========================================================== */}
+                {/* PROGRESS                                                      */}
+                {/* ========================================================== */}
+
+                <ShowcaseCard
+                  title="Progress"
+                  description="Progress indicators using the primary scale."
+                >
+                  <Stack spacing={3}>
+                    <Box>
+                      <Stack
+                        direction="row"
+                        sx={{ mb: 1, justifyContent: 'space-between' }}
+                      >
+                        <Typography variant="small">Uploading files</Typography>
+
+                        <Typography variant="small" color="text.secondary">
+                          72%
+                        </Typography>
+                      </Stack>
+
+                      <LinearProgress
+                        variant="determinate"
+                        value={72}
+                        sx={{
+                          height: 8,
+                          borderRadius: 999,
+                          backgroundColor: colorScale[3],
+                          '& .MuiLinearProgress-bar': {
+                            backgroundColor: colorScale[9],
+                            borderRadius: 999
+                          }
+                        }}
+                      />
+                    </Box>
+
+                    <Box>
+                      <Stack
+                        direction="row"
+                        sx={{ mb: 1, justifyContent: 'space-between' }}
+                      >
+                        <Typography variant="small">Storage</Typography>
+
+                        <Typography variant="small" color="text.secondary">
+                          42%
+                        </Typography>
+                      </Stack>
+
+                      <LinearProgress
+                        variant="determinate"
+                        value={42}
+                        sx={{
+                          height: 8,
+                          borderRadius: 999,
+                          backgroundColor: grayScale[4],
+                          '& .MuiLinearProgress-bar': {
+                            backgroundColor: colorScale[8],
+                            borderRadius: 999
+                          }
+                        }}
+                      />
+                    </Box>
+
+                    <Stack
+                      direction="row"
+                      spacing={4}
+                      sx={{ alignItems: 'center' }}
+                    >
+                      <CircularProgress
+                        variant="determinate"
+                        value={25}
+                        size={48}
+                        thickness={5}
+                        sx={{
+                          color: colorScale[9]
+                        }}
+                      />
+
+                      <CircularProgress
+                        variant="determinate"
+                        value={65}
+                        size={48}
+                        thickness={5}
+                        sx={{
+                          color: colorScale[10]
+                        }}
+                      />
+
+                      <CircularProgress
+                        variant="determinate"
+                        value={90}
+                        size={48}
+                        thickness={5}
+                        sx={{
+                          color: semanticColors.success
+                        }}
+                      />
+                    </Stack>
+                  </Stack>
+                </ShowcaseCard>
+
+                {/* ========================================================== */}
+                {/* TABS                                                         */}
+                {/* ========================================================== */}
+
+                <ShowcaseCard
+                  title="Navigation"
+                  description="Tabs and segmented controls."
+                >
+                  <Tabs
+                    value={1}
+                    sx={{
+                      borderBottom: '1px solid',
+                      borderColor: 'divider',
+                      minHeight: 44
+                    }}
+                  >
+                    <Tab
+                      label="Overview"
+                      sx={{
+                        minHeight: 44
+                      }}
+                    />
+
+                    <Tab
+                      label="Activity"
+                      sx={{
+                        minHeight: 44
+                      }}
+                    />
+
+                    <Tab
+                      label="Settings"
+                      sx={{
+                        minHeight: 44
+                      }}
+                    />
+
+                    <Tab
+                      label="Members"
+                      sx={{
+                        minHeight: 44
+                      }}
+                    />
+                  </Tabs>
+
+                  <Stack
+                    direction="row"
+                    spacing={1}
+                    sx={{
+                      mt: 3
+                    }}
+                  >
+                    <ToggleButtonGroup exclusive value="week" size="small">
+                      <ToggleButton value="day">Day</ToggleButton>
+
+                      <ToggleButton value="week">Week</ToggleButton>
+
+                      <ToggleButton value="month">Month</ToggleButton>
+                    </ToggleButtonGroup>
+                  </Stack>
+                </ShowcaseCard>
+
+                {/* ========================================================== */}
+                {/* FILE / UPLOAD CARD                                           */}
+                {/* ========================================================== */}
+
+                <ShowcaseCard
+                  title="Upload"
+                  description="Drag-and-drop style surface with action states."
+                >
+                  <Paper
+                    variant="outlined"
+                    sx={{
+                      minHeight: 220,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderStyle: 'dashed',
+                      borderWidth: 2,
+                      borderColor: colorScale[6],
+                      backgroundColor: backgroundScale[2],
+                      borderRadius: 2
+                    }}
+                  >
+                    <Stack
+                      spacing={2}
+                      sx={{
+                        textAlign: 'center',
+                        alignItems: 'center'
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          width: 58,
+                          height: 58,
+                          borderRadius: 2,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          backgroundColor: colorScale[3],
+                          color: colorScale[9]
+                        }}
+                      >
+                        <CloudUploadOutlinedIcon />
+                      </Box>
+
+                      <Box>
+                        <Typography
+                          variant="medium"
+                          sx={{
+                            fontWeight: 700
+                          }}
+                        >
+                          Upload your files
+                        </Typography>
+
+                        <Typography
+                          variant="small"
+                          color="text.secondary"
+                          sx={{
+                            display: 'block',
+                            mt: 0.5
+                          }}
+                        >
+                          Drag and drop files here or browse your computer.
+                        </Typography>
+                      </Box>
+
+                      <Button
+                        variant="outlined"
+                        startIcon={<CloudUploadOutlinedIcon />}
+                      >
+                        Choose files
+                      </Button>
+                    </Stack>
+                  </Paper>
+                </ShowcaseCard>
+
+                {/* ========================================================== */}
+                {/* MEDIA CARD GRID                                               */}
+                {/* ========================================================== */}
+
+                <ShowcaseCard
+                  title="Cards"
+                  description="Different surface levels and interactive card states."
+                >
+                  <Box
+                    sx={{
+                      display: 'grid',
+                      gridTemplateColumns: {
+                        xs: '1fr',
+                        sm: 'repeat(2, 1fr)',
+                        lg: 'repeat(3, 1fr)'
+                      },
+                      gap: 2
+                    }}
+                  >
+                    <SampleCard
+                      icon={<PlayArrowIcon />}
+                      title="Getting started"
+                      description="Learn the basics and set up your workspace."
+                      action="Start"
+                    />
+
+                    <SampleCard
+                      icon={<DownloadOutlinedIcon />}
+                      title="Resources"
+                      description="Download templates, assets, and documentation."
+                      action="Browse"
+                    />
+
+                    <SampleCard
+                      icon={<AutoAwesomeIcon />}
+                      title="Explore"
+                      description="Discover new features available in the platform."
+                      action="Explore"
+                    />
+                  </Box>
+                </ShowcaseCard>
+
+                {/* ========================================================== */}
+                {/* TABLE                                                         */}
+                {/* ========================================================== */}
+
+                <ShowcaseCard
+                  title="Data Table"
+                  description="Dense data presentation with status and actions."
+                >
+                  <TableContainer>
+                    <Table>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>Project</TableCell>
+
+                          <TableCell>Status</TableCell>
+
+                          <TableCell>Progress</TableCell>
+
+                          <TableCell align="right">Updated</TableCell>
+                        </TableRow>
+                      </TableHead>
+
+                      <TableBody>
+                        {[
+                          {
+                            name: 'Arcana78',
+                            status: 'Active',
+                            progress: 86,
+                            updated: '2 min ago'
+                          },
+                          {
+                            name: 'Design System',
+                            status: 'Active',
+                            progress: 64,
+                            updated: '12 min ago'
+                          },
+                          {
+                            name: 'Website',
+                            status: 'Review',
+                            progress: 42,
+                            updated: '1 hour ago'
+                          },
+                          {
+                            name: 'Mobile App',
+                            status: 'Draft',
+                            progress: 18,
+                            updated: '3 hours ago'
+                          }
+                        ].map((row) => (
+                          <TableRow key={row.name} hover>
+                            <TableCell>
+                              <Typography
+                                variant="small"
+                                sx={{
+                                  fontWeight: 700
+                                }}
+                              >
+                                {row.name}
+                              </Typography>
+                            </TableCell>
+
+                            <TableCell>
+                              <Chip
+                                size="small"
+                                label={row.status}
+                                sx={{
+                                  backgroundColor:
+                                    row.status === 'Active'
+                                      ? colorScale[3]
+                                      : row.status === 'Review'
+                                        ? '#FEF3C7'
+                                        : grayScale[3],
+                                  color:
+                                    row.status === 'Active'
+                                      ? colorScale[11]
+                                      : row.status === 'Review'
+                                        ? '#92400E'
+                                        : grayScale[11]
+                                }}
+                              />
+                            </TableCell>
+
+                            <TableCell sx={{ minWidth: 160 }}>
+                              <Stack
+                                direction="row"
+                                spacing={1}
+                                sx={{
+                                  alignItems: 'center'
+                                }}
+                              >
+                                <LinearProgress
+                                  variant="determinate"
+                                  value={row.progress}
+                                  sx={{
+                                    flex: 1,
+                                    height: 6,
+                                    borderRadius: 999,
+                                    backgroundColor: grayScale[4],
+                                    '& .MuiLinearProgress-bar': {
+                                      backgroundColor: colorScale[9],
+                                      borderRadius: 999
+                                    }
+                                  }}
+                                />
+
+                                <Typography
+                                  variant="small"
+                                  color="text.secondary"
+                                >
+                                  {row.progress}%
+                                </Typography>
+                              </Stack>
+                            </TableCell>
+
+                            <TableCell align="right">
+                              <Typography
+                                variant="small"
+                                color="text.secondary"
+                              >
+                                {row.updated}
+                              </Typography>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </ShowcaseCard>
+
+                {/* ========================================================== */}
+                {/* CONTROLS                                                      */}
+                {/* ========================================================== */}
+
+                <ShowcaseCard
+                  title="Controls"
+                  description="Common input and preference controls."
+                >
+                  <Stack spacing={4}>
+                    <Box>
+                      <Typography
+                        variant="label"
+                        sx={{
+                          display: 'block',
+                          mb: 1
+                        }}
+                      >
+                        Volume
+                      </Typography>
+
+                      <Slider
+                        defaultValue={65}
+                        valueLabelDisplay="auto"
+                        sx={{
+                          color: colorScale[9]
+                        }}
+                      />
+                    </Box>
+
+                    <Stack
+                      direction={{
+                        xs: 'column',
+                        sm: 'row'
+                      }}
+                      spacing={4}
+                    >
+                      <Stack
+                        direction="row"
+                        spacing={1}
+                        sx={{ alignItems: 'center' }}
+                      >
+                        <Switch defaultChecked />
+
+                        <Typography variant="small">Notifications</Typography>
+                      </Stack>
+
+                      <Stack
+                        direction="row"
+                        spacing={1}
+                        sx={{ alignItems: 'center' }}
+                      >
+                        <Switch />
+
+                        <Typography variant="small">Auto-save</Typography>
+                      </Stack>
+
+                      <Stack
+                        direction="row"
+                        spacing={1}
+                        sx={{ alignItems: 'center' }}
+                      >
+                        <Checkbox defaultChecked={true} />
+
+                        <Typography variant="small">Remember me</Typography>
+                      </Stack>
+                    </Stack>
+
+                    <Box>
+                      <Typography
+                        variant="label"
+                        sx={{
+                          display: 'block',
+                          mb: 1
+                        }}
+                      >
+                        Rating
+                      </Typography>
+
+                      <Rating
+                        defaultValue={4}
+                        sx={{
+                          color: colorScale[9]
+                        }}
+                      />
+                    </Box>
+                  </Stack>
+                </ShowcaseCard>
+
+                {/* ========================================================== */}
+                {/* STATISTICS                                                    */}
+                {/* ========================================================== */}
+
+                <ShowcaseCard
+                  title="Statistics"
+                  description="Dashboard-style metrics using the color relationships."
+                >
+                  <Box
+                    sx={{
+                      display: 'grid',
+                      gridTemplateColumns: {
+                        xs: '1fr',
+                        sm: 'repeat(2, 1fr)',
+                        lg: 'repeat(4, 1fr)'
+                      },
+                      gap: 2
+                    }}
+                  >
+                    <StatCard
+                      title="Total users"
+                      value="24,892"
+                      change="+12.4%"
+                      positive
+                      icon={<PeopleIcon />}
+                    />
+
+                    <StatCard
+                      title="Revenue"
+                      value="$84,920"
+                      change="+8.2%"
+                      positive
+                      icon={<ArrowUpwardIcon />}
+                    />
+
+                    <StatCard
+                      title="Bounce rate"
+                      value="24.8%"
+                      change="-4.6%"
+                      positive
+                      icon={<ArrowDownwardIcon />}
+                    />
+
+                    <StatCard
+                      title="Pending"
+                      value="128"
+                      change="+18"
+                      icon={<WarningAmberOutlinedIcon />}
+                    />
+                  </Box>
+                </ShowcaseCard>
+
+                {/* ========================================================== */}
+                {/* BUTTON STATES                                                 */}
+                {/* ========================================================== */}
+
+                <ShowcaseCard
+                  title="Button States"
+                  description="Primary, secondary, destructive, disabled, and icon actions."
+                >
+                  <Stack spacing={3}>
+                    <Stack
+                      direction="row"
+                      spacing={1}
+                      sx={{
+                        flexWrap: 'wrap'
+                      }}
+                      useFlexGap
+                    >
+                      <Button variant="contained">Primary</Button>
+
+                      <Button variant="outlined">Secondary</Button>
+
+                      <Button variant="text">Ghost</Button>
+
+                      <Button variant="contained" color="error">
+                        Delete
+                      </Button>
+
+                      <Button variant="contained" disabled>
+                        Disabled
+                      </Button>
+                    </Stack>
+
+                    <Stack direction="row" spacing={1}>
+                      <Tooltip title="Play">
+                        <IconButton
+                          sx={{
+                            backgroundColor: colorScale[9],
+                            color: colorScale.contrast,
+                            '&:hover': {
+                              backgroundColor: colorScale[10]
+                            }
+                          }}
+                        >
+                          <PlayArrowIcon />
+                        </IconButton>
+                      </Tooltip>
+
+                      <Tooltip title="Pause">
+                        <IconButton>
+                          <PauseIcon />
+                        </IconButton>
+                      </Tooltip>
+
+                      <Tooltip title="More">
+                        <IconButton>
+                          <MoreHorizIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </Stack>
+                  </Stack>
+                </ShowcaseCard>
+              </Stack>
+            </Box>
+
+            {/* ============================================================ */}
             {/* FOOTER                                                        */}
             {/* ============================================================ */}
 
@@ -1309,4 +2086,251 @@ function isLightColor(color: string): boolean {
   const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
 
   return luminance > 0.55;
+}
+
+/* ========================================================================== */
+/* SHOWCASE CARD                                                              */
+/* ========================================================================== */
+
+function ShowcaseCard({
+  title,
+  description,
+  children
+}: {
+  title: string;
+  description: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <Paper
+      variant="outlined"
+      sx={{
+        overflow: 'hidden'
+      }}
+    >
+      <Box
+        sx={{
+          px: {
+            xs: 2,
+            sm: 3,
+            md: 4
+          },
+          py: 2.5
+        }}
+      >
+        <Typography
+          variant="h5"
+          sx={{
+            fontWeight: 700
+          }}
+        >
+          {title}
+        </Typography>
+
+        <Typography
+          variant="small"
+          color="text.secondary"
+          sx={{
+            display: 'block',
+            mt: 0.5
+          }}
+        >
+          {description}
+        </Typography>
+      </Box>
+
+      <Divider />
+
+      <Box
+        sx={{
+          p: {
+            xs: 2,
+            sm: 3,
+            md: 4
+          }
+        }}
+      >
+        {children}
+      </Box>
+    </Paper>
+  );
+}
+
+/* ========================================================================== */
+/* STATUS DOT                                                                 */
+/* ========================================================================== */
+
+function StatusDot({ color, label }: { color: string; label: string }) {
+  return (
+    <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+      <Box
+        sx={{
+          width: 9,
+          height: 9,
+          borderRadius: '50%',
+          backgroundColor: color,
+          boxShadow: `0 0 0 3px ${color}22`
+        }}
+      />
+
+      <Typography variant="small">{label}</Typography>
+    </Stack>
+  );
+}
+
+/* ========================================================================== */
+/* SAMPLE CARD                                                                */
+/* ========================================================================== */
+
+function SampleCard({
+  icon,
+  title,
+  description,
+  action
+}: {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  action: string;
+}) {
+  return (
+    <Paper
+      variant="outlined"
+      sx={{
+        p: 2.5,
+        borderRadius: 2,
+        transition: 'all 0.2s ease',
+        '&:hover': {
+          transform: 'translateY(-2px)',
+          boxShadow: 3,
+          borderColor: 'primary.main'
+        }
+      }}
+    >
+      <Stack spacing={2}>
+        <Box
+          sx={{
+            width: 44,
+            height: 44,
+            borderRadius: 1.5,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'primary.main',
+            color: 'primary.contrastText'
+          }}
+        >
+          {icon}
+        </Box>
+
+        <Box>
+          <Typography
+            variant="medium"
+            sx={{
+              fontWeight: 700
+            }}
+          >
+            {title}
+          </Typography>
+
+          <Typography
+            variant="small"
+            color="text.secondary"
+            sx={{
+              display: 'block',
+              mt: 0.75,
+              lineHeight: 1.5
+            }}
+          >
+            {description}
+          </Typography>
+        </Box>
+
+        <Button
+          variant="text"
+          sx={{
+            alignSelf: 'flex-start',
+            px: 0
+          }}
+        >
+          {action} →
+        </Button>
+      </Stack>
+    </Paper>
+  );
+}
+
+/* ========================================================================== */
+/* STAT CARD                                                                  */
+/* ========================================================================== */
+
+function StatCard({
+  title,
+  value,
+  change,
+  positive = false,
+  icon
+}: {
+  title: string;
+  value: string;
+  change: string;
+  positive?: boolean;
+  icon: React.ReactNode;
+}) {
+  return (
+    <Paper
+      variant="outlined"
+      sx={{
+        p: 2.5,
+        borderRadius: 2
+      }}
+    >
+      <Stack spacing={2}>
+        <Stack
+          direction="row"
+          sx={{
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}
+        >
+          <Typography variant="small" color="text.secondary">
+            {title}
+          </Typography>
+
+          <Box
+            sx={{
+              width: 36,
+              height: 36,
+              borderRadius: 1.5,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: 'primary.light',
+              color: 'primary.main'
+            }}
+          >
+            {icon}
+          </Box>
+        </Stack>
+
+        <Typography
+          variant="h4"
+          sx={{
+            fontWeight: 700
+          }}
+        >
+          {value}
+        </Typography>
+
+        <Typography
+          variant="small"
+          sx={{
+            color: positive ? 'success.main' : 'warning.main'
+          }}
+        >
+          {change} from last month
+        </Typography>
+      </Stack>
+    </Paper>
+  );
 }
