@@ -1,6 +1,15 @@
 import { createTheme, type PaletteMode } from '@mui/material/styles';
-
+import dynamic from 'next/dynamic';
+import localFont from 'next/font/local';
 import type { CSSProperties } from 'react';
+
+const inconsolata = localFont({
+  src: '../assets/fonts/Audiowide/Inconsolata/Inconsolata-VariableFont_wdth,wght.ttf',
+  variable: '--font-incon-mono',
+  weight: '100 900'
+});
+
+const Numeric = inconsolata.style.fontFamily;
 
 /* ========================================================================== */
 /* TYPES                                                                      */
@@ -103,6 +112,19 @@ declare module '@mui/material/Typography' {
 /* ========================================================================== */
 /* BREAKPOINTS                                                                */
 /* ========================================================================== */
+
+declare module '@mui/system' {
+  interface BreakpointOverrides {
+    xs: true;
+    sm: true;
+    md: true;
+    lg: true;
+    xl: true;
+    xxl: true;
+    xxxl: true;
+    xxxxl: true;
+  }
+}
 
 const BREAKPOINTS = {
   xs: 0,
@@ -376,76 +398,76 @@ function oklchToHex(L: number, C: number, H: number): string {
 /* -------------------------------------------------------------------------- */
 
 const DARK_RELATIONSHIPS = [
-  // 1
+  // 1 — App background
   {
-    lightness: 0.178,
-    chroma: 0.127
+    lightness: 0.12,
+    chroma: 0.16
   },
 
-  // 2
+  // 2 — Subtle background
   {
-    lightness: 0.207,
-    chroma: 0.159
+    lightness: 0.15,
+    chroma: 0.19
   },
 
-  // 3
+  // 3 — UI background
   {
-    lightness: 0.272,
-    chroma: 0.37
+    lightness: 0.19,
+    chroma: 0.28
   },
 
-  // 4
+  // 4 — Hovered UI
   {
-    lightness: 0.317,
-    chroma: 0.507
+    lightness: 0.23,
+    chroma: 0.34
   },
 
-  // 5
+  // 5 — Selected / active
   {
-    lightness: 0.361,
-    chroma: 0.56
+    lightness: 0.27,
+    chroma: 0.4
   },
 
-  // 6
+  // 6 — Subtle border
   {
-    lightness: 0.402,
-    chroma: 0.581
+    lightness: 0.31,
+    chroma: 0.42
   },
 
-  // 7
+  // 7 — Default border
   {
-    lightness: 0.451,
-    chroma: 0.631
+    lightness: 0.36,
+    chroma: 0.46
   },
 
-  // 8
+  // 8 — Strong border
   {
-    lightness: 0.504,
-    chroma: 0.728
+    lightness: 0.42,
+    chroma: 0.52
   },
 
-  // 9
+  // 9 — Solid
   {
-    lightness: 0.543,
-    chroma: 1
-  },
-
-  // 10
-  {
-    lightness: 0.497,
+    lightness: 0.55,
     chroma: 0.72
   },
 
-  // 11
+  // 10 — Solid hover
   {
-    lightness: 0.777,
-    chroma: 0.663
+    lightness: 0.61,
+    chroma: 0.68
   },
 
-  // 12
+  // 11 — Low contrast text
   {
-    lightness: 0.913,
-    chroma: 0.221
+    lightness: 0.75,
+    chroma: 0.42
+  },
+
+  // 12 — High contrast text
+  {
+    lightness: 0.94,
+    chroma: 0.1
   }
 ];
 
@@ -659,23 +681,23 @@ export const createBackgroundScale = (
 
   if (mode === 'dark') {
     return {
-      1: oklchToHex(0.12, base.C * 0.08, hue),
-      2: oklchToHex(0.16, base.C * 0.1, hue),
-      3: oklchToHex(0.2, base.C * 0.12, hue),
-      4: oklchToHex(0.24, base.C * 0.14, hue),
-      5: oklchToHex(0.28, base.C * 0.16, hue),
-      6: oklchToHex(0.33, base.C * 0.18, hue),
-      7: oklchToHex(0.39, base.C * 0.2, hue),
-      8: oklchToHex(0.46, base.C * 0.22, hue),
-      9: oklchToHex(0.53, base.C * 0.24, hue),
-      10: oklchToHex(0.6, base.C * 0.22, hue),
-      11: oklchToHex(0.78, base.C * 0.18, hue),
-      12: oklchToHex(0.93, base.C * 0.12, hue),
+      1: oklchToHex(0.105, base.C * 0.025, hue),
+      2: oklchToHex(0.135, base.C * 0.035, hue),
+      3: oklchToHex(0.17, base.C * 0.045, hue),
+      4: oklchToHex(0.205, base.C * 0.055, hue),
+      5: oklchToHex(0.24, base.C * 0.065, hue),
+      6: oklchToHex(0.29, base.C * 0.075, hue),
+      7: oklchToHex(0.35, base.C * 0.085, hue),
+      8: oklchToHex(0.42, base.C * 0.095, hue),
+      9: oklchToHex(0.5, base.C * 0.11, hue),
+      10: oklchToHex(0.57, base.C * 0.1, hue),
+      11: oklchToHex(0.76, base.C * 0.08, hue),
+      12: oklchToHex(0.93, base.C * 0.05, hue),
 
-      surface: oklchToHex(0.2, base.C * 0.12, hue),
-      indicator: oklchToHex(0.53, base.C * 0.24, hue),
-      track: oklchToHex(0.33, base.C * 0.18, hue),
-      contrast: oklchToHex(0.93, base.C * 0.12, hue)
+      surface: oklchToHex(0.17, base.C * 0.045, hue),
+      indicator: oklchToHex(0.5, base.C * 0.11, hue),
+      track: oklchToHex(0.29, base.C * 0.075, hue),
+      contrast: oklchToHex(0.93, base.C * 0.05, hue)
     };
   }
 
@@ -769,25 +791,25 @@ export const createGrayScale = (
 export const THEME_SETS = {
   blue: {
     color: '#4967C9',
-    gray: '#707070',
+    gray: '#1e1e1e',
     background: '#0A0A0A'
   },
 
   purple: {
     color: '#8B5CF6',
-    gray: '#707070',
+    gray: '#1e1e1e',
     background: '#100B1A'
   },
 
   gold: {
     color: '#F2C94C',
-    gray: '#707070',
+    gray: '#1e1e1e',
     background: '#171205'
   },
 
   green: {
     color: '#30A46C',
-    gray: '#707070',
+    gray: '#1e1e1e',
     background: '#07140D'
   }
 } as const;
@@ -836,9 +858,9 @@ export const getThemeFromSet = (
   /* Background                                                               */
   /* ------------------------------------------------------------------------ */
 
-  const backgroundDefault = backgroundScale[1];
+  const backgroundDefault = grayScale[2];
 
-  const backgroundPaper = backgroundScale[2];
+  const backgroundPaper = grayScale[4];
 
   /* ------------------------------------------------------------------------ */
   /* Create MUI theme                                                         */
@@ -867,13 +889,13 @@ export const getThemeFromSet = (
       },
 
       secondary: {
-        main: colorScale[9],
+        main: grayScale[9],
 
-        light: colorScale[10],
+        light: grayScale[10],
 
-        dark: colorScale[8],
+        dark: grayScale[8],
 
-        contrastText: colorScale.contrast
+        contrastText: grayScale.contrast
       },
 
       error: {
@@ -915,6 +937,7 @@ export const getThemeFromSet = (
 
     typography: {
       fontFamily: [
+        Numeric,
         'Inter',
         'Roboto',
         'Helvetica Neue',
@@ -1261,7 +1284,7 @@ export const getThemeFromSet = (
       MuiCard: {
         styleOverrides: {
           root: {
-            backgroundColor: backgroundScale[2],
+            backgroundColor: grayScale[4],
             border: `1px solid ${grayScale[6]}`,
             boxShadow: 'none'
           }

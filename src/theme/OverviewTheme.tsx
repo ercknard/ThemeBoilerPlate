@@ -42,7 +42,9 @@ export default function OverViewTheme() {
               CryptechServices Theme System
             </Typography>
 
-            <Typography variant="display">Theme BoilerPlate</Typography>
+            <Typography variant="title" color="text.secondary">
+              Theme BoilerPlate
+            </Typography>
 
             <Typography
               variant="lead"
