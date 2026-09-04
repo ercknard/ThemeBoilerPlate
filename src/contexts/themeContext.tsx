@@ -11,11 +11,19 @@ import type { PaletteMode } from '@mui/material';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
-import { getTheme } from '@/theme/theme';
+import { getThemeFromSet, THEME_SETS, type ThemeSetName } from '@/theme/theme';
+
+/* ========================================================================== */
+/* TYPES                                                                      */
+/* ========================================================================== */
 
 type ThemeContextType = {
   mode: PaletteMode;
   isDarkMode: boolean;
+
+  themeSet: ThemeSetName;
+  setThemeSet: (themeSet: ThemeSetName) => void;
+
   toggleTheme: () => void;
   setMode: (mode: PaletteMode) => void;
 };
@@ -26,30 +34,71 @@ type ThemeProviderProps = {
   children: ReactNode;
 };
 
+/* ========================================================================== */
+/* STORAGE                                                                    */
+/* ========================================================================== */
+
 const STORAGE_KEY = 'theme-mode';
+const THEME_SET_STORAGE_KEY = 'theme-set';
+
+/* ========================================================================== */
+/* PROVIDER                                                                   */
+/* ========================================================================== */
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
   const [mode, setModeState] = useState<PaletteMode>('light');
 
+  const [themeSet, setThemeSetState] = useState<ThemeSetName>('blue');
+
+  /* ------------------------------------------------------------------------ */
+  /* Load saved settings                                                      */
+  /* ------------------------------------------------------------------------ */
+
   useEffect(() => {
+    /* ---------------------------------------------------------------------- */
+    /* Color mode                                                             */
+    /* ---------------------------------------------------------------------- */
+
     const savedMode = localStorage.getItem(STORAGE_KEY);
 
     if (savedMode === 'light' || savedMode === 'dark') {
       setModeState(savedMode);
-      return;
+    } else {
+      const systemMode = window.matchMedia('(prefers-color-scheme: dark)')
+        .matches
+        ? 'dark'
+        : 'light';
+
+      setModeState(systemMode);
     }
 
-    const systemMode = window.matchMedia('(prefers-color-scheme: dark)').matches
-      ? 'dark'
-      : 'light';
+    /* ---------------------------------------------------------------------- */
+    /* Theme set                                                              */
+    /* ---------------------------------------------------------------------- */
 
-    setModeState(systemMode);
+    const savedThemeSet = localStorage.getItem(THEME_SET_STORAGE_KEY);
+
+    if (
+      savedThemeSet &&
+      Object.prototype.hasOwnProperty.call(THEME_SETS, savedThemeSet)
+    ) {
+      setThemeSetState(savedThemeSet as ThemeSetName);
+    }
   }, []);
+
+  /* ------------------------------------------------------------------------ */
+  /* Set mode                                                                 */
+  /* ------------------------------------------------------------------------ */
 
   const setMode = useCallback((newMode: PaletteMode) => {
     setModeState(newMode);
+
     localStorage.setItem(STORAGE_KEY, newMode);
   }, []);
+
+  /* ------------------------------------------------------------------------ */
+  /* Toggle mode                                                              */
+  /* ------------------------------------------------------------------------ */
 
   const toggleTheme = useCallback(() => {
     setModeState((currentMode) => {
@@ -61,17 +110,46 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     });
   }, []);
 
-  const theme = useMemo(() => getTheme(mode), [mode]);
+  /* ------------------------------------------------------------------------ */
+  /* Set color theme                                                          */
+  /* ------------------------------------------------------------------------ */
+
+  const setThemeSet = useCallback((newThemeSet: ThemeSetName) => {
+    setThemeSetState(newThemeSet);
+
+    localStorage.setItem(THEME_SET_STORAGE_KEY, newThemeSet);
+  }, []);
+
+  /* ------------------------------------------------------------------------ */
+  /* Generate MUI theme                                                       */
+  /* ------------------------------------------------------------------------ */
+
+  const theme = useMemo(
+    () => getThemeFromSet(mode, themeSet),
+    [mode, themeSet]
+  );
+
+  /* ------------------------------------------------------------------------ */
+  /* Context value                                                            */
+  /* ------------------------------------------------------------------------ */
 
   const contextValue = useMemo(
     () => ({
       mode,
       isDarkMode: mode === 'dark',
+
+      themeSet,
+      setThemeSet,
+
       toggleTheme,
       setMode
     }),
-    [mode, toggleTheme, setMode]
+    [mode, themeSet, setThemeSet, toggleTheme, setMode]
   );
+
+  /* ------------------------------------------------------------------------ */
+  /* Provider                                                                 */
+  /* ------------------------------------------------------------------------ */
 
   return (
     <ThemeContext.Provider value={contextValue}>
@@ -82,6 +160,10 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     </ThemeContext.Provider>
   );
 }
+
+/* ========================================================================== */
+/* HOOK                                                                       */
+/* ========================================================================== */
 
 export function useThemeContext(): ThemeContextType {
   const context = useContext(ThemeContext);
