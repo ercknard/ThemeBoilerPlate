@@ -4,10 +4,25 @@ import { Box, Button, Stack, Typography } from '@mui/material';
 
 import GitHubIcon from '@mui/icons-material/GitHub';
 import PaletteIcon from '@mui/icons-material/Palette';
+import { useTheme } from '@mui/material/styles';
+import { useThemeContext } from '@/contexts/themeContext';
+import ThemeToggle from '@/theme/ThemeToggle';
 
 const GITHUB_URL = process.env.NEXT_PUBLIC_GITHUB_URL;
 
 export default function Home() {
+  const theme = useTheme();
+
+  const THEME_ICONS = {
+    blue: '/static/images/logo-blue.png',
+    purple: '/static/images/logo-purple.png',
+    gold: '/static/images/logo-gold.png',
+    green: '/static/images/logo-green.png'
+  } as const;
+
+  const { themeSet } = useThemeContext();
+  const themeIcon = THEME_ICONS[themeSet];
+
   return (
     <>
       <Head>
@@ -21,7 +36,9 @@ export default function Home() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          px: 2
+          px: 2,
+
+          background: ` radial-gradient( circle at top, ${theme.colorScale[3]}, ${theme.colorScale[7]} ), ${theme.backgroundScale[1]} `
         }}
       >
         <Stack
@@ -40,22 +57,21 @@ export default function Home() {
             }}
           >
             <Image
-              src="/static/images/favicon.png"
-              alt="BoilerPlate"
+              src={themeIcon}
+              alt={`${themeSet} theme`}
               fill
               priority
-              style={{
-                objectFit: 'contain'
-              }}
+              style={{ objectFit: 'contain' }}
             />
           </Box>
 
-          <Stack spacing={2} sx={{ mb: 3 }}>
+          <Stack sx={{ mb: 3 }}>
             {/* Title */}
             <Typography variant="overlineCustom" color="primary">
               CryptechServices Theme System
             </Typography>
             <Typography variant="h3">THEME BOILERPLATE</Typography>
+            <ThemeToggle />
           </Stack>
 
           {/* Links */}
