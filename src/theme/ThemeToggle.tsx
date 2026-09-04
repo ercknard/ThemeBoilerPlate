@@ -1,9 +1,13 @@
+'use client';
+
 import {
   Box,
   FormControl,
   IconButton,
   MenuItem,
   Select,
+  TextField,
+  Tooltip,
   type SelectChangeEvent
 } from '@mui/material';
 
@@ -14,10 +18,27 @@ import { useThemeContext } from '@/contexts/themeContext';
 import { THEME_SETS, type ThemeSetName } from '@/theme/theme';
 
 export default function ThemeToggle() {
-  const { isDarkMode, toggleTheme, themeSet, setThemeSet } = useThemeContext();
+  const {
+    isDarkMode,
+    toggleTheme,
+    themeSet,
+    setThemeSet,
+    customColors,
+    setCustomColors
+  } = useThemeContext();
 
   const handleThemeSetChange = (event: SelectChangeEvent) => {
     setThemeSet(event.target.value as ThemeSetName);
+  };
+
+  const handleColorChange = (
+    key: 'color' | 'gray' | 'background',
+    value: string
+  ) => {
+    setCustomColors({
+      ...customColors,
+      [key]: value
+    });
   };
 
   return (
@@ -28,7 +49,7 @@ export default function ThemeToggle() {
         gap: 1
       }}
     >
-      {/* COLOR SET SWITCHER */}
+      {/* PRESET THEME */}
       <FormControl size="small">
         <Select
           value={themeSet}
@@ -57,6 +78,65 @@ export default function ThemeToggle() {
           ))}
         </Select>
       </FormControl>
+
+      {/* CUSTOM COLOR */}
+      <Tooltip title="Theme color">
+        <TextField
+          type="color"
+          size="small"
+          value={customColors.color}
+          onChange={(event) => handleColorChange('color', event.target.value)}
+          sx={{
+            width: 44,
+
+            '& input': {
+              cursor: 'pointer',
+              height: 40,
+              padding: 0.5
+            }
+          }}
+        />
+      </Tooltip>
+
+      {/* CUSTOM GRAY */}
+      <Tooltip title="Gray color">
+        <TextField
+          type="color"
+          size="small"
+          value={customColors.gray}
+          onChange={(event) => handleColorChange('gray', event.target.value)}
+          sx={{
+            width: 44,
+
+            '& input': {
+              cursor: 'pointer',
+              height: 40,
+              padding: 0.5
+            }
+          }}
+        />
+      </Tooltip>
+
+      {/* CUSTOM BACKGROUND */}
+      <Tooltip title="Background color">
+        <TextField
+          type="color"
+          size="small"
+          value={customColors.background}
+          onChange={(event) =>
+            handleColorChange('background', event.target.value)
+          }
+          sx={{
+            width: 44,
+
+            '& input': {
+              cursor: 'pointer',
+              height: 40,
+              padding: 0.5
+            }
+          }}
+        />
+      </Tooltip>
 
       {/* LIGHT / DARK */}
       <IconButton onClick={toggleTheme}>

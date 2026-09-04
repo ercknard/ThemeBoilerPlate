@@ -1,5 +1,3 @@
-// src/theme/theme.ts
-
 import { createTheme, type PaletteMode } from '@mui/material/styles';
 
 import type { CSSProperties } from 'react';
@@ -796,11 +794,35 @@ export const THEME_SETS = {
 
 export type ThemeSetName = keyof typeof THEME_SETS;
 
+/* ========================================================================== */
+/* CUSTOM THEME COLORS                                                        */
+/* ========================================================================== */
+
+export type CustomThemeColors = {
+  color: string;
+  gray: string;
+  background: string;
+};
+
+/* ========================================================================== */
+/* CREATE THEME                                                               */
+/* ========================================================================== */
+
 export const getThemeFromSet = (
   mode: PaletteMode,
-  set: ThemeSetName = 'blue'
+  set: ThemeSetName = 'blue',
+  customColors?: CustomThemeColors
 ) => {
-  const colors = THEME_SETS[set] ?? THEME_SETS.blue;
+  /*
+   * Use custom colors when supplied.
+   *
+   * Otherwise use the selected preset.
+   */
+  const colors = customColors ?? THEME_SETS[set] ?? THEME_SETS.blue;
+
+  /* ------------------------------------------------------------------------ */
+  /* Generate scales                                                          */
+  /* ------------------------------------------------------------------------ */
 
   const colorScale = createRadixScale(colors.color, mode);
 
@@ -844,20 +866,6 @@ export const getThemeFromSet = (
         contrastText: colorScale.contrast
       },
 
-      /*
-       * Secondary intentionally uses the SAME custom scale.
-       *
-       * You said you don't want separate:
-       *
-       * primary
-       * secondary
-       * success
-       * warning
-       * error
-       * info
-       *
-       * color systems.
-       */
       secondary: {
         main: colorScale[9],
 
@@ -892,7 +900,9 @@ export const getThemeFromSet = (
 
       text: {
         primary: grayScale[12],
+
         secondary: grayScale[11],
+
         disabled: grayScale[9]
       },
 
