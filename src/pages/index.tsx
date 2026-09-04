@@ -10,7 +10,12 @@ import {
   Typography
 } from '@mui/material';
 
+import GitHubIcon from '@mui/icons-material/GitHub';
+import PaletteIcon from '@mui/icons-material/Palette';
+
 import ThemeToggle from '@/theme/ThemeToggle';
+
+const GITHUB_URL = 'https://github.com/ercknard/ThemeBoilerPlate';
 
 export default function Home() {
   return (
@@ -63,6 +68,37 @@ export default function Home() {
               A dynamic theme powered by custom color, gray, and background
               scales.
             </Typography>
+
+            {/* Navigation links */}
+            <Stack
+              direction="row"
+              spacing={1.5}
+              sx={{
+                pt: 2,
+                flexWrap: 'wrap'
+              }}
+              useFlexGap
+            >
+              <Button
+                component="a"
+                href="/theme"
+                variant="contained"
+                startIcon={<PaletteIcon />}
+              >
+                Theme
+              </Button>
+
+              <Button
+                component="a"
+                href={GITHUB_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="outlined"
+                startIcon={<GitHubIcon />}
+              >
+                GitHub
+              </Button>
+            </Stack>
           </Stack>
 
           <Divider sx={{ mb: 5 }} />
@@ -179,20 +215,60 @@ export default function Home() {
             </Card>
           </Box>
 
+          {/* Footer */}
           <Box sx={{ mt: '3rem' }}>
             <Divider />
 
-            <Box sx={{ mt: '3rem' }}>
-              <Typography
-                variant="small"
+            <Box
+              sx={{
+                mt: '3rem',
+                display: 'flex',
+                justifyContent: 'center'
+              }}
+            >
+              <Stack
+                direction="row"
+                spacing={2}
                 sx={{
-                  color: 'text.secondary',
-                  textAlign: 'center',
-                  display: 'block'
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexWrap: 'wrap'
                 }}
+                useFlexGap
               >
-                CryptechServices Design System
-              </Typography>
+                <Typography
+                  variant="small"
+                  sx={{
+                    color: 'text.secondary'
+                  }}
+                >
+                  CryptechServices Design System
+                </Typography>
+
+                <Typography variant="small" color="text.disabled">
+                  •
+                </Typography>
+
+                <Button
+                  component="a"
+                  href="/theme"
+                  size="small"
+                  startIcon={<PaletteIcon />}
+                >
+                  Theme
+                </Button>
+
+                <Button
+                  component="a"
+                  href={GITHUB_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  size="small"
+                  startIcon={<GitHubIcon />}
+                >
+                  GitHub
+                </Button>
+              </Stack>
             </Box>
           </Box>
         </Box>
