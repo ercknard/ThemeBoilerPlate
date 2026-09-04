@@ -276,7 +276,7 @@ export default function Home() {
 
           <Stack
             direction={{
-              xs: 'column',
+              xs: 'row',
               sm: 'row'
             }}
             spacing={2}
