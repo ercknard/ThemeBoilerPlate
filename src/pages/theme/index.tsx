@@ -992,7 +992,7 @@ const colorScale = theme.colorScale;
                                 p: 2,
                                 borderRadius: 2,
                                 border: `1px solid ${secondaryScale[6]}`,
-                                backgroundColor: backgroundScale[5]
+                                backgroundColor: theme.secondaryScale[5]
                               }}
                             >
                               <Box
@@ -2622,7 +2622,8 @@ function ColorScaleSection({
 
       <Box
         sx={{
-          backgroundColor: theme.secondaryScale[3],
+          p: 2,
+          pt: 0,
           display: 'grid',
           gridTemplateColumns: {
             xs: 'repeat(3, 1fr)',
@@ -2684,6 +2685,7 @@ function ColorScaleSection({
 
           <Box
             sx={{
+              p: 2,
               backgroundColor: theme.secondaryScale[3],
               display: 'grid',
               gridTemplateColumns: {
@@ -2847,8 +2849,10 @@ function ColorScaleItem({
     <Box
       sx={{
         minWidth: 0,
-        borderRight: `1px solid ${theme.grayScale[6]}`,
-        borderBottom: `1px solid ${theme.grayScale[6]}`
+        margin: 0.5,
+        border: `2px solid ${theme.secondaryScale[6]}`,
+        borderRadius: 2,
+        backgroundColor: theme.secondaryScale[5]
       }}
     >
       {/* ================================================================== */}
@@ -2859,9 +2863,9 @@ function ColorScaleItem({
         sx={{
           height: large
             ? {
-                xs: 130,
-                sm: 160,
-                md: 190
+                xs: 120,
+                sm: 120,
+                md: 120
               }
             : {
                 xs: 80,
@@ -2872,6 +2876,8 @@ function ColorScaleItem({
           display: 'flex',
           alignItems: 'flex-end',
           justifyContent: 'space-between',
+          borderRadius: 2,
+          border: `2px solid ${theme.secondaryScale[6]}`,
           p: {
             xs: 1.5,
             sm: 2
