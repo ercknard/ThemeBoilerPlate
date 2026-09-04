@@ -858,8 +858,7 @@ export const getThemeFromSet = (
   /* Background                                                               */
   /* ------------------------------------------------------------------------ */
 
-  const backgroundDefault = grayScale[2];
-
+  const backgroundDefault = backgroundScale[3];
   const backgroundPaper = grayScale[4];
 
   /* ------------------------------------------------------------------------ */
