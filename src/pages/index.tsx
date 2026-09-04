@@ -37,8 +37,8 @@ export default function Home() {
           alignItems: 'center',
           justifyContent: 'center',
           px: 2,
-
-          background: ` radial-gradient( circle at top, ${theme.colorScale[3]}, ${theme.colorScale[7]} ), ${theme.backgroundScale[1]} `
+          background: ` radial-gradient( circle at top, ${theme.colorScale[3]}, ${theme.colorScale[7]} ), ${theme.backgroundScale[1]} `,
+          transition: 'background 0.8s ease-in-out'
         }}
       >
         <Stack
@@ -65,7 +65,7 @@ export default function Home() {
             />
           </Box>
 
-          <Stack sx={{ mb: 3 }}>
+          <Stack spacing={1} sx={{ mb: 3 }}>
             {/* Title */}
             <Typography variant="overlineCustom" color="primary">
               CryptechServices Theme System

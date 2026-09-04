@@ -54,7 +54,7 @@ const THEME_SET_STORAGE_KEY = 'theme-set';
 const CUSTOM_COLORS_STORAGE_KEY = 'theme-custom-colors';
 
 /* ========================================================================== */
-/* DEFAULT COLORS                                                             */
+/* DEFAULTS                                                                   */
 /* ========================================================================== */
 
 const DEFAULT_THEME_SET: ThemeSetName = 'blue';
@@ -66,7 +66,7 @@ const DEFAULT_CUSTOM_COLORS: CustomColors = {
 };
 
 /* ========================================================================== */
-/* COLOR VALIDATION                                                           */
+/* VALIDATION                                                                 */
 /* ========================================================================== */
 
 function isValidHexColor(value: unknown): value is string {
@@ -92,6 +92,11 @@ function isValidCustomColors(value: unknown): value is CustomColors {
 /* ========================================================================== */
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
+  /*
+   * Keep the initial state identical between server and client.
+   *
+   * localStorage is loaded only after hydration.
+   */
   const [mode, setModeState] = useState<PaletteMode>('light');
 
   const [themeSet, setThemeSetState] =
@@ -100,6 +105,12 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   const [customColors, setCustomColorsState] = useState<CustomColors>(
     DEFAULT_CUSTOM_COLORS
   );
+
+  /*
+   * Prevent the application from rendering with the default theme
+   * before saved settings have been restored.
+   */
+  const [initialized, setInitialized] = useState(false);
 
   /* ------------------------------------------------------------------------ */
   /* Load saved settings                                                      */
@@ -133,9 +144,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       savedThemeSet &&
       Object.prototype.hasOwnProperty.call(THEME_SETS, savedThemeSet)
     ) {
-      const savedSet = savedThemeSet as ThemeSetName;
-
-      setThemeSetState(savedSet);
+      setThemeSetState(savedThemeSet as ThemeSetName);
     }
 
     /* ---------------------------------------------------------------------- */
@@ -155,6 +164,11 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
         // Ignore invalid saved color data.
       }
     }
+
+    /*
+     * Settings are now restored.
+     */
+    setInitialized(true);
   }, []);
 
   /* ------------------------------------------------------------------------ */
@@ -190,22 +204,6 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
 
     localStorage.setItem(THEME_SET_STORAGE_KEY, newThemeSet);
 
-    /*
-     * When selecting a preset, restore that preset's colors.
-     *
-     * Example:
-     *
-     * Blue
-     *   color      → #4967C9
-     *   gray       → #707070
-     *   background → #0A0A0A
-     *
-     * Purple
-     *   color      → #8B5CF6
-     *   gray       → #707070
-     *   background → #100B1A
-     */
-
     const preset = THEME_SETS[newThemeSet];
 
     const colors: CustomColors = {
@@ -224,10 +222,6 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   /* ------------------------------------------------------------------------ */
 
   const setCustomColors = useCallback((colors: CustomColors) => {
-    /*
-     * Ignore invalid colors.
-     */
-
     if (!isValidCustomColors(colors)) {
       return;
     }
@@ -285,6 +279,20 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       setMode
     ]
   );
+
+  /* ------------------------------------------------------------------------ */
+  /* Prevent default-theme flash                                              */
+  /* ------------------------------------------------------------------------ */
+
+  if (!initialized) {
+    return (
+      <ThemeContext.Provider value={contextValue}>
+        <MuiThemeProvider theme={theme}>
+          <CssBaseline />
+        </MuiThemeProvider>
+      </ThemeContext.Provider>
+    );
+  }
 
   /* ------------------------------------------------------------------------ */
   /* Provider                                                                 */
