@@ -27,7 +27,6 @@ export default function OverViewTheme() {
 
       <Box
         sx={{
-          minHeight: '100vh',
           bgcolor: 'background.default',
           color: 'text.primary'
         }}
