@@ -1,13 +1,10 @@
 import Head from 'next/head';
 import {
-  Box,
   Button,
   Chip,
   Container,
   Divider,
   Paper,
-  Stack,
-  Typography,
   Alert,
   Badge,
   CircularProgress,
@@ -30,7 +27,12 @@ import {
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useState } from 'react';
+import { alpha } from '@mui/material/styles';
+
 import OverviewTheme from '@/theme/OverviewTheme';
+import ThemeToggle from '@/theme/ThemeToggle';
+import { semanticColors } from '@/theme/theme';
+
 import GitHubIcon from '@mui/icons-material/GitHub';
 import PaletteIcon from '@mui/icons-material/Palette';
 
@@ -44,14 +46,30 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import PeopleIcon from '@mui/icons-material/People';
 import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 import Checkbox from '@mui/material/Checkbox';
 
-import ThemeToggle from '@/theme/ThemeToggle';
-import { semanticColors } from '@/theme/theme';
+import { Box, Stack, Typography } from '@mui/material';
+
+import {
+  AppDivider,
+  AppButton,
+  AppChip,
+  AppPaper,
+  AppAlert,
+  AppBadge,
+  AppCheckbox,
+  AppCircularProgress,
+  AppIconButton,
+  AppLinearProgress,
+  AppSwitch,
+  AppTab,
+  AppTabs,
+  AppTooltip,
+  AppCard
+} from '@/theme/CustomComponents';
 
 /* ========================================================================== */
 /* TYPES                                                                      */
@@ -268,8 +286,8 @@ export default function TypographyShowcase() {
   const [activeTab, setActiveTab] = useState<ShowcaseTab>('overview');
 
   const colorScale = theme.colorScale as ColorScale;
-  const grayScale = theme.grayScale as ColorScale;
   const secondaryScale = theme.secondaryScale as ColorScale;
+  const grayScale = theme.grayScale as ColorScale;
   const backgroundScale = theme.backgroundScale as ColorScale;
 
   return (
@@ -284,7 +302,7 @@ export default function TypographyShowcase() {
       </Head>
 
       {/* ================================================================== */}
-      {/* THEME TOGGLE                                                        */}
+      {/* THEME TOGGLE                                                      */}
       {/* ================================================================== */}
 
       <Box
@@ -299,13 +317,13 @@ export default function TypographyShowcase() {
       </Box>
 
       {/* ================================================================== */}
-      {/* PAGE                                                                */}
+      {/* PAGE                                                               */}
       {/* ================================================================== */}
 
       <Box
         sx={{
           minHeight: '100vh',
-          bgcolor: 'background.default',
+          background: `${alpha(theme.colorScale[3], 0.65)}`,
           color: 'text.primary',
           py: {
             xs: 4,
@@ -315,13 +333,44 @@ export default function TypographyShowcase() {
           }
         }}
       >
-        <Container maxWidth="xl">
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            zIndex: 0,
+            minHeight: '100vh',
+            background: `
+  radial-gradient(
+    circle at top,
+    ${alpha(theme.backgroundScale[6], 0.5)},
+    ${alpha(theme.colorScale[3], 1)} 55%, ${alpha(theme.colorScale[3], 0)} 75%
+  )
+`,
+            color: 'text.primary',
+            py: {
+              xs: 4,
+              sm: 6,
+              md: 8,
+              lg: 10
+            }
+          }}
+        />
+
+        <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1 }}>
           <Stack spacing={{ xs: 5, md: 8 }}>
             {/* ============================================================ */}
             {/* HEADER                                                        */}
             {/* ============================================================ */}
+
             <Stack>
-              <Typography variant="overlineCustom" color="primary">
+              <Typography
+                variant="overlineCustom"
+                sx={{
+                  color: colorScale[9]
+                }}
+              >
                 Design System
               </Typography>
 
@@ -336,8 +385,8 @@ export default function TypographyShowcase() {
 
               <Typography
                 variant="lead"
-                color="secondary"
                 sx={{
+                  color: secondaryScale[11],
                   maxWidth: 800,
                   mt: 2
                 }}
@@ -347,9 +396,9 @@ export default function TypographyShowcase() {
                 throughout the application.
               </Typography>
 
-              {/* ============================================================ */}
-              {/* SECTION TABS                                                  */
-              /* ============================================================ */}
+              {/* ========================================================== */}
+              {/* SECTION TABS                                                */}
+              {/* ========================================================== */}
 
               <Box
                 sx={{
@@ -389,17 +438,25 @@ export default function TypographyShowcase() {
               </Box>
             </Stack>
 
+            {/* ============================================================ */}
+            {/* OVERVIEW                                                      */}
+            {/* ============================================================ */}
+
             {activeTab === 'overview' && (
               <Stack spacing={{ xs: 5, md: 8 }}>
                 <OverviewTheme />
               </Stack>
             )}
 
+            {/* ============================================================ */}
+            {/* TYPOGRAPHY                                                    */}
+            {/* ============================================================ */}
+
             {activeTab === 'typography' && (
               <Stack spacing={{ xs: 5, md: 8 }}>
-                {/* ============================================================ */}
-                {/* STANDARD TYPOGRAPHY                                           */}
-                {/* ============================================================ */}
+                {/* ======================================================== */}
+                {/* STANDARD TYPOGRAPHY                                       */}
+                {/* ======================================================== */}
 
                 <Box>
                   <Typography variant="title" gutterBottom>
@@ -408,8 +465,8 @@ export default function TypographyShowcase() {
 
                   <Typography
                     variant="body1"
-                    color="secondary"
                     sx={{
+                      color: secondaryScale[11],
                       mb: 4
                     }}
                   >
@@ -417,14 +474,15 @@ export default function TypographyShowcase() {
                     clamp sizing.
                   </Typography>
 
-                  <Paper
+                  <AppPaper
                     variant="outlined"
                     sx={{
                       p: {
                         xs: 2,
                         sm: 3,
                         md: 4
-                      }
+                      },
+                      borderColor: secondaryScale[6]
                     }}
                   >
                     <Stack spacing={3}>
@@ -440,7 +498,7 @@ export default function TypographyShowcase() {
 
                       <Typography variant="h6">Heading 6</Typography>
 
-                      <Divider />
+                      <AppDivider />
 
                       <Typography variant="subtitle1">
                         Subtitle 1 — Supporting text for headings and sections.
@@ -470,12 +528,12 @@ export default function TypographyShowcase() {
 
                       <Typography variant="overline">OVERLINE</Typography>
                     </Stack>
-                  </Paper>
+                  </AppPaper>
                 </Box>
 
-                {/* ============================================================ */}
-                {/* CUSTOM TYPOGRAPHY                                             */}
-                {/* ============================================================ */}
+                {/* ======================================================== */}
+                {/* CUSTOM TYPOGRAPHY                                         */}
+                {/* ======================================================== */}
 
                 <Box>
                   <Typography variant="title" gutterBottom>
@@ -484,8 +542,8 @@ export default function TypographyShowcase() {
 
                   <Typography
                     variant="body1"
-                    color="secondary"
                     sx={{
+                      color: secondaryScale[11],
                       mb: 4
                     }}
                   >
@@ -494,7 +552,7 @@ export default function TypographyShowcase() {
 
                   <Stack spacing={2}>
                     {customTypography.map((item) => (
-                      <Paper
+                      <AppPaper
                         key={item.variant}
                         variant="outlined"
                         sx={{
@@ -502,16 +560,17 @@ export default function TypographyShowcase() {
                             xs: 2,
                             sm: 3,
                             md: 4
-                          }
+                          },
+                          borderColor: secondaryScale[6]
                         }}
                       >
                         <Stack>
                           <Typography
                             variant="caption"
-                            color="secondary"
                             sx={{
                               display: 'block',
-                              mb: 1
+                              mb: 1,
+                              color: secondaryScale[11]
                             }}
                           >
                             {item.variant}
@@ -523,28 +582,25 @@ export default function TypographyShowcase() {
 
                           <Typography
                             variant="small"
-                            color="secondary"
                             sx={{
-                              mt: 1
+                              mt: 1,
+                              color: grayScale[11]
                             }}
                           >
                             {item.description}
                           </Typography>
                         </Stack>
-                      </Paper>
+                      </AppPaper>
                     ))}
                   </Stack>
                 </Box>
 
-                {/* ====================================================================== */}
-                {/* HOW TO ADD TYPOGRAPHY                                                  */}
-                {/* ====================================================================== */}
-
                 <TypographyUsageSection />
 
-                {/* ============================================================ */}
-                {/* RESPONSIVE SHOWCASE                                           */}
-                {/* ============================================================ */}
+                {/* ======================================================== */}
+                {/* RESPONSIVE SHOWCASE                                       */}
+                {/* ======================================================== */}
+
                 <Box>
                   <Typography variant="title" gutterBottom>
                     Responsive Typography
@@ -552,8 +608,8 @@ export default function TypographyShowcase() {
 
                   <Typography
                     variant="body1"
-                    color="secondary"
                     sx={{
+                      color: secondaryScale[11],
                       mb: 4
                     }}
                   >
@@ -561,7 +617,7 @@ export default function TypographyShowcase() {
                     between mobile and large desktop screens.
                   </Typography>
 
-                  <Paper
+                  <AppPaper
                     variant="outlined"
                     sx={{
                       p: {
@@ -570,7 +626,8 @@ export default function TypographyShowcase() {
                         md: 4,
                         lg: 6,
                         xl: 8
-                      }
+                      },
+                      borderColor: secondaryScale[6]
                     }}
                   >
                     <Stack>
@@ -578,19 +635,24 @@ export default function TypographyShowcase() {
                         Resize the window
                       </Typography>
 
-                      <Typography variant="lead" color="secondary">
+                      <Typography
+                        variant="lead"
+                        sx={{
+                          color: secondaryScale[11]
+                        }}
+                      >
                         The typography automatically scales between its minimum
                         and maximum sizes without requiring additional
                         breakpoints.
                       </Typography>
                     </Stack>
-                  </Paper>
+                  </AppPaper>
                 </Box>
               </Stack>
             )}
 
             {/* ============================================================ */}
-            {/* COLORS                                                         */}
+            {/* COLORS                                                        */}
             {/* ============================================================ */}
 
             {activeTab === 'colors' && (
@@ -602,61 +664,62 @@ export default function TypographyShowcase() {
 
                   <Typography
                     variant="body1"
-                    color="secondary"
                     sx={{
+                      color: secondaryScale[11],
                       mb: 4,
                       maxWidth: 850
                     }}
                   >
-                    Complete color system showing the primary accent, neutral
-                    gray, and application background scales. Each scale follows
-                    the same 12-step semantic structure.
+                    Complete color system showing the primary accent, secondary
+                    supporting scale, neutral gray scale, and application
+                    background scale. Together they follow a 60 / 30 / 10 visual
+                    hierarchy.
                   </Typography>
 
                   <Stack spacing={4}>
-                    {/* ====================================================== */}
-                    {/* PRIMARY COLOR SCALE                                     */}
-                    {/* ====================================================== */}
+                    {/* ==================================================== */}
+                    {/* PRIMARY                                              */}
+                    {/* ==================================================== */}
 
                     <ColorScaleSection
-                      title="Color Scale"
-                      description="Primary accent color used for interactive elements, buttons, links, states, and emphasis."
+                      title="Primary / Color Scale"
+                      description="The primary 10% accent used for important actions, active states, links, emphasis, and key interaction."
                       scale={colorScale}
                       colorName="Primary"
                       semanticGroups={colorGroups}
                     />
 
-                    {/* ====================================================== */}
-                    {/* Secondary COLOR SCALE                                     */}
-                    {/* ====================================================== */}
+                    {/* ==================================================== */}
+                    {/* SECONDARY                                            */}
+                    {/* ==================================================== */}
 
                     <ColorScaleSection
                       title="Secondary Scale"
-                      description="Secondary accent color used for interactive elements, buttons, links, states, and emphasis."
+                      description="The supporting 30% color used for panels, cards, connections, supporting controls, decorative structures, and secondary actions."
                       scale={secondaryScale}
                       colorName="Secondary"
                       semanticGroups={colorGroups}
                     />
 
-                    {/* ====================================================== */}
-                    {/* GRAY SCALE                                              */}
-                    {/* ====================================================== */}
+                    {/* ==================================================== */}
+                    {/* GRAY                                                 */}
+                    {/* ==================================================== */}
 
                     <ColorScaleSection
-                      title="Gray Scale"
-                      description="Neutral gray scale used for text, borders, dividers, disabled states, and supporting UI."
+                      title="Gray / Neutral Scale"
+                      description="Neutral utility color used for disabled states, neutral text, dividers, borders, inactive controls, and supporting UI."
                       scale={grayScale}
                       colorName="Gray"
                       semanticGroups={colorGroups}
                     />
 
-                    {/* ====================================================== */}
-                    {/* BACKGROUND SCALE                                        */}
-                    {/* ====================================================== */}
+                    {/* ==================================================== */}
+                    {/* BACKGROUND                                           */}
+                    {/* ==================================================== */}
 
                     <ColorScaleSection
                       title="Background Scale"
-                      description="Background-specific scale used for application surfaces, cards, dialogs, menus, and recessed areas."
+                      description="The dominant 60% visual field used for application backgrounds, surfaces, cards, dialogs, menus, and recessed areas."
                       scale={backgroundScale}
                       colorName="Background"
                       semanticGroups={colorGroups}
@@ -664,184 +727,129 @@ export default function TypographyShowcase() {
                   </Stack>
                 </Box>
 
-                {/* ============================================================ */}
-                {/* HOW TO ADD COLORS                                             */}
-                {/* ============================================================ */}
+                {/* ======================================================== */}
+                {/* HOW TO ADD COLORS                                        */}
+                {/* ======================================================== */}
+
                 <Box>
                   <Stack spacing={1} sx={{ mb: 4 }}>
-                    <Typography variant="overlineCustom" color="primary">
+                    <Typography
+                      variant="overlineCustom"
+                      sx={{
+                        color: colorScale[9]
+                      }}
+                    >
                       COLOR USAGE
                     </Typography>
+
                     <Typography variant="title" gutterBottom>
                       How to Add Colors
                     </Typography>
 
                     <Typography
                       variant="body1"
-                      color="secondary"
                       sx={{
+                        color: secondaryScale[11],
                         maxWidth: 850
                       }}
                     >
-                      Use the generated color scales directly in your
-                      components. The colors automatically change when the theme
-                      color, gray, background, or light/dark mode changes.
+                      Use the generated scales directly in your components.
+                      Primary handles emphasis, secondary provides supporting
+                      structure, background dominates the interface, and gray
+                      handles neutral states.
                     </Typography>
                   </Stack>
 
                   <Stack spacing={3}>
-                    {/* ======================================================== */}
-                    {/* PRIMARY COLOR                                             */}
-                    {/* ======================================================== */}
+                    {/* ==================================================== */}
+                    {/* PRIMARY                                              */}
+                    {/* ==================================================== */}
 
-                    <Paper
-                      variant="outlined"
-                      sx={{
-                        overflow: 'hidden'
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          p: {
-                            xs: 2,
-                            sm: 3,
-                            md: 4
-                          }
-                        }}
-                      >
-                        <Stack spacing={1}>
-                          <Typography variant="h5">Primary / Color</Typography>
-
-                          <Typography variant="small" color="secondary">
-                            Use <code>colorScale</code> for your primary accent
-                            color.
-                          </Typography>
-                        </Stack>
-                      </Box>
-
-                      <Divider />
-
-                      <Box
-                        sx={{
-                          p: {
-                            xs: 2,
-                            sm: 3,
-                            md: 4
-                          },
-                          backgroundColor: 'background.paper'
-                        }}
-                      >
-                        <Box
-                          component="pre"
-                          sx={{
-                            m: 0,
-                            p: 2.5,
-                            borderRadius: 2,
-                            overflowX: 'auto',
-                            backgroundColor: colorScale[2],
-                            color: colorScale[12],
-                            fontFamily: 'monospace',
-                            fontSize: '0.85rem',
-                            lineHeight: 1.7
-                          }}
-                        >
-                          {`import { useTheme } from '@mui/material/styles';
+                    <ColorUsageCard
+                      title="Primary / Color"
+                      description={
+                        <>
+                          Use <code>colorScale</code> for important actions,
+                          active states, links, and emphasis.
+                        </>
+                      }
+                      code={`import { useTheme } from '@mui/material/styles';
 
 const theme = useTheme();
 
 const colorScale = theme.colorScale;
 
-<Box
+<AppButton
   sx={{
-    backgroundColor: colorScale[3],
-    color: colorScale[12],
-    borderColor: colorScale[7]
+    backgroundColor: colorScale[9],
+    color: colorScale.contrast,
+    '&:hover': {
+      backgroundColor: colorScale[10]
+    }
   }}
 >
-  Primary content
-</Box>`}
-                        </Box>
+  Primary action
+</AppButton>`}
+                      background={colorScale[2]}
+                      textColor={colorScale[12]}
+                      scale={colorScale}
+                      steps={[3, 5, 7, 9, 10, 11, 12]}
+                    />
 
-                        <Stack
-                          direction="row"
-                          spacing={1}
-                          sx={{
-                            mt: 2,
-                            flexWrap: 'wrap'
-                          }}
-                          useFlexGap
-                        >
-                          {[3, 5, 7, 9, 10, 11, 12].map((step) => (
-                            <Chip
-                              key={step}
-                              label={`colorScale[${step}]`}
-                              sx={{
-                                backgroundColor: colorScale[step],
-                                color: isLightColor(colorScale[step])
-                                  ? '#000'
-                                  : '#fff'
-                              }}
-                            />
-                          ))}
-                        </Stack>
-                      </Box>
-                    </Paper>
+                    {/* ==================================================== */}
+                    {/* SECONDARY                                            */}
+                    {/* ==================================================== */}
 
-                    {/* ======================================================== */}
-                    {/* GRAY                                                      */}
-                    {/* ======================================================== */}
+                    <ColorUsageCard
+                      title="Secondary / Supporting"
+                      description={
+                        <>
+                          Use <code>secondaryScale</code> for supporting
+                          surfaces, cards, borders, connections, and secondary
+                          actions.
+                        </>
+                      }
+                      code={`const secondaryScale = theme.secondaryScale;
 
-                    <Paper
-                      variant="outlined"
-                      sx={{
-                        overflow: 'hidden'
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          p: {
-                            xs: 2,
-                            sm: 3,
-                            md: 4
-                          }
-                        }}
-                      >
-                        <Stack spacing={1}>
-                          <Typography variant="h5">Gray / Neutral</Typography>
+<Box
+  sx={{
+    backgroundColor: secondaryScale[3],
+    color: secondaryScale[11],
+    borderColor: secondaryScale[7]
+  }}
+>
+  Supporting content
+</Box>
 
-                          <Typography variant="small" color="secondary">
-                            Use <code>grayScale</code> for neutral surfaces,
-                            text, borders, and dividers.
-                          </Typography>
-                        </Stack>
-                      </Box>
+<AppButton
+  variant="outlined"
+  sx={{
+    borderColor: secondaryScale[7],
+    color: secondaryScale[11]
+  }}
+>
+  Secondary action
+</AppButton>`}
+                      background={secondaryScale[2]}
+                      textColor={secondaryScale[12]}
+                      scale={secondaryScale}
+                      steps={[3, 5, 7, 9, 10, 11, 12]}
+                    />
 
-                      <Divider />
+                    {/* ==================================================== */}
+                    {/* GRAY                                                 */}
+                    {/* ==================================================== */}
 
-                      <Box
-                        sx={{
-                          p: {
-                            xs: 2,
-                            sm: 3,
-                            md: 4
-                          }
-                        }}
-                      >
-                        <Box
-                          component="pre"
-                          sx={{
-                            m: 0,
-                            p: 2.5,
-                            borderRadius: 2,
-                            overflowX: 'auto',
-                            backgroundColor: grayScale[3],
-                            color: grayScale[12],
-                            fontFamily: 'monospace',
-                            fontSize: '0.85rem',
-                            lineHeight: 1.7
-                          }}
-                        >
-                          {`const grayScale = theme.grayScale;
+                    <ColorUsageCard
+                      title="Gray / Neutral"
+                      description={
+                        <>
+                          Use <code>grayScale</code> for neutral surfaces, text,
+                          borders, dividers, disabled states, and inactive
+                          controls.
+                        </>
+                      }
+                      code={`const grayScale = theme.grayScale;
 
 <Typography
   sx={{
@@ -851,148 +859,65 @@ const colorScale = theme.colorScale;
   Primary text
 </Typography>
 
-<Box
+<AppButton
+  disabled
   sx={{
-    color: grayScale[11],
-    borderColor: grayScale[6],
-    backgroundColor: grayScale[2]
+    color: grayScale[8],
+    backgroundColor: grayScale[3]
   }}
 >
-  Neutral content
-</Box>`}
-                        </Box>
+  Disabled
+</AppButton>`}
+                      background={grayScale[3]}
+                      textColor={grayScale[12]}
+                      scale={grayScale}
+                      steps={[2, 3, 6, 7, 9, 11, 12]}
+                    />
 
-                        <Stack
-                          direction="row"
-                          spacing={1}
-                          sx={{
-                            mt: 2,
-                            flexWrap: 'wrap'
-                          }}
-                          useFlexGap
-                        >
-                          {[2, 3, 6, 7, 9, 11, 12].map((step) => (
-                            <Chip
-                              key={step}
-                              label={`grayScale[${step}]`}
-                              sx={{
-                                backgroundColor: grayScale[step],
-                                color: isLightColor(grayScale[step])
-                                  ? '#000'
-                                  : '#fff'
-                              }}
-                            />
-                          ))}
-                        </Stack>
-                      </Box>
-                    </Paper>
+                    {/* ==================================================== */}
+                    {/* BACKGROUND                                           */}
+                    {/* ==================================================== */}
 
-                    {/* ======================================================== */}
-                    {/* BACKGROUND                                                 */}
-                    {/* ======================================================== */}
-
-                    <Paper
-                      variant="outlined"
-                      sx={{
-                        overflow: 'hidden'
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          p: {
-                            xs: 2,
-                            sm: 3,
-                            md: 4
-                          }
-                        }}
-                      >
-                        <Stack spacing={1}>
-                          <Typography variant="h5">Background</Typography>
-
-                          <Typography variant="small" color="secondary">
-                            Use <code>backgroundScale</code> for application
-                            backgrounds and surfaces.
-                          </Typography>
-                        </Stack>
-                      </Box>
-
-                      <Divider />
-
-                      <Box
-                        sx={{
-                          p: {
-                            xs: 2,
-                            sm: 3,
-                            md: 4
-                          }
-                        }}
-                      >
-                        <Box
-                          component="pre"
-                          sx={{
-                            m: 0,
-                            p: 2.5,
-                            borderRadius: 2,
-                            overflowX: 'auto',
-                            backgroundColor: backgroundScale[3],
-                            color: backgroundScale[12],
-                            fontFamily: 'monospace',
-                            fontSize: '0.85rem',
-                            lineHeight: 1.7
-                          }}
-                        >
-                          {`const backgroundScale = theme.backgroundScale;
+                    <ColorUsageCard
+                      title="Background / 60%"
+                      description={
+                        <>
+                          Use <code>backgroundScale</code> for the dominant
+                          application background and large surfaces.
+                        </>
+                      }
+                      code={`const backgroundScale = theme.backgroundScale;
 
 <Box
   sx={{
-    backgroundColor: backgroundScale[1]
+    backgroundColor: backgroundScale[5]
   }}
 >
   Application background
 </Box>
 
-<Paper
+<AppPaper
   sx={{
     backgroundColor: backgroundScale[2]
   }}
 >
   Surface
-</Paper>`}
-                        </Box>
+</AppPaper>`}
+                      background={backgroundScale[3]}
+                      textColor={backgroundScale[12]}
+                      scale={backgroundScale}
+                      steps={[1, 2, 3, 4, 6, 8]}
+                    />
 
-                        <Stack
-                          direction="row"
-                          spacing={1}
-                          sx={{
-                            mt: 2,
-                            flexWrap: 'wrap'
-                          }}
-                          useFlexGap
-                        >
-                          {[1, 2, 3, 4, 6, 8].map((step) => (
-                            <Chip
-                              key={step}
-                              label={`backgroundScale[${step}]`}
-                              sx={{
-                                backgroundColor: backgroundScale[step],
-                                color: isLightColor(backgroundScale[step])
-                                  ? '#000'
-                                  : '#fff'
-                              }}
-                            />
-                          ))}
-                        </Stack>
-                      </Box>
-                    </Paper>
+                    {/* ==================================================== */}
+                    {/* QUICK REFERENCE                                      */}
+                    {/* ==================================================== */}
 
-                    {/* ======================================================== */}
-                    {/* QUICK REFERENCE                                            */}
-                    {/* ======================================================== */}
-
-                    <Paper
+                    <AppPaper
                       variant="outlined"
                       sx={{
-                        overflow: 'hidden'
+                        overflow: 'hidden',
+                        borderColor: secondaryScale[6]
                       }}
                     >
                       <Box
@@ -1008,14 +933,14 @@ const colorScale = theme.colorScale;
 
                         <Typography
                           variant="small"
-                          color="secondary"
                           sx={{
                             display: 'block',
                             mt: 0.5,
-                            mb: 3
+                            mb: 3,
+                            color: secondaryScale[11]
                           }}
                         >
-                          Recommended usage for the 12-step scales.
+                          Recommended semantic role for each scale.
                         </Typography>
 
                         <Box
@@ -1024,83 +949,108 @@ const colorScale = theme.colorScale;
                             gridTemplateColumns: {
                               xs: '1fr',
                               sm: 'repeat(2, 1fr)',
-                              md: 'repeat(3, 1fr)'
+                              md: 'repeat(4, 1fr)'
                             },
                             gap: 2
                           }}
                         >
                           {[
                             {
-                              scale: 'colorScale',
-                              steps: '1–2',
-                              usage: 'Subtle accent backgrounds'
+                              scale: 'backgroundScale',
+                              percentage: '60%',
+                              role: 'Background',
+                              usage:
+                                'Application background and dominant surfaces',
+                              color: backgroundScale[3]
+                            },
+                            {
+                              scale: 'secondaryScale',
+                              percentage: '30%',
+                              role: 'Secondary',
+                              usage:
+                                'Supporting panels, borders and connections',
+                              color: secondaryScale[5]
                             },
                             {
                               scale: 'colorScale',
-                              steps: '3–5',
-                              usage: 'Interactive backgrounds'
-                            },
-                            {
-                              scale: 'colorScale',
-                              steps: '6–8',
-                              usage: 'Borders and focus states'
-                            },
-                            {
-                              scale: 'colorScale',
-                              steps: '9–10',
-                              usage: 'Solid buttons and emphasis'
-                            },
-                            {
-                              scale: 'colorScale',
-                              steps: '11–12',
-                              usage: 'Accent text'
+                              percentage: '10%',
+                              role: 'Primary',
+                              usage: 'Important actions and active states',
+                              color: colorScale[9]
                             },
                             {
                               scale: 'grayScale',
-                              steps: '1–12',
-                              usage: 'Neutral UI, text and borders'
-                            },
-                            {
-                              scale: 'backgroundScale',
-                              steps: '1–12',
-                              usage: 'Application surfaces'
+                              percentage: 'Neutral',
+                              role: 'Gray',
+                              usage: 'Disabled, neutral and utility states',
+                              color: grayScale[7]
                             }
                           ].map((item) => (
                             <Box
-                              key={`${item.scale}-${item.steps}`}
+                              key={item.scale}
                               sx={{
                                 p: 2,
                                 borderRadius: 2,
-                                border: '1px solid',
-                                borderColor: 'divider',
-                                backgroundColor: 'background.paper'
+                                border: `1px solid ${secondaryScale[6]}`,
+                                backgroundColor: backgroundScale[5]
                               }}
                             >
+                              <Box
+                                sx={{
+                                  width: 34,
+                                  height: 34,
+                                  borderRadius: 1.5,
+                                  mb: 1.5,
+                                  backgroundColor: item.color
+                                }}
+                              />
+
                               <Typography
                                 variant="code"
-                                color="primary"
                                 sx={{
                                   display: 'block',
-                                  mb: 0.75
+                                  mb: 0.5,
+                                  color:
+                                    item.scale === 'grayScale'
+                                      ? grayScale[11]
+                                      : colorScale[11]
                                 }}
                               >
-                                {item.scale}[{item.steps}]
+                                {item.percentage}
                               </Typography>
 
-                              <Typography variant="small">
+                              <Typography
+                                variant="medium"
+                                sx={{
+                                  display: 'block',
+                                  fontWeight: 700
+                                }}
+                              >
+                                {item.role}
+                              </Typography>
+
+                              <Typography
+                                variant="small"
+                                sx={{
+                                  display: 'block',
+                                  mt: 0.5,
+                                  color: grayScale[11]
+                                }}
+                              >
                                 {item.usage}
                               </Typography>
                             </Box>
                           ))}
                         </Box>
                       </Box>
-                    </Paper>
+                    </AppPaper>
                   </Stack>
                 </Box>
 
-                {/* ============================================================ */}
-                {/* COLOR USAGE EXAMPLES                                         */}
-                {/* ============================================================ */}
+                {/* ======================================================== */}
+                {/* COLOR USAGE EXAMPLES                                     */}
+                {/* ======================================================== */}
+
                 <Box>
                   <Typography variant="title" gutterBottom>
                     Color Usage
@@ -1108,23 +1058,24 @@ const colorScale = theme.colorScale;
 
                   <Typography
                     variant="body1"
-                    color="secondary"
                     sx={{
+                      color: secondaryScale[11],
                       mb: 4
                     }}
                   >
-                    Examples of how the semantic scale can be used in actual
-                    components.
+                    Examples of how the semantic color hierarchy can be used in
+                    actual components.
                   </Typography>
 
-                  <Paper
+                  <AppPaper
                     variant="outlined"
                     sx={{
                       p: {
                         xs: 2,
                         sm: 3,
                         md: 4
-                      }
+                      },
+                      borderColor: secondaryScale[6]
                     }}
                   >
                     <Stack spacing={4}>
@@ -1140,25 +1091,26 @@ const colorScale = theme.colorScale;
                             mb: 1
                           }}
                         >
-                          Background
+                          Background — 60%
                         </Typography>
 
                         <Box
                           sx={{
                             p: 3,
                             borderRadius: 2,
-                            backgroundColor: colorScale[2],
-                            border: `1px solid ${grayScale[6]}`
+                            backgroundColor: backgroundScale[5],
+                            border: `1px solid ${secondaryScale[6]}`
                           }}
                         >
                           <Typography variant="body1">
-                            Subtle background using primary color step 2.
+                            Dominant application surface using the background
+                            scale.
                           </Typography>
                         </Box>
                       </Box>
 
                       {/* ================================================== */}
-                      {/* GRAY BACKGROUND                                     */}
+                      {/* SECONDARY                                           */}
                       {/* ================================================== */}
 
                       <Box>
@@ -1169,7 +1121,41 @@ const colorScale = theme.colorScale;
                             mb: 1
                           }}
                         >
-                          Gray Surface
+                          Secondary — 30%
+                        </Typography>
+
+                        <Box
+                          sx={{
+                            p: 3,
+                            borderRadius: 2,
+                            backgroundColor: secondaryScale[3],
+                            border: `1px solid ${secondaryScale[7]}`
+                          }}
+                        >
+                          <Typography
+                            variant="body1"
+                            sx={{
+                              color: secondaryScale[11]
+                            }}
+                          >
+                            Supporting surface using the secondary scale.
+                          </Typography>
+                        </Box>
+                      </Box>
+
+                      {/* ================================================== */}
+                      {/* GRAY                                                */}
+                      {/* ================================================== */}
+
+                      <Box>
+                        <Typography
+                          variant="label"
+                          sx={{
+                            display: 'block',
+                            mb: 1
+                          }}
+                        >
+                          Gray — Neutral
                         </Typography>
 
                         <Box
@@ -1180,14 +1166,19 @@ const colorScale = theme.colorScale;
                             border: `1px solid ${grayScale[6]}`
                           }}
                         >
-                          <Typography variant="body1">
+                          <Typography
+                            variant="body1"
+                            sx={{
+                              color: grayScale[12]
+                            }}
+                          >
                             Neutral surface using gray step 3.
                           </Typography>
                         </Box>
                       </Box>
 
                       {/* ================================================== */}
-                      {/* BACKGROUND SCALE                                    */}
+                      {/* INTERACTIVE                                          */}
                       {/* ================================================== */}
 
                       <Box>
@@ -1198,36 +1189,7 @@ const colorScale = theme.colorScale;
                             mb: 1
                           }}
                         >
-                          Application Surface
-                        </Typography>
-
-                        <Box
-                          sx={{
-                            p: 3,
-                            borderRadius: 2,
-                            backgroundColor: backgroundScale[2],
-                            border: `1px solid ${grayScale[6]}`
-                          }}
-                        >
-                          <Typography variant="body1">
-                            Application surface using background step 2.
-                          </Typography>
-                        </Box>
-                      </Box>
-
-                      {/* ================================================== */}
-                      {/* INTERACTIVE                                         */}
-                      {/* ================================================== */}
-
-                      <Box>
-                        <Typography
-                          variant="label"
-                          sx={{
-                            display: 'block',
-                            mb: 1
-                          }}
-                        >
-                          Interactive
+                          Interactive — 10%
                         </Typography>
 
                         <Box
@@ -1237,44 +1199,124 @@ const colorScale = theme.colorScale;
                             gap: 2
                           }}
                         >
-                          <Button
-                            variant="contained"
-                            sx={{
-                              backgroundColor: colorScale[9],
-                              color: colorScale[12],
-                              '&:hover': {
-                                backgroundColor: colorScale[10]
-                              }
-                            }}
-                          >
-                            Solid Button
-                          </Button>
+                          <AppButton variant="contained" color="primary">
+                            Primary
+                          </AppButton>
 
-                          <Button
-                            variant="outlined"
-                            sx={{
-                              borderColor: grayScale[7],
-                              color: colorScale[11],
-                              '&:hover': {
-                                borderColor: colorScale[8],
-                                backgroundColor: colorScale[3]
-                              }
-                            }}
-                          >
-                            Outlined Button
-                          </Button>
+                          <AppButton variant="outlined" color="secondary">
+                            Secondary
+                          </AppButton>
 
-                          <Button
+                          <AppButton
                             variant="text"
                             sx={{
-                              color: colorScale[11],
+                              color: grayScale[11],
                               '&:hover': {
-                                backgroundColor: colorScale[3]
+                                backgroundColor: grayScale[3]
                               }
                             }}
                           >
-                            Text Button
-                          </Button>
+                            Neutral
+                          </AppButton>
+                        </Box>
+                      </Box>
+
+                      {/* ================================================== */}
+                      {/* CONNECTIONS                                         */}
+                      {/* ================================================== */}
+
+                      <Box>
+                        <Typography
+                          variant="label"
+                          sx={{
+                            display: 'block',
+                            mb: 1
+                          }}
+                        >
+                          Connections — Secondary
+                        </Typography>
+
+                        <Box
+                          sx={{
+                            position: 'relative',
+                            p: 3,
+                            borderRadius: 2,
+                            backgroundColor: backgroundScale[5],
+                            border: `1px solid ${secondaryScale[6]}`,
+                            overflow: 'hidden'
+                          }}
+                        >
+                          {/* Connection line */}
+                          <Box
+                            sx={{
+                              position: 'absolute',
+                              left: '10%',
+                              right: '10%',
+                              top: '50%',
+                              height: 2,
+                              transform: 'translateY(-50%)',
+                              backgroundColor: secondaryScale[7],
+                              zIndex: 0
+                            }}
+                          />
+
+                          <Stack
+                            direction="row"
+                            sx={{
+                              position: 'relative',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                              zIndex: 1
+                            }}
+                          >
+                            {/* Secondary node */}
+                            <Box
+                              sx={{
+                                width: 14,
+                                height: 14,
+                                flexShrink: 0,
+                                borderRadius: '50%',
+                                backgroundColor: secondaryScale[9],
+                                boxShadow: `0 0 0 4px ${secondaryScale[3]}`
+                              }}
+                            />
+
+                            {/* Supporting connection */}
+                            <Box
+                              sx={{
+                                mx: 2,
+                                px: 2,
+                                py: 1,
+                                borderRadius: 2,
+                                backgroundColor: secondaryScale[3],
+                                border: `1px solid ${secondaryScale[7]}`,
+                                boxShadow: `0 4px 12px ${secondaryScale[2]}`
+                              }}
+                            >
+                              <Typography
+                                variant="small"
+                                sx={{
+                                  color: secondaryScale[11],
+                                  fontWeight: 700,
+                                  whiteSpace: 'nowrap'
+                                }}
+                              >
+                                Supporting connection
+                              </Typography>
+                            </Box>
+
+                            {/* Primary node */}
+                            <Box
+                              sx={{
+                                width: 14,
+                                height: 14,
+                                flexShrink: 0,
+                                borderRadius: '50%',
+                                backgroundColor: colorScale[9],
+                                boxShadow: `0 0 0 4px ${colorScale[3]}`
+                              }}
+                            />
+                          </Stack>
                         </Box>
                       </Box>
 
@@ -1300,8 +1342,8 @@ const colorScale = theme.colorScale;
                             flexWrap: 'wrap'
                           }}
                         >
-                          <Chip
-                            label="Default"
+                          <AppChip
+                            label="Neutral"
                             sx={{
                               backgroundColor: grayScale[3],
                               color: grayScale[11],
@@ -1309,7 +1351,16 @@ const colorScale = theme.colorScale;
                             }}
                           />
 
-                          <Chip
+                          <AppChip
+                            label="Secondary"
+                            sx={{
+                              backgroundColor: secondaryScale[3],
+                              color: secondaryScale[11],
+                              border: `1px solid ${secondaryScale[6]}`
+                            }}
+                          />
+
+                          <AppChip
                             label="Active"
                             sx={{
                               backgroundColor: colorScale[5],
@@ -1318,14 +1369,11 @@ const colorScale = theme.colorScale;
                             }}
                           />
 
-                          <Chip
-                            label="Solid"
+                          <AppChip
+                            label="Primary"
                             sx={{
                               backgroundColor: colorScale[9],
-                              color: colorScale[12],
-                              '&:hover': {
-                                backgroundColor: colorScale[10]
-                              }
+                              color: colorScale.contrast
                             }}
                           />
                         </Stack>
@@ -1350,20 +1398,10 @@ const colorScale = theme.colorScale;
                           <Typography
                             variant="body1"
                             sx={{
-                              color: colorScale[12]
+                              color: grayScale[12]
                             }}
                           >
-                            Step 12 — High contrast text for important content.
-                          </Typography>
-
-                          <Typography
-                            variant="body2"
-                            sx={{
-                              color: colorScale[11]
-                            }}
-                          >
-                            Step 11 — Lower contrast text for supporting
-                            content.
+                            Gray 12 — High contrast neutral text.
                           </Typography>
 
                           <Typography
@@ -1376,63 +1414,73 @@ const colorScale = theme.colorScale;
                           </Typography>
 
                           <Typography
-                            variant="body2"
+                            variant="body1"
                             sx={{
-                              color: grayScale[12]
+                              color: colorScale[12]
                             }}
                           >
-                            Gray 12 — Neutral high contrast text.
+                            Color 12 — High contrast primary text.
+                          </Typography>
+
+                          <Typography
+                            variant="body2"
+                            sx={{
+                              color: colorScale[11]
+                            }}
+                          >
+                            Color 11 — Supporting primary text.
+                          </Typography>
+
+                          <Typography
+                            variant="body2"
+                            sx={{
+                              color: secondaryScale[11]
+                            }}
+                          >
+                            Secondary 11 — Supporting secondary text.
                           </Typography>
                         </Stack>
                       </Box>
                     </Stack>
-                  </Paper>
+                  </AppPaper>
                 </Box>
-                {/* ============================================================ */}
-                {/* TEXT COLORS                                                   */}
-                {/* ============================================================ */}
+
+                {/* ======================================================== */}
+                {/* TEXT COLORS                                               */}
+                {/* ======================================================== */}
+
                 <Box>
                   <Typography variant="title" gutterBottom>
                     Text Colors
                   </Typography>
 
-                  <Paper
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      color: secondaryScale[11],
+                      mb: 4,
+                      maxWidth: 850
+                    }}
+                  >
+                    Text colors use the neutral, secondary, and primary scales
+                    to establish clear hierarchy, supporting content, accent
+                    emphasis, and muted states.
+                  </Typography>
+
+                  <AppPaper
                     variant="outlined"
                     sx={{
                       p: {
                         xs: 2,
                         sm: 3,
                         md: 4
-                      }
+                      },
+                      borderColor: secondaryScale[6]
                     }}
                   >
                     <Stack spacing={3}>
-                      <Typography variant="h5">Primary Text</Typography>
-
-                      <Typography variant="body1" color="text.primary">
-                        text.primary — Main application content.
-                      </Typography>
-
-                      <Typography variant="body1" color="secondary">
-                        secondary — Supporting and less prominent content.
-                      </Typography>
-
-                      <Typography
-                        variant="body1"
-                        sx={{
-                          color: colorScale[12]
-                        }}
-                      >
-                        colorScale.12 — High contrast accent text.
-                      </Typography>
-
-                      <Typography
-                        variant="body1"
-                        sx={{
-                          color: colorScale[11]
-                        }}
-                      >
-                        colorScale.11 — Lower contrast accent text.
+                      <Typography variant="h5">
+                        Neutral & Accent Text
                       </Typography>
 
                       <Typography
@@ -1441,7 +1489,7 @@ const colorScale = theme.colorScale;
                           color: grayScale[12]
                         }}
                       >
-                        grayScale.12 — High contrast neutral text.
+                        grayScale.12 — Main neutral application content.
                       </Typography>
 
                       <Typography
@@ -1450,16 +1498,52 @@ const colorScale = theme.colorScale;
                           color: grayScale[11]
                         }}
                       >
-                        grayScale.11 — Lower contrast neutral text.
+                        grayScale.11 — Supporting neutral content.
+                      </Typography>
+
+                      <Typography
+                        variant="body1"
+                        sx={{
+                          color: secondaryScale[11]
+                        }}
+                      >
+                        secondaryScale.11 — Supporting secondary content.
+                      </Typography>
+
+                      <Typography
+                        variant="body1"
+                        sx={{
+                          color: colorScale[12]
+                        }}
+                      >
+                        colorScale.12 — High contrast primary accent text.
+                      </Typography>
+
+                      <Typography
+                        variant="body1"
+                        sx={{
+                          color: colorScale[11]
+                        }}
+                      >
+                        colorScale.11 — Lower contrast primary accent text.
+                      </Typography>
+
+                      <Typography
+                        variant="body1"
+                        sx={{
+                          color: grayScale[9]
+                        }}
+                      >
+                        grayScale.9 — Disabled / muted text.
                       </Typography>
                     </Stack>
-                  </Paper>
+                  </AppPaper>
                 </Box>
               </Stack>
             )}
 
             {/* ============================================================ */}
-            {/* COMPONENT SHOWCASE                                            */}
+            {/* COMPONENT SHOWCASE                                           */}
             {/* ============================================================ */}
 
             {activeTab === 'components' && (
@@ -1471,8 +1555,8 @@ const colorScale = theme.colorScale;
 
                   <Typography
                     variant="body1"
-                    color="secondary"
                     sx={{
+                      color: secondaryScale[11],
                       mb: 4,
                       maxWidth: 850
                     }}
@@ -1483,27 +1567,27 @@ const colorScale = theme.colorScale;
                   </Typography>
 
                   <Stack spacing={4}>
-                    {/* ========================================================== */}
-                    {/* ALERTS                                                       */}
-                    {/* ========================================================== */}
+                    {/* ====================================================== */}
+                    {/* ALERTS                                                 */}
+                    {/* ====================================================== */}
 
                     <ShowcaseCard
                       title="Alerts"
                       description="Feedback messages using the semantic color system."
                     >
                       <Stack spacing={2}>
-                        <Alert
+                        <AppAlert
                           icon={<InfoOutlinedIcon />}
                           severity="info"
                           sx={{
                             border: '1px solid',
-                            borderColor: colorScale[6]
+                            borderColor: secondaryScale[6]
                           }}
                         >
                           Your account has been successfully updated.
-                        </Alert>
+                        </AppAlert>
 
-                        <Alert
+                        <AppAlert
                           icon={<CheckCircleOutlineOutlinedIcon />}
                           severity="success"
                           sx={{
@@ -1512,9 +1596,9 @@ const colorScale = theme.colorScale;
                           }}
                         >
                           Changes were saved successfully.
-                        </Alert>
+                        </AppAlert>
 
-                        <Alert
+                        <AppAlert
                           icon={<WarningAmberOutlinedIcon />}
                           severity="warning"
                           sx={{
@@ -1523,9 +1607,9 @@ const colorScale = theme.colorScale;
                           }}
                         >
                           Your subscription will expire soon.
-                        </Alert>
+                        </AppAlert>
 
-                        <Alert
+                        <AppAlert
                           icon={<ErrorOutlineOutlinedIcon />}
                           severity="error"
                           sx={{
@@ -1534,13 +1618,13 @@ const colorScale = theme.colorScale;
                           }}
                         >
                           Something went wrong. Please try again.
-                        </Alert>
+                        </AppAlert>
                       </Stack>
                     </ShowcaseCard>
 
-                    {/* ========================================================== */}
-                    {/* BADGES                                                       */}
-                    {/* ========================================================== */}
+                    {/* ====================================================== */}
+                    {/* BADGES                                                 */}
+                    {/* ====================================================== */}
 
                     <ShowcaseCard
                       title="Badges & Status"
@@ -1555,31 +1639,33 @@ const colorScale = theme.colorScale;
                         }}
                         useFlexGap
                       >
-                        <Badge badgeContent={4} color="primary">
-                          <Paper
+                        <AppBadge badgeContent={4} color="primary">
+                          <AppPaper
                             variant="outlined"
                             sx={{
                               p: 2,
-                              borderRadius: 2
+                              borderRadius: 2,
+                              borderColor: secondaryScale[6]
                             }}
                           >
                             <Typography variant="small">
                               Notifications
                             </Typography>
-                          </Paper>
-                        </Badge>
+                          </AppPaper>
+                        </AppBadge>
 
-                        <Badge variant="dot" color="success">
-                          <Paper
+                        <AppBadge variant="dot" color="success">
+                          <AppPaper
                             variant="outlined"
                             sx={{
                               p: 2,
-                              borderRadius: 2
+                              borderRadius: 2,
+                              borderColor: secondaryScale[6]
                             }}
                           >
                             <Typography variant="small">Online</Typography>
-                          </Paper>
-                        </Badge>
+                          </AppPaper>
+                        </AppBadge>
 
                         <StatusDot
                           color={semanticColors.success}
@@ -1598,40 +1684,42 @@ const colorScale = theme.colorScale;
                       </Stack>
                     </ShowcaseCard>
 
-                    {/* ========================================================== */}
-                    {/* PROGRESS                                                      */}
-                    {/* ========================================================== */}
+                    {/* ====================================================== */}
+                    {/* PROGRESS                                               */}
+                    {/* ====================================================== */}
 
                     <ShowcaseCard
                       title="Progress"
-                      description="Progress indicators using the primary scale."
+                      description="Progress indicators using primary emphasis and neutral tracks."
                     >
                       <Stack spacing={3}>
                         <Box>
                           <Stack
                             direction="row"
-                            sx={{ mb: 1, justifyContent: 'space-between' }}
+                            sx={{
+                              mb: 1,
+                              justifyContent: 'space-between'
+                            }}
                           >
                             <Typography variant="small">
                               Uploading files
                             </Typography>
 
-                            <Typography variant="small" color="secondary">
+                            <Typography
+                              variant="small"
+                              sx={{
+                                color: grayScale[11]
+                              }}
+                            >
                               72%
                             </Typography>
                           </Stack>
 
-                          <LinearProgress
+                          <AppLinearProgress
                             variant="determinate"
                             value={72}
                             sx={{
-                              height: 8,
-                              borderRadius: 999,
-                              backgroundColor: colorScale[3],
-                              '& .MuiLinearProgress-bar': {
-                                backgroundColor: colorScale[9],
-                                borderRadius: 999
-                              }
+                              height: 8
                             }}
                           />
                         </Box>
@@ -1639,26 +1727,29 @@ const colorScale = theme.colorScale;
                         <Box>
                           <Stack
                             direction="row"
-                            sx={{ mb: 1, justifyContent: 'space-between' }}
+                            sx={{
+                              mb: 1,
+                              justifyContent: 'space-between'
+                            }}
                           >
                             <Typography variant="small">Storage</Typography>
 
-                            <Typography variant="small" color="secondary">
+                            <Typography
+                              variant="small"
+                              sx={{
+                                color: grayScale[11]
+                              }}
+                            >
                               42%
                             </Typography>
                           </Stack>
 
-                          <LinearProgress
+                          <AppLinearProgress
                             variant="determinate"
                             value={42}
+                            color="secondary"
                             sx={{
-                              height: 8,
-                              borderRadius: 999,
-                              backgroundColor: grayScale[4],
-                              '& .MuiLinearProgress-bar': {
-                                backgroundColor: colorScale[8],
-                                borderRadius: 999
-                              }
+                              height: 8
                             }}
                           />
                         </Box>
@@ -1666,26 +1757,23 @@ const colorScale = theme.colorScale;
                         <Stack
                           direction="row"
                           spacing={4}
-                          sx={{ alignItems: 'center' }}
+                          sx={{
+                            alignItems: 'center'
+                          }}
                         >
-                          <CircularProgress
+                          <AppCircularProgress
                             variant="determinate"
                             value={25}
                             size={48}
                             thickness={5}
-                            sx={{
-                              color: colorScale[9]
-                            }}
                           />
 
-                          <CircularProgress
+                          <AppCircularProgress
                             variant="determinate"
                             value={65}
                             size={48}
                             thickness={5}
-                            sx={{
-                              color: colorScale[10]
-                            }}
+                            color="secondary"
                           />
 
                           <CircularProgress
@@ -1701,50 +1789,29 @@ const colorScale = theme.colorScale;
                       </Stack>
                     </ShowcaseCard>
 
-                    {/* ========================================================== */}
-                    {/* TABS                                                         */}
-                    {/* ========================================================== */}
+                    {/* ====================================================== */}
+                    {/* TABS                                                   */}
+                    {/* ====================================================== */}
 
                     <ShowcaseCard
                       title="Navigation"
                       description="Tabs and segmented controls."
                     >
-                      <Tabs
+                      <AppTabs
                         value={1}
                         sx={{
                           borderBottom: '1px solid',
-                          borderColor: 'divider',
-                          minHeight: 44
+                          borderColor: secondaryScale[6]
                         }}
                       >
-                        <Tab
-                          label="Overview"
-                          sx={{
-                            minHeight: 44
-                          }}
-                        />
+                        <AppTab label="Overview" />
 
-                        <Tab
-                          label="Activity"
-                          sx={{
-                            minHeight: 44
-                          }}
-                        />
+                        <AppTab label="Activity" />
 
-                        <Tab
-                          label="Settings"
-                          sx={{
-                            minHeight: 44
-                          }}
-                        />
+                        <AppTab label="Settings" />
 
-                        <Tab
-                          label="Members"
-                          sx={{
-                            minHeight: 44
-                          }}
-                        />
-                      </Tabs>
+                        <AppTab label="Members" />
+                      </AppTabs>
 
                       <Stack
                         direction="row"
@@ -1763,15 +1830,15 @@ const colorScale = theme.colorScale;
                       </Stack>
                     </ShowcaseCard>
 
-                    {/* ========================================================== */}
-                    {/* FILE / UPLOAD CARD                                           */}
-                    {/* ========================================================== */}
+                    {/* ====================================================== */}
+                    {/* UPLOAD                                                 */}
+                    {/* ====================================================== */}
 
                     <ShowcaseCard
                       title="Upload"
                       description="Drag-and-drop style surface with action states."
                     >
-                      <Paper
+                      <AppPaper
                         variant="outlined"
                         sx={{
                           minHeight: 220,
@@ -1780,8 +1847,7 @@ const colorScale = theme.colorScale;
                           justifyContent: 'center',
                           borderStyle: 'dashed',
                           borderWidth: 2,
-                          borderColor: colorScale[6],
-                          backgroundColor: backgroundScale[2],
+                          borderColor: secondaryScale[7],
                           borderRadius: 2
                         }}
                       >
@@ -1800,8 +1866,9 @@ const colorScale = theme.colorScale;
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'center',
-                              backgroundColor: colorScale[3],
-                              color: colorScale[9]
+                              backgroundColor: secondaryScale[3],
+                              color: secondaryScale[11],
+                              border: `1px solid ${secondaryScale[6]}`
                             }}
                           >
                             <CloudUploadOutlinedIcon />
@@ -1819,29 +1886,30 @@ const colorScale = theme.colorScale;
 
                             <Typography
                               variant="small"
-                              color="secondary"
                               sx={{
                                 display: 'block',
-                                mt: 0.5
+                                mt: 0.5,
+                                color: grayScale[11]
                               }}
                             >
                               Drag and drop files here or browse your computer.
                             </Typography>
                           </Box>
 
-                          <Button
+                          <AppButton
                             variant="outlined"
                             startIcon={<CloudUploadOutlinedIcon />}
+                            color="secondary"
                           >
                             Choose files
-                          </Button>
+                          </AppButton>
                         </Stack>
-                      </Paper>
+                      </AppPaper>
                     </ShowcaseCard>
 
-                    {/* ========================================================== */}
-                    {/* MEDIA CARD GRID                                               */}
-                    {/* ========================================================== */}
+                    {/* ====================================================== */}
+                    {/* CARDS                                                  */}
+                    {/* ====================================================== */}
 
                     <ShowcaseCard
                       title="Cards"
@@ -1881,9 +1949,9 @@ const colorScale = theme.colorScale;
                       </Box>
                     </ShowcaseCard>
 
-                    {/* ========================================================== */}
-                    {/* TABLE                                                         */}
-                    {/* ========================================================== */}
+                    {/* ====================================================== */}
+                    {/* TABLE                                                  */}
+                    {/* ====================================================== */}
 
                     <ShowcaseCard
                       title="Data Table"
@@ -1894,11 +1962,8 @@ const colorScale = theme.colorScale;
                           <TableHead>
                             <TableRow>
                               <TableCell>Project</TableCell>
-
                               <TableCell>Status</TableCell>
-
                               <TableCell>Progress</TableCell>
-
                               <TableCell align="right">Updated</TableCell>
                             </TableRow>
                           </TableHead>
@@ -1943,27 +2008,24 @@ const colorScale = theme.colorScale;
                                 </TableCell>
 
                                 <TableCell>
-                                  <Chip
+                                  <AppChip
                                     size="small"
                                     label={row.status}
-                                    sx={{
-                                      backgroundColor:
-                                        row.status === 'Active'
-                                          ? colorScale[3]
-                                          : row.status === 'Review'
-                                            ? '#FEF3C7'
-                                            : grayScale[3],
-                                      color:
-                                        row.status === 'Active'
-                                          ? colorScale[11]
-                                          : row.status === 'Review'
-                                            ? '#92400E'
-                                            : grayScale[11]
-                                    }}
+                                    color={
+                                      row.status === 'Active'
+                                        ? 'primary'
+                                        : row.status === 'Review'
+                                          ? 'secondary'
+                                          : 'default'
+                                    }
                                   />
                                 </TableCell>
 
-                                <TableCell sx={{ minWidth: 160 }}>
+                                <TableCell
+                                  sx={{
+                                    minWidth: 160
+                                  }}
+                                >
                                   <Stack
                                     direction="row"
                                     spacing={1}
@@ -1971,24 +2033,20 @@ const colorScale = theme.colorScale;
                                       alignItems: 'center'
                                     }}
                                   >
-                                    <LinearProgress
+                                    <AppLinearProgress
                                       variant="determinate"
                                       value={row.progress}
                                       sx={{
                                         flex: 1,
-                                        height: 6,
-                                        borderRadius: 999,
-                                        backgroundColor: grayScale[4],
-                                        '& .MuiLinearProgress-bar': {
-                                          backgroundColor: colorScale[9],
-                                          borderRadius: 999
-                                        }
+                                        height: 6
                                       }}
                                     />
 
                                     <Typography
                                       variant="small"
-                                      color="secondary"
+                                      sx={{
+                                        color: grayScale[11]
+                                      }}
                                     >
                                       {row.progress}%
                                     </Typography>
@@ -1996,7 +2054,12 @@ const colorScale = theme.colorScale;
                                 </TableCell>
 
                                 <TableCell align="right">
-                                  <Typography variant="small" color="secondary">
+                                  <Typography
+                                    variant="small"
+                                    sx={{
+                                      color: grayScale[11]
+                                    }}
+                                  >
                                     {row.updated}
                                   </Typography>
                                 </TableCell>
@@ -2007,9 +2070,9 @@ const colorScale = theme.colorScale;
                       </TableContainer>
                     </ShowcaseCard>
 
-                    {/* ========================================================== */}
-                    {/* CONTROLS                                                      */}
-                    {/* ========================================================== */}
+                    {/* ====================================================== */}
+                    {/* CONTROLS                                               */}
+                    {/* ====================================================== */}
 
                     <ShowcaseCard
                       title="Controls"
@@ -2046,9 +2109,11 @@ const colorScale = theme.colorScale;
                           <Stack
                             direction="row"
                             spacing={1}
-                            sx={{ alignItems: 'center' }}
+                            sx={{
+                              alignItems: 'center'
+                            }}
                           >
-                            <Switch defaultChecked />
+                            <AppSwitch defaultChecked />
 
                             <Typography variant="small">
                               Notifications
@@ -2058,9 +2123,11 @@ const colorScale = theme.colorScale;
                           <Stack
                             direction="row"
                             spacing={1}
-                            sx={{ alignItems: 'center' }}
+                            sx={{
+                              alignItems: 'center'
+                            }}
                           >
-                            <Switch />
+                            <AppSwitch />
 
                             <Typography variant="small">Auto-save</Typography>
                           </Stack>
@@ -2068,9 +2135,11 @@ const colorScale = theme.colorScale;
                           <Stack
                             direction="row"
                             spacing={1}
-                            sx={{ alignItems: 'center' }}
+                            sx={{
+                              alignItems: 'center'
+                            }}
                           >
-                            <Checkbox defaultChecked={true} />
+                            <AppCheckbox defaultChecked />
 
                             <Typography variant="small">Remember me</Typography>
                           </Stack>
@@ -2097,9 +2166,9 @@ const colorScale = theme.colorScale;
                       </Stack>
                     </ShowcaseCard>
 
-                    {/* ========================================================== */}
-                    {/* STATISTICS                                                    */}
-                    {/* ========================================================== */}
+                    {/* ====================================================== */}
+                    {/* STATISTICS                                             */}
+                    {/* ====================================================== */}
 
                     <ShowcaseCard
                       title="Statistics"
@@ -2149,9 +2218,9 @@ const colorScale = theme.colorScale;
                       </Box>
                     </ShowcaseCard>
 
-                    {/* ========================================================== */}
-                    {/* BUTTON STATES                                                 */}
-                    {/* ========================================================== */}
+                    {/* ====================================================== */}
+                    {/* BUTTON STATES                                          */}
+                    {/* ====================================================== */}
 
                     <ShowcaseCard
                       title="Button States"
@@ -2166,47 +2235,82 @@ const colorScale = theme.colorScale;
                           }}
                           useFlexGap
                         >
-                          <Button variant="contained">Primary</Button>
+                          {/* Primary */}
+                          <AppButton variant="contained">Primary</AppButton>
 
-                          <Button variant="outlined">Secondary</Button>
+                          {/* Secondary */}
+                          <AppButton variant="outlined" color="secondary">
+                            Secondary
+                          </AppButton>
 
-                          <Button variant="text">Ghost</Button>
+                          {/* Neutral */}
+                          <AppButton
+                            variant="text"
+                            sx={{
+                              color: grayScale[11],
+                              '&:hover': {
+                                backgroundColor: grayScale[3]
+                              }
+                            }}
+                          >
+                            Ghost
+                          </AppButton>
 
-                          <Button variant="contained" color="error">
+                          {/* Destructive */}
+                          <AppButton variant="contained" color="error">
                             Delete
-                          </Button>
+                          </AppButton>
 
-                          <Button variant="contained" disabled>
+                          {/* Disabled */}
+                          <AppButton variant="contained" disabled>
                             Disabled
-                          </Button>
+                          </AppButton>
                         </Stack>
 
                         <Stack direction="row" spacing={1}>
-                          <Tooltip title="Play">
-                            <IconButton
+                          <AppTooltip title="Play">
+                            <AppIconButton
                               sx={{
                                 backgroundColor: colorScale[9],
                                 color: colorScale.contrast,
+
                                 '&:hover': {
                                   backgroundColor: colorScale[10]
                                 }
                               }}
                             >
                               <PlayArrowIcon />
-                            </IconButton>
-                          </Tooltip>
+                            </AppIconButton>
+                          </AppTooltip>
 
-                          <Tooltip title="Pause">
-                            <IconButton>
+                          <AppTooltip title="Pause">
+                            <AppIconButton
+                              sx={{
+                                color: secondaryScale[11],
+                                border: `1px solid ${secondaryScale[6]}`,
+
+                                '&:hover': {
+                                  backgroundColor: secondaryScale[3]
+                                }
+                              }}
+                            >
                               <PauseIcon />
-                            </IconButton>
-                          </Tooltip>
+                            </AppIconButton>
+                          </AppTooltip>
 
-                          <Tooltip title="More">
-                            <IconButton>
+                          <AppTooltip title="More">
+                            <AppIconButton
+                              sx={{
+                                color: grayScale[11],
+
+                                '&:hover': {
+                                  backgroundColor: grayScale[3]
+                                }
+                              }}
+                            >
                               <MoreHorizIcon />
-                            </IconButton>
-                          </Tooltip>
+                            </AppIconButton>
+                          </AppTooltip>
                         </Stack>
                       </Stack>
                     </ShowcaseCard>
@@ -2214,10 +2318,11 @@ const colorScale = theme.colorScale;
                 </Box>
               </Stack>
             )}
+
             {/* ============================================================ */}
             {/* FOOTER                                                        */}
             {/* ============================================================ */}
-            {/* Footer */}
+
             <Box sx={{ mt: '3rem' }}>
               <Divider />
 
@@ -2241,13 +2346,18 @@ const colorScale = theme.colorScale;
                   <Typography
                     variant="small"
                     sx={{
-                      color: 'secondary'
+                      color: grayScale[11]
                     }}
                   >
                     CryptechServices Design System
                   </Typography>
 
-                  <Typography variant="small" color="text.disabled">
+                  <Typography
+                    variant="small"
+                    sx={{
+                      color: grayScale[8]
+                    }}
+                  >
                     •
                   </Typography>
 
@@ -2281,6 +2391,125 @@ const colorScale = theme.colorScale;
 }
 
 /* ========================================================================== */
+/* COLOR USAGE CARD                                                           */
+/* ========================================================================== */
+
+function ColorUsageCard({
+  title,
+  description,
+  code,
+  background,
+  textColor,
+  scale,
+  steps
+}: {
+  title: string;
+  description: React.ReactNode;
+  code: string;
+  background: string;
+  textColor: string;
+  scale: ColorScale;
+  steps: number[];
+}) {
+  const theme = useTheme();
+
+  return (
+    <AppPaper
+      variant="outlined"
+      sx={{
+        overflow: 'hidden'
+      }}
+    >
+      <Box
+        sx={{
+          p: {
+            xs: 2,
+            sm: 3,
+            md: 4
+          }
+        }}
+      >
+        <Stack spacing={1}>
+          <Typography variant="h5">{title}</Typography>
+
+          <Typography
+            variant="small"
+            sx={{
+              color: theme.grayScale[11]
+            }}
+          >
+            {description}
+          </Typography>
+        </Stack>
+      </Box>
+
+      <Divider />
+
+      <Box
+        sx={{
+          p: {
+            xs: 2,
+            sm: 3,
+            md: 4
+          }
+        }}
+      >
+        <Box
+          component="pre"
+          sx={{
+            m: 0,
+            p: 2.5,
+            borderRadius: 2,
+            overflowX: 'auto',
+            backgroundColor: background,
+            color: textColor,
+            fontFamily: 'monospace',
+            fontSize: '0.85rem',
+            lineHeight: 1.7,
+            border: `1px solid ${theme.secondaryScale[6]}`
+          }}
+        >
+          {code}
+        </Box>
+
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{
+            mt: 2,
+            flexWrap: 'wrap'
+          }}
+          useFlexGap
+        >
+          {steps.map((step) => (
+            <Chip
+              key={step}
+              label={`${getScaleName(scale)}[${step}]`}
+              sx={{
+                backgroundColor: scale[step],
+                color: isLightColor(scale[step]) ? '#000' : '#fff'
+              }}
+            />
+          ))}
+        </Stack>
+      </Box>
+    </AppPaper>
+  );
+}
+
+/* ========================================================================== */
+/* SCALE NAME                                                                 */
+/* ========================================================================== */
+
+function getScaleName(scale: ColorScale): string {
+  /*
+   * This is only used for visual documentation labels.
+   * The actual scale object is still supplied directly by the caller.
+   */
+  return scale === undefined ? 'scale' : 'scale';
+}
+
+/* ========================================================================== */
 /* COLOR SCALE SECTION                                                        */
 /* ========================================================================== */
 
@@ -2301,8 +2530,20 @@ function ColorScaleSection({
     steps: ColorStep[];
   }[];
 }) {
+  const theme = useTheme();
+
+  const isPrimary = colorName === 'Primary';
+  const isSecondary = colorName === 'Secondary';
+  const isGray = colorName === 'Gray';
+
+  const sectionBorder = isSecondary
+    ? theme.secondaryScale[7]
+    : isGray
+      ? theme.grayScale[6]
+      : theme.secondaryScale[6];
+
   return (
-    <Paper
+    <AppPaper
       variant="outlined"
       sx={{
         overflow: 'hidden'
@@ -2322,9 +2563,53 @@ function ColorScaleSection({
         }}
       >
         <Stack spacing={0.5}>
-          <Typography variant="h4">{title}</Typography>
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{
+              alignItems: 'center',
+              flexWrap: 'wrap'
+            }}
+          >
+            <Typography variant="h4">{title}</Typography>
 
-          <Typography variant="body2" color="secondary">
+            <Chip
+              size="small"
+              label={
+                isPrimary
+                  ? '10%'
+                  : isSecondary
+                    ? '30%'
+                    : isGray
+                      ? 'Neutral'
+                      : '60%'
+              }
+              sx={{
+                backgroundColor: isPrimary
+                  ? theme.colorScale[3]
+                  : isSecondary
+                    ? theme.secondaryScale[3]
+                    : isGray
+                      ? theme.grayScale[3]
+                      : theme.backgroundScale[3],
+
+                color: isPrimary
+                  ? theme.colorScale[11]
+                  : isSecondary
+                    ? theme.secondaryScale[11]
+                    : isGray
+                      ? theme.grayScale[11]
+                      : theme.backgroundScale[11]
+              }}
+            />
+          </Stack>
+
+          <Typography
+            variant="body2"
+            sx={{
+              color: theme.grayScale[11]
+            }}
+          >
             {description}
           </Typography>
         </Stack>
@@ -2385,10 +2670,10 @@ function ColorScaleSection({
 
             <Typography
               variant="small"
-              color="secondary"
               sx={{
                 mt: 0.5,
-                display: 'block'
+                display: 'block',
+                color: theme.grayScale[11]
               }}
             >
               {group.description}
@@ -2444,11 +2729,11 @@ function ColorScaleSection({
 
         <Typography
           variant="small"
-          color="secondary"
           sx={{
             mt: 0.5,
             mb: 3,
-            display: 'block'
+            display: 'block',
+            color: theme.grayScale[11]
           }}
         >
           Additional semantic aliases generated from the{' '}
@@ -2486,8 +2771,7 @@ function ColorScaleSection({
             <Box
               key={item.name}
               sx={{
-                border: '1px solid',
-                borderColor: 'divider',
+                border: `1px solid ${theme.secondaryScale[6]}`,
                 borderRadius: 2,
                 overflow: 'hidden'
               }}
@@ -2514,14 +2798,15 @@ function ColorScaleSection({
 
               <Box
                 sx={{
-                  p: 1.5
+                  p: 1.5,
+                  backgroundColor: theme.backgroundScale[1]
                 }}
               >
                 <Typography
                   variant="code"
-                  color="secondary"
                   sx={{
-                    wordBreak: 'break-all'
+                    wordBreak: 'break-all',
+                    color: theme.grayScale[11]
                   }}
                 >
                   {item.color}
@@ -2531,7 +2816,7 @@ function ColorScaleSection({
           ))}
         </Box>
       </Box>
-    </Paper>
+    </AppPaper>
   );
 }
 
@@ -2552,15 +2837,15 @@ function ColorScaleItem({
   description?: string;
   large?: boolean;
 }) {
+  const theme = useTheme();
   const useLightText = !isLightColor(color);
 
   return (
     <Box
       sx={{
         minWidth: 0,
-        borderRight: '1px solid',
-        borderBottom: '1px solid',
-        borderColor: 'divider'
+        borderRight: `1px solid ${theme.grayScale[6]}`,
+        borderBottom: `1px solid ${theme.grayScale[6]}`
       }}
     >
       {/* ================================================================== */}
@@ -2614,8 +2899,7 @@ function ColorScaleItem({
             xs: 1.5,
             sm: 2
           },
-          minHeight: large ? 120 : 75,
-          backgroundColor: 'background.paper'
+          minHeight: large ? 120 : 75
         }}
       >
         <Typography
@@ -2630,11 +2914,11 @@ function ColorScaleItem({
         {description && (
           <Typography
             variant="small"
-            color="secondary"
             sx={{
               display: 'block',
               mt: 0.5,
-              lineHeight: 1.4
+              lineHeight: 1.4,
+              color: theme.grayScale[11]
             }}
           >
             {description}
@@ -2643,7 +2927,6 @@ function ColorScaleItem({
 
         <Typography
           variant="code"
-          color="secondary"
           sx={{
             display: 'block',
             mt: 1,
@@ -2651,7 +2934,8 @@ function ColorScaleItem({
               xs: '0.6rem',
               sm: '0.7rem'
             },
-            wordBreak: 'break-all'
+            wordBreak: 'break-all',
+            color: theme.grayScale[11]
           }}
         >
           {color}
@@ -2677,9 +2961,7 @@ function isLightColor(color: string): boolean {
   }
 
   const r = parseInt(hex.slice(0, 2), 16);
-
   const g = parseInt(hex.slice(2, 4), 16);
-
   const b = parseInt(hex.slice(4, 6), 16);
 
   const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
@@ -2700,11 +2982,14 @@ function ShowcaseCard({
   description: string;
   children: React.ReactNode;
 }) {
+  const theme = useTheme();
+
   return (
-    <Paper
+    <AppPaper
       variant="outlined"
       sx={{
-        overflow: 'hidden'
+        overflow: 'hidden',
+        borderColor: theme.secondaryScale[6]
       }}
     >
       <Box
@@ -2728,10 +3013,10 @@ function ShowcaseCard({
 
         <Typography
           variant="small"
-          color="secondary"
           sx={{
             display: 'block',
-            mt: 0.5
+            mt: 0.5,
+            color: theme.grayScale[11]
           }}
         >
           {description}
@@ -2746,12 +3031,13 @@ function ShowcaseCard({
             xs: 2,
             sm: 3,
             md: 4
-          }
+          },
+          backgroundColor: theme.backgroundScale[4]
         }}
       >
         {children}
       </Box>
-    </Paper>
+    </AppPaper>
   );
 }
 
@@ -2761,7 +3047,13 @@ function ShowcaseCard({
 
 function StatusDot({ color, label }: { color: string; label: string }) {
   return (
-    <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+    <Stack
+      direction="row"
+      spacing={1}
+      sx={{
+        alignItems: 'center'
+      }}
+    >
       <Box
         sx={{
           width: 9,
@@ -2792,17 +3084,21 @@ function SampleCard({
   description: string;
   action: string;
 }) {
+  const theme = useTheme();
+
   return (
-    <Paper
-      variant="outlined"
+    <AppCard
       sx={{
         p: 2.5,
         borderRadius: 2,
+
+        borderColor: theme.secondaryScale[6],
         transition: 'all 0.2s ease',
+
         '&:hover': {
           transform: 'translateY(-2px)',
           boxShadow: 3,
-          borderColor: 'primary.main'
+          borderColor: theme.secondaryScale[9]
         }
       }}
     >
@@ -2815,8 +3111,9 @@ function SampleCard({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: 'primary.main',
-            color: 'primary.contrastText'
+            backgroundColor: theme.secondaryScale[3],
+            color: theme.secondaryScale[11],
+            border: `1px solid ${theme.secondaryScale[6]}`
           }}
         >
           {icon}
@@ -2834,11 +3131,11 @@ function SampleCard({
 
           <Typography
             variant="small"
-            color="secondary"
             sx={{
               display: 'block',
               mt: 0.75,
-              lineHeight: 1.5
+              lineHeight: 1.5,
+              color: theme.grayScale[11]
             }}
           >
             {description}
@@ -2849,13 +3146,14 @@ function SampleCard({
           variant="text"
           sx={{
             alignSelf: 'flex-start',
-            px: 0
+            px: 0,
+            color: theme.colorScale[11]
           }}
         >
           {action} →
         </Button>
       </Stack>
-    </Paper>
+    </AppCard>
   );
 }
 
@@ -2876,12 +3174,15 @@ function StatCard({
   positive?: boolean;
   icon: React.ReactNode;
 }) {
+  const theme = useTheme();
+
   return (
-    <Paper
-      variant="outlined"
+    <AppCard
       sx={{
         p: 2.5,
-        borderRadius: 2
+        borderRadius: 2,
+
+        borderColor: theme.secondaryScale[6]
       }}
     >
       <Stack spacing={2}>
@@ -2892,7 +3193,12 @@ function StatCard({
             alignItems: 'center'
           }}
         >
-          <Typography variant="small" color="secondary">
+          <Typography
+            variant="small"
+            sx={{
+              color: theme.grayScale[11]
+            }}
+          >
             {title}
           </Typography>
 
@@ -2904,8 +3210,9 @@ function StatCard({
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              backgroundColor: 'primary.light',
-              color: 'primary.main'
+              backgroundColor: theme.secondaryScale[3],
+              color: theme.secondaryScale[11],
+              border: `1px solid ${theme.secondaryScale[6]}`
             }}
           >
             {icon}
@@ -2930,7 +3237,7 @@ function StatCard({
           {change} from last month
         </Typography>
       </Stack>
-    </Paper>
+    </AppCard>
   );
 }
 
@@ -3027,37 +3334,58 @@ function TypographyUsageSection() {
   return (
     <Box sx={{ mt: 8 }}>
       <Stack spacing={1} sx={{ mb: 4 }}>
-        <Typography variant="overlineCustom" color="primary">
+        <Typography
+          variant="overlineCustom"
+          sx={{
+            color: theme.colorScale[9]
+          }}
+        >
           TYPOGRAPHY USAGE
         </Typography>
 
         <Typography variant="title">How to Add Typography</Typography>
 
-        <Typography variant="lead" color="secondary" sx={{ maxWidth: 760 }}>
-          Use the predefined typography variants directly with MUI's Typography
-          component. The theme handles font size, weight, line height, and
-          responsive behavior for you.
+        <Typography
+          variant="lead"
+          sx={{
+            color: theme.secondaryScale[11],
+            maxWidth: 760
+          }}
+        >
+          Use the predefined typography variants directly with MUI&apos;s
+          Typography component. The theme handles font size, weight, line
+          height, and responsive behavior for you.
         </Typography>
       </Stack>
 
       <Stack spacing={3}>
         {typographySamples.map((sample) => (
-          <Paper
+          <AppPaper
             key={sample.name}
             variant="outlined"
             sx={{
-              p: { xs: 2, md: 3 },
-              borderColor: 'divider'
+              p: {
+                xs: 2,
+                md: 3
+              },
+              borderColor: theme.secondaryScale[6]
             }}
           >
             <Stack spacing={3}>
               {/* Header */}
+
               <Stack
-                direction={{ xs: 'column', md: 'row' }}
+                direction={{
+                  xs: 'column',
+                  md: 'row'
+                }}
                 spacing={2}
                 sx={{
                   justifyContent: 'space-between',
-                  alignItems: { xs: 'flex-start', md: 'center' }
+                  alignItems: {
+                    xs: 'flex-start',
+                    md: 'center'
+                  }
                 }}
               >
                 <Stack>
@@ -3065,8 +3393,10 @@ function TypographyUsageSection() {
 
                   <Typography
                     variant="small"
-                    color="secondary"
-                    sx={{ mt: 0.5 }}
+                    sx={{
+                      mt: 0.5,
+                      color: theme.grayScale[11]
+                    }}
                   >
                     {sample.description}
                   </Typography>
@@ -3076,7 +3406,10 @@ function TypographyUsageSection() {
                   size="small"
                   label={`variant="${sample.variant}"`}
                   sx={{
-                    fontFamily: 'monospace'
+                    fontFamily: 'monospace',
+                    backgroundColor: theme.secondaryScale[3],
+                    color: theme.secondaryScale[11],
+                    border: `1px solid ${theme.secondaryScale[6]}`
                   }}
                 />
               </Stack>
@@ -3084,13 +3417,16 @@ function TypographyUsageSection() {
               <Divider />
 
               {/* Live preview */}
+
               <Box
                 sx={{
-                  p: { xs: 2, md: 4 },
+                  p: {
+                    xs: 2,
+                    md: 4
+                  },
                   borderRadius: 2,
-                  bgcolor: 'background.default',
-                  border: '1px solid',
-                  borderColor: 'divider'
+                  bgcolor: theme.backgroundScale[1],
+                  border: `1px solid ${theme.secondaryScale[6]}`
                 }}
               >
                 <Typography variant={sample.variant}>
@@ -3099,6 +3435,7 @@ function TypographyUsageSection() {
               </Box>
 
               {/* Code */}
+
               <Box
                 component="pre"
                 sx={{
@@ -3111,14 +3448,13 @@ function TypographyUsageSection() {
                   fontFamily: 'monospace',
                   fontSize: '0.8rem',
                   lineHeight: 1.7,
-                  border: '1px solid',
-                  borderColor: theme.grayScale[6]
+                  border: `1px solid ${theme.grayScale[6]}`
                 }}
               >
                 <code>{sample.code}</code>
               </Box>
             </Stack>
-          </Paper>
+          </AppPaper>
         ))}
       </Stack>
     </Box>

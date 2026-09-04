@@ -1,5 +1,4 @@
 import { createTheme, type PaletteMode } from '@mui/material/styles';
-import dynamic from 'next/dynamic';
 import localFont from 'next/font/local';
 import type { CSSProperties } from 'react';
 
@@ -301,10 +300,6 @@ function oklabToRgb(L: number, a: number, b: number) {
 /* OKLCH -> HEX                                                               */
 /* ========================================================================== */
 
-/**
- * Converts OKLCH to sRGB while reducing chroma when the requested color
- * falls outside the sRGB gamut.
- */
 function oklchToHex(L: number, C: number, H: number): string {
   let chroma = C;
 
@@ -360,195 +355,43 @@ function oklchToHex(L: number, C: number, H: number): string {
 }
 
 /* ========================================================================== */
-/* RADIX CUSTOM PALETTE RELATIONSHIPS                                         */
+/* RADIX COLOR RELATIONSHIPS                                                 */
 /* ========================================================================== */
 
-/*
- * These values define the RELATIONSHIP between the 12 steps.
- *
- * They are based on the visual structure of the Radix Custom Colors palette:
- *
- * 1  Background
- * 2  Background
- *
- * 3  Interactive
- * 4  Interactive
- * 5  Interactive
- *
- * 6  Border
- * 7  Border
- * 8  Border
- *
- * 9  Solid
- * 10 Solid
- *
- * 11 Accessible text
- * 12 Accessible text
- *
- * The important difference from your old code:
- *
- * We don't do:
- *
- *   mix(color, white, ...)
- *   mix(color, black, ...)
- *
- * Instead, every step gets its own perceptual Lightness and Chroma.
- */
-
-/* -------------------------------------------------------------------------- */
-/* DARK                                                                       */
-/* -------------------------------------------------------------------------- */
-
 const DARK_RELATIONSHIPS = [
-  // 1 — App background
-  {
-    lightness: 0.12,
-    chroma: 0.16
-  },
+  { lightness: 0.12, chroma: 0.16 },
+  { lightness: 0.15, chroma: 0.19 },
+  { lightness: 0.19, chroma: 0.28 },
+  { lightness: 0.23, chroma: 0.34 },
+  { lightness: 0.27, chroma: 0.4 },
+  { lightness: 0.31, chroma: 0.42 },
+  { lightness: 0.36, chroma: 0.46 },
+  { lightness: 0.42, chroma: 0.52 },
 
-  // 2 — Subtle background
-  {
-    lightness: 0.15,
-    chroma: 0.19
-  },
+  // 9 = supplied color
+  { lightness: 0.55, chroma: 0.72 },
 
-  // 3 — UI background
-  {
-    lightness: 0.19,
-    chroma: 0.28
-  },
-
-  // 4 — Hovered UI
-  {
-    lightness: 0.23,
-    chroma: 0.34
-  },
-
-  // 5 — Selected / active
-  {
-    lightness: 0.27,
-    chroma: 0.4
-  },
-
-  // 6 — Subtle border
-  {
-    lightness: 0.31,
-    chroma: 0.42
-  },
-
-  // 7 — Default border
-  {
-    lightness: 0.36,
-    chroma: 0.46
-  },
-
-  // 8 — Strong border
-  {
-    lightness: 0.42,
-    chroma: 0.52
-  },
-
-  // 9 — Solid
-  {
-    lightness: 0.55,
-    chroma: 0.72
-  },
-
-  // 10 — Solid hover
-  {
-    lightness: 0.61,
-    chroma: 0.68
-  },
-
-  // 11 — Low contrast text
-  {
-    lightness: 0.75,
-    chroma: 0.42
-  },
-
-  // 12 — High contrast text
-  {
-    lightness: 0.94,
-    chroma: 0.1
-  }
+  { lightness: 0.61, chroma: 0.68 },
+  { lightness: 0.75, chroma: 0.42 },
+  { lightness: 0.94, chroma: 0.1 }
 ];
 
-/* -------------------------------------------------------------------------- */
-/* LIGHT                                                                      */
-/* -------------------------------------------------------------------------- */
-
 const LIGHT_RELATIONSHIPS = [
-  // 1
-  {
-    lightness: 0.985,
-    chroma: 0.08
-  },
+  { lightness: 0.985, chroma: 0.08 },
+  { lightness: 0.965, chroma: 0.12 },
+  { lightness: 0.925, chroma: 0.22 },
+  { lightness: 0.875, chroma: 0.35 },
+  { lightness: 0.815, chroma: 0.48 },
+  { lightness: 0.745, chroma: 0.6 },
+  { lightness: 0.665, chroma: 0.72 },
+  { lightness: 0.575, chroma: 0.82 },
 
-  // 2
-  {
-    lightness: 0.965,
-    chroma: 0.12
-  },
+  // 9 = supplied color
+  { lightness: 0.543, chroma: 1 },
 
-  // 3
-  {
-    lightness: 0.925,
-    chroma: 0.22
-  },
-
-  // 4
-  {
-    lightness: 0.875,
-    chroma: 0.35
-  },
-
-  // 5
-  {
-    lightness: 0.815,
-    chroma: 0.48
-  },
-
-  // 6
-  {
-    lightness: 0.745,
-    chroma: 0.6
-  },
-
-  // 7
-  {
-    lightness: 0.665,
-    chroma: 0.72
-  },
-
-  // 8
-  {
-    lightness: 0.575,
-    chroma: 0.82
-  },
-
-  // 9
-  {
-    lightness: 0.543,
-    chroma: 1
-  },
-
-  // 10
-  {
-    lightness: 0.5,
-    chroma: 0.88
-  },
-
-  // 11
-  {
-    lightness: 0.42,
-    chroma: 0.72
-  },
-
-  // 12
-  {
-    lightness: 0.28,
-    chroma: 0.52
-  }
+  { lightness: 0.5, chroma: 0.88 },
+  { lightness: 0.42, chroma: 0.72 },
+  { lightness: 0.28, chroma: 0.52 }
 ];
 
 /* ========================================================================== */
@@ -567,24 +410,13 @@ export function createRadixScale(color: string, mode: PaletteMode): RadixScale {
     /*
      * STEP 9
      *
-     * Never alter the user's supplied color.
-     *
-     * This is what makes:
-     *
-     *   getTheme('dark', '#4967C9')
-     *
-     * have #4967C9 as step 9.
+     * Always preserve the user's
+     * actual supplied color.
      */
     if (index === 8) {
       return baseColor;
     }
 
-    /*
-     * Chroma is proportional to the supplied color.
-     *
-     * This keeps the relationships consistent when changing the base
-     * color.
-     */
     const targetChroma = base.C * relationship.chroma;
 
     return oklchToHex(relationship.lightness, targetChroma, base.H);
@@ -604,9 +436,6 @@ export function createRadixScale(color: string, mode: PaletteMode): RadixScale {
     11: values[10],
     12: values[11],
 
-    /*
-     * Semantic aliases
-     */
     surface: mode === 'dark' ? values[2] : values[1],
 
     indicator: values[8],
@@ -618,102 +447,22 @@ export function createRadixScale(color: string, mode: PaletteMode): RadixScale {
 }
 
 /* ========================================================================== */
-/* SECONDARY COLOR SCALE                                                      */
+/* BACKGROUND SCALE — 60%                                                     */
 /* ========================================================================== */
 
 /**
- * Creates a secondary palette derived from the primary color.
+ * BACKGROUND
  *
- * The secondary color:
- * - keeps the primary's general hue
- * - shifts the hue slightly
- * - reduces chroma
- * - preserves the same lightness relationships
+ * This is the 60% visual layer.
  *
- * This creates a color that visually belongs to the primary theme.
+ * It should be:
+ * - dominant
+ * - calm
+ * - clearly related to the supplied background color
+ * - suitable for large surfaces
+ *
+ * It does NOT compete with primary or secondary.
  */
-export function createSecondaryScale(
-  color: string,
-  mode: PaletteMode
-): RadixScale {
-  const base = hexToOklch(normalizeHex(color));
-
-  /*
-   * Shift the hue slightly.
-   *
-   * This creates a neighboring color rather than simply
-   * making the primary lighter/darker.
-   */
-  let hue = base.H + 35;
-
-  if (hue >= 360) {
-    hue -= 360;
-  }
-
-  /*
-   * Secondary should feel related to primary,
-   * but slightly less dominant.
-   */
-  const secondaryColor = oklchToHex(base.L, Math.min(base.C * 0.72, 0.2), hue);
-
-  return createRadixScale(secondaryColor, mode);
-}
-
-/* ========================================================================== */
-/* NEUTRAL SCALE                                                              */
-/* ========================================================================== */
-
-export const createNeutralScale = (
-  mode: PaletteMode,
-  color: string
-): NeutralScale => {
-  const base = hexToOklch(normalizeHex(color));
-
-  const hue = base.H;
-
-  if (mode === 'dark') {
-    return {
-      1: oklchToHex(0.178, Math.min(base.C * 0.08, 0.015), hue),
-      2: oklchToHex(0.207, Math.min(base.C * 0.1, 0.018), hue),
-      3: oklchToHex(0.272, Math.min(base.C * 0.11, 0.022), hue),
-      4: oklchToHex(0.317, Math.min(base.C * 0.12, 0.026), hue),
-      5: oklchToHex(0.361, Math.min(base.C * 0.13, 0.03), hue),
-      6: oklchToHex(0.402, Math.min(base.C * 0.14, 0.034), hue),
-      7: oklchToHex(0.451, Math.min(base.C * 0.15, 0.038), hue),
-      8: oklchToHex(0.504, Math.min(base.C * 0.16, 0.042), hue),
-      9: oklchToHex(0.59, Math.min(base.C * 0.17, 0.045), hue),
-      10: oklchToHex(0.66, Math.min(base.C * 0.18, 0.048), hue),
-      11: oklchToHex(0.76, Math.min(base.C * 0.19, 0.052), hue),
-      12: oklchToHex(0.93, Math.min(base.C * 0.2, 0.055), hue)
-    };
-  }
-
-  return {
-    1: oklchToHex(0.985, Math.min(base.C * 0.08, 0.012), hue),
-    2: oklchToHex(0.965, Math.min(base.C * 0.09, 0.014), hue),
-    3: oklchToHex(0.925, Math.min(base.C * 0.1, 0.016), hue),
-    4: oklchToHex(0.875, Math.min(base.C * 0.11, 0.018), hue),
-    5: oklchToHex(0.815, Math.min(base.C * 0.12, 0.02), hue),
-    6: oklchToHex(0.745, Math.min(base.C * 0.13, 0.022), hue),
-    7: oklchToHex(0.665, Math.min(base.C * 0.14, 0.024), hue),
-    8: oklchToHex(0.575, Math.min(base.C * 0.15, 0.026), hue),
-    9: oklchToHex(0.5, Math.min(base.C * 0.16, 0.028), hue),
-    10: oklchToHex(0.42, Math.min(base.C * 0.17, 0.03), hue),
-    11: oklchToHex(0.34, Math.min(base.C * 0.18, 0.032), hue),
-    12: oklchToHex(0.25, Math.min(base.C * 0.19, 0.034), hue)
-  };
-};
-
-/* ========================================================================== */
-/* SEMANTIC COLORS                                                            */
-/* ========================================================================== */
-
-export const semanticColors = {
-  error: '#E5484D',
-  warning: '#F59E0B',
-  info: '#0090FF',
-  success: '#30A46C'
-};
 
 export const createBackgroundScale = (
   mode: PaletteMode,
@@ -725,54 +474,93 @@ export const createBackgroundScale = (
 
   if (mode === 'dark') {
     return {
-      // Very dark → clearly tinted by the input color
       1: oklchToHex(0.09, base.C * 0.1, hue),
+
       2: oklchToHex(0.12, base.C * 0.14, hue),
+
       3: oklchToHex(0.16, base.C * 0.18, hue),
+
       4: oklchToHex(0.2, base.C * 0.22, hue),
+
       5: oklchToHex(0.24, base.C * 0.26, hue),
+
       6: oklchToHex(0.29, base.C * 0.3, hue),
+
       7: oklchToHex(0.35, base.C * 0.36, hue),
+
       8: oklchToHex(0.42, base.C * 0.44, hue),
 
-      // Strong representation of the input color
       9: oklchToHex(0.5, base.C * 0.55, hue),
 
       10: oklchToHex(0.58, base.C * 0.5, hue),
+
       11: oklchToHex(0.76, base.C * 0.38, hue),
+
       12: oklchToHex(0.93, base.C * 0.22, hue),
 
       surface: oklchToHex(0.16, base.C * 0.18, hue),
+
       indicator: oklchToHex(0.5, base.C * 0.55, hue),
+
       track: oklchToHex(0.29, base.C * 0.3, hue),
+
       contrast: oklchToHex(0.93, base.C * 0.22, hue)
     };
   }
 
   return {
-    // Light → increasingly visible tint
     1: oklchToHex(0.985, base.C * 0.1, hue),
+
     2: oklchToHex(0.965, base.C * 0.14, hue),
+
     3: oklchToHex(0.935, base.C * 0.18, hue),
+
     4: oklchToHex(0.9, base.C * 0.22, hue),
+
     5: oklchToHex(0.85, base.C * 0.26, hue),
+
     6: oklchToHex(0.78, base.C * 0.3, hue),
+
     7: oklchToHex(0.7, base.C * 0.36, hue),
+
     8: oklchToHex(0.61, base.C * 0.44, hue),
 
-    // Strong representation of the input color
     9: oklchToHex(0.52, base.C * 0.55, hue),
 
     10: oklchToHex(0.44, base.C * 0.5, hue),
+
     11: oklchToHex(0.34, base.C * 0.38, hue),
+
     12: oklchToHex(0.22, base.C * 0.22, hue),
 
     surface: oklchToHex(0.965, base.C * 0.14, hue),
+
     indicator: oklchToHex(0.52, base.C * 0.55, hue),
+
     track: oklchToHex(0.85, base.C * 0.26, hue),
+
     contrast: oklchToHex(0.22, base.C * 0.22, hue)
   };
 };
+
+/* ========================================================================== */
+/* GRAY SCALE — NEUTRAL / DISABLED                                            */
+/* ========================================================================== */
+
+/**
+ * GRAY
+ *
+ * Gray is NOT part of the 60 / 30 / 10 color ratio.
+ *
+ * It is reserved for:
+ * - disabled controls
+ * - disabled text
+ * - placeholders
+ * - muted information
+ * - neutral borders
+ * - neutral icons
+ * - loading/skeleton states
+ */
 
 export const createGrayScale = (
   mode: PaletteMode,
@@ -780,13 +568,6 @@ export const createGrayScale = (
 ): RadixScale => {
   const base = hexToOklch(normalizeHex(color));
 
-  /*
-   * Gray keeps only a tiny amount of the accent hue.
-   *
-   * This gives you the Radix "Gray" feeling while preventing
-   * gray surfaces from looking completely disconnected from
-   * the selected accent.
-   */
   const hue = base.H;
 
   if (mode === 'dark') {
@@ -805,8 +586,11 @@ export const createGrayScale = (
       12: oklchToHex(0.93, 0.016, hue),
 
       surface: oklchToHex(0.21, 0.007, hue),
+
       indicator: oklchToHex(0.56, 0.013, hue),
+
       track: oklchToHex(0.35, 0.01, hue),
+
       contrast: oklchToHex(0.93, 0.016, hue)
     };
   }
@@ -826,46 +610,72 @@ export const createGrayScale = (
     12: oklchToHex(0.22, 0.016, hue),
 
     surface: oklchToHex(0.94, 0.007, hue),
+
     indicator: oklchToHex(0.52, 0.013, hue),
+
     track: oklchToHex(0.78, 0.01, hue),
+
     contrast: oklchToHex(0.22, 0.016, hue)
   };
 };
 
 /* ========================================================================== */
-/* THEME                                                                      */
+/* SEMANTIC COLORS                                                            */
 /* ========================================================================== */
+
+export type SemanticColors = {
+  success: string;
+  warning: string;
+  error: string;
+  info: string;
+};
+
+export const semanticColors = {
+  error: '#E5484D',
+  warning: '#F59E0B',
+  info: '#0090FF',
+  success: '#30A46C'
+};
 
 /* ========================================================================== */
 /* COLOR SETS                                                                 */
 /* ========================================================================== */
 
+/**
+ * 60 / 30 / 10
+ *
+ * color      = 10% Primary
+ * secondary  = 30% Secondary
+ * background = 60% Background
+ * gray       = Neutral / Disabled
+ */
+
 export const THEME_SETS = {
   blue: {
     color: '#4967C9',
-    secondary: '#aeaeae',
-    gray: '#1e1e1e',
+    secondary: '#6B7FC7',
+    gray: '#1E1E1E',
     background: '#0A0A0A'
   },
 
   purple: {
     color: '#8B5CF6',
-    secondary: '#aeaeae',
-    gray: '#1e1e1e',
+    secondary: '#9B82E6',
+    gray: '#1E1E1E',
     background: '#100B1A'
   },
 
   gold: {
     color: '#F2C94C',
-    secondary: '#aeaeae',
-    gray: '#1e1e1e',
+    secondary: '#C9A83F',
+    gray: '#1E1E1E',
     background: '#171205'
   },
 
   green: {
     color: '#30A46C',
-    secondary: '#aeaeae',
-    gray: '#1e1e1e',
+    secondary: '#4C9F78',
+    gray: '#1E1E1E',
     background: '#07140D'
   }
 } as const;
@@ -877,9 +687,16 @@ export type ThemeSetName = keyof typeof THEME_SETS;
 /* ========================================================================== */
 
 export type CustomThemeColors = {
+  /** 10% Primary */
   color: string;
-  gray: string;
+
+  /** 30% Secondary */
   secondary: string;
+
+  /** Neutral / Disabled */
+  gray: string;
+
+  /** 60% Background */
   background: string;
 };
 
@@ -892,36 +709,42 @@ export const getThemeFromSet = (
   set: ThemeSetName = 'blue',
   customColors?: CustomThemeColors
 ) => {
-  /*
-   * Use custom colors when supplied.
-   *
-   * Otherwise use the selected preset.
-   */
   const colors = customColors ?? THEME_SETS[set] ?? THEME_SETS.blue;
 
   /* ------------------------------------------------------------------------ */
-  /* Generate scales                                                          */
+  /* 10% — PRIMARY                                                           */
   /* ------------------------------------------------------------------------ */
 
   const colorScale = createRadixScale(colors.color, mode);
 
+  /* ------------------------------------------------------------------------ */
+  /* 30% — SECONDARY                                                         */
+  /* ------------------------------------------------------------------------ */
+
   const secondaryScale = createRadixScale(colors.secondary, mode);
+
+  /* ------------------------------------------------------------------------ */
+  /* 60% — BACKGROUND                                                        */
+  /* ------------------------------------------------------------------------ */
 
   const backgroundScale = createBackgroundScale(mode, colors.background);
 
+  /* ------------------------------------------------------------------------ */
+  /* NEUTRAL / DISABLED                                                       */
+  /* ------------------------------------------------------------------------ */
+
   const grayScale = createGrayScale(mode, colors.gray);
 
-  const isDark = mode === 'dark';
-
   /* ------------------------------------------------------------------------ */
-  /* Background                                                               */
+  /* BACKGROUND                                                               */
   /* ------------------------------------------------------------------------ */
 
-  const backgroundDefault = backgroundScale[3];
-  const backgroundPaper = grayScale[4];
+  const backgroundDefault = backgroundScale[1];
+
+  const backgroundPaper = backgroundScale[2];
 
   /* ------------------------------------------------------------------------ */
-  /* Create MUI theme                                                         */
+  /* THEME                                                                    */
   /* ------------------------------------------------------------------------ */
 
   return createTheme({
@@ -930,22 +753,30 @@ export const getThemeFromSet = (
     },
 
     colorScale,
+
     secondaryScale,
+
     backgroundScale,
+
     grayScale,
 
     palette: {
       mode,
 
+      /* ==================================================================== */
+      /* PRIMARY — 10%                                                        */
+      /* ==================================================================== */
+
       primary: {
         main: colorScale[9],
-
         light: colorScale[10],
-
         dark: colorScale[8],
-
         contrastText: colorScale.contrast
       },
+
+      /* ==================================================================== */
+      /* SECONDARY — 30%                                                      */
+      /* ==================================================================== */
 
       secondary: {
         main: secondaryScale[9],
@@ -953,6 +784,10 @@ export const getThemeFromSet = (
         dark: secondaryScale[8],
         contrastText: secondaryScale.contrast
       },
+
+      /* ==================================================================== */
+      /* SEMANTIC                                                              */
+      /* ==================================================================== */
 
       error: {
         main: semanticColors.error
@@ -970,17 +805,22 @@ export const getThemeFromSet = (
         main: semanticColors.success
       },
 
+      /* ==================================================================== */
+      /* BACKGROUND — 60%                                                     */
+      /* ==================================================================== */
+
       background: {
         default: backgroundDefault,
-
         paper: backgroundPaper
       },
 
+      /* ==================================================================== */
+      /* NEUTRAL / DISABLED                                                    */
+      /* ==================================================================== */
+
       text: {
         primary: grayScale[12],
-
         secondary: grayScale[11],
-
         disabled: grayScale[9]
       },
 
@@ -993,7 +833,6 @@ export const getThemeFromSet = (
 
     typography: {
       fontFamily: [
-        Numeric,
         'Inter',
         'Roboto',
         'Helvetica Neue',
@@ -1002,10 +841,6 @@ export const getThemeFromSet = (
       ].join(','),
 
       fontSize: 14,
-
-      /* ====================================================================== */
-      /* HEADINGS                                                               */
-      /* ====================================================================== */
 
       h1: {
         fontSize: 'clamp(2.25rem, 4vw, 3.5rem)',
@@ -1049,10 +884,6 @@ export const getThemeFromSet = (
         letterSpacing: 0
       },
 
-      /* ====================================================================== */
-      /* SUBTITLES                                                              */
-      /* ====================================================================== */
-
       subtitle1: {
         fontSize: 'clamp(0.95rem, 1.2vw, 1rem)',
         lineHeight: 1.55,
@@ -1066,10 +897,6 @@ export const getThemeFromSet = (
         fontWeight: 500,
         letterSpacing: '0.005em'
       },
-
-      /* ====================================================================== */
-      /* BODY                                                                   */
-      /* ====================================================================== */
 
       body1: {
         fontSize: 'clamp(0.9rem, 1vw, 1rem)',
@@ -1085,10 +912,6 @@ export const getThemeFromSet = (
         letterSpacing: 0
       },
 
-      /* ====================================================================== */
-      /* BUTTON                                                                 */
-      /* ====================================================================== */
-
       button: {
         fontSize: 'clamp(0.8rem, 0.9vw, 0.875rem)',
         lineHeight: 1.4,
@@ -1097,20 +920,12 @@ export const getThemeFromSet = (
         letterSpacing: 0
       },
 
-      /* ====================================================================== */
-      /* CAPTION                                                                */
-      /* ====================================================================== */
-
       caption: {
         fontSize: 'clamp(0.7rem, 0.8vw, 0.75rem)',
         lineHeight: 1.5,
         fontWeight: 400,
         letterSpacing: '0.005em'
       },
-
-      /* ====================================================================== */
-      /* OVERLINE                                                               */
-      /* ====================================================================== */
 
       overline: {
         fontSize: 'clamp(0.65rem, 0.7vw, 0.7rem)',
@@ -1119,10 +934,6 @@ export const getThemeFromSet = (
         letterSpacing: '0.08em',
         textTransform: 'uppercase'
       },
-
-      /* ====================================================================== */
-      /* CUSTOM TYPOGRAPHY                                                      */
-      /* ====================================================================== */
 
       display: {
         fontSize: 'clamp(2.75rem, 6vw, 5rem)',
@@ -1222,7 +1033,9 @@ export const getThemeFromSet = (
 
           body: {
             margin: 0,
+
             backgroundColor: backgroundScale[1],
+
             color: grayScale[12]
           },
 
@@ -1231,9 +1044,9 @@ export const getThemeFromSet = (
           },
 
           '::selection': {
-            backgroundColor: colorScale[9],
+            backgroundColor: colorScale[7],
 
-            color: colorScale.contrast
+            color: colorScale[12]
           },
 
           '::-webkit-scrollbar': {
@@ -1242,394 +1055,13 @@ export const getThemeFromSet = (
           },
 
           '::-webkit-scrollbar-track': {
-            backgroundColor: colorScale[2]
+            backgroundColor: backgroundScale[2]
           },
 
           '::-webkit-scrollbar-thumb': {
-            backgroundColor: colorScale[7],
-            borderRadius: 999
-          }
-        }
-      },
-
-      /* -------------------------------------------------------------------- */
-      /* BUTTON                                                               */
-      /* -------------------------------------------------------------------- */
-
-      MuiButton: {
-        styleOverrides: {
-          root: {
-            borderRadius: 8,
-
-            textTransform: 'none',
-
-            fontWeight: 700,
-
-            boxShadow: 'none',
-
-            '&:hover': {
-              boxShadow: 'none'
-            },
-
-            // ─────────────────────────────────────────────
-            // Contained Primary
-            // ─────────────────────────────────────────────
-            '&.MuiButton-containedPrimary': {
-              backgroundColor: colorScale[9],
-
-              color: colorScale.contrast,
-
-              '&:hover': {
-                backgroundColor: colorScale[10]
-              },
-
-              '&:active': {
-                backgroundColor: colorScale[8]
-              }
-            },
-
-            // ─────────────────────────────────────────────
-            // Outlined Primary
-            // ─────────────────────────────────────────────
-            '&.MuiButton-outlinedPrimary': {
-              borderColor: colorScale[7],
-
-              color: colorScale[11],
-
-              '&:hover': {
-                borderColor: colorScale[8],
-
-                backgroundColor: colorScale[3]
-              }
-            },
-
-            // ─────────────────────────────────────────────
-            // Text Primary
-            // ─────────────────────────────────────────────
-            '&.MuiButton-textPrimary': {
-              color: colorScale[11],
-
-              '&:hover': {
-                backgroundColor: colorScale[3]
-              }
-            }
-          }
-        }
-      },
-
-      /* -------------------------------------------------------------------- */
-      /* ICON BUTTON                                                           */
-      /* -------------------------------------------------------------------- */
-
-      MuiIconButton: {
-        styleOverrides: {
-          root: {
-            color: colorScale[11],
-
-            '&:hover': {
-              backgroundColor: colorScale[3]
-            }
-          }
-        }
-      },
-
-      /* -------------------------------------------------------------------- */
-      /* CARD                                                                 */
-      /* -------------------------------------------------------------------- */
-
-      MuiCard: {
-        styleOverrides: {
-          root: {
-            backgroundColor: grayScale[4],
-            border: `1px solid ${grayScale[6]}`,
-            boxShadow: 'none'
-          }
-        }
-      },
-
-      /* -------------------------------------------------------------------- */
-      /* PAPER                                                                */
-      /* -------------------------------------------------------------------- */
-
-      MuiPaper: {
-        styleOverrides: {
-          root: {
-            backgroundImage: 'none'
-          }
-        }
-      },
-
-      /* -------------------------------------------------------------------- */
-      /* OUTLINED INPUT                                                       */
-      /* -------------------------------------------------------------------- */
-
-      MuiOutlinedInput: {
-        styleOverrides: {
-          root: {
-            borderRadius: 8,
-
-            '& .MuiOutlinedInput-notchedOutline': {
-              borderColor: grayScale[6]
-            },
-
-            '&:hover .MuiOutlinedInput-notchedOutline': {
-              borderColor: grayScale[7]
-            },
-
-            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-              borderColor: colorScale[8],
-              borderWidth: 1
-            }
-          }
-        }
-      },
-
-      /* -------------------------------------------------------------------- */
-      /* INPUT LABEL                                                          */
-      /* -------------------------------------------------------------------- */
-
-      MuiInputLabel: {
-        styleOverrides: {
-          root: {
-            color: grayScale[11],
-
-            '&.Mui-focused': {
-              color: colorScale[11]
-            }
-          }
-        }
-      },
-
-      /* -------------------------------------------------------------------- */
-      /* CHIP                                                                 */
-      /* -------------------------------------------------------------------- */
-
-      MuiChip: {
-        styleOverrides: {
-          root: {
-            borderRadius: 999
-          },
-
-          colorPrimary: {
-            backgroundColor: colorScale[3],
-
-            color: colorScale[11]
-          }
-        }
-      },
-
-      /* -------------------------------------------------------------------- */
-      /* TOOLTIP                                                              */
-      /* -------------------------------------------------------------------- */
-
-      MuiTooltip: {
-        styleOverrides: {
-          tooltip: {
-            backgroundColor: grayScale[12],
-            color: grayScale[1],
-            borderRadius: 6,
-            fontSize: '0.75rem'
-          }
-        }
-      },
-
-      /* -------------------------------------------------------------------- */
-      /* DIVIDER                                                              */
-      /* -------------------------------------------------------------------- */
-
-      MuiDivider: {
-        styleOverrides: {
-          root: {
-            borderColor: grayScale[6]
-          }
-        }
-      },
-
-      /* -------------------------------------------------------------------- */
-      /* CHECKBOX                                                             */
-      /* -------------------------------------------------------------------- */
-
-      MuiCheckbox: {
-        styleOverrides: {
-          root: {
-            color: colorScale[8],
-
-            '&.Mui-checked': {
-              color: colorScale[9]
-            }
-          }
-        }
-      },
-
-      /* -------------------------------------------------------------------- */
-      /* RADIO                                                                */
-      /* -------------------------------------------------------------------- */
-
-      MuiRadio: {
-        styleOverrides: {
-          root: {
-            color: colorScale[8],
-
-            '&.Mui-checked': {
-              color: colorScale[9]
-            }
-          }
-        }
-      },
-
-      /* -------------------------------------------------------------------- */
-      /* SWITCH                                                               */
-      /* -------------------------------------------------------------------- */
-
-      MuiSwitch: {
-        styleOverrides: {
-          switchBase: {
-            '&.Mui-checked': {
-              color: colorScale[9],
-
-              '& + .MuiSwitch-track': {
-                backgroundColor: colorScale[9],
-
-                opacity: 1
-              }
-            }
-          },
-
-          track: {
-            backgroundColor: colorScale[6],
-
-            opacity: 1
-          }
-        }
-      },
-
-      /* -------------------------------------------------------------------- */
-      /* LINEAR PROGRESS                                                      */
-      /* -------------------------------------------------------------------- */
-
-      MuiLinearProgress: {
-        styleOverrides: {
-          root: {
-            backgroundColor: colorScale.track,
+            backgroundColor: secondaryScale[7],
 
             borderRadius: 999
-          },
-
-          bar: {
-            backgroundColor: colorScale.indicator,
-
-            borderRadius: 999
-          }
-        }
-      },
-
-      /* -------------------------------------------------------------------- */
-      /* CIRCULAR PROGRESS                                                    */
-      /* -------------------------------------------------------------------- */
-
-      MuiCircularProgress: {
-        styleOverrides: {
-          root: {
-            color: colorScale[9]
-          }
-        }
-      },
-
-      /* -------------------------------------------------------------------- */
-      /* TABS                                                                 */
-      /* -------------------------------------------------------------------- */
-
-      MuiTabs: {
-        styleOverrides: {
-          indicator: {
-            backgroundColor: colorScale[9]
-          }
-        }
-      },
-
-      /* -------------------------------------------------------------------- */
-      /* TAB                                                                  */
-      /* -------------------------------------------------------------------- */
-
-      MuiTab: {
-        styleOverrides: {
-          root: {
-            color: grayScale[11],
-
-            textTransform: 'none',
-
-            fontWeight: 700,
-
-            '&.Mui-selected': {
-              color: colorScale[11]
-            }
-          }
-        }
-      },
-
-      /* -------------------------------------------------------------------- */
-      /* DIALOG                                                               */
-      /* -------------------------------------------------------------------- */
-
-      MuiDialog: {
-        styleOverrides: {
-          paper: {
-            backgroundColor: backgroundScale[2],
-            border: `1px solid ${grayScale[6]}`,
-
-            backgroundImage: 'none'
-          }
-        }
-      },
-
-      /* -------------------------------------------------------------------- */
-      /* MENU                                                                 */
-      /* -------------------------------------------------------------------- */
-
-      MuiMenu: {
-        styleOverrides: {
-          paper: {
-            backgroundColor: backgroundScale[2],
-            border: `1px solid ${grayScale[6]}`,
-
-            backgroundImage: 'none'
-          }
-        }
-      },
-
-      /* -------------------------------------------------------------------- */
-      /* MENU ITEM                                                            */
-      /* -------------------------------------------------------------------- */
-
-      MuiMenuItem: {
-        styleOverrides: {
-          root: {
-            borderRadius: 6,
-
-            '&:hover': {
-              backgroundColor: colorScale[3]
-            },
-
-            '&.Mui-selected': {
-              backgroundColor: colorScale[4],
-
-              '&:hover': {
-                backgroundColor: colorScale[5]
-              }
-            }
-          }
-        }
-      },
-
-      /* -------------------------------------------------------------------- */
-      /* SNACKBAR                                                             */
-      /* -------------------------------------------------------------------- */
-
-      MuiSnackbarContent: {
-        styleOverrides: {
-          root: {
-            backgroundColor: grayScale[12],
-            color: grayScale[1]
           }
         }
       }
