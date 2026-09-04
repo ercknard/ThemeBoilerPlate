@@ -2447,6 +2447,7 @@ function ColorUsageCard({
 
       <Box
         sx={{
+          backgroundColor: theme.secondaryScale[3],
           p: {
             xs: 2,
             sm: 3,
@@ -2571,7 +2572,7 @@ function ColorScaleSection({
               flexWrap: 'wrap'
             }}
           >
-            <Typography variant="h4">{title}</Typography>
+            <Typography variant="h5">{title}</Typography>
 
             <Chip
               size="small"
@@ -2621,6 +2622,7 @@ function ColorScaleSection({
 
       <Box
         sx={{
+          backgroundColor: theme.secondaryScale[3],
           display: 'grid',
           gridTemplateColumns: {
             xs: 'repeat(3, 1fr)',
@@ -2682,6 +2684,7 @@ function ColorScaleSection({
 
           <Box
             sx={{
+              backgroundColor: theme.secondaryScale[3],
               display: 'grid',
               gridTemplateColumns: {
                 xs:
@@ -3032,7 +3035,7 @@ function ShowcaseCard({
             sm: 3,
             md: 4
           },
-          backgroundColor: theme.backgroundScale[4]
+          backgroundColor: theme.secondaryScale[3]
         }}
       >
         {children}
@@ -3364,14 +3367,10 @@ function TypographyUsageSection() {
             key={sample.name}
             variant="outlined"
             sx={{
-              p: {
-                xs: 2,
-                md: 3
-              },
               borderColor: theme.secondaryScale[6]
             }}
           >
-            <Stack spacing={3}>
+            <Stack>
               {/* Header */}
 
               <Stack
@@ -3381,6 +3380,10 @@ function TypographyUsageSection() {
                 }}
                 spacing={2}
                 sx={{
+                  p: {
+                    xs: 2,
+                    md: 3
+                  },
                   justifyContent: 'space-between',
                   alignItems: {
                     xs: 'flex-start',
@@ -3389,7 +3392,7 @@ function TypographyUsageSection() {
                 }}
               >
                 <Stack>
-                  <Typography variant="sectionTitle">{sample.name}</Typography>
+                  <Typography variant="h5">{sample.name}</Typography>
 
                   <Typography
                     variant="small"
@@ -3418,41 +3421,46 @@ function TypographyUsageSection() {
 
               {/* Live preview */}
 
-              <Box
-                sx={{
-                  p: {
-                    xs: 2,
-                    md: 4
-                  },
-                  borderRadius: 2,
-                  bgcolor: theme.backgroundScale[1],
-                  border: `1px solid ${theme.secondaryScale[6]}`
-                }}
+              <Stack
+                spacing={2}
+                sx={{ p: 3, backgroundColor: theme.secondaryScale[3] }}
               >
-                <Typography variant={sample.variant}>
-                  The quick brown fox jumps over the lazy dog.
-                </Typography>
-              </Box>
+                <Box
+                  sx={{
+                    p: {
+                      xs: 2,
+                      md: 3
+                    },
+                    borderRadius: 2,
+                    bgcolor: theme.backgroundScale[1],
+                    border: `1px solid ${theme.secondaryScale[6]}`
+                  }}
+                >
+                  <Typography variant={sample.variant}>
+                    The quick brown fox jumps over the lazy dog.
+                  </Typography>
+                </Box>
 
-              {/* Code */}
+                {/* Code */}
 
-              <Box
-                component="pre"
-                sx={{
-                  m: 0,
-                  p: 2,
-                  overflowX: 'auto',
-                  borderRadius: 2,
-                  bgcolor: theme.grayScale[2],
-                  color: theme.grayScale[12],
-                  fontFamily: 'monospace',
-                  fontSize: '0.8rem',
-                  lineHeight: 1.7,
-                  border: `1px solid ${theme.grayScale[6]}`
-                }}
-              >
-                <code>{sample.code}</code>
-              </Box>
+                <Box
+                  component="pre"
+                  sx={{
+                    m: 0,
+                    p: 2,
+                    overflowX: 'auto',
+                    borderRadius: 2,
+                    bgcolor: theme.grayScale[2],
+                    color: theme.grayScale[12],
+                    fontFamily: 'monospace',
+                    fontSize: '0.8rem',
+                    lineHeight: 1.7,
+                    border: `1px solid ${theme.grayScale[6]}`
+                  }}
+                >
+                  <code>{sample.code}</code>
+                </Box>
+              </Stack>
             </Stack>
           </AppPaper>
         ))}

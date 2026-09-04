@@ -124,7 +124,7 @@ export const AppButton = React.forwardRef<HTMLButtonElement, AppButtonProps>(
 AppButton.displayName = 'AppButton';
 
 export const AppPaper = styled(MuiPaper)(({ theme }) => ({
-  backgroundColor: theme.backgroundScale[5],
+  backgroundColor: theme.secondaryScale[4],
   backgroundImage: 'none',
   border: `1px solid ${theme.secondaryScale[6]}`,
   boxShadow: 'none'
@@ -139,7 +139,7 @@ export const AppCard = styled(MuiCard)(({ theme }) => ({
 
   overflow: 'hidden',
 
-  backgroundColor: theme.backgroundScale[5],
+  backgroundColor: theme.secondaryScale[4],
 
   border: `1px solid ${theme.secondaryScale[6]}`,
 
