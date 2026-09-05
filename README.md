@@ -1,4 +1,9 @@
-````md
+# Theme Boilerplate
+
+A modern Next.js + TypeScript + Material UI boilerplate with a customizable design system, theme presets, responsive typography, color scales, and MUI component customization.
+
+---
+
 ## 💻 Development
 
 Start the development server:
@@ -73,7 +78,7 @@ Themes can be changed using the theme controls.
 
 # 🖌️ Custom Colors
 
-The theme system supports custom colors:
+The theme system supports custom colors.
 
 ```ts
 type CustomThemeColors = {
@@ -155,15 +160,15 @@ http://localhost:3000/theme
 
 The showcase includes:
 
-### Overview
+## Overview
 
 General theme and typography examples.
 
-### Typography
+## Typography
 
 Examples of the custom typography system and responsive typography.
 
-### Colors
+## Colors
 
 Examples of:
 
@@ -172,8 +177,9 @@ Examples of:
 * Background scales
 * Semantic colors
 * Color usage
+* Text colors
 
-### Components
+## Components
 
 Examples of MUI components styled using the active theme.
 
@@ -341,7 +347,7 @@ Example:
 
 The homepage includes quick links to the theme showcase and GitHub repository.
 
-### Theme
+## Theme
 
 ```text
 /theme
@@ -349,7 +355,7 @@ The homepage includes quick links to the theme showcase and GitHub repository.
 
 Opens the interactive theme showcase.
 
-### GitHub
+## GitHub
 
 Update the GitHub URL in the homepage:
 
@@ -469,5 +475,3 @@ Contributions, improvements, and suggestions are welcome.
 ---
 
 > A clean starting point for building modern applications with a customizable MUI design system.
-
-```
