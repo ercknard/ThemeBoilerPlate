@@ -471,4 +471,3 @@ Contributions, improvements, and suggestions are welcome.
 > A clean starting point for building modern applications with a customizable MUI design system.
 
 ```
-```
