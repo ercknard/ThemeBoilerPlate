@@ -378,11 +378,11 @@ export default function TypographyShowcase() {
       <Box
         sx={{
           minHeight: '100vh',
-          background: `${alpha(theme.colorScale[3], 0.65)}`,
+          background: `${alpha(theme.backgroundScale[3], 1)}`,
           color: 'text.primary'
         }}
       >
-        <Box
+        {/* <Box
           sx={{
             position: 'absolute',
             top: 0,
@@ -399,7 +399,7 @@ export default function TypographyShowcase() {
 `,
             color: 'text.primary'
           }}
-        />
+        /> */}
 
         <Grid
           container
@@ -440,14 +440,13 @@ export default function TypographyShowcase() {
                     display: 'flex',
                     flexDirection: 'column',
                     overflow: 'hidden',
-
+                    borderRadius: 0,
                     borderRight: `2px solid ${secondaryScale[7]}`,
-                    backgroundColor: alpha(backgroundScale[4], 0.75),
-                    backdropFilter: 'blur(18px)'
+                    backgroundColor: alpha(backgroundScale[4], 1)
                   }}
                 >
                   <Stack
-                    spacing={2}
+                    spacing={1.5}
                     direction={'row'}
                     sx={{
                       position: 'relative',
@@ -473,18 +472,6 @@ export default function TypographyShowcase() {
                         cursor: 'pointer',
                         textDecoration: 'none',
 
-                        '@keyframes logoFloat': {
-                          '0%': {
-                            transform: 'translateY(0) scale(1)'
-                          },
-                          '50%': {
-                            transform: 'translateY(-8px) scale(1.03)'
-                          },
-                          '100%': {
-                            transform: 'translateY(0) scale(1)'
-                          }
-                        },
-
                         transition: 'filter 0.2s ease',
 
                         '&:hover': {
@@ -498,15 +485,7 @@ export default function TypographyShowcase() {
                         fill
                         priority
                         style={{
-                          objectFit: 'contain',
-
-                          filter: `
-          drop-shadow(0 0 8px ${theme.colorScale[8]})
-          drop-shadow(0 0 20px ${theme.colorScale[6]})
-          drop-shadow(0 0 40px ${theme.colorScale[4]})
-        `,
-
-                          animation: 'logoFloat 10s ease-in-out infinite'
+                          objectFit: 'contain'
                         }}
                       />
                     </Box>
@@ -560,7 +539,7 @@ export default function TypographyShowcase() {
                     sx={{
                       px: 1.5,
                       pt: 3,
-                      pb: 0.75,
+                      pb: 1.25,
                       color: grayScale[11],
                       textTransform: 'uppercase',
                       letterSpacing: '0.08em'
@@ -1158,7 +1137,7 @@ export default function TypographyShowcase() {
                 <Typography
                   variant="large"
                   sx={{
-                    color: secondaryScale[11],
+                    color: grayScale[11],
                     maxWidth: 800,
                     mt: 2,
                     mb: 2
@@ -1242,7 +1221,7 @@ export default function TypographyShowcase() {
                     <Typography
                       variant="body1"
                       sx={{
-                        color: secondaryScale[11],
+                        color: grayScale[11],
                         mb: 4
                       }}
                     >
@@ -1320,7 +1299,7 @@ export default function TypographyShowcase() {
                     <Typography
                       variant="body1"
                       sx={{
-                        color: secondaryScale[11],
+                        color: grayScale[11],
                         mb: 4
                       }}
                     >
@@ -1388,7 +1367,7 @@ export default function TypographyShowcase() {
                     <Typography
                       variant="body1"
                       sx={{
-                        color: secondaryScale[11],
+                        color: grayScale[11],
                         mb: 4
                       }}
                     >
@@ -1444,7 +1423,7 @@ export default function TypographyShowcase() {
                     <Typography
                       variant="body1"
                       sx={{
-                        color: secondaryScale[11],
+                        color: grayScale[11],
                         mb: 4,
                         maxWidth: 850
                       }}
@@ -1528,7 +1507,7 @@ export default function TypographyShowcase() {
                       <Typography
                         variant="body1"
                         sx={{
-                          color: secondaryScale[11],
+                          color: grayScale[11],
                           maxWidth: 850
                         }}
                       >
@@ -1593,7 +1572,7 @@ const colorScale = theme.colorScale;
 <Box
   sx={{
     backgroundColor: secondaryScale[3],
-    color: secondaryScale[11],
+    color: grayScale[11],
     borderColor: secondaryScale[7]
   }}
 >
@@ -1838,7 +1817,7 @@ const colorScale = theme.colorScale;
                     <Typography
                       variant="body1"
                       sx={{
-                        color: secondaryScale[11],
+                        color: grayScale[11],
                         mb: 4
                       }}
                     >
@@ -2075,7 +2054,7 @@ const colorScale = theme.colorScale;
                                 <Typography
                                   variant="small"
                                   sx={{
-                                    color: secondaryScale[11],
+                                    color: grayScale[11],
                                     fontWeight: 700,
                                     whiteSpace: 'nowrap'
                                   }}
@@ -2134,7 +2113,7 @@ const colorScale = theme.colorScale;
                               label="Secondary"
                               sx={{
                                 backgroundColor: secondaryScale[3],
-                                color: secondaryScale[11],
+                                color: grayScale[11],
                                 border: `1px solid ${secondaryScale[6]}`
                               }}
                             />
@@ -2236,7 +2215,7 @@ const colorScale = theme.colorScale;
                     <Typography
                       variant="body1"
                       sx={{
-                        color: secondaryScale[11],
+                        color: grayScale[11],
                         mb: 4,
                         maxWidth: 850
                       }}
@@ -2335,7 +2314,7 @@ const colorScale = theme.colorScale;
                     <Typography
                       variant="body1"
                       sx={{
-                        color: secondaryScale[11],
+                        color: grayScale[11],
                         mb: 4,
                         maxWidth: 850
                       }}
@@ -2653,7 +2632,7 @@ const colorScale = theme.colorScale;
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 backgroundColor: secondaryScale[3],
-                                color: secondaryScale[11],
+                                color: grayScale[11],
                                 border: `1px solid ${secondaryScale[6]}`
                               }}
                             >
@@ -3077,7 +3056,7 @@ const colorScale = theme.colorScale;
                             <AppTooltip title="Pause">
                               <AppIconButton
                                 sx={{
-                                  color: secondaryScale[11],
+                                  color: grayScale[11],
                                   border: `1px solid ${secondaryScale[6]}`,
 
                                   '&:hover': {
@@ -4179,7 +4158,7 @@ function TypographyUsageSection() {
         <Typography
           variant="body1"
           sx={{
-            color: theme.secondaryScale[11],
+            color: theme.grayScale[11],
             maxWidth: 760
           }}
         >

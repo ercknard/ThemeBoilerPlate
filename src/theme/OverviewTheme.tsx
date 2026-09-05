@@ -60,7 +60,7 @@ export default function OverViewTheme() {
             <Typography
               variant="large"
               sx={{
-                color: theme.secondaryScale[11]
+                color: theme.grayScale[11]
               }}
             >
               A dynamic theme powered by custom primary, secondary, gray, and
