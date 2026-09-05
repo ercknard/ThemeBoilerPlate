@@ -665,11 +665,11 @@ export const THEME_SETS = {
     background: '#100B1A'
   },
 
-  gold: {
-    color: '#F2C94C',
-    secondary: '#C9A83F',
-    gray: '#1E1E1E',
-    background: '#171205'
+  coffee: {
+    color: '#C49A6C',
+    secondary: '#8A5A3B',
+    gray: '#29211D',
+    background: '#120C08'
   },
 
   green: {

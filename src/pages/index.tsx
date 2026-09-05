@@ -24,7 +24,7 @@ export default function Home() {
   const THEME_ICONS = {
     blue: '/static/images/logo-blue.png',
     purple: '/static/images/logo-purple.png',
-    gold: '/static/images/logo-gold.png',
+    coffee: '/static/images/logo-coffee.png',
     green: '/static/images/logo-green.png'
   } as const;
 
