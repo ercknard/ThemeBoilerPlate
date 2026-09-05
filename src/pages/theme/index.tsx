@@ -404,7 +404,7 @@ export default function TypographyShowcase() {
         <Grid
           container
           columns={12}
-          spacing={3}
+          spacing={4}
           sx={{
             position: 'relative',
             zIndex: 1,
@@ -414,7 +414,7 @@ export default function TypographyShowcase() {
           }}
         >
           <Grid
-            size={{ xs: 12, md: 2.75 }}
+            size={{ xs: 12, md: 2.5 }}
             sx={{
               display: 'flex',
               alignItems: 'flex-start'
@@ -1125,7 +1125,7 @@ export default function TypographyShowcase() {
           </Grid>
 
           <Grid
-            size={{ xs: 12, md: 7 }}
+            size={{ xs: 12, md: 7.45 }}
             sx={{
               minHeight: { md: '100vh' },
               py: 5
@@ -3178,7 +3178,7 @@ const colorScale = theme.colorScale;
           </Grid>
 
           <Grid
-            size={{ xs: 12, md: 2.25 }}
+            size={{ xs: 12, md: 2.05 }}
             sx={{
               minHeight: { md: '100vh' },
               paddingRight: 2.5
