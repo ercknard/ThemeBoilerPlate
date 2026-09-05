@@ -3194,12 +3194,12 @@ const colorScale = theme.colorScale;
                 flexDirection: 'column',
                 overflow: 'hidden',
                 borderRadius: 1,
-                borderLeft: `2.5px solid ${secondaryScale[7]}`,
+                borderLeft: `2px solid ${secondaryScale[7]}`,
                 backgroundColor: alpha(backgroundScale[4], 0.75),
                 backdropFilter: 'blur(18px)',
 
                 boxShadow: `
-      7.5px 7.5px 1px ${alpha(secondaryScale[7], 0.75)}
+      5px 5px 1px ${alpha(secondaryScale[7], 0.5)}
     `
               }}
             >
