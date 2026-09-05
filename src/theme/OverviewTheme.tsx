@@ -38,7 +38,6 @@ export default function OverViewTheme() {
         <Box
           sx={{
             width: '100%',
-            maxWidth: 1400,
             mx: 'auto',
             px: {
               xs: 2,
@@ -56,20 +55,10 @@ export default function OverViewTheme() {
           {/* ============================================================= */}
 
           <Stack spacing={0} sx={{ mb: 3 }}>
-            <Typography
-              variant="overlineCustom"
-              sx={{
-                color: theme.colorScale[9],
-                fontWeight: 700
-              }}
-            >
-              CryptechServices Theme System
-            </Typography>
-
-            <Typography variant="title">Theme BoilerPlate</Typography>
+            <Typography variant="sectionTitle">Theme BoilerPlate</Typography>
 
             <Typography
-              variant="lead"
+              variant="large"
               sx={{
                 color: theme.secondaryScale[11]
               }}
@@ -84,6 +73,7 @@ export default function OverViewTheme() {
           {/* ============================================================= */}
 
           <AppCard
+            id="overview-color-relationship"
             sx={{
               mb: 5,
               boxShadow: 'none'
@@ -260,6 +250,7 @@ export default function OverViewTheme() {
           {/* ============================================================= */}
 
           <Box
+            id="overview-color-scales"
             sx={{
               display: 'grid',
               gridTemplateColumns: {
@@ -528,6 +519,7 @@ export default function OverViewTheme() {
 
           <Box sx={{ mt: 5 }}>
             <AppCard
+              id="overview-theme-samples"
               sx={{
                 boxShadow: 'none'
               }}
