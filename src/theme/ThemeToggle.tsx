@@ -353,14 +353,14 @@ export default function ThemeToggle() {
                 ? `
         linear-gradient(
           135deg,
-          ${alpha(activeTheme.secondary, 1)},
+          ${alpha(activeTheme.secondary, 0.75)},
           ${alpha(activeTheme.color, 0.15)}
         )
       `
                 : `
         linear-gradient(
           135deg,
-          ${alpha(activeTheme.color, 1)},
+          ${alpha(activeTheme.color, 0.75)},
           ${alpha(activeTheme.secondary, 0.15)}
         )
       `,

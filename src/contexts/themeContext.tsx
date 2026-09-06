@@ -56,6 +56,43 @@ type ThemeProviderProps = {
 };
 
 /* ========================================================================== */
+/* URL HELPERS                                                                */
+/* ========================================================================== */
+
+function isValidThemeSet(value: string | null): value is ThemeSetName {
+  return (
+    value !== null && Object.prototype.hasOwnProperty.call(THEME_SETS, value)
+  );
+}
+
+function getThemeSetFromUrl(): ThemeSetName | null {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const theme = params.get('theme');
+
+  return isValidThemeSet(theme) ? theme : null;
+}
+
+function updateThemeSetUrl(themeSet: ThemeSetName): void {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  const url = new URL(window.location.href);
+
+  url.searchParams.set('theme', themeSet);
+
+  window.history.replaceState(
+    window.history.state,
+    '',
+    `${url.pathname}${url.search}${url.hash}`
+  );
+}
+
+/* ========================================================================== */
 /* STORAGE                                                                    */
 /* ========================================================================== */
 
@@ -276,13 +313,37 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     /* THEME SET                                                              */
     /* ---------------------------------------------------------------------- */
 
-    const savedThemeSet = localStorage.getItem(THEME_SET_STORAGE_KEY);
+    const urlThemeSet = getThemeSetFromUrl();
 
-    if (
-      savedThemeSet &&
-      Object.prototype.hasOwnProperty.call(THEME_SETS, savedThemeSet)
-    ) {
-      setThemeSetState(savedThemeSet as ThemeSetName);
+    if (urlThemeSet) {
+      /*
+       * URL takes priority over localStorage.
+       */
+      setThemeSetState(urlThemeSet);
+
+      localStorage.setItem(THEME_SET_STORAGE_KEY, urlThemeSet);
+    } else {
+      const savedThemeSet = localStorage.getItem(THEME_SET_STORAGE_KEY);
+
+      if (savedThemeSet && isValidThemeSet(savedThemeSet)) {
+        setThemeSetState(savedThemeSet as ThemeSetName);
+
+        /*
+         * No theme was supplied in the URL,
+         * so synchronize the saved theme into it.
+         */
+        updateThemeSetUrl(savedThemeSet as ThemeSetName);
+      } else {
+        /*
+         * No URL theme and no saved theme.
+         * Use the default theme and add it to the URL.
+         */
+        setThemeSetState(DEFAULT_THEME_SET);
+
+        localStorage.setItem(THEME_SET_STORAGE_KEY, DEFAULT_THEME_SET);
+
+        updateThemeSetUrl(DEFAULT_THEME_SET);
+      }
     }
 
     /* ---------------------------------------------------------------------- */
@@ -360,24 +421,24 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
 
   const setThemeSet = useCallback((newThemeSet: ThemeSetName) => {
     /*
-     * Always save the selected theme.
+     * Update React state.
      */
     setThemeSetState(newThemeSet);
 
+    /*
+     * Persist the selected theme.
+     */
     localStorage.setItem(THEME_SET_STORAGE_KEY, newThemeSet);
 
     /*
-     * IMPORTANT:
+     * Keep the URL synchronized.
      *
-     * Selecting `custom` should NOT replace the
-     * user's custom colors.
-     *
-     * Selecting a preset also should NOT destroy
-     * the user's custom colors.
-     *
-     * Therefore customColors is intentionally
-     * untouched here.
+     * Example:
+     * ?theme=blue
+     * ?theme=olympus
+     * ?theme=custom
      */
+    updateThemeSetUrl(newThemeSet);
   }, []);
 
   /* ======================================================================== */

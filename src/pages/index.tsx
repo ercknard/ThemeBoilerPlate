@@ -585,7 +585,7 @@ export default function Home() {
                 >
                   <AppButton
                     component="a"
-                    href="/theme"
+                    href="/documentation"
                     variant="contained"
                     color="primary"
                     size="large"
@@ -1099,7 +1099,7 @@ export default function Home() {
 
               <AppButton
                 component="a"
-                href="/theme"
+                href="/documentation"
                 variant="contained"
                 color="primary"
                 endIcon={<ArrowForwardIcon />}
@@ -1155,7 +1155,7 @@ export default function Home() {
             <Stack direction="row" spacing={1}>
               <AppButton
                 component="a"
-                href="/theme"
+                href="/documentation"
                 variant="text"
                 color="primary"
                 size="small"

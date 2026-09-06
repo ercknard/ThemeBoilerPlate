@@ -4459,7 +4459,7 @@ const colorScale = theme.colorScale;
 
                     <Button
                       component="a"
-                      href="/theme"
+                      href="/documentation"
                       size="small"
                       startIcon={<PaletteIcon />}
                     >
