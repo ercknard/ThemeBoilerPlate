@@ -72,6 +72,7 @@ import FormatSizeOutlinedIcon from '@mui/icons-material/FormatSizeOutlined';
 import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined';
 import TuneOutlinedIcon from '@mui/icons-material/TuneOutlined';
 import Checkbox from '@mui/material/Checkbox';
+import { THEME_SETS, THEME_ICONS, type ThemeSetName } from '@/theme/theme';
 
 import { Box, Stack, Typography } from '@mui/material';
 
@@ -325,67 +326,6 @@ export default function TypographyShowcase() {
   });
 
   const { themeSet } = useThemeContext();
-
-  const THEME_ICONS = {
-    // ============================================================
-    // ORIGINAL THEMES
-    // ============================================================
-
-    blue: '/static/images/logo-blue.png',
-    purple: '/static/images/logo-purple.png',
-    coffee: '/static/images/logo-coffee.png',
-    green: '/static/images/logo-green.png',
-
-    // ============================================================
-    // OLYMPUS
-    // ============================================================
-
-    olympus: '/static/images/logo-olympus.png',
-
-    // ============================================================
-    // MINECRAFT WORLDS / BIOMES
-    // ============================================================
-
-    end: '/static/images/logo-end.png',
-    ocean: '/static/images/logo-ocean.png',
-    desert: '/static/images/logo-desert.png',
-    soulSandValley: '/static/images/logo-soul-sand-valley.png',
-    crimsonForest: '/static/images/logo-crimson-forest.png',
-    warpedForest: '/static/images/logo-warped-forest.png',
-    basaltDeltas: '/static/images/logo-basalt-deltas.png',
-    paleGarden: '/static/images/logo-pale-garden.png',
-    deepDark: '/static/images/logo-deep-dark.png',
-
-    // ============================================================
-    // COSMIC
-    // ============================================================
-
-    galaxy: '/static/images/logo-galaxy.png',
-
-    // ============================================================
-    // THE 12 OLYMPIANS + HESTIA + HADES
-    // ============================================================
-
-    zeus: '/static/images/logo-zeus.png',
-    hera: '/static/images/logo-hera.png',
-    poseidon: '/static/images/logo-poseidon.png',
-    demeter: '/static/images/logo-demeter.png',
-    athena: '/static/images/logo-athena.png',
-    apollo: '/static/images/logo-apollo.png',
-    artemis: '/static/images/logo-artemis.png',
-    ares: '/static/images/logo-ares.png',
-    aphrodite: '/static/images/logo-aphrodite.png',
-    hephaestus: '/static/images/logo-hephaestus.png',
-    hermes: '/static/images/logo-hermes.png',
-    dionysus: '/static/images/logo-dionysus.png',
-    hestia: '/static/images/logo-hestia.png',
-
-    // ============================================================
-    // UNDERWORLD
-    // ============================================================
-
-    hades: '/static/images/logo-hades.png'
-  } as const;
   const themeIcon = THEME_ICONS[themeSet];
 
   const toggleMenu = (menu: MenuKey) => {
@@ -1182,7 +1122,7 @@ export default function TypographyShowcase() {
           </Grid>
 
           <Grid
-            size={{ xs: 12, md: 7.45 }}
+            size={{ xs: 12, md: 7.15 }}
             sx={{
               minHeight: { md: '100vh' },
               py: 5
@@ -4529,7 +4469,7 @@ const colorScale = theme.colorScale;
           </Grid>
 
           <Grid
-            size={{ xs: 12, md: 2.05 }}
+            size={{ xs: 12, md: 2.35 }}
             sx={{
               minHeight: { md: '100vh' },
               paddingRight: 2.5

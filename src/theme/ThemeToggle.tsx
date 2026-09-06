@@ -6,6 +6,7 @@ import {
   Box,
   FormControl,
   IconButton,
+  ListSubheader,
   MenuItem,
   Select,
   Stack,
@@ -18,7 +19,7 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 
 import { useThemeContext } from '@/contexts/themeContext';
-import { THEME_SETS, type ThemeSetName } from '@/theme/theme';
+import { THEME_SETS, THEME_ICONS, type ThemeSetName } from '@/theme/theme';
 import { AppTextField } from '@/theme/CustomComponents';
 
 export default function ThemeToggle() {
@@ -83,6 +84,59 @@ export default function ThemeToggle() {
     resetFont();
   };
 
+  /*
+   * Sort themes:
+   *
+   * 1. Category alphabetically
+   * 2. Theme label alphabetically
+   *
+   * Example:
+   *
+   * CLASSIC
+   *   Blue
+   *   Coffee
+   *   Green
+   *   Purple
+   *
+   * COSMIC
+   *   Galaxy
+   *
+   * LUXURY
+   *   Luxury Emerald
+   *   Luxury Ruby
+   *   Luxury Sapphire
+   */
+  const CATEGORY_ORDER = [
+    'classic',
+    'minecraft',
+    'cosmic',
+    'luxury',
+    'mythology'
+  ] as const;
+
+  const sortedThemes = (
+    Object.entries(THEME_SETS) as [
+      ThemeSetName,
+      (typeof THEME_SETS)[ThemeSetName]
+    ][]
+  ).sort(([, a], [, b]) => {
+    const categoryA = CATEGORY_ORDER.indexOf(
+      a.category as (typeof CATEGORY_ORDER)[number]
+    );
+
+    const categoryB = CATEGORY_ORDER.indexOf(
+      b.category as (typeof CATEGORY_ORDER)[number]
+    );
+
+    if (categoryA !== categoryB) {
+      return categoryA - categoryB;
+    }
+
+    return a.label.localeCompare(b.label, undefined, {
+      sensitivity: 'base'
+    });
+  });
+
   return (
     <Stack spacing={2}>
       {/* ================================================================== */}
@@ -100,20 +154,161 @@ export default function ThemeToggle() {
         <FormControl
           size="small"
           sx={{
-            minWidth: 150
+            minWidth: 190
           }}
         >
           <Select
             value={themeSet}
             onChange={handleThemeSetChange}
+            fullWidth
             displayEmpty
             MenuProps={{
               sx: {
-                zIndex: 9999
+                zIndex: 9999,
+
+                '& .MuiPaper-root': {
+                  mt: 1,
+                  p: 1.25,
+                  width: 340,
+                  maxHeight: 560,
+
+                  overflowY: 'auto',
+                  overflowX: 'hidden',
+
+                  // Firefox
+                  scrollbarWidth: 'none',
+
+                  // Chrome / Edge / Safari
+                  '&::-webkit-scrollbar': {
+                    display: 'none'
+                  },
+
+                  borderRadius: 2,
+
+                  background: `
+      ${THEME_SETS[themeSet].background}
+
+  `,
+
+                  border: '2px solid',
+                  borderColor: `${THEME_SETS[themeSet].color}50`,
+
+                  boxShadow: `
+    0 24px 70px rgba(0, 0, 0, 0.55),
+    0 0 0 1px ${THEME_SETS[themeSet].color}10,
+    0 0 40px ${THEME_SETS[themeSet].color}10
+  `,
+
+                  backdropFilter: 'blur(20px)',
+
+                  '& .MuiList-root': {
+                    py: 1
+                  }
+                }
               }
             }}
+            renderValue={(value) => {
+              const preset = THEME_SETS[value as ThemeSetName];
+              const icon = THEME_ICONS[value as ThemeSetName];
+
+              return (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1.25,
+                    width: '100%',
+                    minWidth: 0
+                  }}
+                >
+                  {/* Theme preview */}
+                  <Box
+                    sx={{
+                      position: 'relative',
+                      width: 30,
+                      height: 30,
+                      flexShrink: 0,
+                      borderRadius: 1.5,
+                      overflow: 'hidden',
+
+                      background: `
+              linear-gradient(
+                135deg,
+                ${preset.color} 0%,
+                ${preset.color} 48%,
+                ${preset.secondary} 48%,
+                ${preset.secondary} 100%
+              )
+            `,
+
+                      border: '1px solid',
+                      borderColor: `${preset.color}80`,
+
+                      boxShadow: `
+              0 0 0 1px ${preset.background},
+              0 0 14px ${preset.color}35
+            `
+                    }}
+                  >
+                    {icon && (
+                      <Box
+                        component="img"
+                        src={icon}
+                        alt=""
+                        sx={{
+                          position: 'absolute',
+                          inset: 4,
+                          width: 'calc(100% - 8px)',
+                          height: 'calc(100% - 8px)',
+                          objectFit: 'contain',
+                          filter: 'drop-shadow(0 2px 4px rgba(0,0,0,.5))'
+                        }}
+                      />
+                    )}
+                  </Box>
+
+                  <Box sx={{ minWidth: 0, flex: 1 }}>
+                    <Box
+                      sx={{
+                        fontSize: '0.875rem',
+                        fontWeight: 700,
+                        lineHeight: 1.2,
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap'
+                      }}
+                    >
+                      {preset.label}
+                    </Box>
+                  </Box>
+
+                  {/* Mini color indicators */}
+                  <Stack
+                    direction="row"
+                    spacing={0.4}
+                    sx={{
+                      flexShrink: 0
+                    }}
+                  >
+                    {[preset.color, preset.secondary].map((color) => (
+                      <Box
+                        key={color}
+                        sx={{
+                          width: 7,
+                          height: 7,
+                          borderRadius: '50%',
+                          backgroundColor: color,
+                          boxShadow: `0 0 8px ${color}60`
+                        }}
+                      />
+                    ))}
+                  </Stack>
+                </Box>
+              );
+            }}
             sx={{
-              borderRadius: 2,
+              minWidth: 220,
+              borderRadius: 2.5,
 
               background: `
       linear-gradient(
@@ -125,98 +320,373 @@ export default function ThemeToggle() {
 
               borderColor: THEME_SETS[themeSet].color,
 
+              transition:
+                'border-color 180ms ease, box-shadow 180ms ease, background 180ms ease',
+
               '&:hover': {
-                borderColor: THEME_SETS[themeSet].color
+                borderColor: THEME_SETS[themeSet].color,
+
+                boxShadow: `
+        0 0 0 1px ${THEME_SETS[themeSet].color}20,
+        0 0 22px ${THEME_SETS[themeSet].color}18
+      `
               },
 
               '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
                 borderColor: THEME_SETS[themeSet].color
               },
 
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: `${THEME_SETS[themeSet].color}80`
+              },
+
               '& .MuiSelect-select': {
                 py: 1,
                 px: 1.5,
                 display: 'flex',
-                alignItems: 'center',
-                gap: 1.25
+                alignItems: 'center'
+              },
+
+              '& .MuiSvgIcon-root': {
+                color: THEME_SETS[themeSet].color
               }
             }}
           >
-            {(Object.keys(THEME_SETS) as ThemeSetName[]).map((key) => {
-              const preset = THEME_SETS[key];
+            {sortedThemes.flatMap(([key, preset], index) => {
+              const previousCategory =
+                index > 0 ? sortedThemes[index - 1][1].category : null;
 
-              return (
+              const showCategory =
+                index === 0 || previousCategory !== preset.category;
+
+              const icon = THEME_ICONS[key];
+
+              return [
                 <MenuItem
                   key={key}
                   value={key}
                   sx={{
-                    minHeight: 44,
+                    position: 'relative',
+
+                    minHeight: 58,
+
+                    display: 'flex',
+                    alignItems: 'center',
                     gap: 1.25,
-                    borderRadius: 1,
-                    mx: 0.5,
-                    my: 0.25,
+
+                    mx: 0.25,
+                    my: 0.35,
+                    px: 1,
+
+                    overflow: 'hidden',
+
+                    borderRadius: 2,
+
+                    color: 'text.primary',
 
                     background: `
             linear-gradient(
               135deg,
-              ${preset.secondary} 0%,
-              ${preset.color}18 100%
+              ${preset.secondary}12,
+              ${preset.color}06
             )
           `,
 
+                    border: '1px solid transparent',
+
+                    transition:
+                      'transform 160ms ease, background 160ms ease, border-color 160ms ease, box-shadow 160ms ease',
+
+                    '&::before': {
+                      content: '""',
+
+                      position: 'absolute',
+                      left: 0,
+                      top: 7,
+                      bottom: 7,
+
+                      width: 3,
+
+                      borderRadius: '0 4px 4px 0',
+
+                      background: preset.color,
+
+                      opacity: 0,
+
+                      transform: 'scaleY(0.5)',
+
+                      transition: 'opacity 160ms ease, transform 160ms ease'
+                    },
+
+                    '&::after': {
+                      content: '""',
+
+                      position: 'absolute',
+                      width: 90,
+                      height: 90,
+
+                      right: -45,
+                      top: -45,
+
+                      borderRadius: '50%',
+
+                      background: `radial-gradient(
+              circle,
+              ${preset.color}20,
+              transparent 70%
+            )`,
+
+                      opacity: 0,
+
+                      transition: 'opacity 180ms ease'
+                    },
+
                     '&:hover': {
+                      transform: 'translateX(3px)',
+
                       background: `
               linear-gradient(
                 135deg,
-                ${preset.secondary} 0%,
-                ${preset.color}30 100%
+                ${preset.secondary}20,
+                ${preset.color}12
               )
-            `
+            `,
+
+                      borderColor: `${preset.color}35`,
+
+                      boxShadow: `
+              0 6px 20px rgba(0,0,0,.18),
+              0 0 20px ${preset.color}0D
+            `,
+
+                      '&::before': {
+                        opacity: 1,
+                        transform: 'scaleY(1)'
+                      },
+
+                      '&::after': {
+                        opacity: 1
+                      }
                     },
 
                     '&.Mui-selected': {
                       background: `
               linear-gradient(
                 135deg,
-                ${preset.secondary} 0%,
-                ${preset.color}35 100%
+                ${preset.secondary}28,
+                ${preset.color}18
               )
-            `
+            `,
+
+                      borderColor: `${preset.color}55`,
+
+                      boxShadow: `
+              inset 0 0 20px ${preset.color}08,
+              0 4px 18px rgba(0,0,0,.16),
+              0 0 20px ${preset.color}10
+            `,
+
+                      '&::before': {
+                        opacity: 1,
+                        transform: 'scaleY(1)'
+                      },
+
+                      '&::after': {
+                        opacity: 1
+                      }
                     },
 
                     '&.Mui-selected:hover': {
                       background: `
               linear-gradient(
                 135deg,
-                ${preset.secondary} 0%,
-                ${preset.color}45 100%
+                ${preset.secondary}35,
+                ${preset.color}22
               )
             `
                     }
                   }}
                 >
+                  {/* Theme icon / preview */}
                   <Box
                     sx={{
-                      width: 20,
-                      height: 20,
-                      borderRadius: '50%',
-                      flexShrink: 0,
-                      background: `linear-gradient(
-              135deg,
-              ${preset.color} 0%,
-              ${preset.color} 50%,
-              ${preset.secondary} 50%,
-              ${preset.secondary} 100%
-            )`,
-                      border: '1px solid',
-                      borderColor: 'divider',
-                      boxShadow: `0 0 0 1px ${preset.background}`
-                    }}
-                  />
+                      position: 'relative',
 
-                  {preset.label}
+                      width: 38,
+                      height: 38,
+
+                      flexShrink: 0,
+
+                      display: 'grid',
+                      placeItems: 'center',
+
+                      borderRadius: 1.75,
+
+                      overflow: 'hidden',
+
+                      background: `
+              linear-gradient(
+                145deg,
+                ${preset.color}20,
+                ${preset.secondary}15
+              )
+            `,
+
+                      border: '1px solid',
+                      borderColor: `${preset.color}35`,
+
+                      boxShadow: `
+              inset 0 1px 0 rgba(255,255,255,.05),
+              0 4px 12px ${preset.color}12
+            `
+                    }}
+                  >
+                    {/* Color glow */}
+                    <Box
+                      sx={{
+                        position: 'absolute',
+                        width: 22,
+                        height: 22,
+                        borderRadius: '50%',
+                        background: `
+                radial-gradient(
+                  circle,
+                  ${preset.color},
+                  ${preset.secondary}
+                )
+              `,
+                        opacity: 0.85,
+                        filter: 'blur(5px)'
+                      }}
+                    />
+
+                    {icon ? (
+                      <Box
+                        component="img"
+                        src={icon}
+                        alt=""
+                        sx={{
+                          position: 'relative',
+                          zIndex: 1,
+
+                          width: 27,
+                          height: 27,
+
+                          objectFit: 'contain',
+
+                          filter: `
+                  drop-shadow(0 2px 4px rgba(0,0,0,.6))
+                `
+                        }}
+                      />
+                    ) : (
+                      <Box
+                        sx={{
+                          position: 'relative',
+                          zIndex: 1,
+
+                          width: 17,
+                          height: 17,
+
+                          borderRadius: '50%',
+
+                          background: `
+                  linear-gradient(
+                    135deg,
+                    ${preset.color},
+                    ${preset.secondary}
+                  )
+                `,
+
+                          boxShadow: `
+                  0 0 12px ${preset.color}70
+                `
+                        }}
+                      />
+                    )}
+                  </Box>
+
+                  {/* Theme information */}
+                  <Box
+                    sx={{
+                      position: 'relative',
+                      zIndex: 1,
+
+                      flex: 1,
+                      minWidth: 0
+                    }}
+                  >
+                    <Box
+                      component="span"
+                      sx={{
+                        display: 'block',
+
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+
+                        fontSize: '0.85rem',
+                        fontWeight: 700,
+
+                        color: 'text.primary'
+                      }}
+                    >
+                      {preset.label}
+                    </Box>
+
+                    <Box
+                      component="span"
+                      sx={{
+                        display: 'block',
+
+                        mt: 0.25,
+
+                        fontSize: '0.64rem',
+                        fontWeight: 500,
+
+                        color: 'text.secondary',
+
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap'
+                      }}
+                    >
+                      {preset.category}
+                    </Box>
+                  </Box>
+
+                  {/* Color palette */}
+                  <Stack
+                    direction="row"
+                    spacing={0.45}
+                    sx={{
+                      position: 'relative',
+                      zIndex: 1,
+                      flexShrink: 0
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        width: 9,
+                        height: 9,
+                        borderRadius: '50%',
+                        backgroundColor: preset.color,
+                        boxShadow: `0 0 8px ${preset.color}70`
+                      }}
+                    />
+
+                    <Box
+                      sx={{
+                        width: 9,
+                        height: 9,
+                        borderRadius: '50%',
+                        backgroundColor: preset.secondary,
+                        boxShadow: `0 0 8px ${preset.secondary}50`
+                      }}
+                    />
+                  </Stack>
                 </MenuItem>
-              );
+              ];
             })}
           </Select>
         </FormControl>
@@ -318,7 +788,19 @@ export default function ThemeToggle() {
         {/* ================================================================== */}
 
         <Tooltip title={isDarkMode ? 'Light mode' : 'Dark mode'}>
-          <IconButton onClick={toggleTheme}>
+          <IconButton
+            onClick={toggleTheme}
+            sx={{
+              borderRadius: 1.5,
+
+              transition: 'all 180ms ease',
+
+              '&:hover': {
+                backgroundColor: `${THEME_SETS[themeSet].color}14`,
+                color: THEME_SETS[themeSet].color
+              }
+            }}
+          >
             {isDarkMode ? <LightModeIcon /> : <DarkModeIcon />}
           </IconButton>
         </Tooltip>
@@ -333,6 +815,7 @@ export default function ThemeToggle() {
           display: 'flex',
           alignItems: 'center',
           gap: 1,
+
           width: {
             xs: '100%',
             sm: '100%'
@@ -357,6 +840,23 @@ export default function ThemeToggle() {
                 event.preventDefault();
               }}
               onClick={handleResetFont}
+              sx={{
+                width: 36,
+                height: 36,
+
+                borderRadius: 1.5,
+
+                fontSize: '1.25rem',
+                lineHeight: 1,
+
+                color: 'text.secondary',
+
+                '&:hover': {
+                  color: 'error.main',
+                  backgroundColor: 'error.main',
+                  background: 'rgba(211, 47, 47, 0.08)'
+                }
+              }}
             >
               ×
             </IconButton>

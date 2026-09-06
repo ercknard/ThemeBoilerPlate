@@ -641,9 +641,42 @@ export const semanticColors = {
  * gray       = Neutral / Disabled
  */
 
+export const THEME_ICONS: Record<keyof typeof THEME_SETS, string> = {
+  blue: '/static/images/logo-blue.png',
+  purple: '/static/images/logo-purple.png',
+  coffee: '/static/images/logo-coffee.png',
+  green: '/static/images/logo-green.png',
+  olympus: '/static/images/logo-olympus.png',
+  end: '/static/images/logo-end.png',
+  ocean: '/static/images/logo-ocean.png',
+  desert: '/static/images/logo-desert.png',
+  soulSandValley: '/static/images/logo-soul-sand-valley.png',
+  crimsonForest: '/static/images/logo-crimson-forest.png',
+  warpedForest: '/static/images/logo-warped-forest.png',
+  basaltDeltas: '/static/images/logo-basalt-deltas.png',
+  paleGarden: '/static/images/logo-pale-garden.png',
+  deepDark: '/static/images/logo-deep-dark.png',
+  galaxy: '/static/images/logo-galaxy.png',
+  zeus: '/static/images/logo-zeus.png',
+  hera: '/static/images/logo-hera.png',
+  poseidon: '/static/images/logo-poseidon.png',
+  demeter: '/static/images/logo-demeter.png',
+  athena: '/static/images/logo-athena.png',
+  apollo: '/static/images/logo-apollo.png',
+  artemis: '/static/images/logo-artemis.png',
+  ares: '/static/images/logo-ares.png',
+  aphrodite: '/static/images/logo-aphrodite.png',
+  hephaestus: '/static/images/logo-hephaestus.png',
+  hermes: '/static/images/logo-hermes.png',
+  dionysus: '/static/images/logo-dionysus.png',
+  hades: '/static/images/logo-hades.png',
+  hestia: '/static/images/logo-hestia.png'
+};
+
 export const THEME_SETS = {
   blue: {
     label: 'Blue',
+    category: 'classic',
     color: '#4967C9',
     secondary: '#6B7FC7',
     gray: '#1E1E1E',
@@ -652,6 +685,7 @@ export const THEME_SETS = {
 
   purple: {
     label: 'Purple',
+    category: 'classic',
     color: '#8B5CF6',
     secondary: '#9B82E6',
     gray: '#1E1E1E',
@@ -660,6 +694,7 @@ export const THEME_SETS = {
 
   coffee: {
     label: 'Coffee',
+    category: 'classic',
     color: '#C49A6C',
     secondary: '#8A5A3B',
     gray: '#29211D',
@@ -668,22 +703,33 @@ export const THEME_SETS = {
 
   green: {
     label: 'Green',
+    category: 'classic',
     color: '#30A46C',
     secondary: '#4C9F78',
     gray: '#1E1E1E',
     background: '#07140D'
   },
 
+  // ============================================================
+  // MYTHOLOGY — OLYMPUS
+  // ============================================================
+
   olympus: {
     label: 'Olympus',
+    category: 'mythology',
     color: '#D4AF37',
     secondary: '#8FA9C7',
     gray: '#2A2A2A',
     background: '#0B0D12'
   },
 
+  // ============================================================
+  // MINECRAFT
+  // ============================================================
+
   end: {
     label: 'The End',
+    category: 'minecraft',
     color: '#A78BFA',
     secondary: '#C8C3A6',
     gray: '#242226',
@@ -692,6 +738,7 @@ export const THEME_SETS = {
 
   ocean: {
     label: 'Ocean World',
+    category: 'minecraft',
     color: '#1597B8',
     secondary: '#4FC3C8',
     gray: '#16343A',
@@ -700,6 +747,7 @@ export const THEME_SETS = {
 
   desert: {
     label: 'Desert Biome',
+    category: 'minecraft',
     color: '#D9A441',
     secondary: '#E8C477',
     gray: '#4A3A27',
@@ -708,6 +756,7 @@ export const THEME_SETS = {
 
   soulSandValley: {
     label: 'Soul Sand Valley',
+    category: 'minecraft',
     color: '#4B82A8',
     secondary: '#7896A5',
     gray: '#29292A',
@@ -716,6 +765,7 @@ export const THEME_SETS = {
 
   crimsonForest: {
     label: 'Crimson Forest',
+    category: 'minecraft',
     color: '#C4364D',
     secondary: '#8E2638',
     gray: '#2B181C',
@@ -724,6 +774,7 @@ export const THEME_SETS = {
 
   warpedForest: {
     label: 'Warped Forest',
+    category: 'minecraft',
     color: '#18B6A4',
     secondary: '#3E7BC2',
     gray: '#17272A',
@@ -732,41 +783,25 @@ export const THEME_SETS = {
 
   basaltDeltas: {
     label: 'Basalt Deltas',
+    category: 'minecraft',
     color: '#E36A2E',
     secondary: '#777477',
     gray: '#292727',
     background: '#090807'
   },
 
-  // ============================================================
-  // GALAXY
-  // Deep space + nebula violet + cosmic blue + starlight
-  // ============================================================
-  galaxy: {
-    label: 'Galaxy',
-    color: '#7C5CFF',
-    secondary: '#38BDF8',
-    gray: '#202033',
-    background: '#050611'
-  },
-  // ============================================================
-  // MINECRAFT — PALE GARDEN
-  // Pale moss + desaturated sage + eerie woodland
-  // ============================================================
   paleGarden: {
     label: 'Pale Garden',
+    category: 'minecraft',
     color: '#A8B89A',
     secondary: '#D4DDC8',
     gray: '#30352F',
     background: '#0A0D0A'
   },
 
-  // ============================================================
-  // MINECRAFT — DEEP DARK
-  // Sculk cyan + deep teal + ancient underground darkness
-  // ============================================================
   deepDark: {
     label: 'Deep Dark',
+    category: 'minecraft',
     color: '#087F8C',
     secondary: '#3A7CA5',
     gray: '#182326',
@@ -774,11 +809,25 @@ export const THEME_SETS = {
   },
 
   // ============================================================
-  // GREEK GODS — THE 12 OLYMPIANS + HADES
+  // COSMIC
+  // ============================================================
+
+  galaxy: {
+    label: 'Galaxy',
+    category: 'cosmic',
+    color: '#7C5CFF',
+    secondary: '#38BDF8',
+    gray: '#202033',
+    background: '#050611'
+  },
+
+  // ============================================================
+  // GREEK GODS
   // ============================================================
 
   zeus: {
     label: 'Zeus',
+    category: 'mythology',
     color: '#5B8CFF',
     secondary: '#F4D35E',
     gray: '#242A36',
@@ -788,6 +837,7 @@ export const THEME_SETS = {
 
   hera: {
     label: 'Hera',
+    category: 'mythology',
     color: '#9B6BC8',
     secondary: '#E8CFA8',
     gray: '#29232E',
@@ -797,6 +847,7 @@ export const THEME_SETS = {
 
   poseidon: {
     label: 'Poseidon',
+    category: 'mythology',
     color: '#087EA4',
     secondary: '#4FD1C5',
     gray: '#163039',
@@ -806,6 +857,7 @@ export const THEME_SETS = {
 
   demeter: {
     label: 'Demeter',
+    category: 'mythology',
     color: '#6B8E23',
     secondary: '#D4A72C',
     gray: '#27301D',
@@ -815,6 +867,7 @@ export const THEME_SETS = {
 
   athena: {
     label: 'Athena',
+    category: 'mythology',
     color: '#7A9E9F',
     secondary: '#D4AF37',
     gray: '#242A2A',
@@ -824,6 +877,7 @@ export const THEME_SETS = {
 
   apollo: {
     label: 'Apollo',
+    category: 'mythology',
     color: '#F2B134',
     secondary: '#F7D774',
     gray: '#352B18',
@@ -833,6 +887,7 @@ export const THEME_SETS = {
 
   artemis: {
     label: 'Artemis',
+    category: 'mythology',
     color: '#6FA8DC',
     secondary: '#C8D6E5',
     gray: '#202833',
@@ -842,6 +897,7 @@ export const THEME_SETS = {
 
   ares: {
     label: 'Ares',
+    category: 'mythology',
     color: '#B3261E',
     secondary: '#8C2F39',
     gray: '#2A1819',
@@ -851,6 +907,7 @@ export const THEME_SETS = {
 
   aphrodite: {
     label: 'Aphrodite',
+    category: 'mythology',
     color: '#E56B9F',
     secondary: '#F3C6D8',
     gray: '#302129',
@@ -860,6 +917,7 @@ export const THEME_SETS = {
 
   hephaestus: {
     label: 'Hephaestus',
+    category: 'mythology',
     color: '#D65A1F',
     secondary: '#D4A72C',
     gray: '#2C211A',
@@ -869,6 +927,7 @@ export const THEME_SETS = {
 
   hermes: {
     label: 'Hermes',
+    category: 'mythology',
     color: '#4FA3D1',
     secondary: '#D9B44A',
     gray: '#202932',
@@ -878,6 +937,7 @@ export const THEME_SETS = {
 
   dionysus: {
     label: 'Dionysus',
+    category: 'mythology',
     color: '#8E4585',
     secondary: '#B8860B',
     gray: '#281D29',
@@ -885,22 +945,24 @@ export const THEME_SETS = {
     icon: '#C56BC0'
   },
 
-  hades: {
-    label: 'Hades',
-    color: '#5E3A8C',
-    secondary: '#B3263E',
-    gray: '#1C1821',
-    background: '#050307',
-    icon: '#9B5DE5'
-  },
-
   hestia: {
     label: 'Hestia',
+    category: 'mythology',
     color: '#D97732',
     secondary: '#E8C98A',
     gray: '#30261E',
     background: '#0F0905',
     icon: '#FFB45C'
+  },
+
+  hades: {
+    label: 'Hades',
+    category: 'mythology',
+    color: '#5E3A8C',
+    secondary: '#B3263E',
+    gray: '#1C1821',
+    background: '#050307',
+    icon: '#9B5DE5'
   }
 } as const;
 

@@ -19,69 +19,9 @@ import ThemeToggle from '@/theme/ThemeToggle';
 
 import { AppButton, AppChip } from '@/theme/CustomComponents';
 import SkyEffects from '@/theme/SkyEffects';
+import { THEME_SETS, THEME_ICONS, type ThemeSetName } from '@/theme/theme';
 
 const GITHUB_URL = process.env.NEXT_PUBLIC_GITHUB_URL;
-
-const THEME_ICONS = {
-  // ============================================================
-  // ORIGINAL THEMES
-  // ============================================================
-
-  blue: '/static/images/logo-blue.png',
-  purple: '/static/images/logo-purple.png',
-  coffee: '/static/images/logo-coffee.png',
-  green: '/static/images/logo-green.png',
-
-  // ============================================================
-  // OLYMPUS
-  // ============================================================
-
-  olympus: '/static/images/logo-olympus.png',
-
-  // ============================================================
-  // MINECRAFT WORLDS / BIOMES
-  // ============================================================
-
-  end: '/static/images/logo-end.png',
-  ocean: '/static/images/logo-ocean.png',
-  desert: '/static/images/logo-desert.png',
-  soulSandValley: '/static/images/logo-soul-sand-valley.png',
-  crimsonForest: '/static/images/logo-crimson-forest.png',
-  warpedForest: '/static/images/logo-warped-forest.png',
-  basaltDeltas: '/static/images/logo-basalt-deltas.png',
-  paleGarden: '/static/images/logo-pale-garden.png',
-  deepDark: '/static/images/logo-deep-dark.png',
-
-  // ============================================================
-  // COSMIC
-  // ============================================================
-
-  galaxy: '/static/images/logo-galaxy.png',
-
-  // ============================================================
-  // THE 12 OLYMPIANS + HESTIA + HADES
-  // ============================================================
-
-  zeus: '/static/images/logo-zeus.png',
-  hera: '/static/images/logo-hera.png',
-  poseidon: '/static/images/logo-poseidon.png',
-  demeter: '/static/images/logo-demeter.png',
-  athena: '/static/images/logo-athena.png',
-  apollo: '/static/images/logo-apollo.png',
-  artemis: '/static/images/logo-artemis.png',
-  ares: '/static/images/logo-ares.png',
-  aphrodite: '/static/images/logo-aphrodite.png',
-  hephaestus: '/static/images/logo-hephaestus.png',
-  hermes: '/static/images/logo-hermes.png',
-  dionysus: '/static/images/logo-dionysus.png',
-  hestia: '/static/images/logo-hestia.png',
-
-  // ============================================================
-  // UNDERWORLD
-  // ============================================================
-
-  hades: '/static/images/logo-hades.png'
-} as const;
 
 const FEATURES = [
   {
