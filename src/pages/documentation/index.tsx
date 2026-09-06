@@ -28,6 +28,7 @@ import ShowcaseSidebar, {
   type ShowcaseTab
 } from '@/theme/layout/ShowcaseSidebar';
 import ColorPresetsSection from '@/theme/layout/ColorPresetSection';
+import FloatingThemeControls from '@/theme/components/FloatingThemeControls';
 
 const GITHUB_URL = process.env.NEXT_PUBLIC_GITHUB_URL;
 
@@ -127,7 +128,7 @@ export default function TypographyShowcase() {
           </Grid>
 
           <Grid
-            size={{ xs: 12, xl: 7.4, xxxxl: 7.15 }}
+            size={{ xs: 12, xl: 8.5, xxxxl: 7.15 }}
             sx={{ minHeight: { md: '100vh' }, py: 5 }}
           >
             <Stack spacing={{ xs: 5, md: 3 }}>
@@ -244,34 +245,9 @@ export default function TypographyShowcase() {
               </Box>
             </Stack>
           </Grid>
-
-          <Grid
-            size={{ xs: 12, xl: 2.1, xxxxl: 2.35 }}
-            sx={{ minHeight: { md: '100vh' }, paddingRight: 2.5 }}
-          >
-            <Box
-              sx={{
-                position: { md: 'sticky' },
-                top: 24,
-                p: 2,
-                display: 'flex',
-                justifyContent: 'flex-end',
-                flexDirection: 'column',
-                overflow: 'hidden',
-                borderRadius: 2,
-                border: `1px solid ${theme.secondaryScale[7]}`,
-                backgroundColor: alpha(theme.backgroundScale[5], 0.75),
-                boxSizing: 'border-box',
-                boxShadow: `1px 0 0 ${alpha(theme.secondaryScale[6], 0.35)}`,
-                transition:
-                  'background-color 180ms ease, border-color 180ms ease',
-                '&:hover': { borderColor: theme.secondaryScale[8] }
-              }}
-            >
-              <ThemeToggle />
-            </Box>
-          </Grid>
         </Grid>
+
+        <FloatingThemeControls />
       </Box>
     </>
   );

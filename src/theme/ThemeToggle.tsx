@@ -17,10 +17,13 @@ import {
 
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
+import ShuffleIcon from '@mui/icons-material/Shuffle';
+
 import { alpha, useTheme } from '@mui/material/styles';
 
 import { useThemeContext } from '@/contexts/themeContext';
 import { THEME_SETS, THEME_ICONS, type ThemeSetName } from '@/theme/theme';
+
 import { AppTextField } from '@/theme/components/CustomComponents';
 
 export default function ThemeToggle() {
@@ -36,14 +39,15 @@ export default function ThemeToggle() {
     resetFont
   } = useThemeContext();
 
-  /*
-   * Keep the input separate from the currently applied font.
-   *
-   * This prevents the Google Font stylesheet from being loaded
-   * on every keystroke.
-   */
   const theme = useTheme();
+
   const [fontInput, setFontInput] = useState(fontUrl);
+
+  /*
+   * ================================================================
+   * FONT
+   * ================================================================
+   */
 
   const applyFont = () => {
     const value = fontInput.trim();
@@ -73,27 +77,11 @@ export default function ThemeToggle() {
   };
 
   /*
-   * Sort themes:
-   *
-   * 1. Category alphabetically
-   * 2. Theme label alphabetically
-   *
-   * Example:
-   *
-   * CLASSIC
-   *   Blue
-   *   Coffee
-   *   Green
-   *   Purple
-   *
-   * COSMIC
-   *   Galaxy
-   *
-   * LUXURY
-   *   Luxury Emerald
-   *   Luxury Ruby
-   *   Luxury Sapphire
+   * ================================================================
+   * THEME ORDER
+   * ================================================================
    */
+
   const CATEGORY_ORDER = [
     'custom',
     'classic',
@@ -102,6 +90,12 @@ export default function ThemeToggle() {
     'luxury',
     'mythology'
   ] as const;
+
+  /*
+   * ================================================================
+   * THEMES + CUSTOM THEME
+   * ================================================================
+   */
 
   const themesWithCustom = {
     ...THEME_SETS,
@@ -119,6 +113,12 @@ export default function ThemeToggle() {
 
   const activeTheme = themesWithCustom[themeSet] ?? themesWithCustom.blue;
 
+  /*
+   * ================================================================
+   * SORT THEMES
+   * ================================================================
+   */
+
   const sortedThemes = Object.entries(themesWithCustom).sort(([, a], [, b]) => {
     const categoryA = CATEGORY_ORDER.indexOf(
       a.category as (typeof CATEGORY_ORDER)[number]
@@ -135,11 +135,23 @@ export default function ThemeToggle() {
     return a.label.localeCompare(b.label);
   });
 
+  /*
+   * ================================================================
+   * THEME CHANGE
+   * ================================================================
+   */
+
   const handleThemeSetChange = (event: SelectChangeEvent<ThemeSetName>) => {
     const nextTheme = event.target.value as ThemeSetName;
 
     setThemeSet(nextTheme);
   };
+
+  /*
+   * ================================================================
+   * CUSTOM COLOR CHANGE
+   * ================================================================
+   */
 
   const handleColorChange = (
     key: 'color' | 'secondary' | 'gray' | 'background',
@@ -150,14 +162,165 @@ export default function ThemeToggle() {
       [key]: value
     }));
 
+    /*
+     * Any manual color modification automatically
+     * switches the application to the Custom theme.
+     */
+    setThemeSet('custom');
+  };
+
+  /*
+   * ================================================================
+   * RANDOM COLOR HELPERS
+   * ================================================================
+   */
+
+  const randomHexColor = () => {
+    return `#${Math.floor(Math.random() * 0xffffff)
+      .toString(16)
+      .padStart(6, '0')}`;
+  };
+
+  /*
+   * Create a visually usable random gray.
+   *
+   * Dark mode:
+   *   darker neutral gray
+   *
+   * Light mode:
+   *   lighter neutral gray
+   */
+  const randomGray = () => {
+    const value = isDarkMode
+      ? Math.floor(Math.random() * 45) + 20
+      : Math.floor(Math.random() * 45) + 160;
+
+    const hex = value.toString(16).padStart(2, '0');
+
+    return `#${hex}${hex}${hex}`;
+  };
+
+  /*
+   * Create a darker background for dark mode
+   * and a lighter background for light mode.
+   *
+   * A tiny amount of hue variation keeps the background
+   * from always being completely neutral.
+   */
+  const randomBackground = () => {
+    const hue = Math.floor(Math.random() * 360);
+
+    if (isDarkMode) {
+      const saturation = Math.floor(Math.random() * 12) + 4;
+      const lightness = Math.floor(Math.random() * 8) + 4;
+
+      /*
+       * Convert HSL to HEX.
+       */
+      const hslToHex = (h: number, s: number, l: number) => {
+        s /= 100;
+        l /= 100;
+
+        const k = (n: number) => (n + h / 30) % 12;
+
+        const a = s * Math.min(l, 1 - l);
+
+        const f = (n: number) =>
+          l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+
+        const r = Math.round(255 * f(0));
+        const g = Math.round(255 * f(8));
+        const b = Math.round(255 * f(4));
+
+        return `#${[r, g, b]
+          .map((value) => value.toString(16).padStart(2, '0'))
+          .join('')}`;
+      };
+
+      return hslToHex(hue, saturation, lightness);
+    }
+
+    const saturation = Math.floor(Math.random() * 10) + 3;
+    const lightness = Math.floor(Math.random() * 7) + 93;
+
+    const hslToHex = (h: number, s: number, l: number) => {
+      s /= 100;
+      l /= 100;
+
+      const k = (n: number) => (n + h / 30) % 12;
+
+      const a = s * Math.min(l, 1 - l);
+
+      const f = (n: number) =>
+        l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+
+      const r = Math.round(255 * f(0));
+      const g = Math.round(255 * f(8));
+      const b = Math.round(255 * f(4));
+
+      return `#${[r, g, b]
+        .map((value) => value.toString(16).padStart(2, '0'))
+        .join('')}`;
+    };
+
+    return hslToHex(hue, saturation, lightness);
+  };
+
+  /*
+   * ================================================================
+   * RANDOMIZE CUSTOM THEME
+   * ================================================================
+   *
+   * Generates:
+   *
+   *   Primary
+   *   Secondary
+   *   Gray
+   *   Background
+   *
+   * Then automatically switches to:
+   *
+   *   Custom
+   * ================================================================
+   */
+
+  const randomizeTheme = () => {
+    const primary = randomHexColor();
+
+    /*
+     * Generate a second random color.
+     *
+     * Avoid accidentally generating the exact
+     * same value as the primary color.
+     */
+    let secondary = randomHexColor();
+
+    while (secondary === primary) {
+      secondary = randomHexColor();
+    }
+
+    const gray = randomGray();
+    const background = randomBackground();
+
+    setCustomColors({
+      color: primary,
+      secondary,
+      gray,
+      background
+    });
+
+    /*
+     * Important:
+     * Always fall back to the Custom theme.
+     */
     setThemeSet('custom');
   };
 
   return (
-    <Stack spacing={2} direction={{ xs: 'column' }}>
-      {/* ================================================================== */}
-      {/* PRESET THEME                                                       */}
-      {/* ================================================================== */}
+    <Stack spacing={2} direction="column">
+      {/* ========================================================== */}
+      {/* PRESET THEME                                               */}
+      {/* ========================================================== */}
 
       <Box
         sx={{
@@ -194,10 +357,14 @@ export default function ThemeToggle() {
                   overflowY: 'auto',
                   overflowX: 'hidden',
 
-                  // Firefox
+                  /*
+                   * Firefox
+                   */
                   scrollbarWidth: 'none',
 
-                  // Chrome / Edge / Safari
+                  /*
+                   * Chrome / Edge / Safari
+                   */
                   '&::-webkit-scrollbar': {
                     width: 0,
                     height: 0,
@@ -207,15 +374,29 @@ export default function ThemeToggle() {
                   borderRadius: 2.5,
 
                   backgroundColor: theme.palette.background.paper,
+
                   border: '1px solid',
+
                   borderColor: alpha(
                     activeTheme.color,
                     isDarkMode ? 0.35 : 0.18
                   ),
+
                   boxShadow: isDarkMode
-                    ? ` 0 24px 70px rgba(0, 0, 0, 0.55), 0 0 0 1px ${alpha(activeTheme.color, 0.06)}, 0 0 40px ${alpha(activeTheme.color, 0.08)} `
-                    : ` 0 16px 40px rgba(0, 0, 0, 0.12), 0 0 0 1px ${alpha(activeTheme.color, 0.04)} `,
-                  '& .MuiList-root': { py: 0.75, px: 0.25 }
+                    ? `
+                      0 24px 70px rgba(0, 0, 0, 0.55),
+                      0 0 0 1px ${alpha(activeTheme.color, 0.06)},
+                      0 0 40px ${alpha(activeTheme.color, 0.08)}
+                    `
+                    : `
+                      0 16px 40px rgba(0, 0, 0, 0.12),
+                      0 0 0 1px ${alpha(activeTheme.color, 0.04)}
+                    `,
+
+                  '& .MuiList-root': {
+                    py: 0.75,
+                    px: 0.25
+                  }
                 }
               }
             }}
@@ -238,6 +419,7 @@ export default function ThemeToggle() {
                   }}
                 >
                   {/* Theme preview */}
+
                   <Box
                     sx={{
                       position: 'relative',
@@ -252,22 +434,22 @@ export default function ThemeToggle() {
                       overflow: 'hidden',
 
                       background: `
-              linear-gradient(
-                135deg,
-                ${preset.color} 0%,
-                ${preset.color} 48%,
-                ${preset.secondary} 48%,
-                ${preset.secondary} 100%
-              )
-            `,
+                        linear-gradient(
+                          135deg,
+                          ${preset.color} 0%,
+                          ${preset.color} 48%,
+                          ${preset.secondary} 48%,
+                          ${preset.secondary} 100%
+                        )
+                      `,
 
                       border: '1px solid',
                       borderColor: `${preset.color}80`,
 
                       boxShadow: `
-              0 0 0 1px ${preset.background},
-              0 0 14px ${preset.color}35
-            `
+                        0 0 0 1px ${preset.background},
+                        0 0 14px ${preset.color}35
+                      `
                     }}
                   >
                     {icon && (
@@ -292,6 +474,7 @@ export default function ThemeToggle() {
                   </Box>
 
                   {/* Theme name */}
+
                   <Box
                     sx={{
                       minWidth: 0,
@@ -318,6 +501,7 @@ export default function ThemeToggle() {
                   </Box>
 
                   {/* Mini color indicators */}
+
                   <Stack
                     direction="row"
                     spacing={0.4}
@@ -351,19 +535,19 @@ export default function ThemeToggle() {
 
               background: isDarkMode
                 ? `
-        linear-gradient(
-          135deg,
-          ${alpha(activeTheme.secondary, 0.75)},
-          ${alpha(activeTheme.color, 0.15)}
-        )
-      `
+                  linear-gradient(
+                    135deg,
+                    ${alpha(activeTheme.secondary, 0.75)},
+                    ${alpha(activeTheme.color, 0.15)}
+                  )
+                `
                 : `
-        linear-gradient(
-          135deg,
-          ${alpha(activeTheme.color, 0.75)},
-          ${alpha(activeTheme.secondary, 0.15)}
-        )
-      `,
+                  linear-gradient(
+                    135deg,
+                    ${alpha(activeTheme.color, 0.75)},
+                    ${alpha(activeTheme.secondary, 0.15)}
+                  )
+                `,
 
               borderColor: alpha(activeTheme.color, isDarkMode ? 0.45 : 0.25),
 
@@ -375,12 +559,12 @@ export default function ThemeToggle() {
 
                 boxShadow: isDarkMode
                   ? `
-          0 0 0 1px ${alpha(activeTheme.color, 0.12)},
-          0 0 22px ${alpha(activeTheme.color, 0.12)}
-        `
+                    0 0 0 1px ${alpha(activeTheme.color, 0.12)},
+                    0 0 22px ${alpha(activeTheme.color, 0.12)}
+                  `
                   : `
-          0 3px 14px ${alpha(activeTheme.color, 0.12)}
-        `
+                    0 3px 14px ${alpha(activeTheme.color, 0.12)}
+                  `
               },
 
               '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
@@ -420,26 +604,36 @@ export default function ThemeToggle() {
               /*
                * Category header
                */
+
               if (showCategory) {
                 items.push(
                   <ListSubheader
                     key={`${key}-category`}
                     sx={{
                       position: 'static !important',
+
                       px: 1.25,
+
                       pt: index === 0 ? 0.5 : 1.5,
+
                       pb: 0.75,
+
                       backgroundColor: 'transparent',
+
                       color: 'text.secondary',
+
                       fontSize: '0.62rem',
+
                       fontWeight: 800,
+
                       letterSpacing: '0.12em',
+
                       textTransform: 'uppercase',
+
                       lineHeight: 1.4
                     }}
                   >
-                    {' '}
-                    {preset.category}{' '}
+                    {preset.category}
                   </ListSubheader>
                 );
               }
@@ -447,6 +641,7 @@ export default function ThemeToggle() {
               /*
                * Theme item
                */
+
               items.push(
                 <MenuItem
                   key={key}
@@ -473,12 +668,12 @@ export default function ThemeToggle() {
                     color: 'text.primary',
 
                     background: `
-            linear-gradient(
-              135deg,
-              ${preset.secondary}12,
-              ${preset.color}06
-            )
-          `,
+                        linear-gradient(
+                          135deg,
+                          ${preset.secondary}12,
+                          ${preset.color}06
+                        )
+                      `,
 
                     border: '1px solid transparent',
 
@@ -488,6 +683,7 @@ export default function ThemeToggle() {
                     /*
                      * Left active indicator
                      */
+
                     '&::before': {
                       content: '""',
 
@@ -513,6 +709,7 @@ export default function ThemeToggle() {
                     /*
                      * Decorative glow
                      */
+
                     '&::after': {
                       content: '""',
 
@@ -527,12 +724,12 @@ export default function ThemeToggle() {
                       borderRadius: '50%',
 
                       background: `
-              radial-gradient(
-                circle,
-                ${preset.color}20,
-                transparent 70%
-              )
-            `,
+                          radial-gradient(
+                            circle,
+                            ${preset.color}20,
+                            transparent 70%
+                          )
+                        `,
 
                       opacity: 0,
 
@@ -545,19 +742,19 @@ export default function ThemeToggle() {
                       transform: 'translateX(3px)',
 
                       background: `
-              linear-gradient(
-                135deg,
-                ${preset.secondary}20,
-                ${preset.color}12
-              )
-            `,
+                          linear-gradient(
+                            135deg,
+                            ${preset.secondary}20,
+                            ${preset.color}12
+                          )
+                        `,
 
                       borderColor: `${preset.color}35`,
 
                       boxShadow: `
-              0 6px 20px rgba(0,0,0,.18),
-              0 0 20px ${preset.color}0D
-            `,
+                          0 6px 20px rgba(0,0,0,.18),
+                          0 0 20px ${preset.color}0D
+                        `,
 
                       '&::before': {
                         opacity: 1,
@@ -572,22 +769,23 @@ export default function ThemeToggle() {
                     /*
                      * Selected theme
                      */
+
                     '&.Mui-selected': {
                       background: `
-              linear-gradient(
-                135deg,
-                ${preset.secondary}28,
-                ${preset.color}18
-              )
-            `,
+                          linear-gradient(
+                            135deg,
+                            ${preset.secondary}28,
+                            ${preset.color}18
+                          )
+                        `,
 
                       borderColor: `${preset.color}55`,
 
                       boxShadow: `
-              inset 0 0 20px ${preset.color}08,
-              0 4px 18px rgba(0,0,0,.16),
-              0 0 20px ${preset.color}10
-            `,
+                          inset 0 0 20px ${preset.color}08,
+                          0 4px 18px rgba(0,0,0,.16),
+                          0 0 20px ${preset.color}10
+                        `,
 
                       '&::before': {
                         opacity: 1,
@@ -602,18 +800,20 @@ export default function ThemeToggle() {
                     /*
                      * Selected + hover
                      */
+
                     '&.Mui-selected:hover': {
                       background: `
-              linear-gradient(
-                135deg,
-                ${preset.secondary}35,
-                ${preset.color}22
-              )
-            `
+                          linear-gradient(
+                            135deg,
+                            ${preset.secondary}35,
+                            ${preset.color}22
+                          )
+                        `
                     }
                   }}
                 >
                   {/* Theme icon / preview */}
+
                   <Box
                     sx={{
                       position: 'relative',
@@ -631,23 +831,25 @@ export default function ThemeToggle() {
                       overflow: 'hidden',
 
                       background: `
-              linear-gradient(
-                145deg,
-                ${preset.color}20,
-                ${preset.secondary}15
-              )
-            `,
+                          linear-gradient(
+                            145deg,
+                            ${preset.color}20,
+                            ${preset.secondary}15
+                          )
+                        `,
 
                       border: '1px solid',
+
                       borderColor: `${preset.color}35`,
 
                       boxShadow: `
-              inset 0 1px 0 rgba(255,255,255,.05),
-              0 4px 12px ${preset.color}12
-            `
+                          inset 0 1px 0 rgba(255,255,255,.05),
+                          0 4px 12px ${preset.color}12
+                        `
                     }}
                   >
                     {/* Color glow */}
+
                     <Box
                       sx={{
                         position: 'absolute',
@@ -658,12 +860,12 @@ export default function ThemeToggle() {
                         borderRadius: '50%',
 
                         background: `
-                radial-gradient(
-                  circle,
-                  ${preset.color},
-                  ${preset.secondary}
-                )
-              `,
+                            radial-gradient(
+                              circle,
+                              ${preset.color},
+                              ${preset.secondary}
+                            )
+                          `,
 
                         opacity: 0.85,
 
@@ -702,22 +904,23 @@ export default function ThemeToggle() {
                           borderRadius: '50%',
 
                           background: `
-                  linear-gradient(
-                    135deg,
-                    ${preset.color},
-                    ${preset.secondary}
-                  )
-                `,
+                              linear-gradient(
+                                135deg,
+                                ${preset.color},
+                                ${preset.secondary}
+                              )
+                            `,
 
                           boxShadow: `
-                  0 0 12px ${preset.color}70
-                `
+                              0 0 12px ${preset.color}70
+                            `
                         }}
                       />
                     )}
                   </Box>
 
                   {/* Theme information */}
+
                   <Box
                     sx={{
                       position: 'relative',
@@ -738,6 +941,7 @@ export default function ThemeToggle() {
                         whiteSpace: 'nowrap',
 
                         fontSize: '0.85rem',
+
                         fontWeight: 700,
 
                         color: 'text.primary'
@@ -754,12 +958,14 @@ export default function ThemeToggle() {
                         mt: 0.25,
 
                         fontSize: '0.64rem',
+
                         fontWeight: 500,
 
                         color: 'text.secondary',
 
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
+
                         whiteSpace: 'nowrap'
                       }}
                     >
@@ -768,6 +974,7 @@ export default function ThemeToggle() {
                   </Box>
 
                   {/* Theme palette */}
+
                   <Stack
                     direction="row"
                     spacing={0.45}
@@ -814,7 +1021,7 @@ export default function ThemeToggle() {
         </FormControl>
 
         <Stack
-          direction={{ xs: 'row' }}
+          direction="row"
           sx={{
             display: 'flex',
             alignItems: 'center',
@@ -822,9 +1029,9 @@ export default function ThemeToggle() {
             flexWrap: 'wrap'
           }}
         >
-          {/* ================================================================== */}
-          {/* PRIMARY                                                            */}
-          {/* ================================================================== */}
+          {/* ====================================================== */}
+          {/* PRIMARY                                                */}
+          {/* ====================================================== */}
 
           <Tooltip title="Primary color">
             <TextField
@@ -846,9 +1053,9 @@ export default function ThemeToggle() {
             />
           </Tooltip>
 
-          {/* ================================================================== */}
-          {/* SECONDARY                                                          */}
-          {/* ================================================================== */}
+          {/* ====================================================== */}
+          {/* SECONDARY                                              */}
+          {/* ====================================================== */}
 
           <Tooltip title="Secondary color">
             <TextField
@@ -870,9 +1077,9 @@ export default function ThemeToggle() {
             />
           </Tooltip>
 
-          {/* ================================================================== */}
-          {/* GRAY                                                               */}
-          {/* ================================================================== */}
+          {/* ====================================================== */}
+          {/* GRAY                                                   */}
+          {/* ====================================================== */}
 
           <Tooltip title="Gray color">
             <TextField
@@ -894,9 +1101,9 @@ export default function ThemeToggle() {
             />
           </Tooltip>
 
-          {/* ================================================================== */}
-          {/* BACKGROUND                                                         */}
-          {/* ================================================================== */}
+          {/* ====================================================== */}
+          {/* BACKGROUND                                             */}
+          {/* ====================================================== */}
 
           <Tooltip title="Background color">
             <TextField
@@ -918,32 +1125,66 @@ export default function ThemeToggle() {
             />
           </Tooltip>
 
-          {/* ================================================================== */}
-          {/* LIGHT / DARK                                                       */}
-          {/* ================================================================== */}
+          {/* ====================================================== */}
+          {/* RANDOMIZER                                             */}
+          {/* ====================================================== */}
 
-          <Tooltip title={isDarkMode ? 'Light mode' : 'Dark mode'}>
+          <Tooltip title="Randomize custom theme">
             <IconButton
-              onClick={toggleTheme}
+              onClick={randomizeTheme}
+              aria-label="Randomize custom theme"
               sx={{
+                width: 40,
+                height: 40,
+
                 borderRadius: 1.5,
-                transition: 'all 180ms ease',
+
+                color: activeTheme.color,
+
+                border: '1px solid',
+
+                borderColor: alpha(activeTheme.color, isDarkMode ? 0.4 : 0.25),
+
+                backgroundColor: alpha(
+                  activeTheme.color,
+                  isDarkMode ? 0.1 : 0.2
+                ),
+
+                transition:
+                  'transform 180ms ease, background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease',
 
                 '&:hover': {
-                  backgroundColor: `${theme.palette.primary.main}14`,
-                  color: theme.palette.primary.main
+                  transform: 'rotate(25deg) scale(1.05)',
+
+                  color: activeTheme.color,
+
+                  backgroundColor: alpha(activeTheme.color, 0.14),
+
+                  borderColor: activeTheme.color,
+
+                  boxShadow: `
+                    0 0 18px ${alpha(activeTheme.color, 0.2)}
+                  `
+                },
+
+                '&:active': {
+                  transform: 'rotate(180deg) scale(0.92)'
                 }
               }}
             >
-              {isDarkMode ? <LightModeIcon /> : <DarkModeIcon />}
+              <ShuffleIcon fontSize="small" />
             </IconButton>
           </Tooltip>
+
+          {/* ====================================================== */}
+          {/* LIGHT / DARK                                           */}
+          {/* ====================================================== */}
         </Stack>
       </Box>
 
-      {/* ================================================================== */}
-      {/* GOOGLE FONT                                                        */}
-      {/* ================================================================== */}
+      {/* ========================================================== */}
+      {/* GOOGLE FONT                                                */}
+      {/* ========================================================== */}
 
       <Box
         sx={{
@@ -957,6 +1198,28 @@ export default function ThemeToggle() {
           }
         }}
       >
+        <Tooltip title={isDarkMode ? 'Light mode' : 'Dark mode'}>
+          <IconButton
+            onClick={toggleTheme}
+            sx={{
+              width: 40,
+              height: 40,
+
+              borderRadius: 1.5,
+
+              transition: 'all 180ms ease',
+
+              '&:hover': {
+                backgroundColor: alpha(theme.palette.primary.main, 0.08),
+
+                color: theme.palette.primary.main
+              }
+            }}
+          >
+            {isDarkMode ? <LightModeIcon /> : <DarkModeIcon />}
+          </IconButton>
+        </Tooltip>
+
         <AppTextField
           size="small"
           fullWidth
@@ -988,8 +1251,8 @@ export default function ThemeToggle() {
 
                 '&:hover': {
                   color: 'error.main',
-                  backgroundColor: 'error.main',
-                  background: 'rgba(211, 47, 47, 0.08)'
+
+                  backgroundColor: 'rgba(211, 47, 47, 0.08)'
                 }
               }}
             >

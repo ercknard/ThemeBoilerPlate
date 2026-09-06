@@ -107,6 +107,9 @@ function getCategoryLabel(category: string): string {
     case 'classic':
       return 'Classic';
 
+    case 'elements':
+      return 'Elements';
+
     case 'mythology':
       return 'Mythology';
 
@@ -968,6 +971,7 @@ export default function ColorPresetsSection() {
 
   const categoryOrder = [
     'classic',
+    'elements',
     'mythology',
     'minecraft',
     'cosmic',

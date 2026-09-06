@@ -646,7 +646,9 @@ export const THEME_ICONS: Record<keyof typeof THEME_SETS, string> = {
   purple: '/static/images/logo-purple.png',
   coffee: '/static/images/logo-coffee.png',
   green: '/static/images/logo-green.png',
+
   olympus: '/static/images/logo-olympus.png',
+
   end: '/static/images/logo-end.png',
   ocean: '/static/images/logo-ocean.png',
   desert: '/static/images/logo-desert.png',
@@ -656,7 +658,9 @@ export const THEME_ICONS: Record<keyof typeof THEME_SETS, string> = {
   basaltDeltas: '/static/images/logo-basalt-deltas.png',
   paleGarden: '/static/images/logo-pale-garden.png',
   deepDark: '/static/images/logo-deep-dark.png',
+
   galaxy: '/static/images/logo-galaxy.png',
+
   zeus: '/static/images/logo-zeus.png',
   hera: '/static/images/logo-hera.png',
   poseidon: '/static/images/logo-poseidon.png',
@@ -669,8 +673,18 @@ export const THEME_ICONS: Record<keyof typeof THEME_SETS, string> = {
   hephaestus: '/static/images/logo-hephaestus.png',
   hermes: '/static/images/logo-hermes.png',
   dionysus: '/static/images/logo-dionysus.png',
-  hades: '/static/images/logo-hades.png',
   hestia: '/static/images/logo-hestia.png',
+  hades: '/static/images/logo-hades.png',
+
+  // Four Elements
+  fire: '/static/images/logo-fire.png',
+  water: '/static/images/logo-water.png',
+  earth: '/static/images/logo-earth.png',
+  air: '/static/images/logo-air.png',
+
+  // Classic
+  monochrome: '/static/images/logo-monochrome.png',
+
   custom: '/static/images/favicon.png'
 };
 
@@ -971,6 +985,60 @@ export const THEME_SETS = {
     gray: '#1D1922',
     background: '#050307',
     icon: '#7549A2'
+  },
+
+  // ============================================================
+  // THE FOUR ELEMENTS
+  // ============================================================
+
+  fire: {
+    label: 'Fire',
+    category: 'elements',
+    color: '#C94A2C',
+    secondary: '#D28A35',
+    gray: '#30231F',
+    background: '#110705',
+    icon: '#E06A3B'
+  },
+
+  water: {
+    label: 'Water',
+    category: 'elements',
+    color: '#8A739F',
+    secondary: '#B8A9C5',
+    gray: '#2C2830',
+    background: '#0D0A10',
+    icon: '#D1C3DC'
+  },
+
+  earth: {
+    label: 'Earth',
+    category: 'elements',
+    color: '#657A3A',
+    secondary: '#9A7742',
+    gray: '#292A22',
+    background: '#0B0D07',
+    icon: '#91A65A'
+  },
+
+  air: {
+    label: 'Air',
+    category: 'elements',
+    color: '#7E9FAF',
+    secondary: '#B5C4C9',
+    gray: '#282D30',
+    background: '#090D0F',
+    icon: '#B8D1D8'
+  },
+
+  monochrome: {
+    label: 'Monochrome',
+    category: 'classic',
+    color: '#8C8C8C',
+    secondary: '#C7C7C7',
+    gray: '#242424',
+    background: '#080808',
+    icon: '#F0F0F0'
   },
 
   custom: {
