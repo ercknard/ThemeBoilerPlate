@@ -1127,7 +1127,7 @@ export default function TypographyShowcase() {
           </Grid>
 
           <Grid
-            size={{ xs: 12, md: 7.15 }}
+            size={{ xs: 12, xl: 7.4, xxxxl: 7.15 }}
             sx={{
               minHeight: { md: '100vh' },
               py: 5
@@ -4483,7 +4483,7 @@ const colorScale = theme.colorScale;
           </Grid>
 
           <Grid
-            size={{ xs: 12, md: 2.35 }}
+            size={{ xs: 12, xl: 2.1, xxxxl: 2.35 }}
             sx={{
               minHeight: { md: '100vh' },
               paddingRight: 2.5

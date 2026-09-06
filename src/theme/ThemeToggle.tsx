@@ -154,7 +154,7 @@ export default function ThemeToggle() {
   };
 
   return (
-    <Stack spacing={2}>
+    <Stack spacing={2} direction={{ xs: 'column' }}>
       {/* ================================================================== */}
       {/* PRESET THEME                                                       */}
       {/* ================================================================== */}
@@ -813,118 +813,132 @@ export default function ThemeToggle() {
           </Select>
         </FormControl>
 
-        {/* ================================================================== */}
-        {/* PRIMARY                                                            */}
-        {/* ================================================================== */}
+        <Stack
+          direction={{ xs: 'row' }}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1,
+            flexWrap: 'wrap'
+          }}
+        >
+          {/* ================================================================== */}
+          {/* PRIMARY                                                            */}
+          {/* ================================================================== */}
 
-        <Tooltip title="Primary color">
-          <TextField
-            type="color"
-            size="small"
-            value={activeTheme.color}
-            onChange={(event) => handleColorChange('color', event.target.value)}
-            sx={{
-              width: 44,
-
-              '& input': {
-                cursor: 'pointer',
-                height: 40,
-                padding: 0.5
+          <Tooltip title="Primary color">
+            <TextField
+              type="color"
+              size="small"
+              value={activeTheme.color}
+              onChange={(event) =>
+                handleColorChange('color', event.target.value)
               }
-            }}
-          />
-        </Tooltip>
+              sx={{
+                width: 44,
 
-        {/* ================================================================== */}
-        {/* SECONDARY                                                          */}
-        {/* ================================================================== */}
+                '& input': {
+                  cursor: 'pointer',
+                  height: 40,
+                  padding: 0.5
+                }
+              }}
+            />
+          </Tooltip>
 
-        <Tooltip title="Secondary color">
-          <TextField
-            type="color"
-            size="small"
-            value={activeTheme.secondary}
-            onChange={(event) =>
-              handleColorChange('secondary', event.target.value)
-            }
-            sx={{
-              width: 44,
+          {/* ================================================================== */}
+          {/* SECONDARY                                                          */}
+          {/* ================================================================== */}
 
-              '& input': {
-                cursor: 'pointer',
-                height: 40,
-                padding: 0.5
+          <Tooltip title="Secondary color">
+            <TextField
+              type="color"
+              size="small"
+              value={activeTheme.secondary}
+              onChange={(event) =>
+                handleColorChange('secondary', event.target.value)
               }
-            }}
-          />
-        </Tooltip>
+              sx={{
+                width: 44,
 
-        {/* ================================================================== */}
-        {/* GRAY                                                               */}
-        {/* ================================================================== */}
+                '& input': {
+                  cursor: 'pointer',
+                  height: 40,
+                  padding: 0.5
+                }
+              }}
+            />
+          </Tooltip>
 
-        <Tooltip title="Gray color">
-          <TextField
-            type="color"
-            size="small"
-            value={activeTheme.gray}
-            onChange={(event) => handleColorChange('gray', event.target.value)}
-            sx={{
-              width: 44,
+          {/* ================================================================== */}
+          {/* GRAY                                                               */}
+          {/* ================================================================== */}
 
-              '& input': {
-                cursor: 'pointer',
-                height: 40,
-                padding: 0.5
+          <Tooltip title="Gray color">
+            <TextField
+              type="color"
+              size="small"
+              value={activeTheme.gray}
+              onChange={(event) =>
+                handleColorChange('gray', event.target.value)
               }
-            }}
-          />
-        </Tooltip>
+              sx={{
+                width: 44,
 
-        {/* ================================================================== */}
-        {/* BACKGROUND                                                         */}
-        {/* ================================================================== */}
+                '& input': {
+                  cursor: 'pointer',
+                  height: 40,
+                  padding: 0.5
+                }
+              }}
+            />
+          </Tooltip>
 
-        <Tooltip title="Background color">
-          <TextField
-            type="color"
-            size="small"
-            value={activeTheme.background}
-            onChange={(event) =>
-              handleColorChange('background', event.target.value)
-            }
-            sx={{
-              width: 44,
+          {/* ================================================================== */}
+          {/* BACKGROUND                                                         */}
+          {/* ================================================================== */}
 
-              '& input': {
-                cursor: 'pointer',
-                height: 40,
-                padding: 0.5
+          <Tooltip title="Background color">
+            <TextField
+              type="color"
+              size="small"
+              value={activeTheme.background}
+              onChange={(event) =>
+                handleColorChange('background', event.target.value)
               }
-            }}
-          />
-        </Tooltip>
+              sx={{
+                width: 44,
 
-        {/* ================================================================== */}
-        {/* LIGHT / DARK                                                       */}
-        {/* ================================================================== */}
+                '& input': {
+                  cursor: 'pointer',
+                  height: 40,
+                  padding: 0.5
+                }
+              }}
+            />
+          </Tooltip>
 
-        <Tooltip title={isDarkMode ? 'Light mode' : 'Dark mode'}>
-          <IconButton
-            onClick={toggleTheme}
-            sx={{
-              borderRadius: 1.5,
-              transition: 'all 180ms ease',
+          {/* ================================================================== */}
+          {/* LIGHT / DARK                                                       */}
+          {/* ================================================================== */}
 
-              '&:hover': {
-                backgroundColor: `${theme.palette.primary.main}14`,
-                color: theme.palette.primary.main
-              }
-            }}
-          >
-            {isDarkMode ? <LightModeIcon /> : <DarkModeIcon />}
-          </IconButton>
-        </Tooltip>
+          <Tooltip title={isDarkMode ? 'Light mode' : 'Dark mode'}>
+            <IconButton
+              onClick={toggleTheme}
+              sx={{
+                borderRadius: 1.5,
+                transition: 'all 180ms ease',
+
+                '&:hover': {
+                  backgroundColor: `${theme.palette.primary.main}14`,
+                  color: theme.palette.primary.main
+                }
+              }}
+            >
+              {isDarkMode ? <LightModeIcon /> : <DarkModeIcon />}
+            </IconButton>
+          </Tooltip>
+        </Stack>
       </Box>
 
       {/* ================================================================== */}
