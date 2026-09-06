@@ -17,8 +17,8 @@ import { useThemeContext } from '@/contexts/themeContext';
 
 import ThemeToggle from '@/theme/ThemeToggle';
 
-import { AppButton, AppChip } from '@/theme/CustomComponents';
-import SkyEffects from '@/theme/SkyEffects';
+import { AppButton, AppChip } from '@/theme/components/CustomComponents';
+import SkyEffects from '@/theme/common/SkyEffects';
 import { THEME_SETS, THEME_ICONS, type ThemeSetName } from '@/theme/theme';
 
 const GITHUB_URL = process.env.NEXT_PUBLIC_GITHUB_URL;
@@ -405,7 +405,7 @@ export default function Home() {
 
               overflow: 'hidden',
 
-              border: `1px solid ${alpha(secondary, 0.3)}`,
+              border: `2px solid ${alpha(secondary, 0.5)}`,
 
               background: `
                 linear-gradient(

@@ -22,7 +22,7 @@ import {
   AppCard,
   AppChip,
   AppDivider
-} from '@/theme/CustomComponents';
+} from '@/theme/components/CustomComponents';
 
 /* ========================================================================== */
 /* CONSTANTS                                                                  */

@@ -21,7 +21,7 @@ import { alpha, useTheme } from '@mui/material/styles';
 
 import { useThemeContext } from '@/contexts/themeContext';
 import { THEME_SETS, THEME_ICONS, type ThemeSetName } from '@/theme/theme';
-import { AppTextField } from '@/theme/CustomComponents';
+import { AppTextField } from '@/theme/components/CustomComponents';
 
 export default function ThemeToggle() {
   const {
