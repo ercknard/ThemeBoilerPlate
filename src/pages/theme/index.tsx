@@ -380,7 +380,7 @@ export default function TypographyShowcase() {
       <Box
         sx={{
           minHeight: '100vh',
-          background: `${alpha(theme.backgroundScale[3], 1)}`,
+          background: `${alpha(theme.backgroundScale[4], 0.75)}`,
           color: 'text.primary'
         }}
       >
@@ -438,13 +438,36 @@ export default function TypographyShowcase() {
                   variant="outlined"
                   sx={{
                     height: '100%',
-                    p: 1.25,
+                    p: {
+                      xs: 1,
+                      sm: 1.25
+                    },
                     display: 'flex',
                     flexDirection: 'column',
                     overflow: 'hidden',
+
+                    // Sidebar surface
                     borderRadius: 0,
-                    borderRight: `2px solid ${secondaryScale[7]}`,
-                    backgroundColor: alpha(backgroundScale[4], 1)
+                    borderTop: 0,
+                    borderBottom: 0,
+                    borderLeft: 0,
+                    borderRight: `1px solid ${secondaryScale[7]}`,
+
+                    backgroundColor: alpha(backgroundScale[5], 0.75),
+
+                    // Prevent the surface from visually collapsing
+                    boxSizing: 'border-box',
+
+                    // Subtle separation from the main content
+                    boxShadow: `1px 0 0 ${alpha(secondaryScale[6], 0.35)}`,
+
+                    // Smooth theme transitions
+                    transition:
+                      'background-color 180ms ease, border-color 180ms ease',
+
+                    '&:hover': {
+                      borderRightColor: secondaryScale[8]
+                    }
                   }}
                 >
                   <Stack
@@ -4433,7 +4456,7 @@ const colorScale = theme.colorScale;
                 flexDirection: 'column',
                 overflow: 'hidden',
                 borderLeft: `2px solid ${secondaryScale[7]}`,
-                backgroundColor: alpha(backgroundScale[4], 0.75),
+                backgroundColor: alpha(theme.secondaryScale[4], 1),
                 borderRadius: 2,
 
                 border: `1px solid ${alpha(secondaryScale[7], 0.25)}`,
