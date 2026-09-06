@@ -545,18 +545,6 @@ export default function TypographyShowcase() {
 
                           lineHeight: 1.05,
 
-                          background: `
-                                              linear-gradient(
-                                                135deg,
-                                                ${theme.backgroundScale[11]},
-                                                ${alpha(theme.colorScale[9], 1)}
-                                              )
-                                            `,
-
-                          backgroundClip: 'text',
-                          WebkitBackgroundClip: 'text',
-                          WebkitTextFillColor: 'transparent',
-
                           '&:hover': {
                             opacity: 0.75
                           }
