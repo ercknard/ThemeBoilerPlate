@@ -24,12 +24,19 @@ import FormatSizeOutlinedIcon from '@mui/icons-material/FormatSizeOutlined';
 import PaletteOutlinedIcon from '@mui/icons-material/PaletteOutlined';
 import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import FormatPaintIcon from '@mui/icons-material/FormatPaint';
+import LocalBarSharpIcon from '@mui/icons-material/LocalBarSharp';
 
 import { AppPaper } from '@/theme/components/CustomComponents';
 import { THEME_SETS, THEME_ICONS } from '@/theme/theme';
 import type { ThemeSetName } from '@/theme/theme';
 
-export type ShowcaseTab = 'overview' | 'typography' | 'colors' | 'components';
+export type ShowcaseTab =
+  | 'overview'
+  | 'typography'
+  | 'colors'
+  | 'presets'
+  | 'components';
 
 export type MenuKey = ShowcaseTab;
 
@@ -41,6 +48,39 @@ interface Props {
   openMenuAndScroll: (menu: ShowcaseTab, sectionId: string) => void;
   themeSet: ThemeSetName;
 }
+
+/* ========================================================================== */
+/* HELPERS                                                                    */
+/* ========================================================================== */
+
+function getCategoryLabel(category: string): string {
+  switch (category) {
+    case 'classic':
+      return 'Classic';
+
+    case 'mythology':
+      return 'Mythology';
+
+    case 'minecraft':
+      return 'Minecraft';
+
+    case 'cosmic':
+      return 'Cosmic';
+
+    case 'custom':
+      return 'Custom';
+
+    default:
+      return category
+        .replace(/([a-z])([A-Z])/g, '$1 $2')
+        .replace(/[-_]/g, ' ')
+        .replace(/\b\w/g, (char) => char.toUpperCase());
+  }
+}
+
+/* ========================================================================== */
+/* COMPONENT                                                                  */
+/* ========================================================================== */
 
 export default function ShowcaseSidebar({
   activeTab,
@@ -58,6 +98,18 @@ export default function ShowcaseSidebar({
   const backgroundScale = theme.backgroundScale;
 
   const themeIcon = THEME_ICONS[themeSet];
+
+  /* ======================================================================== */
+  /* COLOR PRESET CATEGORIES                                                  */
+  /* ======================================================================== */
+
+  const presetCategories = Array.from(
+    new Set(Object.values(THEME_SETS).map((preset) => preset.category))
+  );
+
+  /* ======================================================================== */
+  /* MENU ITEMS                                                               */
+  /* ======================================================================== */
 
   const menuItems = {
     overview: [
@@ -113,6 +165,22 @@ export default function ShowcaseSidebar({
       }
     ],
 
+    /*
+     * Color Presets are generated directly from THEME_SETS.
+     *
+     * Example:
+     *
+     * Classic
+     * Mythology
+     * Minecraft
+     * Cosmic
+     * Custom
+     */
+    presets: presetCategories.map((category) => ({
+      label: getCategoryLabel(category),
+      id: `color-presets-${category}`
+    })),
+
     components: [
       {
         label: 'Alerts',
@@ -157,10 +225,15 @@ export default function ShowcaseSidebar({
     ]
   };
 
+  /* ======================================================================== */
+  /* MENU ICONS                                                               */
+  /* ======================================================================== */
+
   const menuIcons = {
     overview: DashboardOutlinedIcon,
     typography: TextFieldsOutlinedIcon,
     colors: ColorLensOutlinedIcon,
+    presets: FormatPaintIcon,
     components: WidgetsOutlinedIcon
   };
 
@@ -168,8 +241,13 @@ export default function ShowcaseSidebar({
     overview: null,
     typography: FormatSizeOutlinedIcon,
     colors: PaletteOutlinedIcon,
+    presets: LocalBarSharpIcon,
     components: GridViewOutlinedIcon
   };
+
+  /* ======================================================================== */
+  /* SUB MENU                                                                 */
+  /* ======================================================================== */
 
   const renderSubMenu = (menu: ShowcaseTab) => {
     if (!openMenus[menu]) {
@@ -220,7 +298,8 @@ export default function ShowcaseSidebar({
                 <Typography
                   variant="small"
                   sx={{
-                    color: secondaryScale[11]
+                    color: secondaryScale[11],
+                    fontWeight: menu === 'presets' ? 600 : 400
                   }}
                 >
                   {item.label}
@@ -233,6 +312,10 @@ export default function ShowcaseSidebar({
     );
   };
 
+  /* ======================================================================== */
+  /* MAIN MENU                                                                */
+  /* ======================================================================== */
+
   const renderMenu = (menu: ShowcaseTab) => {
     const Icon = menuIcons[menu];
 
@@ -240,6 +323,7 @@ export default function ShowcaseSidebar({
       overview: 'Overview',
       typography: 'Typography',
       colors: 'Colors',
+      presets: 'Color Presets',
       components: 'Components'
     };
 
@@ -305,6 +389,10 @@ export default function ShowcaseSidebar({
     );
   };
 
+  /* ======================================================================== */
+  /* RENDER                                                                   */
+  /* ======================================================================== */
+
   return (
     <Box
       component="aside"
@@ -351,7 +439,10 @@ export default function ShowcaseSidebar({
           }
         }}
       >
-        {/* Header */}
+        {/* ================================================================== */}
+        {/* HEADER                                                             */}
+        {/* ================================================================== */}
+
         <Stack
           direction="row"
           spacing={1.5}
@@ -364,7 +455,6 @@ export default function ShowcaseSidebar({
             borderBottom: `2px solid ${secondaryScale[7]}`
           }}
         >
-          {/* Logo */}
           <Box
             component={Link}
             href="/"
@@ -374,10 +464,8 @@ export default function ShowcaseSidebar({
               position: 'relative',
               display: 'block',
               flexShrink: 0,
-
               cursor: 'pointer',
               textDecoration: 'none',
-
               transition: 'filter 0.2s ease',
 
               '&:hover': {
@@ -397,7 +485,6 @@ export default function ShowcaseSidebar({
             />
           </Box>
 
-          {/* Brand */}
           <Stack
             sx={{
               py: 1.75,
@@ -422,25 +509,15 @@ export default function ShowcaseSidebar({
               variant="h6"
               sx={{
                 mt: 0.5,
-
                 fontWeight: 800,
-
                 color: 'inherit',
-
                 textDecoration: 'none',
-
                 cursor: 'pointer',
-
                 lineHeight: 1.05,
-
                 whiteSpace: 'nowrap',
-
                 overflow: 'hidden',
-
                 textOverflow: 'ellipsis',
-
                 maxWidth: '100%',
-
                 transition: 'opacity 0.2s ease',
 
                 '&:hover': {
@@ -453,25 +530,28 @@ export default function ShowcaseSidebar({
           </Stack>
         </Stack>
 
-        {/* Navigation label */}
+        {/* ================================================================== */}
+        {/* NAVIGATION LABEL                                                   */}
+        {/* ================================================================== */}
+
         <Typography
           variant="label"
           sx={{
             px: 1.5,
             pt: 3,
             pb: 1.25,
-
             color: grayScale[11],
-
             textTransform: 'uppercase',
-
             letterSpacing: '0.08em'
           }}
         >
           Navigation
         </Typography>
 
-        {/* Navigation */}
+        {/* ================================================================== */}
+        {/* NAVIGATION                                                         */}
+        {/* ================================================================== */}
+
         <List
           disablePadding
           sx={{
@@ -479,11 +559,8 @@ export default function ShowcaseSidebar({
             pl: 3,
 
             flex: 1,
-
             minHeight: 0,
-
             overflowY: 'auto',
-
             pr: 1.5,
 
             scrollbarWidth: 'thin',
@@ -511,10 +588,14 @@ export default function ShowcaseSidebar({
           {renderMenu('overview')}
           {renderMenu('typography')}
           {renderMenu('colors')}
+          {renderMenu('presets')}
           {renderMenu('components')}
         </List>
 
-        {/* Footer */}
+        {/* ================================================================== */}
+        {/* FOOTER                                                             */}
+        {/* ================================================================== */}
+
         <Box
           sx={{
             mt: 'auto',

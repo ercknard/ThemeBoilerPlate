@@ -27,6 +27,7 @@ import ShowcaseSidebar, {
   type MenuKey,
   type ShowcaseTab
 } from '@/theme/layout/ShowcaseSidebar';
+import ColorPresetsSection from '@/theme/layout/ColorPresetSection';
 
 const GITHUB_URL = process.env.NEXT_PUBLIC_GITHUB_URL;
 
@@ -38,7 +39,8 @@ export default function TypographyShowcase() {
     overview: false,
     typography: false,
     colors: false,
-    components: false
+    components: false,
+    presets: false
   });
 
   const { themeSet } = useThemeContext();
@@ -54,6 +56,7 @@ export default function TypographyShowcase() {
       typography: false,
       colors: false,
       components: false,
+      presets: false,
       [menu]: true
     });
     requestAnimationFrame(() => {
@@ -188,6 +191,7 @@ export default function TypographyShowcase() {
               {activeTab === 'overview' && <OverviewSection />}
               {activeTab === 'typography' && <TypographySection />}
               {activeTab === 'colors' && <ColorsSection />}
+              {activeTab === 'presets' && <ColorPresetsSection />}
               {activeTab === 'components' && <ComponentsSection />}
 
               <Box sx={{ mt: '3rem' }}>
