@@ -362,8 +362,8 @@ export default function Home() {
                   }
                 }}
               >
-                A modern MUI foundation for building beautiful, scalable, and
-                theme-aware interfaces.
+                A modern design foundation for creating beautiful, scalable, and
+                consistent theme-aware interfaces.
               </Typography>
             </Stack>
 
@@ -570,9 +570,9 @@ export default function Home() {
                     lineHeight: 1.7
                   }}
                 >
-                  A flexible MUI theme system with dynamic color scales,
+                  A flexible design system with dynamic color scales,
                   typography, surfaces, semantic colors, and responsive
-                  components designed to work together.
+                  components designed to work together seamlessly.
                 </Typography>
 
                 {/* ACTIONS */}
