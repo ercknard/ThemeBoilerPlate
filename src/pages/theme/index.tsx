@@ -30,7 +30,8 @@ import {
   ListItemIcon,
   ListItemText,
   useMediaQuery,
-  Grid
+  Grid,
+  CardContent
 } from '@mui/material';
 import Image from 'next/image';
 import { useTheme } from '@mui/material/styles';
@@ -91,6 +92,7 @@ import {
   AppTooltip,
   AppCard
 } from '@/theme/CustomComponents';
+import React from 'react';
 
 /* ========================================================================== */
 /* TYPES                                                                      */
@@ -748,7 +750,7 @@ export default function TypographyShowcase() {
                             id: 'typography-custom-typography'
                           },
                           {
-                            label: 'How to Use Typography',
+                            label: 'How to Add Typography',
                             id: 'typography-how-to-use-typhography'
                           },
                           {
@@ -1138,7 +1140,6 @@ export default function TypographyShowcase() {
                   variant="large"
                   sx={{
                     color: grayScale[11],
-                    maxWidth: 800,
                     mt: 2,
                     mb: 2
                   }}
@@ -1208,203 +1209,617 @@ export default function TypographyShowcase() {
               {/* ============================================================ */}
 
               {activeTab === 'typography' && (
-                <Stack spacing={{ xs: 5, md: 8 }}>
-                  {/* ======================================================== */}
-                  {/* STANDARD TYPOGRAPHY                                       */}
-                  {/* ======================================================== */}
+                <Stack
+                  spacing={{ xs: 5, md: 8 }}
+                  sx={{
+                    px: {
+                      xs: 2,
+                      sm: 3,
+                      md: 4,
+                      lg: 8
+                    },
+                    pt: {
+                      xs: 4,
+                      md: 6,
+                      lg: 5
+                    }
+                  }}
+                >
+                  {/* ================================================================ */}
+                  {/* STANDARD TYPOGRAPHY                                               */}
+                  {/* ================================================================ */}
 
                   <Box id="typography-standard-typography">
-                    <Typography variant="sectionTitle" gutterBottom>
-                      Standard Typography
-                    </Typography>
-
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        color: grayScale[11],
-                        mb: 4
-                      }}
-                    >
-                      MUI&apos;s standard typography variants with responsive
-                      clamp sizing.
-                    </Typography>
-
-                    <AppPaper
-                      variant="outlined"
-                      sx={{
-                        p: {
-                          xs: 2,
-                          sm: 3,
-                          md: 4
-                        },
-                        borderColor: secondaryScale[6]
-                      }}
-                    >
-                      <Stack spacing={3}>
-                        <Typography variant="h1">Heading 1</Typography>
-
-                        <Typography variant="h2">Heading 2</Typography>
-
-                        <Typography variant="h3">Heading 3</Typography>
-
-                        <Typography variant="h4">Heading 4</Typography>
-
-                        <Typography variant="h5">Heading 5</Typography>
-
-                        <Typography variant="h6">Heading 6</Typography>
-
-                        <AppDivider />
-
-                        <Typography variant="subtitle1">
-                          Subtitle 1 — Supporting text for headings and
-                          sections.
-                        </Typography>
-
-                        <Typography variant="subtitle2">
-                          Subtitle 2 — Smaller supporting text.
-                        </Typography>
-
-                        <Typography variant="body1">
-                          Body 1 — This is the primary body text used for normal
-                          application content. It has a relaxed line height for
-                          comfortable reading.
-                        </Typography>
-
-                        <Typography variant="body2">
-                          Body 2 — Smaller body text for secondary information.
-                        </Typography>
-
-                        <Typography variant="button">
-                          Button Typography
-                        </Typography>
-
-                        <Typography variant="caption">
-                          Caption — Small supporting information.
-                        </Typography>
-
-                        <Typography variant="overline">OVERLINE</Typography>
-                      </Stack>
-                    </AppPaper>
-                  </Box>
-
-                  {/* ======================================================== */}
-                  {/* CUSTOM TYPOGRAPHY                                         */}
-                  {/* ======================================================== */}
-
-                  <Box id="typography-custom-typography">
-                    <Typography variant="sectionTitle" gutterBottom>
-                      Custom Typography
-                    </Typography>
-
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        color: grayScale[11],
-                        mb: 4
-                      }}
-                    >
-                      The 10 custom typography variants defined in the theme.
-                    </Typography>
-
-                    <Stack spacing={2}>
-                      {customTypography.map((item) => (
-                        <AppPaper
-                          key={item.variant}
-                          variant="outlined"
+                    <Stack spacing={3}>
+                      <Stack>
+                        <Typography
+                          variant="overlineCustom"
                           sx={{
-                            p: {
-                              xs: 2,
-                              sm: 3,
-                              md: 4
-                            },
-                            borderColor: secondaryScale[6]
+                            color: colorScale[9],
+                            fontWeight: 700,
+                            letterSpacing: '0.12em'
                           }}
                         >
-                          <Stack>
-                            <Typography
-                              variant="caption"
-                              sx={{
-                                display: 'block',
-                                mb: 1,
-                                color: secondaryScale[11]
-                              }}
-                            >
-                              {item.variant}
-                            </Typography>
-
-                            <Typography variant={item.variant}>
-                              {item.text}
-                            </Typography>
-
-                            <Typography
-                              variant="small"
-                              sx={{
-                                mt: 1,
-                                color: grayScale[11]
-                              }}
-                            >
-                              {item.description}
-                            </Typography>
-                          </Stack>
-                        </AppPaper>
-                      ))}
-                    </Stack>
-                  </Box>
-
-                  <Box id="typography-how-to-use-typhography">
-                    <TypographyUsageSection />
-                  </Box>
-
-                  {/* ======================================================== */}
-                  {/* RESPONSIVE SHOWCASE                                       */}
-                  {/* ======================================================== */}
-
-                  <Box id="typography-responsive-typography">
-                    <Typography variant="sectionTitle" gutterBottom>
-                      Responsive Typography
-                    </Typography>
-
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        color: grayScale[11],
-                        mb: 4
-                      }}
-                    >
-                      These headings use CSS clamp(), so they scale smoothly
-                      between mobile and large desktop screens.
-                    </Typography>
-
-                    <AppPaper
-                      variant="outlined"
-                      sx={{
-                        p: {
-                          xs: 2,
-                          sm: 3,
-                          md: 4,
-                          lg: 6,
-                          xl: 8
-                        },
-                        borderColor: secondaryScale[6]
-                      }}
-                    >
-                      <Stack>
-                        <Typography variant="display">
-                          Resize the window
+                          TYPOGRAPHY
+                        </Typography>
+                        <Typography variant="sectionTitle">
+                          Standard Typography
                         </Typography>
 
                         <Typography
-                          variant="lead"
+                          variant="body1"
                           sx={{
-                            color: secondaryScale[11]
+                            color: grayScale[11]
                           }}
                         >
-                          The typography automatically scales between its
-                          minimum and maximum sizes without requiring additional
-                          breakpoints.
+                          MUI&apos;s standard typography variants with
+                          responsive sizing, consistent line heights, and
+                          theme-based font weights.
                         </Typography>
                       </Stack>
-                    </AppPaper>
+
+                      <AppPaper
+                        variant="outlined"
+                        sx={{
+                          p: {
+                            xs: 2,
+                            sm: 3,
+                            md: 4,
+                            lg: 5
+                          },
+                          borderColor: secondaryScale[6]
+                        }}
+                      >
+                        <Stack spacing={0}>
+                          {[
+                            {
+                              variant: 'h1' as const,
+                              label: 'Heading 1',
+                              description: 'Primary page-level heading.'
+                            },
+                            {
+                              variant: 'h2' as const,
+                              label: 'Heading 2',
+                              description: 'Major section heading.'
+                            },
+                            {
+                              variant: 'h3' as const,
+                              label: 'Heading 3',
+                              description: 'Secondary section heading.'
+                            },
+                            {
+                              variant: 'h4' as const,
+                              label: 'Heading 4',
+                              description: 'Content group heading.'
+                            },
+                            {
+                              variant: 'h5' as const,
+                              label: 'Heading 5',
+                              description: 'Smaller content heading.'
+                            },
+                            {
+                              variant: 'h6' as const,
+                              label: 'Heading 6',
+                              description: 'Compact heading.'
+                            }
+                          ].map((item, index) => (
+                            <React.Fragment key={item.variant}>
+                              <Box
+                                sx={{
+                                  py: {
+                                    xs: 2,
+                                    sm: 2.5
+                                  },
+                                  display: 'grid',
+                                  gridTemplateColumns: {
+                                    xs: '1fr',
+                                    md: '140px 1fr'
+                                  },
+                                  gap: {
+                                    xs: 1,
+                                    md: 3
+                                  },
+                                  alignItems: 'center'
+                                }}
+                              >
+                                <Box>
+                                  <Typography
+                                    variant="caption"
+                                    sx={{
+                                      display: 'block',
+                                      color: secondaryScale[11],
+                                      fontWeight: 700,
+                                      textTransform: 'uppercase',
+                                      letterSpacing: '0.08em'
+                                    }}
+                                  >
+                                    {item.variant}
+                                  </Typography>
+
+                                  <Typography
+                                    variant="small"
+                                    sx={{
+                                      display: {
+                                        xs: 'none',
+                                        md: 'block'
+                                      },
+                                      mt: 0.5,
+                                      color: grayScale[11]
+                                    }}
+                                  >
+                                    {item.description}
+                                  </Typography>
+                                </Box>
+
+                                <Typography variant={item.variant}>
+                                  {item.label}
+                                </Typography>
+                              </Box>
+
+                              {index < 5 && <AppDivider />}
+                            </React.Fragment>
+                          ))}
+
+                          <AppDivider sx={{ my: 2 }} />
+
+                          {/* ---------------------------------------------------------- */}
+                          {/* BODY / SUPPORTING TYPES                                    */}
+                          {/* ---------------------------------------------------------- */}
+
+                          <Stack spacing={3}>
+                            <Box>
+                              <Typography
+                                variant="caption"
+                                sx={{
+                                  display: 'block',
+                                  mb: 0.75,
+                                  color: secondaryScale[11],
+                                  fontWeight: 700,
+                                  textTransform: 'uppercase',
+                                  letterSpacing: '0.08em'
+                                }}
+                              >
+                                subtitle1
+                              </Typography>
+
+                              <Typography variant="subtitle1">
+                                Supporting text for headings and sections.
+                              </Typography>
+                            </Box>
+
+                            <Box>
+                              <Typography
+                                variant="caption"
+                                sx={{
+                                  display: 'block',
+                                  mb: 0.75,
+                                  color: secondaryScale[11],
+                                  fontWeight: 700,
+                                  textTransform: 'uppercase',
+                                  letterSpacing: '0.08em'
+                                }}
+                              >
+                                subtitle2
+                              </Typography>
+
+                              <Typography variant="subtitle2">
+                                Smaller supporting text for secondary content.
+                              </Typography>
+                            </Box>
+
+                            <Box>
+                              <Typography
+                                variant="caption"
+                                sx={{
+                                  display: 'block',
+                                  mb: 0.75,
+                                  color: secondaryScale[11],
+                                  fontWeight: 700,
+                                  textTransform: 'uppercase',
+                                  letterSpacing: '0.08em'
+                                }}
+                              >
+                                body1
+                              </Typography>
+
+                              <Typography variant="body1">
+                                This is the primary body text used for normal
+                                application content. It uses a comfortable line
+                                height for longer reading and general interface
+                                content.
+                              </Typography>
+                            </Box>
+
+                            <Box>
+                              <Typography
+                                variant="caption"
+                                sx={{
+                                  display: 'block',
+                                  mb: 0.75,
+                                  color: secondaryScale[11],
+                                  fontWeight: 700,
+                                  textTransform: 'uppercase',
+                                  letterSpacing: '0.08em'
+                                }}
+                              >
+                                body2
+                              </Typography>
+
+                              <Typography variant="body2">
+                                Smaller body text for secondary information,
+                                descriptions, metadata, and supporting UI
+                                content.
+                              </Typography>
+                            </Box>
+
+                            <Box>
+                              <Typography
+                                variant="caption"
+                                sx={{
+                                  display: 'block',
+                                  mb: 0.75,
+                                  color: secondaryScale[11],
+                                  fontWeight: 700,
+                                  textTransform: 'uppercase',
+                                  letterSpacing: '0.08em'
+                                }}
+                              >
+                                button
+                              </Typography>
+
+                              <Typography variant="button">
+                                BUTTON TYPOGRAPHY
+                              </Typography>
+                            </Box>
+
+                            <Box>
+                              <Typography
+                                variant="caption"
+                                sx={{
+                                  display: 'block',
+                                  mb: 0.75,
+                                  color: secondaryScale[11],
+                                  fontWeight: 700,
+                                  textTransform: 'uppercase',
+                                  letterSpacing: '0.08em'
+                                }}
+                              >
+                                caption
+                              </Typography>
+
+                              <Typography variant="caption">
+                                Small supporting information and metadata.
+                              </Typography>
+                            </Box>
+
+                            <Box>
+                              <Typography
+                                variant="caption"
+                                sx={{
+                                  display: 'block',
+                                  mb: 0.75,
+                                  color: secondaryScale[11],
+                                  fontWeight: 700,
+                                  textTransform: 'uppercase',
+                                  letterSpacing: '0.08em'
+                                }}
+                              >
+                                overline
+                              </Typography>
+
+                              <Typography variant="overline">
+                                OVERLINE LABEL
+                              </Typography>
+                            </Box>
+                          </Stack>
+                        </Stack>
+                      </AppPaper>
+                    </Stack>
+                  </Box>
+
+                  {/* ================================================================ */}
+                  {/* CUSTOM TYPOGRAPHY                                                 */}
+                  {/* ================================================================ */}
+
+                  <Box id="typography-custom-typography">
+                    <Stack spacing={3}>
+                      <Box>
+                        <Typography variant="sectionTitle" gutterBottom>
+                          Custom Typography
+                        </Typography>
+
+                        <Typography
+                          variant="body1"
+                          sx={{
+                            color: grayScale[11]
+                          }}
+                        >
+                          Purpose-built variants defined by the theme for
+                          recurring application patterns and specialized
+                          interface content.
+                        </Typography>
+                      </Box>
+
+                      <Box
+                        sx={{
+                          display: 'grid',
+                          gridTemplateColumns: {
+                            xs: '1fr',
+                            md: 'repeat(2, minmax(0, 1fr))'
+                          },
+                          gap: 2
+                        }}
+                      >
+                        {customTypography.map((item) => (
+                          <AppPaper
+                            key={item.variant}
+                            variant="outlined"
+                            sx={{
+                              p: {
+                                xs: 2.5,
+                                sm: 3
+                              },
+                              height: '100%',
+                              borderColor: secondaryScale[6],
+                              transition:
+                                'border-color 180ms ease, transform 180ms ease',
+                              '&:hover': {
+                                borderColor: secondaryScale[8],
+                                transform: 'translateY(-2px)'
+                              }
+                            }}
+                          >
+                            <Stack spacing={2}>
+                              {/* Variant metadata */}
+
+                              <Stack
+                                direction="row"
+                                spacing={1}
+                                sx={{
+                                  minWidth: 0,
+                                  alignItems: 'center'
+                                }}
+                              >
+                                <Box
+                                  sx={{
+                                    width: 8,
+                                    height: 8,
+                                    flexShrink: 0,
+                                    borderRadius: '50%',
+                                    bgcolor: secondaryScale[8]
+                                  }}
+                                />
+
+                                <Typography
+                                  variant="caption"
+                                  sx={{
+                                    color: secondaryScale[11],
+                                    fontWeight: 700,
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.08em'
+                                  }}
+                                >
+                                  {item.variant}
+                                </Typography>
+                              </Stack>
+
+                              {/* Preview */}
+
+                              <Box
+                                sx={{
+                                  minHeight: 90,
+                                  display: 'flex',
+                                  alignItems: 'center'
+                                }}
+                              >
+                                <Typography variant={item.variant}>
+                                  {item.text}
+                                </Typography>
+                              </Box>
+
+                              <AppDivider />
+
+                              {/* Description */}
+
+                              <Typography
+                                variant="small"
+                                sx={{
+                                  color: grayScale[11],
+                                  lineHeight: 1.6
+                                }}
+                              >
+                                {item.description}
+                              </Typography>
+                            </Stack>
+                          </AppPaper>
+                        ))}
+                      </Box>
+                    </Stack>
+                  </Box>
+
+                  {/* ================================================================ */}
+                  {/* USAGE                                                             */}
+                  {/* ================================================================ */}
+
+                  <Box id="typography-how-to-use-typography">
+                    <TypographyUsageSection />
+                  </Box>
+
+                  {/* ================================================================ */}
+                  {/* RESPONSIVE TYPOGRAPHY                                             */}
+                  {/* ================================================================ */}
+
+                  <Box id="typography-responsive-typography">
+                    <Stack spacing={3}>
+                      <Box>
+                        <Typography variant="sectionTitle" gutterBottom>
+                          Responsive Typography
+                        </Typography>
+
+                        <Typography
+                          variant="body1"
+                          sx={{
+                            color: grayScale[11]
+                          }}
+                        >
+                          Typography uses CSS <code>clamp()</code> to scale
+                          smoothly across viewport sizes without requiring
+                          breakpoint-specific font sizes.
+                        </Typography>
+                      </Box>
+
+                      <AppPaper
+                        variant="outlined"
+                        sx={{
+                          position: 'relative',
+                          overflow: 'hidden',
+                          p: {
+                            xs: 3,
+                            sm: 4,
+                            md: 6,
+                            lg: 8,
+                            xl: 10
+                          },
+                          borderColor: secondaryScale[6]
+                        }}
+                      >
+                        {/* Decorative background */}
+
+                        <Box
+                          aria-hidden
+                          sx={{
+                            position: 'absolute',
+                            inset: 0,
+                            pointerEvents: 'none',
+                            opacity: 0.35,
+                            background: `
+                radial-gradient(
+                  circle at 85% 15%,
+                  ${secondaryScale[3]} 0,
+                  transparent 32%
+                )
+              `
+                          }}
+                        />
+
+                        <Stack
+                          spacing={{
+                            xs: 2,
+                            md: 3
+                          }}
+                          sx={{
+                            position: 'relative'
+                          }}
+                        >
+                          <Stack
+                            direction="row"
+                            spacing={1}
+                            sx={{ alignItems: 'center' }}
+                          >
+                            <Box
+                              sx={{
+                                width: 8,
+                                height: 8,
+                                borderRadius: '50%',
+                                bgcolor: secondaryScale[8]
+                              }}
+                            />
+
+                            <Typography
+                              variant="caption"
+                              sx={{
+                                color: secondaryScale[11],
+                                fontWeight: 700,
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.08em'
+                              }}
+                            >
+                              Fluid Type Scale
+                            </Typography>
+                          </Stack>
+
+                          <Typography variant="display">
+                            Resize the window
+                          </Typography>
+
+                          <Typography
+                            variant="lead"
+                            sx={{
+                              color: secondaryScale[11]
+                            }}
+                          >
+                            This heading and supporting text automatically scale
+                            between their minimum and maximum sizes, creating a
+                            smoother reading experience across phones, tablets,
+                            laptops, and large displays.
+                          </Typography>
+
+                          <AppDivider sx={{ my: 1 }} />
+
+                          <Stack
+                            direction={{
+                              xs: 'column',
+                              sm: 'row'
+                            }}
+                            spacing={{
+                              xs: 1.5,
+                              sm: 4
+                            }}
+                          >
+                            <Box>
+                              <Typography
+                                variant="caption"
+                                sx={{
+                                  display: 'block',
+                                  mb: 0.5,
+                                  color: grayScale[11]
+                                }}
+                              >
+                                Mobile
+                              </Typography>
+
+                              <Typography variant="small">
+                                Compact scale
+                              </Typography>
+                            </Box>
+
+                            <Box>
+                              <Typography
+                                variant="caption"
+                                sx={{
+                                  display: 'block',
+                                  mb: 0.5,
+                                  color: grayScale[11]
+                                }}
+                              >
+                                Tablet
+                              </Typography>
+
+                              <Typography variant="small">
+                                Intermediate scale
+                              </Typography>
+                            </Box>
+
+                            <Box>
+                              <Typography
+                                variant="caption"
+                                sx={{
+                                  display: 'block',
+                                  mb: 0.5,
+                                  color: grayScale[11]
+                                }}
+                              >
+                                Desktop
+                              </Typography>
+
+                              <Typography variant="small">
+                                Expanded scale
+                              </Typography>
+                            </Box>
+                          </Stack>
+                        </Stack>
+                      </AppPaper>
+                    </Stack>
                   </Box>
                 </Stack>
               )}
@@ -1414,124 +1829,400 @@ export default function TypographyShowcase() {
               {/* ============================================================ */}
 
               {activeTab === 'colors' && (
-                <Stack spacing={{ xs: 5, md: 8 }}>
+                <Stack
+                  spacing={{ xs: 6, md: 8 }}
+                  sx={{
+                    px: {
+                      xs: 2,
+                      sm: 3,
+                      md: 4,
+                      lg: 8
+                    },
+                    pt: {
+                      xs: 4,
+                      md: 6,
+                      lg: 5
+                    }
+                  }}
+                >
+                  {/* ================================================================ */}
+                  {/* PAGE INTRO                                                        */}
+                  {/* ================================================================ */}
+
                   <Box id="colors">
-                    <Typography variant="sectionTitle" gutterBottom>
-                      Colors
-                    </Typography>
+                    <Stack spacing={2}>
+                      <Stack>
+                        <Typography
+                          variant="overlineCustom"
+                          sx={{
+                            color: colorScale[9],
+                            fontWeight: 700,
+                            letterSpacing: '0.12em'
+                          }}
+                        >
+                          Colors
+                        </Typography>
+                        <Typography variant="sectionTitle">
+                          Color Relationship
+                        </Typography>
 
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        color: grayScale[11],
-                        mb: 4,
-                        maxWidth: 850
-                      }}
-                    >
-                      Complete color system showing the primary accent,
-                      secondary supporting scale, neutral gray scale, and
-                      application background scale. Together they follow a 60 /
-                      30 / 10 visual hierarchy.
-                    </Typography>
+                        <Typography
+                          variant="body1"
+                          sx={{
+                            color: grayScale[11]
+                          }}
+                        >
+                          A semantic color system built around hierarchy,
+                          contrast, and consistent visual roles. The system
+                          combines primary accents, supporting colors, neutrals,
+                          and application surfaces.
+                        </Typography>
+                      </Stack>
 
-                    <Stack spacing={4}>
-                      {/* ==================================================== */}
-                      {/* PRIMARY                                              */}
-                      {/* ==================================================== */}
+                      {/* -------------------------------------------------------------- */}
+                      {/* 60 / 30 / 10 VISUAL SYSTEM                                    */}
+                      {/* -------------------------------------------------------------- */}
 
-                      <ColorScaleSection
-                        title="Primary / Color Scale"
-                        description="The primary 10% accent used for important actions, active states, links, emphasis, and key interaction."
-                        scale={colorScale}
-                        colorName="Primary"
-                        semanticGroups={colorGroups}
-                      />
+                      <AppCard
+                        id="overview-color-relationship"
+                        sx={{
+                          boxShadow: 'none'
+                        }}
+                      >
+                        <CardContent
+                          sx={{
+                            p: {
+                              xs: 2.5,
+                              sm: 3,
+                              md: 4
+                            }
+                          }}
+                        >
+                          <Stack
+                            sx={{
+                              gap: 4
+                            }}
+                          >
+                            <Stack
+                              sx={{
+                                flexDirection: {
+                                  xs: 'column',
+                                  md: 'row'
+                                },
+                                gap: 2,
+                                justifyContent: 'space-between'
+                              }}
+                            >
+                              <Box>
+                                <Typography
+                                  variant="h5"
+                                  sx={{
+                                    fontWeight: 700
+                                  }}
+                                >
+                                  Color Relationship
+                                </Typography>
 
-                      {/* ==================================================== */}
-                      {/* SECONDARY                                            */}
-                      {/* ==================================================== */}
+                                <Typography
+                                  variant="body2"
+                                  sx={{
+                                    mt: 1,
+                                    color: theme.grayScale[11]
+                                  }}
+                                >
+                                  The interface follows a 60 / 30 / 10 visual
+                                  hierarchy to prevent accent colors from
+                                  overwhelming the interface.
+                                </Typography>
+                              </Box>
 
-                      <ColorScaleSection
-                        title="Secondary Scale"
-                        description="The supporting 30% color used for panels, cards, connections, supporting controls, decorative structures, and secondary actions."
-                        scale={secondaryScale}
-                        colorName="Secondary"
-                        semanticGroups={colorGroups}
-                      />
+                              <AppChip label="60 / 30 / 10" color="primary" />
+                            </Stack>
 
-                      {/* ==================================================== */}
-                      {/* GRAY                                                 */}
-                      {/* ==================================================== */}
+                            {/* RATIO VISUALIZATION */}
 
-                      <ColorScaleSection
-                        title="Gray / Neutral Scale"
-                        description="Neutral utility color used for disabled states, neutral text, dividers, borders, inactive controls, and supporting UI."
-                        scale={grayScale}
-                        colorName="Gray"
-                        semanticGroups={colorGroups}
-                      />
+                            <Box
+                              sx={{
+                                display: 'grid',
 
-                      {/* ==================================================== */}
-                      {/* BACKGROUND                                           */}
-                      {/* ==================================================== */}
+                                gridTemplateColumns: {
+                                  xs: '1fr',
+                                  md: '6fr 3fr 1fr'
+                                },
 
-                      <ColorScaleSection
-                        title="Background Scale"
-                        description="The dominant 60% visual field used for application backgrounds, surfaces, cards, dialogs, menus, and recessed areas."
-                        scale={backgroundScale}
-                        colorName="Background"
-                        semanticGroups={colorGroups}
-                      />
+                                minHeight: {
+                                  xs: 'auto',
+                                  md: 130
+                                },
+
+                                gap: 1
+                              }}
+                            >
+                              {/* 60% */}
+
+                              <Box
+                                sx={{
+                                  minHeight: 110,
+                                  p: 3,
+                                  borderRadius: 2,
+                                  display: 'flex',
+                                  flexDirection: 'column',
+                                  justifyContent: 'space-between',
+                                  backgroundColor: theme.backgroundScale[2],
+                                  border: `1px solid ${theme.grayScale[6]}`
+                                }}
+                              >
+                                <Typography
+                                  variant="h3"
+                                  sx={{
+                                    fontWeight: 800,
+                                    color: theme.backgroundScale[12]
+                                  }}
+                                >
+                                  60%
+                                </Typography>
+
+                                <Box>
+                                  <Typography
+                                    variant="medium"
+                                    sx={{
+                                      fontWeight: 700,
+                                      color: theme.backgroundScale[12]
+                                    }}
+                                  >
+                                    Background
+                                  </Typography>
+
+                                  <Typography
+                                    variant="small"
+                                    sx={{
+                                      display: 'block',
+                                      mt: 0.5,
+                                      color: theme.grayScale[10]
+                                    }}
+                                  >
+                                    Dominant surfaces and page areas.
+                                  </Typography>
+                                </Box>
+                              </Box>
+
+                              {/* 30% */}
+
+                              <Box
+                                sx={{
+                                  minHeight: 110,
+                                  p: 3,
+                                  borderRadius: 2,
+                                  display: 'flex',
+                                  flexDirection: 'column',
+                                  justifyContent: 'space-between',
+                                  backgroundColor: theme.secondaryScale[3],
+                                  border: `1px solid ${theme.secondaryScale[7]}`
+                                }}
+                              >
+                                <Typography
+                                  variant="h3"
+                                  sx={{
+                                    fontWeight: 800,
+                                    color: theme.secondaryScale[11]
+                                  }}
+                                >
+                                  30%
+                                </Typography>
+
+                                <Box>
+                                  <Typography
+                                    variant="medium"
+                                    sx={{
+                                      fontWeight: 700,
+                                      color: theme.secondaryScale[11]
+                                    }}
+                                  >
+                                    Secondary
+                                  </Typography>
+
+                                  <Typography
+                                    variant="small"
+                                    sx={{
+                                      display: 'block',
+                                      mt: 0.5,
+                                      color: theme.secondaryScale[10]
+                                    }}
+                                  >
+                                    Supporting surfaces and structure.
+                                  </Typography>
+                                </Box>
+                              </Box>
+
+                              {/* 10% */}
+
+                              <Box
+                                sx={{
+                                  minHeight: 110,
+                                  p: 3,
+                                  borderRadius: 2,
+                                  display: 'flex',
+                                  flexDirection: 'column',
+                                  justifyContent: 'space-between',
+                                  backgroundColor: theme.colorScale[3],
+                                  border: `1px solid ${theme.colorScale[7]}`
+                                }}
+                              >
+                                <Typography
+                                  variant="h3"
+                                  sx={{
+                                    fontWeight: 800,
+                                    color: theme.colorScale[11]
+                                  }}
+                                >
+                                  10%
+                                </Typography>
+
+                                <Box>
+                                  <Typography
+                                    variant="medium"
+                                    sx={{
+                                      fontWeight: 700,
+                                      color: theme.colorScale[11]
+                                    }}
+                                  >
+                                    Primary
+                                  </Typography>
+
+                                  <Typography
+                                    variant="small"
+                                    sx={{
+                                      display: 'block',
+                                      mt: 0.5,
+                                      color: theme.colorScale[10]
+                                    }}
+                                  >
+                                    Actions and active states.
+                                  </Typography>
+                                </Box>
+                              </Box>
+                            </Box>
+                          </Stack>
+                        </CardContent>
+                      </AppCard>
                     </Stack>
                   </Box>
 
-                  {/* ======================================================== */}
-                  {/* HOW TO ADD COLORS                                        */}
-                  {/* ======================================================== */}
+                  {/* ================================================================ */}
+                  {/* COLOR SCALES                                                      */}
+                  {/* ================================================================ */}
+
+                  <Box id="colors-scales">
+                    <Stack spacing={3}>
+                      <Box>
+                        <Typography variant="sectionTitle" gutterBottom>
+                          Color Scales
+                        </Typography>
+
+                        <Typography
+                          variant="body1"
+                          sx={{
+                            color: grayScale[11]
+                          }}
+                        >
+                          Each scale contains tonal steps that can be selected
+                          according to contrast, emphasis, surface depth, and
+                          semantic purpose.
+                        </Typography>
+                      </Box>
+
+                      <Stack spacing={4}>
+                        {/* PRIMARY */}
+
+                        <ColorScaleSection
+                          title="Primary / Color Scale"
+                          description="The primary accent used for important actions, active states, links, selected elements, emphasis, and key interaction."
+                          scale={colorScale}
+                          colorName="Primary"
+                          semanticGroups={colorGroups}
+                        />
+
+                        {/* SECONDARY */}
+
+                        <ColorScaleSection
+                          title="Secondary Scale"
+                          description="The supporting color scale used for panels, cards, connections, borders, secondary actions, and decorative structures."
+                          scale={secondaryScale}
+                          colorName="Secondary"
+                          semanticGroups={colorGroups}
+                        />
+
+                        {/* GRAY */}
+
+                        <ColorScaleSection
+                          title="Gray / Neutral Scale"
+                          description="The neutral utility scale used for text hierarchy, disabled states, borders, dividers, inactive controls, and supporting interface elements."
+                          scale={grayScale}
+                          colorName="Gray"
+                          semanticGroups={colorGroups}
+                        />
+
+                        {/* BACKGROUND */}
+
+                        <ColorScaleSection
+                          title="Background Scale"
+                          description="The surface scale used for application backgrounds, cards, dialogs, menus, recessed areas, and layered interface surfaces."
+                          scale={backgroundScale}
+                          colorName="Background"
+                          semanticGroups={colorGroups}
+                        />
+                      </Stack>
+                    </Stack>
+                  </Box>
+
+                  {/* ================================================================ */}
+                  {/* HOW TO USE                                                        */}
+                  {/* ================================================================ */}
 
                   <Box id="colors-how-to-use-colors">
-                    <Stack spacing={1} sx={{ mb: 4 }}>
-                      <Typography
-                        variant="overlineCustom"
-                        sx={{
-                          color: colorScale[9]
-                        }}
-                      >
-                        COLOR USAGE
-                      </Typography>
-
-                      <Typography variant="sectionTitle" gutterBottom>
-                        How to Add Colors
-                      </Typography>
-
-                      <Typography
-                        variant="body1"
-                        sx={{
-                          color: grayScale[11],
-                          maxWidth: 850
-                        }}
-                      >
-                        Use the generated scales directly in your components.
-                        Primary handles emphasis, secondary provides supporting
-                        structure, background dominates the interface, and gray
-                        handles neutral states.
-                      </Typography>
-                    </Stack>
-
                     <Stack spacing={3}>
-                      {/* ==================================================== */}
-                      {/* PRIMARY                                              */}
-                      {/* ==================================================== */}
+                      <Box>
+                        <Typography
+                          variant="overlineCustom"
+                          sx={{
+                            display: 'block',
+                            mb: 1,
+                            color: colorScale[9]
+                          }}
+                        >
+                          COLOR USAGE
+                        </Typography>
 
-                      <ColorUsageCard
-                        title="Primary / Color"
-                        description={
-                          <>
-                            Use <code>colorScale</code> for important actions,
-                            active states, links, and emphasis.
-                          </>
-                        }
-                        code={`import { useTheme } from '@mui/material/styles';
+                        <Typography variant="sectionTitle" gutterBottom>
+                          How to Add Colors
+                        </Typography>
+
+                        <Typography
+                          variant="body1"
+                          sx={{
+                            color: grayScale[11]
+                          }}
+                        >
+                          Access the generated scales from the MUI theme instead
+                          of hard-coding color values. This keeps components
+                          consistent and makes global theme changes easier to
+                          maintain.
+                        </Typography>
+                      </Box>
+
+                      <Stack spacing={3}>
+                        {/* PRIMARY */}
+
+                        <ColorUsageCard
+                          title="Primary / Color"
+                          description={
+                            <>
+                              Use <code>colorScale</code> for important actions,
+                              active states, links, selected elements, and
+                              visual emphasis.
+                            </>
+                          }
+                          code={`import { useTheme } from '@mui/material/styles';
 
 const theme = useTheme();
 
@@ -1548,26 +2239,24 @@ const colorScale = theme.colorScale;
 >
   Primary action
 </AppButton>`}
-                        background={colorScale[2]}
-                        textColor={colorScale[12]}
-                        scale={colorScale}
-                        steps={[3, 5, 7, 9, 10, 11, 12]}
-                      />
+                          background={colorScale[2]}
+                          textColor={colorScale[12]}
+                          scale={colorScale}
+                          steps={[3, 5, 7, 9, 10, 11, 12]}
+                        />
 
-                      {/* ==================================================== */}
-                      {/* SECONDARY                                            */}
-                      {/* ==================================================== */}
+                        {/* SECONDARY */}
 
-                      <ColorUsageCard
-                        title="Secondary / Supporting"
-                        description={
-                          <>
-                            Use <code>secondaryScale</code> for supporting
-                            surfaces, cards, borders, connections, and secondary
-                            actions.
-                          </>
-                        }
-                        code={`const secondaryScale = theme.secondaryScale;
+                        <ColorUsageCard
+                          title="Secondary / Supporting"
+                          description={
+                            <>
+                              Use <code>secondaryScale</code> for supporting
+                              surfaces, panels, borders, connections, decorative
+                              elements, and secondary actions.
+                            </>
+                          }
+                          code={`const secondaryScale = theme.secondaryScale;
 
 <Box
   sx={{
@@ -1588,26 +2277,24 @@ const colorScale = theme.colorScale;
 >
   Secondary action
 </AppButton>`}
-                        background={secondaryScale[2]}
-                        textColor={secondaryScale[12]}
-                        scale={secondaryScale}
-                        steps={[3, 5, 7, 9, 10, 11, 12]}
-                      />
+                          background={secondaryScale[2]}
+                          textColor={secondaryScale[12]}
+                          scale={secondaryScale}
+                          steps={[3, 5, 7, 9, 10, 11, 12]}
+                        />
 
-                      {/* ==================================================== */}
-                      {/* GRAY                                                 */}
-                      {/* ==================================================== */}
+                        {/* GRAY */}
 
-                      <ColorUsageCard
-                        title="Gray / Neutral"
-                        description={
-                          <>
-                            Use <code>grayScale</code> for neutral surfaces,
-                            text, borders, dividers, disabled states, and
-                            inactive controls.
-                          </>
-                        }
-                        code={`const grayScale = theme.grayScale;
+                        <ColorUsageCard
+                          title="Gray / Neutral"
+                          description={
+                            <>
+                              Use <code>grayScale</code> for neutral surfaces,
+                              text, dividers, borders, disabled states, and
+                              inactive controls.
+                            </>
+                          }
+                          code={`const grayScale = theme.grayScale;
 
 <Typography
   sx={{
@@ -1626,25 +2313,24 @@ const colorScale = theme.colorScale;
 >
   Disabled
 </AppButton>`}
-                        background={grayScale[3]}
-                        textColor={grayScale[12]}
-                        scale={grayScale}
-                        steps={[2, 3, 6, 7, 9, 11, 12]}
-                      />
+                          background={grayScale[3]}
+                          textColor={grayScale[12]}
+                          scale={grayScale}
+                          steps={[2, 3, 6, 7, 9, 11, 12]}
+                        />
 
-                      {/* ==================================================== */}
-                      {/* BACKGROUND                                           */}
-                      {/* ==================================================== */}
+                        {/* BACKGROUND */}
 
-                      <ColorUsageCard
-                        title="Background / 60%"
-                        description={
-                          <>
-                            Use <code>backgroundScale</code> for the dominant
-                            application background and large surfaces.
-                          </>
-                        }
-                        code={`const backgroundScale = theme.backgroundScale;
+                        <ColorUsageCard
+                          title="Background / Surface"
+                          description={
+                            <>
+                              Use <code>backgroundScale</code> for the dominant
+                              application background, cards, dialogs, menus, and
+                              layered surfaces.
+                            </>
+                          }
+                          code={`const backgroundScale = theme.backgroundScale;
 
 <Box
   sx={{
@@ -1661,122 +2347,138 @@ const colorScale = theme.colorScale;
 >
   Surface
 </AppPaper>`}
-                        background={backgroundScale[3]}
-                        textColor={backgroundScale[12]}
-                        scale={backgroundScale}
-                        steps={[1, 2, 3, 4, 6, 8]}
-                      />
+                          background={backgroundScale[3]}
+                          textColor={backgroundScale[12]}
+                          scale={backgroundScale}
+                          steps={[1, 2, 3, 4, 6, 8]}
+                        />
+                      </Stack>
+                    </Stack>
+                  </Box>
 
-                      {/* ==================================================== */}
-                      {/* QUICK REFERENCE                                      */}
-                      {/* ==================================================== */}
+                  {/* ================================================================ */}
+                  {/* SEMANTIC QUICK REFERENCE                                         */}
+                  {/* ================================================================ */}
 
-                      <AppPaper
-                        variant="outlined"
-                        sx={{
-                          overflow: 'hidden',
-                          borderColor: secondaryScale[6]
-                        }}
-                      >
-                        <Box
+                  <Box id="colors-quick-reference">
+                    <Stack spacing={3}>
+                      <Box>
+                        <Typography variant="sectionTitle" gutterBottom>
+                          Semantic Quick Reference
+                        </Typography>
+
+                        <Typography
+                          variant="body1"
                           sx={{
-                            p: {
-                              xs: 2,
-                              sm: 3,
-                              md: 4
-                            }
+                            color: grayScale[11]
                           }}
                         >
-                          <Typography variant="h5">Quick Reference</Typography>
+                          A quick guide for choosing the correct scale when
+                          building new components.
+                        </Typography>
+                      </Box>
 
-                          <Typography
-                            variant="small"
+                      <Box
+                        sx={{
+                          display: 'grid',
+                          gridTemplateColumns: {
+                            xs: '1fr',
+                            sm: 'repeat(2, minmax(0, 1fr))',
+                            lg: 'repeat(4, minmax(0, 1fr))'
+                          },
+                          gap: 2
+                        }}
+                      >
+                        {[
+                          {
+                            scale: 'backgroundScale',
+                            percentage: '60%',
+                            role: 'Background',
+                            usage:
+                              'Application backgrounds and dominant surfaces',
+                            color: backgroundScale[4],
+                            textColor: backgroundScale[12]
+                          },
+                          {
+                            scale: 'secondaryScale',
+                            percentage: '30%',
+                            role: 'Secondary',
+                            usage:
+                              'Supporting panels, borders, structures, and connections',
+                            color: secondaryScale[5],
+                            textColor: secondaryScale[12]
+                          },
+                          {
+                            scale: 'colorScale',
+                            percentage: '10%',
+                            role: 'Primary',
+                            usage:
+                              'Important actions, active states, and emphasis',
+                            color: colorScale[9],
+                            textColor: colorScale.contrast
+                          },
+                          {
+                            scale: 'grayScale',
+                            percentage: 'Neutral',
+                            role: 'Gray',
+                            usage:
+                              'Text, disabled states, borders, dividers, and utility UI',
+                            color: grayScale[7],
+                            textColor: grayScale[12]
+                          }
+                        ].map((item) => (
+                          <AppPaper
+                            key={item.scale}
+                            variant="outlined"
                             sx={{
-                              display: 'block',
-                              mt: 0.5,
-                              mb: 3,
-                              color: secondaryScale[11]
+                              overflow: 'hidden',
+                              height: '100%',
+                              borderColor: secondaryScale[6]
                             }}
                           >
-                            Recommended semantic role for each scale.
-                          </Typography>
+                            <Box
+                              sx={{
+                                height: 8,
+                                backgroundColor: item.color
+                              }}
+                            />
 
-                          <Box
-                            sx={{
-                              display: 'grid',
-                              gridTemplateColumns: {
-                                xs: '1fr',
-                                sm: 'repeat(2, 1fr)',
-                                md: 'repeat(4, 1fr)'
-                              },
-                              gap: 2
-                            }}
-                          >
-                            {[
-                              {
-                                scale: 'backgroundScale',
-                                percentage: '60%',
-                                role: 'Background',
-                                usage:
-                                  'Application background and dominant surfaces',
-                                color: backgroundScale[3]
-                              },
-                              {
-                                scale: 'secondaryScale',
-                                percentage: '30%',
-                                role: 'Secondary',
-                                usage:
-                                  'Supporting panels, borders and connections',
-                                color: secondaryScale[5]
-                              },
-                              {
-                                scale: 'colorScale',
-                                percentage: '10%',
-                                role: 'Primary',
-                                usage: 'Important actions and active states',
-                                color: colorScale[9]
-                              },
-                              {
-                                scale: 'grayScale',
-                                percentage: 'Neutral',
-                                role: 'Gray',
-                                usage: 'Disabled, neutral and utility states',
-                                color: grayScale[7]
-                              }
-                            ].map((item) => (
-                              <Box
-                                key={item.scale}
+                            <Stack
+                              spacing={2}
+                              sx={{
+                                p: 2.5
+                              }}
+                            >
+                              <Stack
+                                direction="row"
                                 sx={{
-                                  p: 2,
-                                  borderRadius: 2,
-                                  border: `1px solid ${secondaryScale[6]}`,
-                                  backgroundColor: theme.secondaryScale[5]
+                                  alignItems: 'center',
+                                  justifyContent: 'space-between'
                                 }}
+                                spacing={2}
                               >
-                                <Box
-                                  sx={{
-                                    width: 34,
-                                    height: 34,
-                                    borderRadius: 1.5,
-                                    mb: 1.5,
-                                    backgroundColor: item.color
-                                  }}
-                                />
-
                                 <Typography
                                   variant="code"
                                   sx={{
-                                    display: 'block',
-                                    mb: 0.5,
-                                    color:
-                                      item.scale === 'grayScale'
-                                        ? grayScale[11]
-                                        : colorScale[11]
+                                    color: grayScale[11]
                                   }}
                                 >
                                   {item.percentage}
                                 </Typography>
 
+                                <Box
+                                  sx={{
+                                    width: 32,
+                                    height: 32,
+                                    flexShrink: 0,
+                                    borderRadius: 1.5,
+                                    backgroundColor: item.color,
+                                    border: `1px solid ${secondaryScale[6]}`
+                                  }}
+                                />
+                              </Stack>
+
+                              <Box>
                                 <Typography
                                   variant="medium"
                                   sx={{
@@ -1791,463 +2493,42 @@ const colorScale = theme.colorScale;
                                   variant="small"
                                   sx={{
                                     display: 'block',
-                                    mt: 0.5,
-                                    color: grayScale[11]
+                                    mt: 0.75,
+                                    color: grayScale[11],
+                                    lineHeight: 1.6
                                   }}
                                 >
                                   {item.usage}
                                 </Typography>
                               </Box>
-                            ))}
-                          </Box>
-                        </Box>
-                      </AppPaper>
+
+                              <AppDivider />
+
+                              <Typography
+                                variant="code"
+                                sx={{
+                                  color: grayScale[10],
+                                  wordBreak: 'break-word'
+                                }}
+                              >
+                                {item.scale}
+                              </Typography>
+                            </Stack>
+                          </AppPaper>
+                        ))}
+                      </Box>
                     </Stack>
                   </Box>
 
-                  {/* ======================================================== */}
-                  {/* COLOR USAGE EXAMPLES                                     */}
-                  {/* ======================================================== */}
+                  {/* ================================================================ */}
+                  {/* COLOR USAGE                                                       */}
+                  {/* ================================================================ */}
 
                   <Box id="colors-color-usage">
-                    <Typography variant="sectionTitle" gutterBottom>
-                      Color Usage
-                    </Typography>
-
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        color: grayScale[11],
-                        mb: 4
-                      }}
-                    >
-                      Examples of how the semantic color hierarchy can be used
-                      in actual components.
-                    </Typography>
-
-                    <AppPaper
-                      variant="outlined"
-                      sx={{
-                        p: {
-                          xs: 2,
-                          sm: 3,
-                          md: 4
-                        },
-                        borderColor: secondaryScale[6]
-                      }}
-                    >
-                      <Stack spacing={4}>
-                        {/* ================================================== */}
-                        {/* BACKGROUND                                          */}
-                        {/* ================================================== */}
-
-                        <Box>
-                          <Typography
-                            variant="label"
-                            sx={{
-                              display: 'block',
-                              mb: 1
-                            }}
-                          >
-                            Background — 60%
-                          </Typography>
-
-                          <Box
-                            sx={{
-                              p: 3,
-                              borderRadius: 2,
-                              backgroundColor: backgroundScale[5],
-                              border: `1px solid ${secondaryScale[6]}`
-                            }}
-                          >
-                            <Typography variant="body1">
-                              Dominant application surface using the background
-                              scale.
-                            </Typography>
-                          </Box>
-                        </Box>
-
-                        {/* ================================================== */}
-                        {/* SECONDARY                                           */}
-                        {/* ================================================== */}
-
-                        <Box>
-                          <Typography
-                            variant="label"
-                            sx={{
-                              display: 'block',
-                              mb: 1
-                            }}
-                          >
-                            Secondary — 30%
-                          </Typography>
-
-                          <Box
-                            sx={{
-                              p: 3,
-                              borderRadius: 2,
-                              backgroundColor: secondaryScale[3],
-                              border: `1px solid ${secondaryScale[7]}`
-                            }}
-                          >
-                            <Typography
-                              variant="body1"
-                              sx={{
-                                color: secondaryScale[11]
-                              }}
-                            >
-                              Supporting surface using the secondary scale.
-                            </Typography>
-                          </Box>
-                        </Box>
-
-                        {/* ================================================== */}
-                        {/* GRAY                                                */}
-                        {/* ================================================== */}
-
-                        <Box>
-                          <Typography
-                            variant="label"
-                            sx={{
-                              display: 'block',
-                              mb: 1
-                            }}
-                          >
-                            Gray — Neutral
-                          </Typography>
-
-                          <Box
-                            sx={{
-                              p: 3,
-                              borderRadius: 2,
-                              backgroundColor: grayScale[3],
-                              border: `1px solid ${grayScale[6]}`
-                            }}
-                          >
-                            <Typography
-                              variant="body1"
-                              sx={{
-                                color: grayScale[12]
-                              }}
-                            >
-                              Neutral surface using gray step 3.
-                            </Typography>
-                          </Box>
-                        </Box>
-
-                        {/* ================================================== */}
-                        {/* INTERACTIVE                                          */}
-                        {/* ================================================== */}
-
-                        <Box>
-                          <Typography
-                            variant="label"
-                            sx={{
-                              display: 'block',
-                              mb: 1
-                            }}
-                          >
-                            Interactive — 10%
-                          </Typography>
-
-                          <Box
-                            sx={{
-                              display: 'flex',
-                              flexWrap: 'wrap',
-                              gap: 2
-                            }}
-                          >
-                            <AppButton variant="contained" color="primary">
-                              Primary
-                            </AppButton>
-
-                            <AppButton variant="outlined" color="secondary">
-                              Secondary
-                            </AppButton>
-
-                            <AppButton
-                              variant="text"
-                              sx={{
-                                color: grayScale[11],
-                                '&:hover': {
-                                  backgroundColor: grayScale[3]
-                                }
-                              }}
-                            >
-                              Neutral
-                            </AppButton>
-                          </Box>
-                        </Box>
-
-                        {/* ================================================== */}
-                        {/* CONNECTIONS                                         */}
-                        {/* ================================================== */}
-
-                        <Box>
-                          <Typography
-                            variant="label"
-                            sx={{
-                              display: 'block',
-                              mb: 1
-                            }}
-                          >
-                            Connections — Secondary
-                          </Typography>
-
-                          <Box
-                            sx={{
-                              position: 'relative',
-                              p: 3,
-                              borderRadius: 2,
-                              backgroundColor: backgroundScale[5],
-                              border: `1px solid ${secondaryScale[6]}`,
-                              overflow: 'hidden'
-                            }}
-                          >
-                            {/* Connection line */}
-                            <Box
-                              sx={{
-                                position: 'absolute',
-                                left: '10%',
-                                right: '10%',
-                                top: '50%',
-                                height: 2,
-                                transform: 'translateY(-50%)',
-                                backgroundColor: secondaryScale[7],
-                                zIndex: 0
-                              }}
-                            />
-
-                            <Stack
-                              direction="row"
-                              sx={{
-                                position: 'relative',
-                                justifyContent: 'space-between',
-                                alignItems: 'center',
-                                zIndex: 1
-                              }}
-                            >
-                              {/* Secondary node */}
-                              <Box
-                                sx={{
-                                  width: 14,
-                                  height: 14,
-                                  flexShrink: 0,
-                                  borderRadius: '50%',
-                                  backgroundColor: secondaryScale[9],
-                                  boxShadow: `0 0 0 4px ${secondaryScale[3]}`
-                                }}
-                              />
-
-                              {/* Supporting connection */}
-                              <Box
-                                sx={{
-                                  mx: 2,
-                                  px: 2,
-                                  py: 1,
-                                  borderRadius: 2,
-                                  backgroundColor: secondaryScale[3],
-                                  border: `1px solid ${secondaryScale[7]}`,
-                                  boxShadow: `0 4px 12px ${secondaryScale[2]}`
-                                }}
-                              >
-                                <Typography
-                                  variant="small"
-                                  sx={{
-                                    color: grayScale[11],
-                                    fontWeight: 700,
-                                    whiteSpace: 'nowrap'
-                                  }}
-                                >
-                                  Supporting connection
-                                </Typography>
-                              </Box>
-
-                              {/* Primary node */}
-                              <Box
-                                sx={{
-                                  width: 14,
-                                  height: 14,
-                                  flexShrink: 0,
-                                  borderRadius: '50%',
-                                  backgroundColor: colorScale[9],
-                                  boxShadow: `0 0 0 4px ${colorScale[3]}`
-                                }}
-                              />
-                            </Stack>
-                          </Box>
-                        </Box>
-
-                        {/* ================================================== */}
-                        {/* CHIPS                                               */}
-                        {/* ================================================== */}
-
-                        <Box>
-                          <Typography
-                            variant="label"
-                            sx={{
-                              display: 'block',
-                              mb: 1
-                            }}
-                          >
-                            Components
-                          </Typography>
-
-                          <Stack
-                            direction="row"
-                            spacing={1}
-                            sx={{
-                              flexWrap: 'wrap'
-                            }}
-                          >
-                            <AppChip
-                              label="Neutral"
-                              sx={{
-                                backgroundColor: grayScale[3],
-                                color: grayScale[11],
-                                border: `1px solid ${grayScale[6]}`
-                              }}
-                            />
-
-                            <AppChip
-                              label="Secondary"
-                              sx={{
-                                backgroundColor: secondaryScale[3],
-                                color: grayScale[11],
-                                border: `1px solid ${secondaryScale[6]}`
-                              }}
-                            />
-
-                            <AppChip
-                              label="Active"
-                              sx={{
-                                backgroundColor: colorScale[5],
-                                color: colorScale[12],
-                                border: `1px solid ${colorScale[7]}`
-                              }}
-                            />
-
-                            <AppChip
-                              label="Primary"
-                              sx={{
-                                backgroundColor: colorScale[9],
-                                color: colorScale.contrast
-                              }}
-                            />
-                          </Stack>
-                        </Box>
-
-                        {/* ================================================== */}
-                        {/* TEXT                                                */}
-                        {/* ================================================== */}
-
-                        <Box>
-                          <Typography
-                            variant="label"
-                            sx={{
-                              display: 'block',
-                              mb: 2
-                            }}
-                          >
-                            Accessible Text
-                          </Typography>
-
-                          <Stack spacing={1}>
-                            <Typography
-                              variant="body1"
-                              sx={{
-                                color: grayScale[12]
-                              }}
-                            >
-                              Gray 12 — High contrast neutral text.
-                            </Typography>
-
-                            <Typography
-                              variant="body2"
-                              sx={{
-                                color: grayScale[11]
-                              }}
-                            >
-                              Gray 11 — Neutral supporting text.
-                            </Typography>
-
-                            <Typography
-                              variant="body1"
-                              sx={{
-                                color: colorScale[12]
-                              }}
-                            >
-                              Color 12 — High contrast primary text.
-                            </Typography>
-
-                            <Typography
-                              variant="body2"
-                              sx={{
-                                color: colorScale[11]
-                              }}
-                            >
-                              Color 11 — Supporting primary text.
-                            </Typography>
-
-                            <Typography
-                              variant="body2"
-                              sx={{
-                                color: secondaryScale[11]
-                              }}
-                            >
-                              Secondary 11 — Supporting secondary text.
-                            </Typography>
-                          </Stack>
-                        </Box>
-                      </Stack>
-                    </AppPaper>
-                  </Box>
-
-                  {/* ======================================================== */}
-                  {/* TEXT COLORS                                               */}
-                  {/* ======================================================== */}
-
-                  <Box id="colors-text-colors">
-                    <Typography variant="sectionTitle" gutterBottom>
-                      Text Colors
-                    </Typography>
-
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        color: grayScale[11],
-                        mb: 4,
-                        maxWidth: 850
-                      }}
-                    >
-                      Text colors use the neutral, secondary, and primary scales
-                      to establish clear hierarchy, supporting content, accent
-                      emphasis, and muted states.
-                    </Typography>
-
-                    <AppPaper
-                      variant="outlined"
-                      sx={{
-                        p: {
-                          xs: 2,
-                          sm: 3,
-                          md: 4
-                        },
-                        borderColor: secondaryScale[6]
-                      }}
-                    >
-                      <Stack spacing={3}>
-                        <Typography variant="h5">
-                          Neutral & Accent Text
-                        </Typography>
-
-                        <Typography
-                          variant="body1"
-                          sx={{
-                            color: grayScale[12]
-                          }}
-                        >
-                          grayScale.12 — Main neutral application content.
+                    <Stack spacing={3}>
+                      <Box>
+                        <Typography variant="sectionTitle" gutterBottom>
+                          Color Usage
                         </Typography>
 
                         <Typography
@@ -2256,46 +2537,613 @@ const colorScale = theme.colorScale;
                             color: grayScale[11]
                           }}
                         >
-                          grayScale.11 — Supporting neutral content.
+                          Examples of how the semantic color hierarchy
+                          translates into real interface components.
+                        </Typography>
+                      </Box>
+
+                      <AppPaper
+                        variant="outlined"
+                        sx={{
+                          p: {
+                            xs: 2,
+                            sm: 3,
+                            md: 4
+                          },
+                          borderColor: secondaryScale[6]
+                        }}
+                      >
+                        <Stack spacing={4}>
+                          {/* ========================================================== */}
+                          {/* SURFACE HIERARCHY                                           */}
+                          {/* ========================================================== */}
+
+                          <Box>
+                            <Typography
+                              variant="label"
+                              sx={{
+                                display: 'block',
+                                mb: 1.5
+                              }}
+                            >
+                              Surface Hierarchy
+                            </Typography>
+
+                            <Stack spacing={1.5}>
+                              {/* Background */}
+
+                              <Box
+                                sx={{
+                                  p: 2.5,
+                                  borderRadius: 2,
+                                  backgroundColor: backgroundScale[5],
+                                  border: `1px solid ${secondaryScale[6]}`
+                                }}
+                              >
+                                <Typography
+                                  variant="caption"
+                                  sx={{
+                                    display: 'block',
+                                    mb: 0.5,
+                                    color: grayScale[11]
+                                  }}
+                                >
+                                  BACKGROUND
+                                </Typography>
+
+                                <Typography variant="body1">
+                                  Dominant application surface
+                                </Typography>
+                              </Box>
+
+                              {/* Secondary */}
+
+                              <Box
+                                sx={{
+                                  ml: {
+                                    xs: 1,
+                                    sm: 3
+                                  },
+                                  p: 2.5,
+                                  borderRadius: 2,
+                                  backgroundColor: secondaryScale[3],
+                                  border: `1px solid ${secondaryScale[7]}`
+                                }}
+                              >
+                                <Typography
+                                  variant="caption"
+                                  sx={{
+                                    display: 'block',
+                                    mb: 0.5,
+                                    color: secondaryScale[11]
+                                  }}
+                                >
+                                  SECONDARY
+                                </Typography>
+
+                                <Typography
+                                  variant="body1"
+                                  sx={{
+                                    color: secondaryScale[12]
+                                  }}
+                                >
+                                  Supporting surface
+                                </Typography>
+                              </Box>
+
+                              {/* Gray */}
+
+                              <Box
+                                sx={{
+                                  ml: {
+                                    xs: 2,
+                                    sm: 6
+                                  },
+                                  p: 2.5,
+                                  borderRadius: 2,
+                                  backgroundColor: grayScale[3],
+                                  border: `1px solid ${grayScale[6]}`
+                                }}
+                              >
+                                <Typography
+                                  variant="caption"
+                                  sx={{
+                                    display: 'block',
+                                    mb: 0.5,
+                                    color: grayScale[11]
+                                  }}
+                                >
+                                  NEUTRAL
+                                </Typography>
+
+                                <Typography
+                                  variant="body1"
+                                  sx={{
+                                    color: grayScale[12]
+                                  }}
+                                >
+                                  Utility surface
+                                </Typography>
+                              </Box>
+                            </Stack>
+                          </Box>
+
+                          <AppDivider />
+
+                          {/* ========================================================== */}
+                          {/* INTERACTIVE                                                 */}
+                          {/* ========================================================== */}
+
+                          <Box>
+                            <Typography
+                              variant="label"
+                              sx={{
+                                display: 'block',
+                                mb: 1.5
+                              }}
+                            >
+                              Interactive States
+                            </Typography>
+
+                            <Stack
+                              direction={{
+                                xs: 'column',
+                                sm: 'row'
+                              }}
+                              spacing={2}
+                              sx={{
+                                alignItems: {
+                                  xs: 'stretch',
+                                  sm: 'center'
+                                }
+                              }}
+                            >
+                              <AppButton variant="contained" color="primary">
+                                Primary
+                              </AppButton>
+
+                              <AppButton variant="outlined" color="secondary">
+                                Secondary
+                              </AppButton>
+
+                              <AppButton
+                                variant="text"
+                                sx={{
+                                  color: grayScale[11],
+                                  '&:hover': {
+                                    backgroundColor: grayScale[3]
+                                  }
+                                }}
+                              >
+                                Neutral
+                              </AppButton>
+                            </Stack>
+                          </Box>
+
+                          <AppDivider />
+
+                          {/* ========================================================== */}
+                          {/* CONNECTIONS                                                 */}
+                          {/* ========================================================== */}
+
+                          <Box>
+                            <Typography
+                              variant="label"
+                              sx={{
+                                display: 'block',
+                                mb: 1.5
+                              }}
+                            >
+                              Connections & Relationships
+                            </Typography>
+
+                            <Box
+                              sx={{
+                                position: 'relative',
+                                minHeight: 100,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                px: {
+                                  xs: 1,
+                                  sm: 4
+                                },
+                                borderRadius: 2,
+                                backgroundColor: backgroundScale[5],
+                                border: `1px solid ${secondaryScale[6]}`,
+                                overflow: 'hidden'
+                              }}
+                            >
+                              {/* Connection */}
+
+                              <Box
+                                aria-hidden
+                                sx={{
+                                  position: 'absolute',
+                                  left: '12%',
+                                  right: '12%',
+                                  top: '50%',
+                                  height: 2,
+                                  transform: 'translateY(-50%)',
+                                  backgroundColor: secondaryScale[7]
+                                }}
+                              />
+
+                              <Stack
+                                direction="row"
+                                sx={{
+                                  position: 'relative',
+                                  alignItems: 'center',
+                                  justifyContent: 'space-between',
+                                  width: '100%',
+                                  zIndex: 1
+                                }}
+                              >
+                                {/* Secondary node */}
+
+                                <Box
+                                  sx={{
+                                    width: 14,
+                                    height: 14,
+                                    flexShrink: 0,
+                                    borderRadius: '50%',
+                                    backgroundColor: secondaryScale[9],
+                                    boxShadow: `0 0 0 5px ${secondaryScale[3]}`
+                                  }}
+                                />
+
+                                {/* Relationship */}
+
+                                <Box
+                                  sx={{
+                                    mx: 2,
+                                    px: {
+                                      xs: 1.5,
+                                      sm: 2.5
+                                    },
+                                    py: 1,
+                                    borderRadius: 2,
+                                    backgroundColor: secondaryScale[3],
+                                    border: `1px solid ${secondaryScale[7]}`,
+                                    boxShadow: `0 4px 16px ${secondaryScale[2]}`
+                                  }}
+                                >
+                                  <Typography
+                                    variant="small"
+                                    sx={{
+                                      color: secondaryScale[12],
+                                      fontWeight: 700,
+                                      whiteSpace: 'nowrap'
+                                    }}
+                                  >
+                                    Supporting connection
+                                  </Typography>
+                                </Box>
+
+                                {/* Primary node */}
+
+                                <Box
+                                  sx={{
+                                    width: 14,
+                                    height: 14,
+                                    flexShrink: 0,
+                                    borderRadius: '50%',
+                                    backgroundColor: colorScale[9],
+                                    boxShadow: `0 0 0 5px ${colorScale[3]}`
+                                  }}
+                                />
+                              </Stack>
+                            </Box>
+                          </Box>
+
+                          <AppDivider />
+
+                          {/* ========================================================== */}
+                          {/* COMPONENTS                                                  */}
+                          {/* ========================================================== */}
+
+                          <Box>
+                            <Typography
+                              variant="label"
+                              sx={{
+                                display: 'block',
+                                mb: 1.5
+                              }}
+                            >
+                              Component States
+                            </Typography>
+
+                            <Stack
+                              direction="row"
+                              spacing={1}
+                              sx={{
+                                flexWrap: 'wrap',
+                                rowGap: 1
+                              }}
+                            >
+                              <AppChip
+                                label="Neutral"
+                                sx={{
+                                  backgroundColor: grayScale[3],
+                                  color: grayScale[11],
+                                  border: `1px solid ${grayScale[6]}`
+                                }}
+                              />
+
+                              <AppChip
+                                label="Secondary"
+                                sx={{
+                                  backgroundColor: secondaryScale[3],
+                                  color: secondaryScale[12],
+                                  border: `1px solid ${secondaryScale[6]}`
+                                }}
+                              />
+
+                              <AppChip
+                                label="Active"
+                                sx={{
+                                  backgroundColor: colorScale[5],
+                                  color: colorScale[12],
+                                  border: `1px solid ${colorScale[7]}`
+                                }}
+                              />
+
+                              <AppChip
+                                label="Primary"
+                                sx={{
+                                  backgroundColor: colorScale[9],
+                                  color: colorScale.contrast
+                                }}
+                              />
+                            </Stack>
+                          </Box>
+                        </Stack>
+                      </AppPaper>
+                    </Stack>
+                  </Box>
+
+                  {/* ================================================================ */}
+                  {/* TEXT COLORS                                                       */}
+                  {/* ================================================================ */}
+
+                  <Box id="colors-text-colors">
+                    <Stack spacing={3}>
+                      <Box>
+                        <Typography variant="sectionTitle" gutterBottom>
+                          Text Colors
                         </Typography>
 
                         <Typography
                           variant="body1"
                           sx={{
-                            color: secondaryScale[11]
+                            color: grayScale[11]
                           }}
                         >
-                          secondaryScale.11 — Supporting secondary content.
+                          Text colors use the neutral, secondary, and primary
+                          scales to establish clear hierarchy, supporting
+                          content, accent emphasis, and muted states.
                         </Typography>
+                      </Box>
 
-                        <Typography
-                          variant="body1"
-                          sx={{
-                            color: colorScale[12]
-                          }}
-                        >
-                          colorScale.12 — High contrast primary accent text.
-                        </Typography>
+                      <AppPaper
+                        variant="outlined"
+                        sx={{
+                          p: {
+                            xs: 2,
+                            sm: 3,
+                            md: 4
+                          },
+                          borderColor: secondaryScale[6]
+                        }}
+                      >
+                        <Stack spacing={3}>
+                          <Stack>
+                            <Typography variant="h5">Text Hierarchy</Typography>
 
-                        <Typography
-                          variant="body1"
-                          sx={{
-                            color: colorScale[11]
-                          }}
-                        >
-                          colorScale.11 — Lower contrast primary accent text.
-                        </Typography>
+                            <Typography
+                              variant="body2"
+                              sx={{
+                                color: grayScale[11]
+                              }}
+                            >
+                              Recommended text tokens for different levels of
+                              emphasis.
+                            </Typography>
+                          </Stack>
 
-                        <Typography
-                          variant="body1"
-                          sx={{
-                            color: grayScale[9]
-                          }}
-                        >
-                          grayScale.9 — Disabled / muted text.
-                        </Typography>
-                      </Stack>
-                    </AppPaper>
+                          <Stack spacing={2}>
+                            {/* Primary text */}
+
+                            <Box
+                              sx={{
+                                p: 2,
+                                borderRadius: 2,
+                                backgroundColor: backgroundScale[3],
+                                border: `1px solid ${secondaryScale[6]}`
+                              }}
+                            >
+                              <Typography
+                                variant="body1"
+                                sx={{
+                                  color: grayScale[12]
+                                }}
+                              >
+                                Primary text — Main application content
+                              </Typography>
+
+                              <Typography
+                                variant="code"
+                                sx={{
+                                  display: 'block',
+                                  mt: 1,
+                                  color: grayScale[10]
+                                }}
+                              >
+                                grayScale[12]
+                              </Typography>
+                            </Box>
+
+                            {/* Supporting text */}
+
+                            <Box
+                              sx={{
+                                p: 2,
+                                borderRadius: 2,
+                                backgroundColor: backgroundScale[3],
+                                border: `1px solid ${secondaryScale[6]}`
+                              }}
+                            >
+                              <Typography
+                                variant="body1"
+                                sx={{
+                                  color: grayScale[11]
+                                }}
+                              >
+                                Supporting text — Secondary application content
+                              </Typography>
+
+                              <Typography
+                                variant="code"
+                                sx={{
+                                  display: 'block',
+                                  mt: 1,
+                                  color: grayScale[10]
+                                }}
+                              >
+                                grayScale[11]
+                              </Typography>
+                            </Box>
+
+                            {/* Secondary text */}
+
+                            <Box
+                              sx={{
+                                p: 2,
+                                borderRadius: 2,
+                                backgroundColor: secondaryScale[2],
+                                border: `1px solid ${secondaryScale[6]}`
+                              }}
+                            >
+                              <Typography
+                                variant="body1"
+                                sx={{
+                                  color: secondaryScale[11]
+                                }}
+                              >
+                                Secondary text — Supporting secondary content
+                              </Typography>
+
+                              <Typography
+                                variant="code"
+                                sx={{
+                                  display: 'block',
+                                  mt: 1,
+                                  color: secondaryScale[10]
+                                }}
+                              >
+                                secondaryScale[11]
+                              </Typography>
+                            </Box>
+
+                            {/* Primary accent */}
+
+                            <Box
+                              sx={{
+                                p: 2,
+                                borderRadius: 2,
+                                backgroundColor: colorScale[2],
+                                border: `1px solid ${colorScale[6]}`
+                              }}
+                            >
+                              <Typography
+                                variant="body1"
+                                sx={{
+                                  color: colorScale[12]
+                                }}
+                              >
+                                Primary accent — Emphasis, links, and important
+                                information
+                              </Typography>
+
+                              <Typography
+                                variant="code"
+                                sx={{
+                                  display: 'block',
+                                  mt: 1,
+                                  color: colorScale[11]
+                                }}
+                              >
+                                colorScale[12]
+                              </Typography>
+                            </Box>
+
+                            {/* Accent supporting */}
+
+                            <Box
+                              sx={{
+                                p: 2,
+                                borderRadius: 2,
+                                backgroundColor: colorScale[2],
+                                border: `1px solid ${colorScale[5]}`
+                              }}
+                            >
+                              <Typography
+                                variant="body1"
+                                sx={{
+                                  color: colorScale[11]
+                                }}
+                              >
+                                Accent supporting — Lower-emphasis primary
+                                content
+                              </Typography>
+
+                              <Typography
+                                variant="code"
+                                sx={{
+                                  display: 'block',
+                                  mt: 1,
+                                  color: colorScale[10]
+                                }}
+                              >
+                                colorScale[11]
+                              </Typography>
+                            </Box>
+
+                            {/* Muted */}
+
+                            <Box
+                              sx={{
+                                p: 2,
+                                borderRadius: 2,
+                                backgroundColor: grayScale[2],
+                                border: `1px solid ${grayScale[6]}`
+                              }}
+                            >
+                              <Typography
+                                variant="body1"
+                                sx={{
+                                  color: grayScale[9]
+                                }}
+                              >
+                                Muted text — Disabled, inactive, or low-priority
+                                content
+                              </Typography>
+
+                              <Typography
+                                variant="code"
+                                sx={{
+                                  display: 'block',
+                                  mt: 1,
+                                  color: grayScale[10]
+                                }}
+                              >
+                                grayScale[9]
+                              </Typography>
+                            </Box>
+                          </Stack>
+                        </Stack>
+                      </AppPaper>
+                    </Stack>
                   </Box>
                 </Stack>
               )}
@@ -2305,127 +3153,272 @@ const colorScale = theme.colorScale;
               {/* ============================================================ */}
 
               {activeTab === 'components' && (
-                <Stack spacing={{ xs: 5, md: 8 }}>
+                <Stack
+                  spacing={{ xs: 5, md: 8 }}
+                  sx={{
+                    px: {
+                      xs: 2,
+                      sm: 3,
+                      md: 4,
+                      lg: 8
+                    },
+                    pt: {
+                      xs: 4,
+                      md: 6,
+                      lg: 5
+                    }
+                  }}
+                >
+                  {/* ================================================================ */}
+                  {/* PAGE HEADER                                                      */}
+                  {/* ================================================================ */}
+
                   <Box>
-                    <Typography variant="sectionTitle" gutterBottom>
-                      Component Showcase
-                    </Typography>
-
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        color: grayScale[11],
-                        mb: 4,
-                        maxWidth: 850
-                      }}
-                    >
-                      Additional interface examples showing how the color
-                      scales, typography, surfaces, borders, states, and
-                      semantic colors work together in real components.
-                    </Typography>
-
-                    <Stack spacing={4}>
-                      {/* ====================================================== */}
-                      {/* ALERTS                                                 */}
-                      {/* ====================================================== */}
-
-                      <ShowcaseCard
-                        title="Alerts"
-                        description="Feedback messages using the semantic color system."
+                    <Stack>
+                      <Typography
+                        variant="overlineCustom"
+                        sx={{
+                          color: colorScale[9],
+                          fontWeight: 700,
+                          letterSpacing: '0.12em'
+                        }}
                       >
-                        <Stack spacing={2} id="components-alerts">
-                          <AppAlert
-                            icon={<InfoOutlinedIcon />}
-                            severity="info"
+                        COMPONENTS
+                      </Typography>
+
+                      <Typography variant="sectionTitle">
+                        Component Showcase
+                      </Typography>
+
+                      <Typography
+                        variant="body1"
+                        sx={{
+                          color: grayScale[11],
+                          maxWidth: 820,
+                          lineHeight: 1.8
+                        }}
+                      >
+                        A practical collection of interface components
+                        demonstrating how typography, color scales, surfaces,
+                        borders, spacing, states, and semantic colors work
+                        together across the design system.
+                      </Typography>
+                    </Stack>
+                  </Box>
+
+                  {/* ================================================================ */}
+                  {/* COMPONENT OVERVIEW                                                */}
+                  {/* ================================================================ */}
+
+                  <Box
+                    sx={{
+                      display: 'grid',
+                      gridTemplateColumns: {
+                        xs: '1fr',
+                        sm: 'repeat(2, 1fr)',
+                        lg: 'repeat(4, 1fr)'
+                      },
+                      gap: 2
+                    }}
+                  >
+                    {[
+                      {
+                        label: 'Feedback',
+                        value: 'Alerts & Status',
+                        description: 'Semantic messaging and state indicators.',
+                        color: semanticColors.success
+                      },
+                      {
+                        label: 'Navigation',
+                        value: 'Tabs & Controls',
+                        description: 'Navigation and preference interactions.',
+                        color: colorScale[9]
+                      },
+                      {
+                        label: 'Data',
+                        value: 'Tables & Stats',
+                        description: 'Structured information and metrics.',
+                        color: secondaryScale[9]
+                      },
+                      {
+                        label: 'Actions',
+                        value: 'Buttons & Inputs',
+                        description: 'Interactive controls and actions.',
+                        color: semanticColors.warning
+                      }
+                    ].map((item) => (
+                      <AppPaper
+                        key={item.value}
+                        variant="outlined"
+                        sx={{
+                          p: 2.5,
+                          borderColor: secondaryScale[6],
+                          backgroundColor: backgroundScale[3],
+                          transition:
+                            'transform 180ms ease, border-color 180ms ease',
+                          '&:hover': {
+                            transform: 'translateY(-2px)',
+                            borderColor: item.color
+                          }
+                        }}
+                      >
+                        <Stack spacing={1}>
+                          <Typography
+                            variant="overlineCustom"
                             sx={{
-                              border: '1px solid',
+                              color: item.color,
+                              fontWeight: 700
+                            }}
+                          >
+                            {item.label}
+                          </Typography>
+
+                          <Typography
+                            variant="medium"
+                            sx={{
+                              fontWeight: 700
+                            }}
+                          >
+                            {item.value}
+                          </Typography>
+
+                          <Typography
+                            variant="small"
+                            sx={{
+                              color: grayScale[11],
+                              lineHeight: 1.6
+                            }}
+                          >
+                            {item.description}
+                          </Typography>
+                        </Stack>
+                      </AppPaper>
+                    ))}
+                  </Box>
+
+                  {/* ================================================================ */}
+                  {/* COMPONENT SECTIONS                                                */}
+                  {/* ================================================================ */}
+
+                  <Stack spacing={{ xs: 5, md: 6 }}>
+                    {/* ============================================================ */}
+                    {/* ALERTS                                                       */}
+                    {/* ============================================================ */}
+
+                    <ShowcaseCard
+                      title="Alerts"
+                      description="Feedback messages using semantic color states."
+                    >
+                      <Stack spacing={2} id="components-alerts">
+                        <AppAlert
+                          icon={<InfoOutlinedIcon />}
+                          severity="info"
+                          sx={{
+                            border: '1px solid',
+                            borderColor: secondaryScale[6]
+                          }}
+                        >
+                          Your account has been successfully updated.
+                        </AppAlert>
+
+                        <AppAlert
+                          icon={<CheckCircleOutlineOutlinedIcon />}
+                          severity="success"
+                          sx={{
+                            border: '1px solid',
+                            borderColor: semanticColors.success
+                          }}
+                        >
+                          Changes were saved successfully.
+                        </AppAlert>
+
+                        <AppAlert
+                          icon={<WarningAmberOutlinedIcon />}
+                          severity="warning"
+                          sx={{
+                            border: '1px solid',
+                            borderColor: semanticColors.warning
+                          }}
+                        >
+                          Your subscription will expire soon.
+                        </AppAlert>
+
+                        <AppAlert
+                          icon={<ErrorOutlineOutlinedIcon />}
+                          severity="error"
+                          sx={{
+                            border: '1px solid',
+                            borderColor: semanticColors.error
+                          }}
+                        >
+                          Something went wrong. Please try again.
+                        </AppAlert>
+                      </Stack>
+                    </ShowcaseCard>
+
+                    {/* ============================================================ */}
+                    {/* STATUS                                                        */}
+                    {/* ============================================================ */}
+
+                    <ShowcaseCard
+                      title="Badges & Status"
+                      description="Compact indicators for notifications, availability, and system state."
+                    >
+                      <Stack
+                        id="components-status"
+                        direction={{
+                          xs: 'column',
+                          sm: 'row'
+                        }}
+                        spacing={3}
+                        sx={{
+                          alignItems: {
+                            xs: 'stretch',
+                            sm: 'center'
+                          },
+                          flexWrap: 'wrap'
+                        }}
+                        useFlexGap
+                      >
+                        <AppBadge badgeContent={4} color="primary">
+                          <AppPaper
+                            variant="outlined"
+                            sx={{
+                              px: 2,
+                              py: 1.5,
+                              borderRadius: 2,
                               borderColor: secondaryScale[6]
                             }}
                           >
-                            Your account has been successfully updated.
-                          </AppAlert>
+                            <Typography variant="small">
+                              Notifications
+                            </Typography>
+                          </AppPaper>
+                        </AppBadge>
 
-                          <AppAlert
-                            icon={<CheckCircleOutlineOutlinedIcon />}
-                            severity="success"
+                        <AppBadge variant="dot" color="success">
+                          <AppPaper
+                            variant="outlined"
                             sx={{
-                              border: '1px solid',
-                              borderColor: semanticColors.success
+                              px: 2,
+                              py: 1.5,
+                              borderRadius: 2,
+                              borderColor: secondaryScale[6]
                             }}
                           >
-                            Changes were saved successfully.
-                          </AppAlert>
+                            <Typography variant="small">Online</Typography>
+                          </AppPaper>
+                        </AppBadge>
 
-                          <AppAlert
-                            icon={<WarningAmberOutlinedIcon />}
-                            severity="warning"
-                            sx={{
-                              border: '1px solid',
-                              borderColor: semanticColors.warning
-                            }}
-                          >
-                            Your subscription will expire soon.
-                          </AppAlert>
-
-                          <AppAlert
-                            icon={<ErrorOutlineOutlinedIcon />}
-                            severity="error"
-                            sx={{
-                              border: '1px solid',
-                              borderColor: semanticColors.error
-                            }}
-                          >
-                            Something went wrong. Please try again.
-                          </AppAlert>
-                        </Stack>
-                      </ShowcaseCard>
-
-                      {/* ====================================================== */}
-                      {/* BADGES                                                 */}
-                      {/* ====================================================== */}
-
-                      <ShowcaseCard
-                        title="Badges & Status"
-                        description="Status indicators, notifications, and semantic states."
-                      >
                         <Stack
-                          id="components-status"
                           direction="row"
-                          spacing={4}
+                          spacing={2}
                           sx={{
                             alignItems: 'center',
                             flexWrap: 'wrap'
                           }}
                           useFlexGap
                         >
-                          <AppBadge badgeContent={4} color="primary">
-                            <AppPaper
-                              variant="outlined"
-                              sx={{
-                                p: 2,
-                                borderRadius: 2,
-                                borderColor: secondaryScale[6]
-                              }}
-                            >
-                              <Typography variant="small">
-                                Notifications
-                              </Typography>
-                            </AppPaper>
-                          </AppBadge>
-
-                          <AppBadge variant="dot" color="success">
-                            <AppPaper
-                              variant="outlined"
-                              sx={{
-                                p: 2,
-                                borderRadius: 2,
-                                borderColor: secondaryScale[6]
-                              }}
-                            >
-                              <Typography variant="small">Online</Typography>
-                            </AppPaper>
-                          </AppBadge>
-
                           <StatusDot
                             color={semanticColors.success}
                             label="Online"
@@ -2441,581 +3434,792 @@ const colorScale = theme.colorScale;
                             label="Offline"
                           />
                         </Stack>
-                      </ShowcaseCard>
+                      </Stack>
+                    </ShowcaseCard>
 
-                      {/* ====================================================== */}
-                      {/* PROGRESS                                               */}
-                      {/* ====================================================== */}
+                    {/* ============================================================ */}
+                    {/* PROGRESS                                                      */}
+                    {/* ============================================================ */}
 
-                      <ShowcaseCard
-                        title="Progress"
-                        description="Progress indicators using primary emphasis and neutral tracks."
-                      >
-                        <Stack spacing={3} id="components-progress">
-                          <Box>
-                            <Stack
-                              direction="row"
-                              sx={{
-                                mb: 1,
-                                justifyContent: 'space-between'
-                              }}
-                            >
-                              <Typography variant="small">
-                                Uploading files
-                              </Typography>
-
-                              <Typography
-                                variant="small"
-                                sx={{
-                                  color: grayScale[11]
-                                }}
-                              >
-                                72%
-                              </Typography>
-                            </Stack>
-
-                            <AppLinearProgress
-                              variant="determinate"
-                              value={72}
-                              sx={{
-                                height: 8
-                              }}
-                            />
-                          </Box>
-
-                          <Box>
-                            <Stack
-                              direction="row"
-                              sx={{
-                                mb: 1,
-                                justifyContent: 'space-between'
-                              }}
-                            >
-                              <Typography variant="small">Storage</Typography>
-
-                              <Typography
-                                variant="small"
-                                sx={{
-                                  color: grayScale[11]
-                                }}
-                              >
-                                42%
-                              </Typography>
-                            </Stack>
-
-                            <AppLinearProgress
-                              variant="determinate"
-                              value={42}
-                              color="secondary"
-                              sx={{
-                                height: 8
-                              }}
-                            />
-                          </Box>
-
+                    <ShowcaseCard
+                      title="Progress"
+                      description="Progress indicators communicate completion, loading, and capacity."
+                    >
+                      <Stack spacing={4} id="components-progress">
+                        <Box>
                           <Stack
                             direction="row"
-                            spacing={4}
                             sx={{
+                              mb: 1.25,
+                              justifyContent: 'space-between',
                               alignItems: 'center'
                             }}
                           >
+                            <Typography variant="small">
+                              Uploading files
+                            </Typography>
+
+                            <Typography
+                              variant="small"
+                              sx={{
+                                color: colorScale[11],
+                                fontWeight: 700
+                              }}
+                            >
+                              72%
+                            </Typography>
+                          </Stack>
+
+                          <AppLinearProgress
+                            variant="determinate"
+                            value={72}
+                            sx={{
+                              height: 8,
+                              borderRadius: 999
+                            }}
+                          />
+                        </Box>
+
+                        <Box>
+                          <Stack
+                            direction="row"
+                            sx={{
+                              mb: 1.25,
+                              justifyContent: 'space-between',
+                              alignItems: 'center'
+                            }}
+                          >
+                            <Typography variant="small">Storage</Typography>
+
+                            <Typography
+                              variant="small"
+                              sx={{
+                                color: secondaryScale[11],
+                                fontWeight: 700
+                              }}
+                            >
+                              42%
+                            </Typography>
+                          </Stack>
+
+                          <AppLinearProgress
+                            variant="determinate"
+                            value={42}
+                            color="secondary"
+                            sx={{
+                              height: 8,
+                              borderRadius: 999
+                            }}
+                          />
+                        </Box>
+
+                        <AppDivider />
+
+                        <Stack
+                          direction="row"
+                          spacing={4}
+                          sx={{
+                            alignItems: 'center',
+                            flexWrap: 'wrap'
+                          }}
+                          useFlexGap
+                        >
+                          <Stack spacing={1} sx={{ alignItems: 'center' }}>
                             <AppCircularProgress
                               variant="determinate"
                               value={25}
-                              size={48}
+                              size={52}
                               thickness={5}
                             />
 
+                            <Typography variant="small">25%</Typography>
+                          </Stack>
+
+                          <Stack spacing={1} sx={{ alignItems: 'center' }}>
                             <AppCircularProgress
                               variant="determinate"
                               value={65}
-                              size={48}
+                              size={52}
                               thickness={5}
                               color="secondary"
                             />
 
+                            <Typography variant="small">65%</Typography>
+                          </Stack>
+
+                          <Stack spacing={1} sx={{ alignItems: 'center' }}>
                             <CircularProgress
                               variant="determinate"
                               value={90}
-                              size={48}
+                              size={52}
                               thickness={5}
                               sx={{
                                 color: semanticColors.success
                               }}
                             />
+
+                            <Typography variant="small">90%</Typography>
                           </Stack>
                         </Stack>
-                      </ShowcaseCard>
+                      </Stack>
+                    </ShowcaseCard>
 
-                      {/* ====================================================== */}
-                      {/* TABS                                                   */}
-                      {/* ====================================================== */}
+                    {/* ============================================================ */}
+                    {/* NAVIGATION                                                    */}
+                    {/* ============================================================ */}
 
-                      <ShowcaseCard
-                        title="Navigation"
-                        description="Tabs and segmented controls."
-                      >
-                        <AppTabs
-                          value={1}
+                    <ShowcaseCard
+                      title="Navigation"
+                      description="Tabs and segmented controls for switching between related views."
+                    >
+                      <Stack spacing={3} id="components-navigation">
+                        <Box
                           sx={{
-                            borderBottom: '1px solid',
-                            borderColor: secondaryScale[6]
+                            overflowX: 'auto',
+                            '&::-webkit-scrollbar': {
+                              height: 4
+                            }
                           }}
                         >
-                          <AppTab label="Overview" />
-
-                          <AppTab label="Activity" />
-
-                          <AppTab label="Settings" />
-
-                          <AppTab label="Members" />
-                        </AppTabs>
+                          <AppTabs
+                            value={1}
+                            sx={{
+                              minWidth: 'max-content',
+                              borderBottom: '1px solid',
+                              borderColor: secondaryScale[6]
+                            }}
+                          >
+                            <AppTab label="Overview" />
+                            <AppTab label="Activity" />
+                            <AppTab label="Settings" />
+                            <AppTab label="Members" />
+                          </AppTabs>
+                        </Box>
 
                         <Stack
-                          id="components-navigation"
-                          direction="row"
-                          spacing={1}
-                          sx={{
-                            mt: 3
+                          direction={{
+                            xs: 'column',
+                            sm: 'row'
                           }}
+                          spacing={1}
                         >
                           <ToggleButtonGroup
                             exclusive
                             value="week"
                             size="small"
+                            sx={{
+                              width: {
+                                xs: '100%',
+                                sm: 'auto'
+                              }
+                            }}
                           >
                             <ToggleButton value="day">Day</ToggleButton>
-
                             <ToggleButton value="week">Week</ToggleButton>
-
                             <ToggleButton value="month">Month</ToggleButton>
                           </ToggleButtonGroup>
                         </Stack>
-                      </ShowcaseCard>
+                      </Stack>
+                    </ShowcaseCard>
 
-                      {/* ====================================================== */}
-                      {/* UPLOAD                                                 */}
-                      {/* ====================================================== */}
+                    {/* ============================================================ */}
+                    {/* UPLOAD                                                        */}
+                    {/* ============================================================ */}
 
-                      <ShowcaseCard
-                        title="Upload"
-                        description="Drag-and-drop style surface with action states."
+                    <ShowcaseCard
+                      title="Upload"
+                      description="A focused upload surface for drag-and-drop and browse actions."
+                    >
+                      <AppPaper
+                        variant="outlined"
+                        sx={{
+                          minHeight: {
+                            xs: 240,
+                            md: 280
+                          },
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          borderStyle: 'dashed',
+                          borderWidth: 2,
+                          borderColor: secondaryScale[7],
+                          borderRadius: 3,
+                          backgroundColor: backgroundScale[3],
+                          transition:
+                            'border-color 180ms ease, background-color 180ms ease',
+                          '&:hover': {
+                            borderColor: colorScale[9],
+                            backgroundColor: secondaryScale[2]
+                          }
+                        }}
                       >
-                        <AppPaper
-                          variant="outlined"
+                        <Stack
+                          id="components-upload"
+                          spacing={2.5}
                           sx={{
-                            minHeight: 220,
-                            display: 'flex',
+                            textAlign: 'center',
                             alignItems: 'center',
-                            justifyContent: 'center',
-                            borderStyle: 'dashed',
-                            borderWidth: 2,
-                            borderColor: secondaryScale[7],
-                            borderRadius: 2
+                            px: 3
                           }}
                         >
-                          <Stack
-                            id="components-upload"
-                            spacing={2}
+                          <Box
                             sx={{
-                              textAlign: 'center',
-                              alignItems: 'center'
+                              width: 64,
+                              height: 64,
+                              borderRadius: 2.5,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              backgroundColor: secondaryScale[3],
+                              color: secondaryScale[11],
+                              border: `1px solid ${secondaryScale[6]}`
                             }}
                           >
-                            <Box
+                            <CloudUploadOutlinedIcon />
+                          </Box>
+
+                          <Box>
+                            <Typography
+                              variant="medium"
                               sx={{
-                                width: 58,
-                                height: 58,
-                                borderRadius: 2,
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                backgroundColor: secondaryScale[3],
-                                color: grayScale[11],
-                                border: `1px solid ${secondaryScale[6]}`
+                                fontWeight: 700
                               }}
                             >
-                              <CloudUploadOutlinedIcon />
-                            </Box>
+                              Upload your files
+                            </Typography>
 
-                            <Box>
-                              <Typography
-                                variant="medium"
-                                sx={{
-                                  fontWeight: 700
-                                }}
-                              >
-                                Upload your files
-                              </Typography>
-
-                              <Typography
-                                variant="small"
-                                sx={{
-                                  display: 'block',
-                                  mt: 0.5,
-                                  color: grayScale[11]
-                                }}
-                              >
-                                Drag and drop files here or browse your
-                                computer.
-                              </Typography>
-                            </Box>
-
-                            <AppButton
-                              variant="outlined"
-                              startIcon={<CloudUploadOutlinedIcon />}
-                              color="secondary"
+                            <Typography
+                              variant="small"
+                              sx={{
+                                display: 'block',
+                                mt: 0.75,
+                                color: grayScale[11],
+                                maxWidth: 420
+                              }}
                             >
-                              Choose files
-                            </AppButton>
-                          </Stack>
-                        </AppPaper>
-                      </ShowcaseCard>
+                              Drag and drop files here or browse your computer.
+                            </Typography>
+                          </Box>
 
-                      {/* ====================================================== */}
-                      {/* CARDS                                                  */}
-                      {/* ====================================================== */}
+                          <AppButton
+                            variant="outlined"
+                            startIcon={<CloudUploadOutlinedIcon />}
+                            color="secondary"
+                          >
+                            Choose files
+                          </AppButton>
+                        </Stack>
+                      </AppPaper>
+                    </ShowcaseCard>
 
-                      <ShowcaseCard
-                        title="Cards"
-                        description="Different surface levels and interactive card states."
+                    {/* ============================================================ */}
+                    {/* CARDS                                                         */}
+                    {/* ============================================================ */}
+
+                    <ShowcaseCard
+                      title="Cards"
+                      description="Reusable content surfaces with hierarchy, actions, and interaction states."
+                    >
+                      <Box
+                        id="components-cards"
+                        sx={{
+                          display: 'grid',
+                          gridTemplateColumns: {
+                            xs: '1fr',
+                            sm: 'repeat(2, 1fr)',
+                            lg: 'repeat(3, 1fr)'
+                          },
+                          gap: 2
+                        }}
                       >
+                        <SampleCard
+                          icon={<PlayArrowIcon />}
+                          title="Getting started"
+                          description="Learn the basics and set up your workspace."
+                          action="Start"
+                        />
+
+                        <SampleCard
+                          icon={<DownloadOutlinedIcon />}
+                          title="Resources"
+                          description="Download templates, assets, and documentation."
+                          action="Browse"
+                        />
+
+                        <SampleCard
+                          icon={<AutoAwesomeIcon />}
+                          title="Explore"
+                          description="Discover new features available in the platform."
+                          action="Explore"
+                        />
+                      </Box>
+                    </ShowcaseCard>
+
+                    {/* ============================================================ */}
+                    {/* DATA TABLE                                                    */}
+                    {/* ============================================================ */}
+
+                    <ShowcaseCard
+                      title="Data Table"
+                      description="Structured information with status, progress, and timestamps."
+                    >
+                      <TableContainer
+                        id="components-data-table"
+                        sx={{
+                          overflowX: 'auto',
+                          border: `1px solid ${secondaryScale[6]}`,
+                          borderRadius: 2
+                        }}
+                      >
+                        <Table
+                          sx={{
+                            minWidth: 680
+                          }}
+                        >
+                          <TableHead>
+                            <TableRow>
+                              <TableCell>Project</TableCell>
+                              <TableCell>Status</TableCell>
+                              <TableCell>Progress</TableCell>
+                              <TableCell align="right">Updated</TableCell>
+                            </TableRow>
+                          </TableHead>
+
+                          <TableBody>
+                            {[
+                              {
+                                name: 'Arcana78',
+                                status: 'Active',
+                                progress: 86,
+                                updated: '2 min ago'
+                              },
+                              {
+                                name: 'Design System',
+                                status: 'Active',
+                                progress: 64,
+                                updated: '12 min ago'
+                              },
+                              {
+                                name: 'Website',
+                                status: 'Review',
+                                progress: 42,
+                                updated: '1 hour ago'
+                              },
+                              {
+                                name: 'Mobile App',
+                                status: 'Draft',
+                                progress: 18,
+                                updated: '3 hours ago'
+                              }
+                            ].map((row) => (
+                              <TableRow
+                                key={row.name}
+                                hover
+                                sx={{
+                                  '&:last-child td': {
+                                    borderBottom: 0
+                                  }
+                                }}
+                              >
+                                <TableCell>
+                                  <Typography
+                                    variant="small"
+                                    sx={{
+                                      fontWeight: 700
+                                    }}
+                                  >
+                                    {row.name}
+                                  </Typography>
+                                </TableCell>
+
+                                <TableCell>
+                                  <AppChip
+                                    size="small"
+                                    label={row.status}
+                                    color={
+                                      row.status === 'Active'
+                                        ? 'primary'
+                                        : row.status === 'Review'
+                                          ? 'secondary'
+                                          : 'default'
+                                    }
+                                  />
+                                </TableCell>
+
+                                <TableCell
+                                  sx={{
+                                    minWidth: 180
+                                  }}
+                                >
+                                  <Stack
+                                    direction="row"
+                                    spacing={1.5}
+                                    sx={{
+                                      alignItems: 'center'
+                                    }}
+                                  >
+                                    <AppLinearProgress
+                                      variant="determinate"
+                                      value={row.progress}
+                                      sx={{
+                                        flex: 1,
+                                        height: 6,
+                                        borderRadius: 999
+                                      }}
+                                    />
+
+                                    <Typography
+                                      variant="small"
+                                      sx={{
+                                        minWidth: 38,
+                                        color: grayScale[11],
+                                        textAlign: 'right'
+                                      }}
+                                    >
+                                      {row.progress}%
+                                    </Typography>
+                                  </Stack>
+                                </TableCell>
+
+                                <TableCell align="right">
+                                  <Typography
+                                    variant="small"
+                                    sx={{
+                                      color: grayScale[11],
+                                      whiteSpace: 'nowrap'
+                                    }}
+                                  >
+                                    {row.updated}
+                                  </Typography>
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </TableContainer>
+                    </ShowcaseCard>
+
+                    {/* ============================================================ */}
+                    {/* CONTROLS                                                      */}
+                    {/* ============================================================ */}
+
+                    <ShowcaseCard
+                      title="Controls"
+                      description="Inputs and preference controls for adjusting application behavior."
+                    >
+                      <Stack spacing={4} id="components-controls">
+                        <Box>
+                          <Typography
+                            variant="label"
+                            sx={{
+                              display: 'block',
+                              mb: 1
+                            }}
+                          >
+                            Volume
+                          </Typography>
+
+                          <Slider
+                            defaultValue={65}
+                            valueLabelDisplay="auto"
+                            sx={{
+                              color: colorScale[9]
+                            }}
+                          />
+                        </Box>
+
+                        <AppDivider />
+
                         <Box
-                          id="components-cards"
                           sx={{
                             display: 'grid',
                             gridTemplateColumns: {
                               xs: '1fr',
-                              sm: 'repeat(2, 1fr)',
-                              lg: 'repeat(3, 1fr)'
+                              sm: 'repeat(3, 1fr)'
                             },
                             gap: 2
                           }}
                         >
-                          <SampleCard
-                            icon={<PlayArrowIcon />}
-                            title="Getting started"
-                            description="Learn the basics and set up your workspace."
-                            action="Start"
-                          />
-
-                          <SampleCard
-                            icon={<DownloadOutlinedIcon />}
-                            title="Resources"
-                            description="Download templates, assets, and documentation."
-                            action="Browse"
-                          />
-
-                          <SampleCard
-                            icon={<AutoAwesomeIcon />}
-                            title="Explore"
-                            description="Discover new features available in the platform."
-                            action="Explore"
-                          />
-                        </Box>
-                      </ShowcaseCard>
-
-                      {/* ====================================================== */}
-                      {/* TABLE                                                  */}
-                      {/* ====================================================== */}
-
-                      <ShowcaseCard
-                        title="Data Table"
-                        description="Dense data presentation with status and actions."
-                      >
-                        <TableContainer id="components-data-table">
-                          <Table>
-                            <TableHead>
-                              <TableRow>
-                                <TableCell>Project</TableCell>
-                                <TableCell>Status</TableCell>
-                                <TableCell>Progress</TableCell>
-                                <TableCell align="right">Updated</TableCell>
-                              </TableRow>
-                            </TableHead>
-
-                            <TableBody>
-                              {[
-                                {
-                                  name: 'Arcana78',
-                                  status: 'Active',
-                                  progress: 86,
-                                  updated: '2 min ago'
-                                },
-                                {
-                                  name: 'Design System',
-                                  status: 'Active',
-                                  progress: 64,
-                                  updated: '12 min ago'
-                                },
-                                {
-                                  name: 'Website',
-                                  status: 'Review',
-                                  progress: 42,
-                                  updated: '1 hour ago'
-                                },
-                                {
-                                  name: 'Mobile App',
-                                  status: 'Draft',
-                                  progress: 18,
-                                  updated: '3 hours ago'
-                                }
-                              ].map((row) => (
-                                <TableRow key={row.name} hover>
-                                  <TableCell>
-                                    <Typography
-                                      variant="small"
-                                      sx={{
-                                        fontWeight: 700
-                                      }}
-                                    >
-                                      {row.name}
-                                    </Typography>
-                                  </TableCell>
-
-                                  <TableCell>
-                                    <AppChip
-                                      size="small"
-                                      label={row.status}
-                                      color={
-                                        row.status === 'Active'
-                                          ? 'primary'
-                                          : row.status === 'Review'
-                                            ? 'secondary'
-                                            : 'default'
-                                      }
-                                    />
-                                  </TableCell>
-
-                                  <TableCell
-                                    sx={{
-                                      minWidth: 160
-                                    }}
-                                  >
-                                    <Stack
-                                      direction="row"
-                                      spacing={1}
-                                      sx={{
-                                        alignItems: 'center'
-                                      }}
-                                    >
-                                      <AppLinearProgress
-                                        variant="determinate"
-                                        value={row.progress}
-                                        sx={{
-                                          flex: 1,
-                                          height: 6
-                                        }}
-                                      />
-
-                                      <Typography
-                                        variant="small"
-                                        sx={{
-                                          color: grayScale[11]
-                                        }}
-                                      >
-                                        {row.progress}%
-                                      </Typography>
-                                    </Stack>
-                                  </TableCell>
-
-                                  <TableCell align="right">
-                                    <Typography
-                                      variant="small"
-                                      sx={{
-                                        color: grayScale[11]
-                                      }}
-                                    >
-                                      {row.updated}
-                                    </Typography>
-                                  </TableCell>
-                                </TableRow>
-                              ))}
-                            </TableBody>
-                          </Table>
-                        </TableContainer>
-                      </ShowcaseCard>
-
-                      {/* ====================================================== */}
-                      {/* CONTROLS                                               */}
-                      {/* ====================================================== */}
-
-                      <ShowcaseCard
-                        title="Controls"
-                        description="Common input and preference controls."
-                      >
-                        <Stack spacing={4} id="components-controls">
-                          <Box>
-                            <Typography
-                              variant="label"
-                              sx={{
-                                display: 'block',
-                                mb: 1
-                              }}
-                            >
-                              Volume
-                            </Typography>
-
-                            <Slider
-                              defaultValue={65}
-                              valueLabelDisplay="auto"
-                              sx={{
-                                color: colorScale[9]
-                              }}
-                            />
-                          </Box>
-
-                          <Stack
-                            direction={{
-                              xs: 'column',
-                              sm: 'row'
+                          <AppPaper
+                            variant="outlined"
+                            sx={{
+                              p: 2,
+                              borderColor: secondaryScale[6]
                             }}
-                            spacing={4}
                           >
                             <Stack
                               direction="row"
-                              spacing={1}
+                              spacing={1.5}
                               sx={{
                                 alignItems: 'center'
                               }}
                             >
                               <AppSwitch defaultChecked />
 
-                              <Typography variant="small">
-                                Notifications
-                              </Typography>
-                            </Stack>
+                              <Box>
+                                <Typography
+                                  variant="small"
+                                  sx={{
+                                    fontWeight: 700
+                                  }}
+                                >
+                                  Notifications
+                                </Typography>
 
+                                <Typography
+                                  variant="small"
+                                  sx={{
+                                    display: 'block',
+                                    mt: 0.25,
+                                    color: grayScale[11]
+                                  }}
+                                >
+                                  Receive updates
+                                </Typography>
+                              </Box>
+                            </Stack>
+                          </AppPaper>
+
+                          <AppPaper
+                            variant="outlined"
+                            sx={{
+                              p: 2,
+                              borderColor: secondaryScale[6]
+                            }}
+                          >
                             <Stack
                               direction="row"
-                              spacing={1}
+                              spacing={1.5}
                               sx={{
                                 alignItems: 'center'
                               }}
                             >
                               <AppSwitch />
 
-                              <Typography variant="small">Auto-save</Typography>
-                            </Stack>
+                              <Box>
+                                <Typography
+                                  variant="small"
+                                  sx={{
+                                    fontWeight: 700
+                                  }}
+                                >
+                                  Auto-save
+                                </Typography>
 
+                                <Typography
+                                  variant="small"
+                                  sx={{
+                                    display: 'block',
+                                    mt: 0.25,
+                                    color: grayScale[11]
+                                  }}
+                                >
+                                  Save changes automatically
+                                </Typography>
+                              </Box>
+                            </Stack>
+                          </AppPaper>
+
+                          <AppPaper
+                            variant="outlined"
+                            sx={{
+                              p: 2,
+                              borderColor: secondaryScale[6]
+                            }}
+                          >
                             <Stack
                               direction="row"
-                              spacing={1}
+                              spacing={1.5}
                               sx={{
                                 alignItems: 'center'
                               }}
                             >
                               <AppCheckbox defaultChecked />
 
-                              <Typography variant="small">
-                                Remember me
-                              </Typography>
+                              <Box>
+                                <Typography
+                                  variant="small"
+                                  sx={{
+                                    fontWeight: 700
+                                  }}
+                                >
+                                  Remember me
+                                </Typography>
+
+                                <Typography
+                                  variant="small"
+                                  sx={{
+                                    display: 'block',
+                                    mt: 0.25,
+                                    color: grayScale[11]
+                                  }}
+                                >
+                                  Keep preferences saved
+                                </Typography>
+                              </Box>
                             </Stack>
-                          </Stack>
+                          </AppPaper>
+                        </Box>
 
-                          <Box>
-                            <Typography
-                              variant="label"
-                              sx={{
-                                display: 'block',
-                                mb: 1
-                              }}
-                            >
-                              Rating
-                            </Typography>
+                        <Box>
+                          <Typography
+                            variant="label"
+                            sx={{
+                              display: 'block',
+                              mb: 1
+                            }}
+                          >
+                            Rating
+                          </Typography>
 
-                            <Rating
-                              defaultValue={4}
-                              sx={{
-                                color: colorScale[9]
-                              }}
-                            />
-                          </Box>
-                        </Stack>
-                      </ShowcaseCard>
-
-                      {/* ====================================================== */}
-                      {/* STATISTICS                                             */}
-                      {/* ====================================================== */}
-
-                      <ShowcaseCard
-                        title="Statistics"
-                        description="Dashboard-style metrics using the color relationships."
-                      >
-                        <Box
-                          id="components-statistics"
-                          sx={{
-                            display: 'grid',
-                            gridTemplateColumns: {
-                              xs: '1fr',
-                              sm: 'repeat(2, 1fr)',
-                              lg: 'repeat(4, 1fr)'
-                            },
-                            gap: 2
-                          }}
-                        >
-                          <StatCard
-                            title="Total users"
-                            value="24,892"
-                            change="+12.4%"
-                            positive
-                            icon={<PeopleIcon />}
-                          />
-
-                          <StatCard
-                            title="Revenue"
-                            value="$84,920"
-                            change="+8.2%"
-                            positive
-                            icon={<ArrowUpwardIcon />}
-                          />
-
-                          <StatCard
-                            title="Bounce rate"
-                            value="24.8%"
-                            change="-4.6%"
-                            positive
-                            icon={<ArrowDownwardIcon />}
-                          />
-
-                          <StatCard
-                            title="Pending"
-                            value="128"
-                            change="+18"
-                            icon={<WarningAmberOutlinedIcon />}
+                          <Rating
+                            defaultValue={4}
+                            sx={{
+                              color: colorScale[9]
+                            }}
                           />
                         </Box>
-                      </ShowcaseCard>
+                      </Stack>
+                    </ShowcaseCard>
 
-                      {/* ====================================================== */}
-                      {/* BUTTON STATES                                          */}
-                      {/* ====================================================== */}
+                    {/* ============================================================ */}
+                    {/* STATISTICS                                                    */}
+                    {/* ============================================================ */}
 
-                      <ShowcaseCard
-                        title="Button States"
-                        description="Primary, secondary, destructive, disabled, and icon actions."
+                    <ShowcaseCard
+                      title="Statistics"
+                      description="Dashboard-style metrics showing value, change, and semantic context."
+                    >
+                      <Box
+                        id="components-statistics"
+                        sx={{
+                          display: 'grid',
+                          gridTemplateColumns: {
+                            xs: '1fr',
+                            sm: 'repeat(2, 1fr)',
+                            lg: 'repeat(4, 1fr)'
+                          },
+                          gap: 2
+                        }}
                       >
-                        <Stack spacing={3} id="components-button-states">
-                          <Stack
-                            direction="row"
-                            spacing={1}
+                        <StatCard
+                          title="Total users"
+                          value="24,892"
+                          change="+12.4%"
+                          positive
+                          icon={<PeopleIcon />}
+                        />
+
+                        <StatCard
+                          title="Revenue"
+                          value="$84,920"
+                          change="+8.2%"
+                          positive
+                          icon={<ArrowUpwardIcon />}
+                        />
+
+                        <StatCard
+                          title="Bounce rate"
+                          value="24.8%"
+                          change="-4.6%"
+                          positive
+                          icon={<ArrowDownwardIcon />}
+                        />
+
+                        <StatCard
+                          title="Pending"
+                          value="128"
+                          change="+18"
+                          icon={<WarningAmberOutlinedIcon />}
+                        />
+                      </Box>
+                    </ShowcaseCard>
+
+                    {/* ============================================================ */}
+                    {/* BUTTON STATES                                                 */}
+                    {/* ============================================================ */}
+
+                    <ShowcaseCard
+                      title="Button States"
+                      description="Primary, secondary, neutral, destructive, disabled, and icon actions."
+                    >
+                      <Stack spacing={3} id="components-button-states">
+                        <Stack
+                          direction="row"
+                          spacing={1}
+                          sx={{
+                            flexWrap: 'wrap'
+                          }}
+                          useFlexGap
+                        >
+                          <AppButton variant="contained">Primary</AppButton>
+
+                          <AppButton variant="outlined" color="secondary">
+                            Secondary
+                          </AppButton>
+
+                          <AppButton
+                            variant="text"
                             sx={{
-                              flexWrap: 'wrap'
+                              color: grayScale[11],
+                              '&:hover': {
+                                backgroundColor: grayScale[3]
+                              }
                             }}
-                            useFlexGap
                           >
-                            {/* Primary */}
-                            <AppButton variant="contained">Primary</AppButton>
+                            Ghost
+                          </AppButton>
 
-                            {/* Secondary */}
-                            <AppButton variant="outlined" color="secondary">
-                              Secondary
-                            </AppButton>
+                          <AppButton variant="contained" color="error">
+                            Delete
+                          </AppButton>
 
-                            {/* Neutral */}
-                            <AppButton
-                              variant="text"
+                          <AppButton variant="contained" disabled>
+                            Disabled
+                          </AppButton>
+                        </Stack>
+
+                        <AppDivider />
+
+                        <Stack
+                          direction="row"
+                          spacing={1}
+                          sx={{
+                            alignItems: 'center',
+                            flexWrap: 'wrap'
+                          }}
+                          useFlexGap
+                        >
+                          <AppTooltip title="Play">
+                            <AppIconButton
+                              sx={{
+                                backgroundColor: colorScale[9],
+                                color: colorScale.contrast,
+                                '&:hover': {
+                                  backgroundColor: colorScale[10]
+                                }
+                              }}
+                            >
+                              <PlayArrowIcon />
+                            </AppIconButton>
+                          </AppTooltip>
+
+                          <AppTooltip title="Pause">
+                            <AppIconButton
+                              sx={{
+                                color: grayScale[11],
+                                border: `1px solid ${secondaryScale[6]}`,
+                                '&:hover': {
+                                  backgroundColor: secondaryScale[3]
+                                }
+                              }}
+                            >
+                              <PauseIcon />
+                            </AppIconButton>
+                          </AppTooltip>
+
+                          <AppTooltip title="More">
+                            <AppIconButton
                               sx={{
                                 color: grayScale[11],
                                 '&:hover': {
@@ -3023,69 +4227,125 @@ const colorScale = theme.colorScale;
                                 }
                               }}
                             >
-                              Ghost
-                            </AppButton>
-
-                            {/* Destructive */}
-                            <AppButton variant="contained" color="error">
-                              Delete
-                            </AppButton>
-
-                            {/* Disabled */}
-                            <AppButton variant="contained" disabled>
-                              Disabled
-                            </AppButton>
-                          </Stack>
-
-                          <Stack direction="row" spacing={1}>
-                            <AppTooltip title="Play">
-                              <AppIconButton
-                                sx={{
-                                  backgroundColor: colorScale[9],
-                                  color: colorScale.contrast,
-
-                                  '&:hover': {
-                                    backgroundColor: colorScale[10]
-                                  }
-                                }}
-                              >
-                                <PlayArrowIcon />
-                              </AppIconButton>
-                            </AppTooltip>
-
-                            <AppTooltip title="Pause">
-                              <AppIconButton
-                                sx={{
-                                  color: grayScale[11],
-                                  border: `1px solid ${secondaryScale[6]}`,
-
-                                  '&:hover': {
-                                    backgroundColor: secondaryScale[3]
-                                  }
-                                }}
-                              >
-                                <PauseIcon />
-                              </AppIconButton>
-                            </AppTooltip>
-
-                            <AppTooltip title="More">
-                              <AppIconButton
-                                sx={{
-                                  color: grayScale[11],
-
-                                  '&:hover': {
-                                    backgroundColor: grayScale[3]
-                                  }
-                                }}
-                              >
-                                <MoreHorizIcon />
-                              </AppIconButton>
-                            </AppTooltip>
-                          </Stack>
+                              <MoreHorizIcon />
+                            </AppIconButton>
+                          </AppTooltip>
                         </Stack>
-                      </ShowcaseCard>
+                      </Stack>
+                    </ShowcaseCard>
+                  </Stack>
+
+                  {/* ================================================================ */}
+                  {/* COMPONENT PRINCIPLES                                             */}
+                  {/* ================================================================ */}
+
+                  <AppPaper
+                    variant="outlined"
+                    sx={{
+                      p: {
+                        xs: 2.5,
+                        sm: 3,
+                        md: 4
+                      },
+                      borderColor: secondaryScale[6],
+                      backgroundColor: backgroundScale[3]
+                    }}
+                  >
+                    <Stack spacing={3}>
+                      <Box>
+                        <Typography
+                          variant="overlineCustom"
+                          sx={{
+                            color: secondaryScale[11],
+                            fontWeight: 700
+                          }}
+                        >
+                          DESIGN PRINCIPLES
+                        </Typography>
+
+                        <Typography
+                          variant="h5"
+                          sx={{
+                            mt: 0.75
+                          }}
+                        >
+                          Components should feel related
+                        </Typography>
+                      </Box>
+
+                      <Typography
+                        variant="body1"
+                        sx={{
+                          color: grayScale[11],
+                          maxWidth: 850,
+                          lineHeight: 1.8
+                        }}
+                      >
+                        Components share the same visual language: consistent
+                        spacing, semantic colors, typography hierarchy, surface
+                        elevation, border treatment, and interaction states.
+                        This keeps the interface predictable while allowing each
+                        component to serve a distinct purpose.
+                      </Typography>
+
+                      <Box
+                        sx={{
+                          display: 'grid',
+                          gridTemplateColumns: {
+                            xs: '1fr',
+                            sm: 'repeat(3, 1fr)'
+                          },
+                          gap: 2
+                        }}
+                      >
+                        {[
+                          {
+                            title: 'Consistent',
+                            text: 'Shared tokens and spacing create visual rhythm.'
+                          },
+                          {
+                            title: 'Semantic',
+                            text: 'Color and states communicate meaning, not decoration.'
+                          },
+                          {
+                            title: 'Composable',
+                            text: 'Components can combine without breaking hierarchy.'
+                          }
+                        ].map((item) => (
+                          <Box
+                            key={item.title}
+                            sx={{
+                              p: 2,
+                              borderRadius: 2,
+                              backgroundColor: secondaryScale[2],
+                              border: `1px solid ${secondaryScale[6]}`
+                            }}
+                          >
+                            <Typography
+                              variant="medium"
+                              sx={{
+                                fontWeight: 700
+                              }}
+                            >
+                              {item.title}
+                            </Typography>
+
+                            <Typography
+                              variant="small"
+                              sx={{
+                                display: 'block',
+                                mt: 0.75,
+                                color: grayScale[11],
+                                lineHeight: 1.6
+                              }}
+                            >
+                              {item.text}
+                            </Typography>
+                          </Box>
+                        ))}
+                      </Box>
                     </Stack>
-                  </Box>
+                  </AppPaper>
                 </Stack>
               )}
 
@@ -3172,14 +4432,18 @@ const colorScale = theme.colorScale;
                 justifyContent: 'flex-end',
                 flexDirection: 'column',
                 overflow: 'hidden',
-                borderRadius: 1,
                 borderLeft: `2px solid ${secondaryScale[7]}`,
                 backgroundColor: alpha(backgroundScale[4], 0.75),
-                backdropFilter: 'blur(18px)',
+                borderRadius: 2,
+
+                border: `1px solid ${alpha(secondaryScale[7], 0.25)}`,
 
                 boxShadow: `
-      5px 5px 1px ${alpha(secondaryScale[7], 0.5)}
-    `
+                              0 10px 40px
+                              ${alpha('#000000', 0.16)}
+                            `,
+
+                backdropFilter: 'blur(14px)'
               }}
             >
               <ThemeToggle />
@@ -3666,12 +4930,12 @@ function ColorScaleItem({
             ? {
                 xs: 120,
                 sm: 120,
-                md: 120
+                md: 100
               }
             : {
                 xs: 80,
                 sm: 100,
-                md: 120
+                md: 100
               },
           backgroundColor: color,
           display: 'flex',
@@ -3709,7 +4973,7 @@ function ColorScaleItem({
             xs: 1.5,
             sm: 2
           },
-          minHeight: large ? 120 : 75
+          minHeight: large ? 100 : 75
         }}
       >
         <Typography
@@ -4158,8 +5422,7 @@ function TypographyUsageSection() {
         <Typography
           variant="body1"
           sx={{
-            color: theme.grayScale[11],
-            maxWidth: 760
+            color: theme.grayScale[11]
           }}
         >
           Use the predefined typography variants directly with MUI&apos;s

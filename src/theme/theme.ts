@@ -14,20 +14,11 @@ const Numeric = inconsolata.style.fontFamily;
 /* TYPES                                                                      */
 /* ========================================================================== */
 
-export type RadixScale = {
-  1: string;
-  2: string;
-  3: string;
-  4: string;
-  5: string;
-  6: string;
-  7: string;
-  8: string;
-  9: string;
-  10: string;
-  11: string;
-  12: string;
+export type RadixScaleStep = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 
+export type RadixScale = {
+  [key in RadixScaleStep]: string;
+} & {
   surface: string;
   indicator: string;
   track: string;
