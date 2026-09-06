@@ -26,7 +26,22 @@ const THEME_ICONS = {
   blue: '/static/images/logo-blue.png',
   purple: '/static/images/logo-purple.png',
   coffee: '/static/images/logo-coffee.png',
-  green: '/static/images/logo-green.png'
+  green: '/static/images/logo-green.png',
+
+  olympus: '/static/images/logo-olympus.png',
+
+  end: '/static/images/logo-end.png',
+  ocean: '/static/images/logo-ocean.png',
+  desert: '/static/images/logo-desert.png',
+  soulSandValley: '/static/images/logo-soul-sand-valley.png',
+  crimsonForest: '/static/images/logo-crimson-forest.png',
+  warpedForest: '/static/images/logo-warped-forest.png',
+  basaltDeltas: '/static/images/logo-basalt-deltas.png',
+
+  galaxy: '/static/images/logo-galaxy.png',
+
+  paleGarden: '/static/images/logo-pale-garden.png',
+  deepDark: '/static/images/logo-deep-dark.png'
 } as const;
 
 const FEATURES = [

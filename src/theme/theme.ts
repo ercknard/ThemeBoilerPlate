@@ -643,6 +643,7 @@ export const semanticColors = {
 
 export const THEME_SETS = {
   blue: {
+    label: 'Blue',
     color: '#4967C9',
     secondary: '#6B7FC7',
     gray: '#1E1E1E',
@@ -650,6 +651,7 @@ export const THEME_SETS = {
   },
 
   purple: {
+    label: 'Purple',
     color: '#8B5CF6',
     secondary: '#9B82E6',
     gray: '#1E1E1E',
@@ -657,6 +659,7 @@ export const THEME_SETS = {
   },
 
   coffee: {
+    label: 'Coffee',
     color: '#C49A6C',
     secondary: '#8A5A3B',
     gray: '#29211D',
@@ -664,10 +667,110 @@ export const THEME_SETS = {
   },
 
   green: {
+    label: 'Green',
     color: '#30A46C',
     secondary: '#4C9F78',
     gray: '#1E1E1E',
     background: '#07140D'
+  },
+
+  olympus: {
+    label: 'Olympus',
+    color: '#D4AF37',
+    secondary: '#8FA9C7',
+    gray: '#2A2A2A',
+    background: '#0B0D12'
+  },
+
+  end: {
+    label: 'The End',
+    color: '#A78BFA',
+    secondary: '#C8C3A6',
+    gray: '#242226',
+    background: '#08060D'
+  },
+
+  ocean: {
+    label: 'Ocean World',
+    color: '#1597B8',
+    secondary: '#4FC3C8',
+    gray: '#16343A',
+    background: '#04151C'
+  },
+
+  desert: {
+    label: 'Desert Biome',
+    color: '#D9A441',
+    secondary: '#E8C477',
+    gray: '#4A3A27',
+    background: '#1A1208'
+  },
+
+  soulSandValley: {
+    label: 'Soul Sand Valley',
+    color: '#4B82A8',
+    secondary: '#7896A5',
+    gray: '#29292A',
+    background: '#0A0D12'
+  },
+
+  crimsonForest: {
+    label: 'Crimson Forest',
+    color: '#C4364D',
+    secondary: '#8E2638',
+    gray: '#2B181C',
+    background: '#100609'
+  },
+
+  warpedForest: {
+    label: 'Warped Forest',
+    color: '#18B6A4',
+    secondary: '#3E7BC2',
+    gray: '#17272A',
+    background: '#06100F'
+  },
+
+  basaltDeltas: {
+    label: 'Basalt Deltas',
+    color: '#E36A2E',
+    secondary: '#777477',
+    gray: '#292727',
+    background: '#090807'
+  },
+
+  // ============================================================
+  // GALAXY
+  // Deep space + nebula violet + cosmic blue + starlight
+  // ============================================================
+  galaxy: {
+    label: 'Galaxy',
+    color: '#7C5CFF',
+    secondary: '#38BDF8',
+    gray: '#202033',
+    background: '#050611'
+  },
+  // ============================================================
+  // MINECRAFT — PALE GARDEN
+  // Pale moss + desaturated sage + eerie woodland
+  // ============================================================
+  paleGarden: {
+    label: 'Pale Garden',
+    color: '#A8B89A',
+    secondary: '#D4DDC8',
+    gray: '#30352F',
+    background: '#0A0D0A'
+  },
+
+  // ============================================================
+  // MINECRAFT — DEEP DARK
+  // Sculk cyan + deep teal + ancient underground darkness
+  // ============================================================
+  deepDark: {
+    label: 'Deep Dark',
+    color: '#087F8C',
+    secondary: '#3A7CA5',
+    gray: '#182326',
+    background: '#03090B'
   }
 } as const;
 

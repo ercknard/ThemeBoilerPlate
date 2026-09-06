@@ -115,13 +115,30 @@ export default function ThemeToggle() {
             sx={{
               borderRadius: 2,
 
+              background: `
+      linear-gradient(
+        135deg,
+        ${THEME_SETS[themeSet].secondary} 0%,
+        ${THEME_SETS[themeSet].color}22 100%
+      )
+    `,
+
+              borderColor: THEME_SETS[themeSet].color,
+
+              '&:hover': {
+                borderColor: THEME_SETS[themeSet].color
+              },
+
+              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                borderColor: THEME_SETS[themeSet].color
+              },
+
               '& .MuiSelect-select': {
                 py: 1,
                 px: 1.5,
                 display: 'flex',
                 alignItems: 'center',
-                gap: 1.25,
-                textTransform: 'capitalize'
+                gap: 1.25
               }
             }}
           >
@@ -138,22 +155,66 @@ export default function ThemeToggle() {
                     borderRadius: 1,
                     mx: 0.5,
                     my: 0.25,
-                    textTransform: 'capitalize'
+
+                    background: `
+            linear-gradient(
+              135deg,
+              ${preset.secondary} 0%,
+              ${preset.color}18 100%
+            )
+          `,
+
+                    '&:hover': {
+                      background: `
+              linear-gradient(
+                135deg,
+                ${preset.secondary} 0%,
+                ${preset.color}30 100%
+              )
+            `
+                    },
+
+                    '&.Mui-selected': {
+                      background: `
+              linear-gradient(
+                135deg,
+                ${preset.secondary} 0%,
+                ${preset.color}35 100%
+              )
+            `
+                    },
+
+                    '&.Mui-selected:hover': {
+                      background: `
+              linear-gradient(
+                135deg,
+                ${preset.secondary} 0%,
+                ${preset.color}45 100%
+              )
+            `
+                    }
                   }}
                 >
                   <Box
                     sx={{
-                      width: 18,
-                      height: 18,
+                      width: 20,
+                      height: 20,
                       borderRadius: '50%',
                       flexShrink: 0,
-                      backgroundColor: preset.color,
+                      background: `linear-gradient(
+              135deg,
+              ${preset.color} 0%,
+              ${preset.color} 50%,
+              ${preset.secondary} 50%,
+              ${preset.secondary} 100%
+            )`,
                       border: '1px solid',
-                      borderColor: 'divider'
+                      borderColor: 'divider',
+                      boxShadow: `0 0 0 1px ${preset.background}`
                     }}
                   />
 
-                  {key}
+                  {preset.label}
                 </MenuItem>
               );
             })}
