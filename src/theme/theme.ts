@@ -771,6 +771,136 @@ export const THEME_SETS = {
     secondary: '#3A7CA5',
     gray: '#182326',
     background: '#03090B'
+  },
+
+  // ============================================================
+  // GREEK GODS — THE 12 OLYMPIANS + HADES
+  // ============================================================
+
+  zeus: {
+    label: 'Zeus',
+    color: '#5B8CFF',
+    secondary: '#F4D35E',
+    gray: '#242A36',
+    background: '#070B14',
+    icon: '#8EB3FF'
+  },
+
+  hera: {
+    label: 'Hera',
+    color: '#9B6BC8',
+    secondary: '#E8CFA8',
+    gray: '#29232E',
+    background: '#0D0812',
+    icon: '#D09AFF'
+  },
+
+  poseidon: {
+    label: 'Poseidon',
+    color: '#087EA4',
+    secondary: '#4FD1C5',
+    gray: '#163039',
+    background: '#031015',
+    icon: '#39D9E8'
+  },
+
+  demeter: {
+    label: 'Demeter',
+    color: '#6B8E23',
+    secondary: '#D4A72C',
+    gray: '#27301D',
+    background: '#081006',
+    icon: '#9ACD32'
+  },
+
+  athena: {
+    label: 'Athena',
+    color: '#7A9E9F',
+    secondary: '#D4AF37',
+    gray: '#242A2A',
+    background: '#080C0C',
+    icon: '#B8D7D8'
+  },
+
+  apollo: {
+    label: 'Apollo',
+    color: '#F2B134',
+    secondary: '#F7D774',
+    gray: '#352B18',
+    background: '#110C03',
+    icon: '#FFD95A'
+  },
+
+  artemis: {
+    label: 'Artemis',
+    color: '#6FA8DC',
+    secondary: '#C8D6E5',
+    gray: '#202833',
+    background: '#060B12',
+    icon: '#A8D8FF'
+  },
+
+  ares: {
+    label: 'Ares',
+    color: '#B3261E',
+    secondary: '#8C2F39',
+    gray: '#2A1819',
+    background: '#0E0505',
+    icon: '#F0443E'
+  },
+
+  aphrodite: {
+    label: 'Aphrodite',
+    color: '#E56B9F',
+    secondary: '#F3C6D8',
+    gray: '#302129',
+    background: '#10070C',
+    icon: '#FF9FC5'
+  },
+
+  hephaestus: {
+    label: 'Hephaestus',
+    color: '#D65A1F',
+    secondary: '#D4A72C',
+    gray: '#2C211A',
+    background: '#0D0804',
+    icon: '#FF7A2F'
+  },
+
+  hermes: {
+    label: 'Hermes',
+    color: '#4FA3D1',
+    secondary: '#D9B44A',
+    gray: '#202932',
+    background: '#070B0F',
+    icon: '#76D1FF'
+  },
+
+  dionysus: {
+    label: 'Dionysus',
+    color: '#8E4585',
+    secondary: '#B8860B',
+    gray: '#281D29',
+    background: '#0C060D',
+    icon: '#C56BC0'
+  },
+
+  hades: {
+    label: 'Hades',
+    color: '#5E3A8C',
+    secondary: '#B3263E',
+    gray: '#1C1821',
+    background: '#050307',
+    icon: '#9B5DE5'
+  },
+
+  hestia: {
+    label: 'Hestia',
+    color: '#D97732',
+    secondary: '#E8C98A',
+    gray: '#30261E',
+    background: '#0F0905',
+    icon: '#FFB45C'
   }
 } as const;
 

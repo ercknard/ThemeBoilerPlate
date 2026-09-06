@@ -327,12 +327,24 @@ export default function TypographyShowcase() {
   const { themeSet } = useThemeContext();
 
   const THEME_ICONS = {
+    // ============================================================
+    // ORIGINAL THEMES
+    // ============================================================
+
     blue: '/static/images/logo-blue.png',
     purple: '/static/images/logo-purple.png',
     coffee: '/static/images/logo-coffee.png',
     green: '/static/images/logo-green.png',
 
+    // ============================================================
+    // OLYMPUS
+    // ============================================================
+
     olympus: '/static/images/logo-olympus.png',
+
+    // ============================================================
+    // MINECRAFT WORLDS / BIOMES
+    // ============================================================
 
     end: '/static/images/logo-end.png',
     ocean: '/static/images/logo-ocean.png',
@@ -341,13 +353,39 @@ export default function TypographyShowcase() {
     crimsonForest: '/static/images/logo-crimson-forest.png',
     warpedForest: '/static/images/logo-warped-forest.png',
     basaltDeltas: '/static/images/logo-basalt-deltas.png',
+    paleGarden: '/static/images/logo-pale-garden.png',
+    deepDark: '/static/images/logo-deep-dark.png',
+
+    // ============================================================
+    // COSMIC
+    // ============================================================
 
     galaxy: '/static/images/logo-galaxy.png',
 
-    paleGarden: '/static/images/logo-pale-garden.png',
-    deepDark: '/static/images/logo-deep-dark.png'
-  } as const;
+    // ============================================================
+    // THE 12 OLYMPIANS + HESTIA + HADES
+    // ============================================================
 
+    zeus: '/static/images/logo-zeus.png',
+    hera: '/static/images/logo-hera.png',
+    poseidon: '/static/images/logo-poseidon.png',
+    demeter: '/static/images/logo-demeter.png',
+    athena: '/static/images/logo-athena.png',
+    apollo: '/static/images/logo-apollo.png',
+    artemis: '/static/images/logo-artemis.png',
+    ares: '/static/images/logo-ares.png',
+    aphrodite: '/static/images/logo-aphrodite.png',
+    hephaestus: '/static/images/logo-hephaestus.png',
+    hermes: '/static/images/logo-hermes.png',
+    dionysus: '/static/images/logo-dionysus.png',
+    hestia: '/static/images/logo-hestia.png',
+
+    // ============================================================
+    // UNDERWORLD
+    // ============================================================
+
+    hades: '/static/images/logo-hades.png'
+  } as const;
   const themeIcon = THEME_ICONS[themeSet];
 
   const toggleMenu = (menu: MenuKey) => {
@@ -4506,18 +4544,24 @@ const colorScale = theme.colorScale;
                 justifyContent: 'flex-end',
                 flexDirection: 'column',
                 overflow: 'hidden',
-                borderLeft: `2px solid ${secondaryScale[7]}`,
-                backgroundColor: alpha(theme.secondaryScale[3], 1),
                 borderRadius: 2,
+                border: `1px solid ${secondaryScale[7]}`,
 
-                border: `1px solid ${alpha(secondaryScale[7], 0.25)}`,
+                backgroundColor: alpha(backgroundScale[5], 0.75),
 
-                boxShadow: `
-                              0 10px 40px
-                              ${alpha('#000000', 0.16)}
-                            `,
+                // Prevent the surface from visually collapsing
+                boxSizing: 'border-box',
 
-                backdropFilter: 'blur(14px)'
+                // Subtle separation from the main content
+                boxShadow: `1px 0 0 ${alpha(secondaryScale[6], 0.35)}`,
+
+                // Smooth theme transitions
+                transition:
+                  'background-color 180ms ease, border-color 180ms ease',
+
+                '&:hover': {
+                  borderColor: secondaryScale[8]
+                }
               }}
             >
               <ThemeToggle />
