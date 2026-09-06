@@ -4492,7 +4492,7 @@ const colorScale = theme.colorScale;
                 flexDirection: 'column',
                 overflow: 'hidden',
                 borderLeft: `2px solid ${secondaryScale[7]}`,
-                backgroundColor: alpha(theme.secondaryScale[4], 1),
+                backgroundColor: alpha(theme.secondaryScale[3], 1),
                 borderRadius: 2,
 
                 border: `1px solid ${alpha(secondaryScale[7], 0.25)}`,
