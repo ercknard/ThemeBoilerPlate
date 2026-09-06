@@ -670,44 +670,52 @@ export const THEME_ICONS: Record<keyof typeof THEME_SETS, string> = {
   hermes: '/static/images/logo-hermes.png',
   dionysus: '/static/images/logo-dionysus.png',
   hades: '/static/images/logo-hades.png',
-  hestia: '/static/images/logo-hestia.png'
+  hestia: '/static/images/logo-hestia.png',
+  custom: '/static/images/favicon.png'
+};
+
+export const DEFAULT_CUSTOM_COLORS: CustomThemeColors = {
+  color: '#4967C9',
+  secondary: '#6B7FC7',
+  gray: '#1E1E1E',
+  background: '#0A0A0A'
 };
 
 export const THEME_SETS = {
   blue: {
     label: 'Blue',
     category: 'classic',
-    color: '#4967C9',
-    secondary: '#6B7FC7',
-    gray: '#1E1E1E',
-    background: '#0A0A0A'
+    color: '#3F5BA8',
+    secondary: '#596BA8',
+    gray: '#252733',
+    background: '#0B0D14'
   },
 
   purple: {
     label: 'Purple',
     category: 'classic',
-    color: '#8B5CF6',
-    secondary: '#9B82E6',
-    gray: '#1E1E1E',
-    background: '#100B1A'
+    color: '#7350C4',
+    secondary: '#7868B0',
+    gray: '#282531',
+    background: '#100D16'
   },
 
   coffee: {
     label: 'Coffee',
     category: 'classic',
-    color: '#C49A6C',
-    secondary: '#8A5A3B',
-    gray: '#29211D',
-    background: '#120C08'
+    color: '#A87F58',
+    secondary: '#765039',
+    gray: '#29231F',
+    background: '#110C08'
   },
 
   green: {
     label: 'Green',
     category: 'classic',
-    color: '#30A46C',
-    secondary: '#4C9F78',
-    gray: '#1E1E1E',
-    background: '#07140D'
+    color: '#287F59',
+    secondary: '#4A8065',
+    gray: '#202923',
+    background: '#08110C'
   },
 
   // ============================================================
@@ -717,10 +725,10 @@ export const THEME_SETS = {
   olympus: {
     label: 'Olympus',
     category: 'mythology',
-    color: '#D4AF37',
-    secondary: '#8FA9C7',
-    gray: '#2A2A2A',
-    background: '#0B0D12'
+    color: '#B39532',
+    secondary: '#71849C',
+    gray: '#292B2F',
+    background: '#0B0D11'
   },
 
   // ============================================================
@@ -730,71 +738,71 @@ export const THEME_SETS = {
   end: {
     label: 'The End',
     category: 'minecraft',
-    color: '#A78BFA',
-    secondary: '#C8C3A6',
-    gray: '#242226',
-    background: '#08060D'
+    color: '#8069B5',
+    secondary: '#999477',
+    gray: '#27252A',
+    background: '#09070D'
   },
 
   ocean: {
     label: 'Ocean World',
     category: 'minecraft',
-    color: '#1597B8',
-    secondary: '#4FC3C8',
-    gray: '#16343A',
-    background: '#04151C'
+    color: '#167D96',
+    secondary: '#418F92',
+    gray: '#1A3035',
+    background: '#061317'
   },
 
   desert: {
     label: 'Desert Biome',
     category: 'minecraft',
-    color: '#D9A441',
-    secondary: '#E8C477',
-    gray: '#4A3A27',
-    background: '#1A1208'
+    color: '#B58A37',
+    secondary: '#B9A064',
+    gray: '#403426',
+    background: '#171109'
   },
 
   soulSandValley: {
     label: 'Soul Sand Valley',
     category: 'minecraft',
-    color: '#4B82A8',
-    secondary: '#7896A5',
-    gray: '#29292A',
-    background: '#0A0D12'
+    color: '#466F8A',
+    secondary: '#657F8B',
+    gray: '#292B2C',
+    background: '#0A0D10'
   },
 
   crimsonForest: {
     label: 'Crimson Forest',
     category: 'minecraft',
-    color: '#C4364D',
-    secondary: '#8E2638',
-    gray: '#2B181C',
-    background: '#100609'
+    color: '#9F3043',
+    secondary: '#702936',
+    gray: '#2A1B1F',
+    background: '#100708'
   },
 
   warpedForest: {
     label: 'Warped Forest',
     category: 'minecraft',
-    color: '#18B6A4',
-    secondary: '#3E7BC2',
-    gray: '#17272A',
+    color: '#168F82',
+    secondary: '#35699F',
+    gray: '#192729',
     background: '#06100F'
   },
 
   basaltDeltas: {
     label: 'Basalt Deltas',
     category: 'minecraft',
-    color: '#E36A2E',
-    secondary: '#777477',
-    gray: '#292727',
+    color: '#B9572A',
+    secondary: '#656466',
+    gray: '#292828',
     background: '#090807'
   },
 
   paleGarden: {
     label: 'Pale Garden',
     category: 'minecraft',
-    color: '#A8B89A',
-    secondary: '#D4DDC8',
+    color: '#82927A',
+    secondary: '#AEB8A5',
     gray: '#30352F',
     background: '#0A0D0A'
   },
@@ -802,9 +810,9 @@ export const THEME_SETS = {
   deepDark: {
     label: 'Deep Dark',
     category: 'minecraft',
-    color: '#087F8C',
-    secondary: '#3A7CA5',
-    gray: '#182326',
+    color: '#076C76',
+    secondary: '#346783',
+    gray: '#192426',
     background: '#03090B'
   },
 
@@ -815,8 +823,8 @@ export const THEME_SETS = {
   galaxy: {
     label: 'Galaxy',
     category: 'cosmic',
-    color: '#7C5CFF',
-    secondary: '#38BDF8',
+    color: '#6650C4',
+    secondary: '#3088B2',
     gray: '#202033',
     background: '#050611'
   },
@@ -828,141 +836,146 @@ export const THEME_SETS = {
   zeus: {
     label: 'Zeus',
     category: 'mythology',
-    color: '#5B8CFF',
-    secondary: '#F4D35E',
-    gray: '#242A36',
-    background: '#070B14',
-    icon: '#8EB3FF'
+    color: '#4D73C4',
+    secondary: '#B89E3F',
+    gray: '#252A34',
+    background: '#080B12',
+    icon: '#7897D2'
   },
 
   hera: {
     label: 'Hera',
     category: 'mythology',
-    color: '#9B6BC8',
-    secondary: '#E8CFA8',
-    gray: '#29232E',
-    background: '#0D0812',
-    icon: '#D09AFF'
+    color: '#8057A5',
+    secondary: '#B9A789',
+    gray: '#29232D',
+    background: '#0D0911',
+    icon: '#A97CC4'
   },
 
   poseidon: {
     label: 'Poseidon',
     category: 'mythology',
-    color: '#087EA4',
-    secondary: '#4FD1C5',
-    gray: '#163039',
-    background: '#031015',
-    icon: '#39D9E8'
+    color: '#086982',
+    secondary: '#419F97',
+    gray: '#192D33',
+    background: '#041014',
+    icon: '#58B7C0'
   },
 
   demeter: {
     label: 'Demeter',
     category: 'mythology',
-    color: '#6B8E23',
-    secondary: '#D4A72C',
-    gray: '#27301D',
-    background: '#081006',
-    icon: '#9ACD32'
+    color: '#5E7C27',
+    secondary: '#A78328',
+    gray: '#29301F',
+    background: '#091006',
+    icon: '#7FA43A'
   },
 
   athena: {
     label: 'Athena',
     category: 'mythology',
-    color: '#7A9E9F',
-    secondary: '#D4AF37',
-    gray: '#242A2A',
+    color: '#658687',
+    secondary: '#AD9133',
+    gray: '#252B2B',
     background: '#080C0C',
-    icon: '#B8D7D8'
+    icon: '#91AFAF'
   },
 
   apollo: {
     label: 'Apollo',
     category: 'mythology',
-    color: '#F2B134',
-    secondary: '#F7D774',
-    gray: '#352B18',
-    background: '#110C03',
-    icon: '#FFD95A'
+    color: '#C18D2C',
+    secondary: '#BFA45A',
+    gray: '#352D1D',
+    background: '#110C04',
+    icon: '#D8B84C'
   },
 
   artemis: {
     label: 'Artemis',
     category: 'mythology',
-    color: '#6FA8DC',
-    secondary: '#C8D6E5',
-    gray: '#202833',
+    color: '#5D8BB5',
+    secondary: '#9EADBC',
+    gray: '#202832',
     background: '#060B12',
-    icon: '#A8D8FF'
+    icon: '#82B2D2'
   },
 
   ares: {
     label: 'Ares',
     category: 'mythology',
-    color: '#B3261E',
-    secondary: '#8C2F39',
-    gray: '#2A1819',
+    color: '#94241E',
+    secondary: '#71303A',
+    gray: '#2A191A',
     background: '#0E0505',
-    icon: '#F0443E'
+    icon: '#C43B35'
   },
 
   aphrodite: {
     label: 'Aphrodite',
     category: 'mythology',
-    color: '#E56B9F',
-    secondary: '#F3C6D8',
-    gray: '#302129',
-    background: '#10070C',
-    icon: '#FF9FC5'
+    color: '#B6547D',
+    secondary: '#C99DAF',
+    gray: '#30222A',
+    background: '#10080C',
+    icon: '#D47D9D'
   },
 
   hephaestus: {
     label: 'Hephaestus',
     category: 'mythology',
-    color: '#D65A1F',
-    secondary: '#D4A72C',
+    color: '#AD4B21',
+    secondary: '#A7822C',
     gray: '#2C211A',
     background: '#0D0804',
-    icon: '#FF7A2F'
+    icon: '#D4652A'
   },
 
   hermes: {
     label: 'Hermes',
     category: 'mythology',
-    color: '#4FA3D1',
-    secondary: '#D9B44A',
-    gray: '#202932',
+    color: '#4184A7',
+    secondary: '#B1933D',
+    gray: '#202931',
     background: '#070B0F',
-    icon: '#76D1FF'
+    icon: '#65A9C4'
   },
 
   dionysus: {
     label: 'Dionysus',
     category: 'mythology',
-    color: '#8E4585',
-    secondary: '#B8860B',
+    color: '#75406F',
+    secondary: '#967329',
     gray: '#281D29',
     background: '#0C060D',
-    icon: '#C56BC0'
+    icon: '#A45D9D'
   },
 
   hestia: {
     label: 'Hestia',
     category: 'mythology',
-    color: '#D97732',
-    secondary: '#E8C98A',
+    color: '#B25F2C',
+    secondary: '#B49A67',
     gray: '#30261E',
     background: '#0F0905',
-    icon: '#FFB45C'
+    icon: '#D28B43'
   },
 
   hades: {
     label: 'Hades',
     category: 'mythology',
-    color: '#5E3A8C',
-    secondary: '#B3263E',
-    gray: '#1C1821',
+    color: '#503477',
+    secondary: '#8E2B3D',
+    gray: '#1D1922',
     background: '#050307',
-    icon: '#9B5DE5'
+    icon: '#7549A2'
+  },
+
+  custom: {
+    label: 'Custom',
+    category: 'custom'
   }
 } as const;
 
@@ -996,7 +1009,10 @@ export const getThemeFromSet = (
   customColors?: CustomThemeColors,
   fontFamily = 'Inter'
 ) => {
-  const colors = customColors ?? THEME_SETS[set] ?? THEME_SETS.blue;
+  const colors =
+    set === 'custom'
+      ? (customColors ?? DEFAULT_CUSTOM_COLORS)
+      : (THEME_SETS[set] ?? THEME_SETS.blue);
 
   /* ------------------------------------------------------------------------ */
   /* 10% — PRIMARY                                                           */

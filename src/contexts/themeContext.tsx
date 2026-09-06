@@ -9,22 +9,23 @@ import {
   useState,
   type ReactNode
 } from 'react';
+
 import type { PaletteMode } from '@mui/material';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
-import { getThemeFromSet, THEME_SETS, type ThemeSetName } from '@/theme/theme';
+import {
+  getThemeFromSet,
+  THEME_SETS,
+  type ThemeSetName,
+  type CustomThemeColors
+} from '@/theme/theme';
 
 /* ========================================================================== */
 /* TYPES                                                                      */
 /* ========================================================================== */
 
-export type CustomColors = {
-  color: string;
-  secondary: string;
-  gray: string;
-  background: string;
-};
+export type CustomColors = CustomThemeColors;
 
 type ThemeContextType = {
   mode: PaletteMode;
@@ -34,7 +35,9 @@ type ThemeContextType = {
   setThemeSet: (themeSet: ThemeSetName) => void;
 
   customColors: CustomColors;
-  setCustomColors: (colors: CustomColors) => void;
+  setCustomColors: (
+    colors: CustomColors | ((previous: CustomColors) => CustomColors)
+  ) => void;
 
   /* Font */
   fontUrl: string;
@@ -70,10 +73,10 @@ const FONT_FAMILY_STORAGE_KEY = 'theme-font-family';
 const DEFAULT_THEME_SET: ThemeSetName = 'blue';
 
 const DEFAULT_CUSTOM_COLORS: CustomColors = {
-  color: THEME_SETS[DEFAULT_THEME_SET].color,
-  secondary: THEME_SETS[DEFAULT_THEME_SET].secondary,
-  gray: THEME_SETS[DEFAULT_THEME_SET].gray,
-  background: THEME_SETS[DEFAULT_THEME_SET].background
+  color: '#4967C9',
+  secondary: '#6B7FC7',
+  gray: '#1E1E1E',
+  background: '#0A0A0A'
 };
 
 const DEFAULT_FONT_FAMILY = 'Inter';
@@ -99,6 +102,30 @@ function isValidCustomColors(value: unknown): value is CustomColors {
     isValidHexColor(colors.gray) &&
     isValidHexColor(colors.background)
   );
+}
+
+/* ========================================================================== */
+/* THEME HELPERS                                                              */
+/* ========================================================================== */
+
+function getPresetColors(themeSet: ThemeSetName): CustomColors {
+  /*
+   * `custom` intentionally does not contain colors.
+   *
+   * Custom colors are stored separately in `customColors`.
+   */
+  if (themeSet === 'custom') {
+    return DEFAULT_CUSTOM_COLORS;
+  }
+
+  const preset = THEME_SETS[themeSet];
+
+  return {
+    color: preset.color,
+    secondary: preset.secondary,
+    gray: preset.gray,
+    background: preset.background
+  };
 }
 
 /* ========================================================================== */
@@ -188,31 +215,38 @@ function unloadGoogleFont(): void {
 /* ========================================================================== */
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
-  /* ------------------------------------------------------------------------ */
-  /* Theme state                                                              */
-  /* ------------------------------------------------------------------------ */
+  /* ======================================================================== */
+  /* THEME STATE                                                              */
+  /* ======================================================================== */
 
   const [mode, setModeState] = useState<PaletteMode>('light');
 
   const [themeSet, setThemeSetState] =
     useState<ThemeSetName>(DEFAULT_THEME_SET);
 
+  /*
+   * IMPORTANT:
+   *
+   * These colors belong to the Custom theme only.
+   *
+   * They are NOT changed when selecting another preset.
+   */
   const [customColors, setCustomColorsState] = useState<CustomColors>(
     DEFAULT_CUSTOM_COLORS
   );
 
-  /* ------------------------------------------------------------------------ */
-  /* Font state                                                               */
-  /* ------------------------------------------------------------------------ */
+  /* ======================================================================== */
+  /* FONT STATE                                                               */
+  /* ======================================================================== */
 
   const [fontUrl, setFontUrlState] = useState<string>('');
 
   const [fontFamily, setFontFamilyState] =
     useState<string>(DEFAULT_FONT_FAMILY);
 
-  /* ------------------------------------------------------------------------ */
-  /* Hydration                                                               */
-  /* ------------------------------------------------------------------------ */
+  /* ======================================================================== */
+  /* HYDRATION                                                                */
+  /* ======================================================================== */
 
   const [initialized, setInitialized] = useState(false);
 
@@ -222,7 +256,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
 
   useEffect(() => {
     /* ---------------------------------------------------------------------- */
-    /* Color mode                                                             */
+    /* COLOR MODE                                                             */
     /* ---------------------------------------------------------------------- */
 
     const savedMode = localStorage.getItem(STORAGE_KEY);
@@ -239,7 +273,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     }
 
     /* ---------------------------------------------------------------------- */
-    /* Theme set                                                              */
+    /* THEME SET                                                              */
     /* ---------------------------------------------------------------------- */
 
     const savedThemeSet = localStorage.getItem(THEME_SET_STORAGE_KEY);
@@ -252,7 +286,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     }
 
     /* ---------------------------------------------------------------------- */
-    /* Custom colors                                                          */
+    /* CUSTOM COLORS                                                          */
     /* ---------------------------------------------------------------------- */
 
     const savedCustomColors = localStorage.getItem(CUSTOM_COLORS_STORAGE_KEY);
@@ -265,12 +299,14 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
           setCustomColorsState(parsedColors);
         }
       } catch {
-        // Ignore invalid saved colors.
+        /*
+         * Ignore invalid saved colors.
+         */
       }
     }
 
     /* ---------------------------------------------------------------------- */
-    /* Google font                                                             */
+    /* GOOGLE FONT                                                            */
     /* ---------------------------------------------------------------------- */
 
     const savedFontUrl = localStorage.getItem(FONT_URL_STORAGE_KEY);
@@ -287,11 +323,12 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
        * Clean up invalid old font settings.
        */
       localStorage.removeItem(FONT_URL_STORAGE_KEY);
+
       localStorage.removeItem(FONT_FAMILY_STORAGE_KEY);
     }
 
     /* ---------------------------------------------------------------------- */
-    /* Initialized                                                            */
+    /* INITIALIZED                                                            */
     /* ---------------------------------------------------------------------- */
 
     setInitialized(true);
@@ -303,6 +340,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
 
   const setMode = useCallback((newMode: PaletteMode) => {
     setModeState(newMode);
+
     localStorage.setItem(STORAGE_KEY, newMode);
   }, []);
 
@@ -317,41 +355,55 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   }, []);
 
   /* ======================================================================== */
-  /* THEME SET                                                                 */
+  /* THEME SET                                                                */
   /* ======================================================================== */
 
   const setThemeSet = useCallback((newThemeSet: ThemeSetName) => {
+    /*
+     * Always save the selected theme.
+     */
     setThemeSetState(newThemeSet);
 
     localStorage.setItem(THEME_SET_STORAGE_KEY, newThemeSet);
 
-    const preset = THEME_SETS[newThemeSet];
-
-    const colors: CustomColors = {
-      color: preset.color,
-      secondary: preset.secondary,
-      gray: preset.gray,
-      background: preset.background
-    };
-
-    setCustomColorsState(colors);
-
-    localStorage.setItem(CUSTOM_COLORS_STORAGE_KEY, JSON.stringify(colors));
+    /*
+     * IMPORTANT:
+     *
+     * Selecting `custom` should NOT replace the
+     * user's custom colors.
+     *
+     * Selecting a preset also should NOT destroy
+     * the user's custom colors.
+     *
+     * Therefore customColors is intentionally
+     * untouched here.
+     */
   }, []);
 
   /* ======================================================================== */
   /* CUSTOM COLORS                                                             */
   /* ======================================================================== */
 
-  const setCustomColors = useCallback((colors: CustomColors) => {
-    if (!isValidCustomColors(colors)) {
-      return;
-    }
+  const setCustomColors = useCallback(
+    (value: CustomColors | ((previous: CustomColors) => CustomColors)) => {
+      setCustomColorsState((previous) => {
+        const next = typeof value === 'function' ? value(previous) : value;
 
-    setCustomColorsState(colors);
+        if (!isValidCustomColors(next)) {
+          return previous;
+        }
 
-    localStorage.setItem(CUSTOM_COLORS_STORAGE_KEY, JSON.stringify(colors));
-  }, []);
+        localStorage.setItem(CUSTOM_COLORS_STORAGE_KEY, JSON.stringify(next));
+
+        return next;
+      });
+
+      setThemeSetState('custom');
+
+      localStorage.setItem(THEME_SET_STORAGE_KEY, 'custom');
+    },
+    []
+  );
 
   /* ======================================================================== */
   /* FONT                                                                      */
@@ -360,7 +412,10 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   const setFont = useCallback((url: string) => {
     const trimmedUrl = url.trim();
 
-    /* Empty = reset */
+    /* -------------------------------------------------------------------- */
+    /* EMPTY = RESET                                                        */
+    /* -------------------------------------------------------------------- */
+
     if (!trimmedUrl) {
       unloadGoogleFont();
 
@@ -374,26 +429,41 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       return;
     }
 
-    /* Validate URL */
+    /* -------------------------------------------------------------------- */
+    /* VALIDATE URL                                                         */
+    /* -------------------------------------------------------------------- */
+
     if (!isGoogleFontUrl(trimmedUrl)) {
       return;
     }
 
-    /* Extract family */
+    /* -------------------------------------------------------------------- */
+    /* EXTRACT FAMILY                                                       */
+    /* -------------------------------------------------------------------- */
+
     const family = getFontFamilyFromUrl(trimmedUrl);
 
     if (!family) {
       return;
     }
 
-    /* Load font */
+    /* -------------------------------------------------------------------- */
+    /* LOAD FONT                                                             */
+    /* -------------------------------------------------------------------- */
+
     loadGoogleFont(trimmedUrl);
 
-    /* Update state */
+    /* -------------------------------------------------------------------- */
+    /* UPDATE STATE                                                          */
+    /* -------------------------------------------------------------------- */
+
     setFontUrlState(trimmedUrl);
     setFontFamilyState(family);
 
-    /* Persist */
+    /* -------------------------------------------------------------------- */
+    /* PERSIST                                                               */
+    /* -------------------------------------------------------------------- */
+
     localStorage.setItem(FONT_URL_STORAGE_KEY, trimmedUrl);
 
     localStorage.setItem(FONT_FAMILY_STORAGE_KEY, family);
@@ -418,29 +488,16 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   /* MUI THEME                                                                 */
   /* ======================================================================== */
 
-  const theme = useMemo(
-    () =>
-      getThemeFromSet(
-        mode,
-        themeSet,
-        {
-          color: customColors.color,
-          gray: customColors.gray,
-          secondary: customColors.secondary,
-          background: customColors.background
-        },
-        fontFamily
-      ),
-    [
-      mode,
-      themeSet,
-      customColors.color,
-      customColors.gray,
-      customColors.secondary,
-      customColors.background,
-      fontFamily
-    ]
-  );
+  const theme = useMemo(() => {
+    /*
+     * Only pass customColors when Custom is active.
+     *
+     * Presets use their own colors from THEME_SETS.
+     */
+    const activeCustomColors = themeSet === 'custom' ? customColors : undefined;
+
+    return getThemeFromSet(mode, themeSet, activeCustomColors, fontFamily);
+  }, [mode, themeSet, customColors, fontFamily]);
 
   /* ======================================================================== */
   /* CONTEXT                                                                  */

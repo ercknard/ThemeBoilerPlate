@@ -358,7 +358,9 @@ export default function TypographyShowcase() {
   return (
     <>
       <Head>
-        <title>Typography & Colors</title>
+        <title>
+          Typography & Colors | {THEME_SETS[themeSet]?.label ?? 'Custom'}
+        </title>
 
         <meta
           name="description"
@@ -541,12 +543,27 @@ export default function TypographyShowcase() {
                           cursor: 'pointer',
                           transition: 'opacity 0.2s ease',
 
+                          lineHeight: 1.05,
+
+                          background: `
+                                              linear-gradient(
+                                                135deg,
+                                                ${theme.backgroundScale[11]},
+                                                ${alpha(theme.colorScale[9], 1)}
+                                              )
+                                            `,
+
+                          backgroundClip: 'text',
+                          WebkitBackgroundClip: 'text',
+                          WebkitTextFillColor: 'transparent',
+
                           '&:hover': {
                             opacity: 0.75
                           }
                         }}
                       >
-                        THEME BOILERPLATE
+                        Theme BoilerPlate |{' '}
+                        {THEME_SETS[themeSet]?.label ?? 'Custom'}
                       </Typography>
                     </Stack>
                   </Stack>
@@ -1227,7 +1244,10 @@ export default function TypographyShowcase() {
               {activeTab === 'typography' && (
                 <>
                   <Head>
-                    <title>BoilerPlate | Typography</title>
+                    <title>
+                      BoilerPlate | Typography |{' '}
+                      {THEME_SETS[themeSet]?.label ?? 'Custom'}
+                    </title>
 
                     <meta
                       name="description"
@@ -1857,7 +1877,10 @@ export default function TypographyShowcase() {
               {activeTab === 'colors' && (
                 <>
                   <Head>
-                    <title>BoilerPlate | Colors</title>
+                    <title>
+                      BoilerPlate | Colors |{' '}
+                      {THEME_SETS[themeSet]?.label ?? 'Custom'}
+                    </title>
 
                     <meta
                       name="description"
@@ -3194,7 +3217,10 @@ const colorScale = theme.colorScale;
               {activeTab === 'components' && (
                 <>
                   <Head>
-                    <title>BoilerPlate | Components</title>
+                    <title>
+                      BoilerPlate | Components |{' '}
+                      {THEME_SETS[themeSet]?.label ?? 'Custom'}
+                    </title>
 
                     <meta
                       name="description"

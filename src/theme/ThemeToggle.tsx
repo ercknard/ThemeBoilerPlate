@@ -17,6 +17,7 @@ import {
 
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
+import { alpha, useTheme } from '@mui/material/styles';
 
 import { useThemeContext } from '@/contexts/themeContext';
 import { THEME_SETS, THEME_ICONS, type ThemeSetName } from '@/theme/theme';
@@ -41,21 +42,8 @@ export default function ThemeToggle() {
    * This prevents the Google Font stylesheet from being loaded
    * on every keystroke.
    */
+  const theme = useTheme();
   const [fontInput, setFontInput] = useState(fontUrl);
-
-  const handleThemeSetChange = (event: SelectChangeEvent) => {
-    setThemeSet(event.target.value as ThemeSetName);
-  };
-
-  const handleColorChange = (
-    key: 'color' | 'secondary' | 'gray' | 'background',
-    value: string
-  ) => {
-    setCustomColors({
-      ...customColors,
-      [key]: value
-    });
-  };
 
   const applyFont = () => {
     const value = fontInput.trim();
@@ -107,6 +95,7 @@ export default function ThemeToggle() {
    *   Luxury Sapphire
    */
   const CATEGORY_ORDER = [
+    'custom',
     'classic',
     'minecraft',
     'cosmic',
@@ -114,12 +103,23 @@ export default function ThemeToggle() {
     'mythology'
   ] as const;
 
-  const sortedThemes = (
-    Object.entries(THEME_SETS) as [
-      ThemeSetName,
-      (typeof THEME_SETS)[ThemeSetName]
-    ][]
-  ).sort(([, a], [, b]) => {
+  const themesWithCustom = {
+    ...THEME_SETS,
+
+    custom: {
+      label: THEME_SETS.custom.label,
+      category: THEME_SETS.custom.category,
+
+      color: customColors.color,
+      secondary: customColors.secondary,
+      gray: customColors.gray,
+      background: customColors.background
+    }
+  };
+
+  const activeTheme = themesWithCustom[themeSet] ?? themesWithCustom.blue;
+
+  const sortedThemes = Object.entries(themesWithCustom).sort(([, a], [, b]) => {
     const categoryA = CATEGORY_ORDER.indexOf(
       a.category as (typeof CATEGORY_ORDER)[number]
     );
@@ -132,10 +132,26 @@ export default function ThemeToggle() {
       return categoryA - categoryB;
     }
 
-    return a.label.localeCompare(b.label, undefined, {
-      sensitivity: 'base'
-    });
+    return a.label.localeCompare(b.label);
   });
+
+  const handleThemeSetChange = (event: SelectChangeEvent<ThemeSetName>) => {
+    const nextTheme = event.target.value as ThemeSetName;
+
+    setThemeSet(nextTheme);
+  };
+
+  const handleColorChange = (
+    key: 'color' | 'secondary' | 'gray' | 'background',
+    value: string
+  ) => {
+    setCustomColors((previous) => ({
+      ...previous,
+      [key]: value
+    }));
+
+    setThemeSet('custom');
+  };
 
   return (
     <Stack spacing={2}>
@@ -168,8 +184,11 @@ export default function ThemeToggle() {
 
                 '& .MuiPaper-root': {
                   mt: 1,
-                  p: 1.25,
+                  p: 1.5,
+
                   width: 340,
+                  maxWidth: 'calc(100vw - 32px)',
+
                   maxHeight: 560,
 
                   overflowY: 'auto',
@@ -180,35 +199,31 @@ export default function ThemeToggle() {
 
                   // Chrome / Edge / Safari
                   '&::-webkit-scrollbar': {
+                    width: 0,
+                    height: 0,
                     display: 'none'
                   },
 
-                  borderRadius: 2,
+                  borderRadius: 2.5,
 
-                  background: `
-      ${THEME_SETS[themeSet].background}
-
-  `,
-
-                  border: '2px solid',
-                  borderColor: `${THEME_SETS[themeSet].color}50`,
-
-                  boxShadow: `
-    0 24px 70px rgba(0, 0, 0, 0.55),
-    0 0 0 1px ${THEME_SETS[themeSet].color}10,
-    0 0 40px ${THEME_SETS[themeSet].color}10
-  `,
-
-                  backdropFilter: 'blur(20px)',
-
-                  '& .MuiList-root': {
-                    py: 1
-                  }
+                  backgroundColor: theme.palette.background.paper,
+                  border: '1px solid',
+                  borderColor: alpha(
+                    activeTheme.color,
+                    isDarkMode ? 0.35 : 0.18
+                  ),
+                  boxShadow: isDarkMode
+                    ? ` 0 24px 70px rgba(0, 0, 0, 0.55), 0 0 0 1px ${alpha(activeTheme.color, 0.06)}, 0 0 40px ${alpha(activeTheme.color, 0.08)} `
+                    : ` 0 16px 40px rgba(0, 0, 0, 0.12), 0 0 0 1px ${alpha(activeTheme.color, 0.04)} `,
+                  '& .MuiList-root': { py: 0.75, px: 0.25 }
                 }
               }
             }}
             renderValue={(value) => {
-              const preset = THEME_SETS[value as ThemeSetName];
+              const preset =
+                themesWithCustom[value as ThemeSetName] ??
+                themesWithCustom.blue;
+
               const icon = THEME_ICONS[value as ThemeSetName];
 
               return (
@@ -217,6 +232,7 @@ export default function ThemeToggle() {
                     display: 'flex',
                     alignItems: 'center',
                     gap: 1.25,
+
                     width: '100%',
                     minWidth: 0
                   }}
@@ -225,10 +241,14 @@ export default function ThemeToggle() {
                   <Box
                     sx={{
                       position: 'relative',
+
                       width: 30,
                       height: 30,
+
                       flexShrink: 0,
+
                       borderRadius: 1.5,
+
                       overflow: 'hidden',
 
                       background: `
@@ -257,22 +277,37 @@ export default function ThemeToggle() {
                         alt=""
                         sx={{
                           position: 'absolute',
+
                           inset: 4,
+
                           width: 'calc(100% - 8px)',
                           height: 'calc(100% - 8px)',
+
                           objectFit: 'contain',
+
                           filter: 'drop-shadow(0 2px 4px rgba(0,0,0,.5))'
                         }}
                       />
                     )}
                   </Box>
 
-                  <Box sx={{ minWidth: 0, flex: 1 }}>
+                  {/* Theme name */}
+                  <Box
+                    sx={{
+                      minWidth: 0,
+                      flex: 1
+                    }}
+                  >
                     <Box
+                      component="span"
                       sx={{
+                        display: 'block',
+
                         fontSize: '0.875rem',
                         fontWeight: 700,
+
                         lineHeight: 1.2,
+
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap'
@@ -296,8 +331,11 @@ export default function ThemeToggle() {
                         sx={{
                           width: 7,
                           height: 7,
+
                           borderRadius: '50%',
+
                           backgroundColor: color,
+
                           boxShadow: `0 0 8px ${color}60`
                         }}
                       />
@@ -308,63 +346,111 @@ export default function ThemeToggle() {
             }}
             sx={{
               minWidth: 220,
+
               borderRadius: 2.5,
 
-              background: `
-      linear-gradient(
-        135deg,
-        ${THEME_SETS[themeSet].secondary} 0%,
-        ${THEME_SETS[themeSet].color}22 100%
-      )
-    `,
+              background: isDarkMode
+                ? `
+        linear-gradient(
+          135deg,
+          ${alpha(activeTheme.secondary, 1)},
+          ${alpha(activeTheme.color, 0.15)}
+        )
+      `
+                : `
+        linear-gradient(
+          135deg,
+          ${alpha(activeTheme.color, 1)},
+          ${alpha(activeTheme.secondary, 0.15)}
+        )
+      `,
 
-              borderColor: THEME_SETS[themeSet].color,
+              borderColor: alpha(activeTheme.color, isDarkMode ? 0.45 : 0.25),
 
               transition:
                 'border-color 180ms ease, box-shadow 180ms ease, background 180ms ease',
 
               '&:hover': {
-                borderColor: THEME_SETS[themeSet].color,
+                borderColor: activeTheme.color,
 
-                boxShadow: `
-        0 0 0 1px ${THEME_SETS[themeSet].color}20,
-        0 0 22px ${THEME_SETS[themeSet].color}18
-      `
+                boxShadow: isDarkMode
+                  ? `
+          0 0 0 1px ${alpha(activeTheme.color, 0.12)},
+          0 0 22px ${alpha(activeTheme.color, 0.12)}
+        `
+                  : `
+          0 3px 14px ${alpha(activeTheme.color, 0.12)}
+        `
               },
 
               '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                borderColor: THEME_SETS[themeSet].color
+                borderColor: activeTheme.color
               },
 
               '& .MuiOutlinedInput-notchedOutline': {
-                borderColor: `${THEME_SETS[themeSet].color}80`
+                borderColor: alpha(activeTheme.color, isDarkMode ? 0.5 : 0.3)
               },
 
               '& .MuiSelect-select': {
                 py: 1,
                 px: 1.5,
+
                 display: 'flex',
                 alignItems: 'center'
               },
 
               '& .MuiSvgIcon-root': {
-                color: THEME_SETS[themeSet].color
+                color: activeTheme.color
               }
             }}
           >
             {sortedThemes.flatMap(([key, preset], index) => {
+              const themeKey = key as ThemeSetName;
+
               const previousCategory =
                 index > 0 ? sortedThemes[index - 1][1].category : null;
 
               const showCategory =
                 index === 0 || previousCategory !== preset.category;
 
-              const icon = THEME_ICONS[key];
+              const icon = THEME_ICONS[themeKey];
 
-              return [
+              const items: React.ReactNode[] = [];
+
+              /*
+               * Category header
+               */
+              if (showCategory) {
+                items.push(
+                  <ListSubheader
+                    key={`${key}-category`}
+                    sx={{
+                      position: 'static !important',
+                      px: 1.25,
+                      pt: index === 0 ? 0.5 : 1.5,
+                      pb: 0.75,
+                      backgroundColor: 'transparent',
+                      color: 'text.secondary',
+                      fontSize: '0.62rem',
+                      fontWeight: 800,
+                      letterSpacing: '0.12em',
+                      textTransform: 'uppercase',
+                      lineHeight: 1.4
+                    }}
+                  >
+                    {' '}
+                    {preset.category}{' '}
+                  </ListSubheader>
+                );
+              }
+
+              /*
+               * Theme item
+               */
+              items.push(
                 <MenuItem
                   key={key}
-                  value={key}
+                  value={themeKey}
                   sx={{
                     position: 'relative',
 
@@ -372,10 +458,12 @@ export default function ThemeToggle() {
 
                     display: 'flex',
                     alignItems: 'center',
+
                     gap: 1.25,
 
                     mx: 0.25,
                     my: 0.35,
+
                     px: 1,
 
                     overflow: 'hidden',
@@ -397,10 +485,14 @@ export default function ThemeToggle() {
                     transition:
                       'transform 160ms ease, background 160ms ease, border-color 160ms ease, box-shadow 160ms ease',
 
+                    /*
+                     * Left active indicator
+                     */
                     '&::before': {
                       content: '""',
 
                       position: 'absolute',
+
                       left: 0,
                       top: 7,
                       bottom: 7,
@@ -418,10 +510,14 @@ export default function ThemeToggle() {
                       transition: 'opacity 160ms ease, transform 160ms ease'
                     },
 
+                    /*
+                     * Decorative glow
+                     */
                     '&::after': {
                       content: '""',
 
                       position: 'absolute',
+
                       width: 90,
                       height: 90,
 
@@ -430,13 +526,17 @@ export default function ThemeToggle() {
 
                       borderRadius: '50%',
 
-                      background: `radial-gradient(
-              circle,
-              ${preset.color}20,
-              transparent 70%
-            )`,
+                      background: `
+              radial-gradient(
+                circle,
+                ${preset.color}20,
+                transparent 70%
+              )
+            `,
 
                       opacity: 0,
+
+                      pointerEvents: 'none',
 
                       transition: 'opacity 180ms ease'
                     },
@@ -469,6 +569,9 @@ export default function ThemeToggle() {
                       }
                     },
 
+                    /*
+                     * Selected theme
+                     */
                     '&.Mui-selected': {
                       background: `
               linear-gradient(
@@ -496,6 +599,9 @@ export default function ThemeToggle() {
                       }
                     },
 
+                    /*
+                     * Selected + hover
+                     */
                     '&.Mui-selected:hover': {
                       background: `
               linear-gradient(
@@ -545,9 +651,12 @@ export default function ThemeToggle() {
                     <Box
                       sx={{
                         position: 'absolute',
+
                         width: 22,
                         height: 22,
+
                         borderRadius: '50%',
+
                         background: `
                 radial-gradient(
                   circle,
@@ -555,7 +664,9 @@ export default function ThemeToggle() {
                   ${preset.secondary}
                 )
               `,
+
                         opacity: 0.85,
+
                         filter: 'blur(5px)'
                       }}
                     />
@@ -567,6 +678,7 @@ export default function ThemeToggle() {
                         alt=""
                         sx={{
                           position: 'relative',
+
                           zIndex: 1,
 
                           width: 27,
@@ -574,15 +686,14 @@ export default function ThemeToggle() {
 
                           objectFit: 'contain',
 
-                          filter: `
-                  drop-shadow(0 2px 4px rgba(0,0,0,.6))
-                `
+                          filter: 'drop-shadow(0 2px 4px rgba(0,0,0,.6))'
                         }}
                       />
                     ) : (
                       <Box
                         sx={{
                           position: 'relative',
+
                           zIndex: 1,
 
                           width: 17,
@@ -610,6 +721,7 @@ export default function ThemeToggle() {
                   <Box
                     sx={{
                       position: 'relative',
+
                       zIndex: 1,
 
                       flex: 1,
@@ -655,13 +767,15 @@ export default function ThemeToggle() {
                     </Box>
                   </Box>
 
-                  {/* Color palette */}
+                  {/* Theme palette */}
                   <Stack
                     direction="row"
                     spacing={0.45}
                     sx={{
                       position: 'relative',
+
                       zIndex: 1,
+
                       flexShrink: 0
                     }}
                   >
@@ -669,8 +783,11 @@ export default function ThemeToggle() {
                       sx={{
                         width: 9,
                         height: 9,
+
                         borderRadius: '50%',
+
                         backgroundColor: preset.color,
+
                         boxShadow: `0 0 8px ${preset.color}70`
                       }}
                     />
@@ -679,14 +796,19 @@ export default function ThemeToggle() {
                       sx={{
                         width: 9,
                         height: 9,
+
                         borderRadius: '50%',
+
                         backgroundColor: preset.secondary,
+
                         boxShadow: `0 0 8px ${preset.secondary}50`
                       }}
                     />
                   </Stack>
                 </MenuItem>
-              ];
+              );
+
+              return items;
             })}
           </Select>
         </FormControl>
@@ -699,7 +821,7 @@ export default function ThemeToggle() {
           <TextField
             type="color"
             size="small"
-            value={customColors.color}
+            value={activeTheme.color}
             onChange={(event) => handleColorChange('color', event.target.value)}
             sx={{
               width: 44,
@@ -721,7 +843,7 @@ export default function ThemeToggle() {
           <TextField
             type="color"
             size="small"
-            value={customColors.secondary}
+            value={activeTheme.secondary}
             onChange={(event) =>
               handleColorChange('secondary', event.target.value)
             }
@@ -745,7 +867,7 @@ export default function ThemeToggle() {
           <TextField
             type="color"
             size="small"
-            value={customColors.gray}
+            value={activeTheme.gray}
             onChange={(event) => handleColorChange('gray', event.target.value)}
             sx={{
               width: 44,
@@ -767,7 +889,7 @@ export default function ThemeToggle() {
           <TextField
             type="color"
             size="small"
-            value={customColors.background}
+            value={activeTheme.background}
             onChange={(event) =>
               handleColorChange('background', event.target.value)
             }
@@ -792,12 +914,11 @@ export default function ThemeToggle() {
             onClick={toggleTheme}
             sx={{
               borderRadius: 1.5,
-
               transition: 'all 180ms ease',
 
               '&:hover': {
-                backgroundColor: `${THEME_SETS[themeSet].color}14`,
-                color: THEME_SETS[themeSet].color
+                backgroundColor: `${theme.palette.primary.main}14`,
+                color: theme.palette.primary.main
               }
             }}
           >

@@ -2,6 +2,7 @@ import Head from 'next/head';
 import type { ReactNode } from 'react';
 
 import { Box, CardContent, Divider, Stack, Typography } from '@mui/material';
+import { useThemeContext } from '@/contexts/themeContext';
 
 import GitHubIcon from '@mui/icons-material/GitHub';
 import PaletteIcon from '@mui/icons-material/Palette';
@@ -14,6 +15,7 @@ import type { RadixScaleStep } from '@/theme/theme';
 import { useTheme } from '@mui/material/styles';
 
 import ThemeToggle from '@/theme/ThemeToggle';
+import { THEME_SETS, THEME_ICONS, type ThemeSetName } from '@/theme/theme';
 
 import {
   AppButton,
@@ -249,11 +251,14 @@ function ScalePreview({
 
 export default function OverViewTheme() {
   const theme = useTheme();
+  const { themeSet } = useThemeContext();
 
   return (
     <>
       <Head>
-        <title>BoilerPlate | Theme System</title>
+        <title>
+          BoilerPlate | Theme System | {THEME_SETS[themeSet]?.label ?? 'Custom'}
+        </title>
 
         <meta
           name="description"

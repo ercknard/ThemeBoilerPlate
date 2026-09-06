@@ -71,7 +71,9 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>BoilerPlate | Theme System</title>
+        <title>
+          BoilerPlate | Theme System | {THEME_SETS[themeSet]?.label ?? 'Custom'}
+        </title>
 
         <meta
           name="description"
