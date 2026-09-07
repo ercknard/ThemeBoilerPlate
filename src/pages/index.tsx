@@ -97,12 +97,12 @@ export default function Home() {
             ),
             radial-gradient(
               circle at 100% 50%,
-              ${alpha(secondaryStrong, 0.35)},
+              ${alpha(secondaryStrong, 0.5)},
               transparent 38%
             ),
             radial-gradient(
               circle at 0% 50%,
-              ${alpha(secondaryStrong, 0.35)},
+              ${alpha(secondaryStrong, 0.5)},
               transparent 38%
             ),
             ${background}
@@ -293,9 +293,8 @@ export default function Home() {
                   objectFit: 'contain',
 
                   filter: `
-                    drop-shadow(0 0 10px ${alpha(primary, 0.7)})
-                    drop-shadow(0 0 30px ${alpha(primary, 0.45)})
-                    drop-shadow(0 15px 35px ${alpha('#000000', 0.35)})
+                    drop-shadow(0 0 10px ${alpha(primary, 0.5)})
+                    drop-shadow(0 0 30px ${alpha(primary, 0.35)})
                   `,
 
                   animation: 'logoFloat 4s ease-in-out infinite'
