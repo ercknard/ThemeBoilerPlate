@@ -88,6 +88,16 @@ export default function Home() {
   const textPrimary = theme.grayScale[12];
   const textSecondary = theme.grayScale[10];
 
+  const isDarkMode = theme.palette.mode === 'dark';
+
+  const ctaBackground = isDarkMode
+    ? alpha(theme.secondaryScale[3], 0.8)
+    : alpha(surface, 0.9);
+
+  const ctaSurface = isDarkMode
+    ? alpha(theme.secondaryScale[4], 0.72)
+    : alpha(surface, 0.72);
+
   return (
     <>
       <Head>
@@ -858,6 +868,82 @@ export default function Home() {
               }
             }}
           >
+            <Box
+              sx={{
+                position: 'absolute',
+
+                top: {
+                  xs: 12,
+                  md: 18
+                },
+
+                right: {
+                  xs: 12,
+                  md: 20
+                },
+
+                zIndex: 3,
+
+                display: 'flex',
+                alignItems: 'center',
+                gap: 0.75,
+
+                px: 1.25,
+                py: 0.6,
+
+                borderRadius: 99,
+
+                backgroundColor: alpha(primary, 0.1),
+
+                border: `1px solid ${alpha(primary, 0.25)}`,
+
+                backdropFilter: {
+                  xs: 'none',
+                  md: 'blur(10px)'
+                },
+
+                boxShadow: `
+      0 6px 20px
+      ${alpha('#000000', 0.12)}
+    `
+              }}
+            >
+              <Box
+                sx={{
+                  width: 6,
+                  height: 6,
+
+                  flexShrink: 0,
+
+                  borderRadius: '50%',
+
+                  backgroundColor: primary,
+
+                  boxShadow: `0 0 10px ${alpha(primary, 0.65)}`
+                }}
+              />
+
+              <Typography
+                variant="caption"
+                sx={{
+                  color: primary,
+
+                  fontSize: {
+                    xs: '0.6rem',
+                    md: '0.65rem'
+                  },
+
+                  fontWeight: 800,
+
+                  letterSpacing: '0.1em',
+
+                  lineHeight: 1
+                }}
+              >
+                SAMPLE HERO
+              </Typography>
+            </Box>
+
             <Stack
               direction={{
                 xs: 'column',
@@ -967,7 +1053,9 @@ export default function Home() {
                 >
                   <AppButton
                     component="a"
-                    href="/documentation"
+                    href="https://cryptech.services/"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     variant="contained"
                     color="primary"
                     size="large"
@@ -980,9 +1068,9 @@ export default function Home() {
                         xs: 'none',
 
                         md: `
-                          0 12px 35px
-                          ${alpha(primary, 0.35)}
-                        `
+        0 12px 35px
+        ${alpha(primary, 0.35)}
+      `
                       },
 
                       '&:hover': {
@@ -990,14 +1078,14 @@ export default function Home() {
                           xs: 'none',
 
                           md: `
-                            0 15px 45px
-                            ${alpha(primary, 0.48)}
-                          `
+          0 15px 45px
+          ${alpha(primary, 0.48)}
+        `
                         }
                       }
                     }}
                   >
-                    Explore Theme
+                    Cryptech Services
                   </AppButton>
 
                   <AppButton
@@ -1433,32 +1521,52 @@ export default function Home() {
                 md: 8
               },
 
-              p: {
-                xs: 2.5,
-                sm: 4,
-                md: 5
-              },
+              position: 'relative',
+              overflow: 'hidden',
 
               borderRadius: {
                 xs: 3,
                 md: 4
               },
 
-              position: 'relative',
-              overflow: 'hidden',
+              border: `1px solid ${alpha(primary, isDarkMode ? 0.34 : 0.28)}`,
 
-              border: `1px solid ${alpha(primary, 0.25)}`,
+              background: `
+      linear-gradient(
+        135deg,
+        ${alpha(primary, isDarkMode ? 0.25 : 0.11)} 0%,
+        ${ctaBackground} 45%,
+        ${alpha(secondary, isDarkMode ? 0.25 : 0.11)} 100%
+      )
+    `,
 
-              background: {
-                xs: alpha(primary, 0.07),
+              boxShadow: {
+                xs: 'none',
+                md: isDarkMode
+                  ? `
+          0 24px 70px
+          ${alpha('#000000', 0.32)},
+          0 0 60px
+          ${alpha(primary, 0.06)}
+        `
+                  : `
+          0 24px 70px
+          ${alpha('#000000', 0.18)}
+        `
+              },
 
+              backdropFilter: {
+                xs: 'none',
+                md: 'blur(18px)'
+              },
+
+              transition: {
+                xs: 'none',
                 md: `
-                  linear-gradient(
-                    135deg,
-                    ${alpha(primary, 0.1)},
-                    ${alpha(secondary, 0.1)}
-                  )
-                `
+        border-color 0.5s ease,
+        box-shadow 0.5s ease,
+        background 0.5s ease
+      `
               },
 
               '&::before': {
@@ -1466,26 +1574,47 @@ export default function Home() {
 
                 position: 'absolute',
 
-                display: {
-                  xs: 'none',
-                  md: 'block'
-                },
+                width: 420,
+                height: 420,
 
-                width: 350,
-                height: 350,
-
-                top: -250,
-                right: -100,
+                top: -260,
+                right: -140,
 
                 borderRadius: '50%',
 
                 background: `
-                  radial-gradient(
-                    circle,
-                    ${alpha(primary, 0.18)},
-                    transparent 70%
-                  )
-                `
+        radial-gradient(
+          circle,
+          ${alpha(primary, isDarkMode ? 0.3 : 0.22)} 0%,
+          transparent 68%
+        )
+      `,
+
+                pointerEvents: 'none'
+              },
+
+              '&::after': {
+                content: '""',
+
+                position: 'absolute',
+
+                width: 320,
+                height: 320,
+
+                bottom: -240,
+                left: -140,
+
+                borderRadius: '50%',
+
+                background: `
+        radial-gradient(
+          circle,
+          ${alpha(secondary, isDarkMode ? 0.22 : 0.16)} 0%,
+          transparent 68%
+        )
+      `,
+
+                pointerEvents: 'none'
               }
             }}
           >
@@ -1494,54 +1623,420 @@ export default function Home() {
                 xs: 'column',
                 md: 'row'
               }}
-              spacing={3}
+              spacing={{
+                xs: 3,
+                md: 5
+              }}
               sx={{
+                position: 'relative',
+                zIndex: 1,
+
                 alignItems: {
-                  xs: 'flex-start',
+                  xs: 'stretch',
                   md: 'center'
                 },
 
                 justifyContent: 'space-between',
 
-                position: 'relative',
-                zIndex: 1
+                p: {
+                  xs: 2.5,
+                  sm: 4,
+                  md: 5
+                }
               }}
             >
-              <Stack spacing={1}>
-                <Typography
-                  variant="h5"
-                  sx={{
-                    fontWeight: 800
-                  }}
-                >
-                  Ready to build?
-                </Typography>
+              {/* ===================================================================== */}
+              {/* CTA CONTENT                                                           */}
+              {/* ===================================================================== */}
 
-                <Typography
-                  variant="body2"
-                  sx={{
-                    color: textSecondary,
-                    maxWidth: 600
-                  }}
-                >
-                  Explore the complete theme system and see how every token
-                  works together.
-                </Typography>
-              </Stack>
-
-              <AppButton
-                component="a"
-                href="/documentation"
-                variant="contained"
-                color="primary"
-                endIcon={<ArrowForwardIcon />}
+              <Stack
+                spacing={2}
                 sx={{
-                  flexShrink: 0,
-                  px: 3
+                  flex: 1,
+                  minWidth: 0
                 }}
               >
-                Open Theme System
-              </AppButton>
+                <Stack
+                  direction="row"
+                  spacing={1}
+                  sx={{
+                    alignItems: 'center'
+                  }}
+                >
+                  <Box
+                    sx={{
+                      width: 30,
+                      height: 30,
+
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+
+                      borderRadius: 1.5,
+
+                      color: primary,
+
+                      backgroundColor: alpha(primary, isDarkMode ? 0.16 : 0.12),
+
+                      border: `1px solid ${alpha(
+                        primary,
+                        isDarkMode ? 0.28 : 0.2
+                      )}`
+                    }}
+                  >
+                    <AutoAwesomeIcon
+                      sx={{
+                        fontSize: 17
+                      }}
+                    />
+                  </Box>
+
+                  <Typography
+                    variant="overlineCustom"
+                    sx={{
+                      color: primary,
+
+                      fontWeight: 800,
+
+                      letterSpacing: '0.14em'
+                    }}
+                  >
+                    BUILD WITH CONFIDENCE
+                  </Typography>
+                </Stack>
+
+                <Typography
+                  variant="h4"
+                  sx={{
+                    fontWeight: 850,
+
+                    fontSize: {
+                      xs: '1.7rem',
+                      sm: '2.1rem',
+                      md: '2.5rem'
+                    },
+
+                    lineHeight: 1.08,
+
+                    letterSpacing: '-0.025em'
+                  }}
+                >
+                  Your theme is ready.
+                </Typography>
+
+                <Typography
+                  variant="body1"
+                  sx={{
+                    maxWidth: 650,
+
+                    color: textSecondary,
+
+                    lineHeight: 1.7,
+
+                    fontSize: {
+                      xs: '0.9rem',
+                      sm: '0.98rem'
+                    }
+                  }}
+                >
+                  Explore the complete theme system, customize your tokens, and
+                  build consistent interfaces from the same design foundation.
+                </Typography>
+
+                <Stack
+                  direction={{
+                    xs: 'column',
+                    sm: 'row'
+                  }}
+                  spacing={1.5}
+                  sx={{
+                    pt: 0.5
+                  }}
+                >
+                  <AppButton
+                    component="a"
+                    href="/documentation"
+                    variant="contained"
+                    color="primary"
+                    endIcon={<ArrowForwardIcon />}
+                    sx={{
+                      minHeight: 46,
+
+                      px: 2.5,
+
+                      boxShadow: {
+                        xs: 'none',
+
+                        md: `
+                0 10px 30px
+                ${alpha(primary, 0.28)}
+              `
+                      },
+
+                      '&:hover': {
+                        boxShadow: {
+                          xs: 'none',
+
+                          md: `
+                  0 14px 38px
+                  ${alpha(primary, 0.38)}
+                `
+                        }
+                      }
+                    }}
+                  >
+                    Explore Theme System
+                  </AppButton>
+                </Stack>
+              </Stack>
+
+              {/* ===================================================================== */}
+              {/* THEME TOKEN PREVIEW                                                   */}
+              {/* ===================================================================== */}
+
+              <Box
+                sx={{
+                  width: {
+                    xs: '100%',
+                    md: 300,
+                    lg: 340
+                  },
+
+                  flexShrink: 0
+                }}
+              >
+                <Box
+                  sx={{
+                    p: 1.5,
+
+                    borderRadius: 3,
+
+                    backgroundColor: ctaSurface,
+
+                    border: `1px solid ${alpha(
+                      secondary,
+                      isDarkMode ? 0.32 : 0.22
+                    )}`,
+
+                    boxShadow: isDarkMode
+                      ? `
+              inset 0 1px 0
+              ${alpha('#ffffff', 0.06)},
+              0 20px 50px
+              ${alpha('#000000', 0.25)}
+            `
+                      : `
+              inset 0 1px 0
+              ${alpha('#ffffff', 0.04)},
+              0 20px 50px
+              ${alpha('#000000', 0.16)}
+            `,
+
+                    transform: {
+                      xs: 'none',
+                      md: 'rotate(2deg)'
+                    },
+
+                    transition: 'transform 0.4s ease',
+
+                    '&:hover': {
+                      transform: {
+                        xs: 'none',
+                        md: 'rotate(0deg) translateY(-4px)'
+                      }
+                    }
+                  }}
+                >
+                  <Stack spacing={1.25}>
+                    {/* =============================================================== */}
+                    {/* PREVIEW HEADER                                                   */}
+                    {/* =============================================================== */}
+
+                    <Stack
+                      direction="row"
+                      spacing={1}
+                      sx={{
+                        alignItems: 'center',
+
+                        px: 1,
+                        py: 0.75
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          width: 8,
+                          height: 8,
+
+                          flexShrink: 0,
+
+                          borderRadius: '50%',
+
+                          backgroundColor: primary,
+
+                          boxShadow: `
+                  0 0 12px
+                  ${alpha(primary, 0.6)}
+                `
+                        }}
+                      />
+
+                      <Typography
+                        variant="caption"
+                        sx={{
+                          color: textSecondary,
+
+                          fontWeight: 700
+                        }}
+                      >
+                        Theme Tokens
+                      </Typography>
+
+                      <Box
+                        sx={{
+                          flex: 1
+                        }}
+                      />
+
+                      <Typography
+                        variant="caption"
+                        sx={{
+                          color: primary,
+
+                          fontFamily: 'monospace',
+
+                          fontSize: '0.65rem',
+
+                          fontWeight: 600
+                        }}
+                      >
+                        {themeSet}
+                      </Typography>
+                    </Stack>
+
+                    {/* =============================================================== */}
+                    {/* MAIN TOKEN                                                       */}
+                    {/* =============================================================== */}
+
+                    <Box
+                      sx={{
+                        height: 82,
+
+                        display: 'flex',
+
+                        alignItems: 'flex-end',
+
+                        p: 1.5,
+
+                        borderRadius: 2,
+
+                        background: `
+                linear-gradient(
+                  135deg,
+                  ${primary},
+                  ${secondary}
+                )
+              `,
+
+                        boxShadow: `
+                inset 0 0 35px
+                ${alpha('#ffffff', 0.08)},
+                0 8px 25px
+                ${alpha(primary, 0.12)}
+              `
+                      }}
+                    >
+                      <Typography
+                        variant="caption"
+                        sx={{
+                          color: '#ffffff',
+
+                          fontWeight: 700,
+
+                          textShadow: `
+                  0 1px 3px
+                  rgba(0,0,0,0.25)
+                `
+                        }}
+                      >
+                        Primary + Secondary
+                      </Typography>
+                    </Box>
+
+                    {/* =============================================================== */}
+                    {/* TOKEN ROWS                                                       */}
+                    {/* =============================================================== */}
+
+                    <Stack direction="row" spacing={1}>
+                      {[
+                        {
+                          label: 'Primary',
+                          color: primary
+                        },
+                        {
+                          label: 'Secondary',
+                          color: secondary
+                        },
+                        {
+                          label: 'Surface',
+                          color: surface
+                        },
+                        {
+                          label: 'Base',
+                          color: background
+                        }
+                      ].map((token) => (
+                        <Stack
+                          key={token.label}
+                          spacing={0.5}
+                          sx={{
+                            flex: 1,
+                            minWidth: 0
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              height: 32,
+
+                              borderRadius: 1.25,
+
+                              backgroundColor: token.color,
+
+                              border: `1px solid ${alpha(
+                                textPrimary,
+                                isDarkMode ? 0.16 : 0.1
+                              )}`,
+
+                              boxShadow: isDarkMode
+                                ? `
+                        0 2px 8px
+                        ${alpha('#000000', 0.18)}
+                      `
+                                : 'none'
+                            }}
+                          />
+
+                          <Typography
+                            variant="caption"
+                            sx={{
+                              color: textSecondary,
+
+                              fontSize: '0.58rem',
+
+                              overflow: 'hidden',
+
+                              textOverflow: 'ellipsis',
+
+                              whiteSpace: 'nowrap'
+                            }}
+                          >
+                            {token.label}
+                          </Typography>
+                        </Stack>
+                      ))}
+                    </Stack>
+                  </Stack>
+                </Box>
+              </Box>
             </Stack>
           </Box>
 
