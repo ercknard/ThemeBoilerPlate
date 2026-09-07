@@ -648,8 +648,8 @@ export const THEME_ICONS: Record<keyof typeof THEME_SETS, string> = {
   green: '/static/images/logo-green.png',
 
   olympus: '/static/images/logo-olympus.png',
-
   end: '/static/images/logo-end.png',
+
   ocean: '/static/images/logo-ocean.png',
   desert: '/static/images/logo-desert.png',
   soulSandValley: '/static/images/logo-soul-sand-valley.png',
@@ -676,14 +676,17 @@ export const THEME_ICONS: Record<keyof typeof THEME_SETS, string> = {
   hestia: '/static/images/logo-hestia.png',
   hades: '/static/images/logo-hades.png',
 
-  // Four Elements
   fire: '/static/images/logo-fire.png',
   water: '/static/images/logo-water.png',
   earth: '/static/images/logo-earth.png',
   air: '/static/images/logo-air.png',
 
-  // Classic
   monochrome: '/static/images/logo-monochrome.png',
+
+  sunset: '/static/images/logo-sunset.png',
+  azure: '/static/images/logo-azure.png',
+  twilight: '/static/images/logo-twilight.png',
+  ivory: '/static/images/logo-ivory.png',
 
   custom: '/static/images/favicon.png'
 };
@@ -987,6 +990,56 @@ export const THEME_SETS = {
     icon: '#7549A2'
   },
 
+  sunset: {
+    label: 'Sunset',
+    category: 'premium',
+    color: '#D8C94A',
+    secondary: '#263342',
+    gray: '#303030',
+    background: '#0D1117',
+    icon: '#D8C94A'
+  },
+
+  azure: {
+    label: 'Azure',
+    category: 'premium',
+    color: '#AFCFCF',
+    secondary: '#344B86',
+    gray: '#303640',
+    background: '#0C111A',
+    icon: '#AFCFCF'
+  },
+
+  twilight: {
+    label: 'Twilight',
+    category: 'premium',
+    color: '#F7AB5F',
+    secondary: '#3D1753',
+    gray: '#2A202C',
+    background: '#0D0712',
+    icon: '#F7AB5F'
+  },
+
+  ivory: {
+    label: 'Crimson Ivory',
+    category: 'premium',
+    color: '#A71C21',
+    secondary: '#FDF9D6',
+    gray: '#302828',
+    background: '#100708',
+    icon: '#FDF9D6'
+  },
+
+  monochrome: {
+    label: 'Monochrome',
+    category: 'classic',
+    color: '#8C8C8C',
+    secondary: '#C7C7C7',
+    gray: '#242424',
+    background: '#080808',
+    icon: '#F0F0F0'
+  },
+
   // ============================================================
   // THE FOUR ELEMENTS
   // ============================================================
@@ -1029,16 +1082,6 @@ export const THEME_SETS = {
     gray: '#282D30',
     background: '#090D0F',
     icon: '#B8D1D8'
-  },
-
-  monochrome: {
-    label: 'Monochrome',
-    category: 'classic',
-    color: '#8C8C8C',
-    secondary: '#C7C7C7',
-    gray: '#242424',
-    background: '#080808',
-    icon: '#F0F0F0'
   },
 
   custom: {

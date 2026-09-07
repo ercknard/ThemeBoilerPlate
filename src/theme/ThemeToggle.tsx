@@ -87,8 +87,9 @@ export default function ThemeToggle() {
     'classic',
     'minecraft',
     'cosmic',
-    'luxury',
-    'mythology'
+    'elemements',
+    'mythology',
+    'premium'
   ] as const;
 
   /*
