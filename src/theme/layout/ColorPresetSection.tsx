@@ -2,6 +2,8 @@
 
 import * as React from 'react';
 
+import Head from 'next/head';
+
 import {
   Box,
   Chip,
@@ -9,13 +11,10 @@ import {
   Grid,
   Paper,
   Stack,
-  Tooltip,
   Typography
 } from '@mui/material';
 
 import { alpha, useTheme } from '@mui/material/styles';
-
-import Head from 'next/head';
 
 import {
   DEFAULT_CUSTOM_COLORS,
@@ -44,6 +43,23 @@ type ColorPreset = {
 
 type CopyColorHandler = (value: unknown) => void;
 
+type PresetEntry = [ThemeSetName, (typeof THEME_SETS)[ThemeSetName]];
+
+/* ========================================================================== */
+/* CONSTANTS                                                                  */
+/* ========================================================================== */
+
+const CATEGORY_ORDER = [
+  'classic',
+  'elements',
+  'mythology',
+  'minecraft',
+  'cosmic',
+  'custom'
+] as const;
+
+const HEX_COLOR_PATTERN = /^#[0-9a-fA-F]{3}$|^#[0-9a-fA-F]{6}$/;
+
 /* ========================================================================== */
 /* HELPERS                                                                    */
 /* ========================================================================== */
@@ -61,14 +77,7 @@ function safeColor(value: unknown, fallback = '#808080'): string {
 
   const normalized = trimmed.startsWith('#') ? trimmed : `#${trimmed}`;
 
-  if (
-    /^#[0-9a-fA-F]{6}$/.test(normalized) ||
-    /^#[0-9a-fA-F]{3}$/.test(normalized)
-  ) {
-    return normalized;
-  }
-
-  return fallback;
+  return HEX_COLOR_PATTERN.test(normalized) ? normalized : fallback;
 }
 
 function getContrastColor(value: unknown): string {
@@ -185,7 +194,11 @@ async function copyColor(value: unknown): Promise<string | null> {
 /* COLOR COPY FEEDBACK                                                        */
 /* ========================================================================== */
 
-function ColorCopyFeedback({ color }: { color: string | null }) {
+const ColorCopyFeedback = React.memo(function ColorCopyFeedback({
+  color
+}: {
+  color: string | null;
+}) {
   const theme = useTheme();
 
   if (!color) {
@@ -240,13 +253,13 @@ function ColorCopyFeedback({ color }: { color: string | null }) {
       </Typography>
     </Box>
   );
-}
+});
 
 /* ========================================================================== */
 /* COLOR SWATCH                                                               */
 /* ========================================================================== */
 
-function ColorSwatch({
+const ColorSwatch = React.memo(function ColorSwatch({
   value,
   label,
   large = false,
@@ -269,68 +282,66 @@ function ColorSwatch({
   };
 
   return (
-    <Tooltip title={`Click to copy ${color}`} arrow>
-      <Box
-        role="button"
-        tabIndex={0}
-        aria-label={`Copy ${label} color ${color}`}
-        onClick={() => onCopy(color)}
-        onKeyDown={handleKeyDown}
+    <Box
+      role="button"
+      tabIndex={0}
+      title={`Click to copy ${color}`}
+      aria-label={`Copy ${label} color ${color}`}
+      onClick={() => onCopy(color)}
+      onKeyDown={handleKeyDown}
+      sx={{
+        position: 'relative',
+        flex: 1,
+        minWidth: 0,
+        height: large ? 76 : 48,
+        backgroundColor: color,
+        border: '1px solid',
+        borderColor: alpha('#FFFFFF', 0.08),
+        transition: 'transform 160ms ease, box-shadow 160ms ease',
+        cursor: 'copy',
+        willChange: 'transform',
+
+        '&:hover': {
+          transform: 'translateY(-2px)',
+          zIndex: 2,
+          boxShadow: `0 6px 20px ${alpha(color, 0.35)}`
+        },
+
+        '&:focus-visible': {
+          outline: '2px solid',
+          outlineColor: textColor,
+          outlineOffset: 2
+        },
+
+        '&:active': {
+          transform: 'translateY(0)'
+        }
+      }}
+    >
+      <Typography
         sx={{
-          position: 'relative',
-          flex: 1,
-          minWidth: 0,
-          height: large ? 76 : 48,
-          backgroundColor: color,
-          border: '1px solid',
-          borderColor: alpha('#FFFFFF', 0.08),
-          transition:
-            'transform 160ms ease, filter 160ms ease, box-shadow 160ms ease',
-          cursor: 'copy',
-
-          '&:hover': {
-            transform: 'translateY(-2px)',
-            filter: 'brightness(1.08)',
-            zIndex: 2,
-            boxShadow: `0 6px 20px ${alpha(color, 0.35)}`
-          },
-
-          '&:focus-visible': {
-            outline: '2px solid',
-            outlineColor: textColor,
-            outlineOffset: 2
-          },
-
-          '&:active': {
-            transform: 'translateY(0)'
-          }
+          position: 'absolute',
+          left: 8,
+          bottom: 6,
+          fontFamily: 'monospace',
+          fontSize: '0.65rem',
+          fontWeight: 600,
+          color: textColor,
+          opacity: 0.9,
+          whiteSpace: 'nowrap'
         }}
       >
-        <Typography
-          sx={{
-            position: 'absolute',
-            left: 8,
-            bottom: 6,
-            fontFamily: 'monospace',
-            fontSize: '0.65rem',
-            fontWeight: 600,
-            color: textColor,
-            opacity: 0.9,
-            whiteSpace: 'nowrap'
-          }}
-        >
-          {color}
-        </Typography>
-      </Box>
-    </Tooltip>
+        {color}
+      </Typography>
+    </Box>
   );
-}
+});
 
 /* ========================================================================== */
 /* COLOR SCALE                                                                */
 /* ========================================================================== */
 
-function ColorScale({
+const ColorScale = React.memo(function ColorScale({
   title,
   scale,
   suppliedColor,
@@ -341,6 +352,23 @@ function ColorScale({
   suppliedColor?: string;
   onCopy: CopyColorHandler;
 }) {
+  const values = React.useMemo(() => {
+    return Array.from({ length: 12 }, (_, index) => {
+      const step = index + 1;
+
+      return {
+        step,
+        value: safeColor(scale?.[step]),
+        contrastColor: getContrastColor(scale?.[step])
+      };
+    });
+  }, [scale]);
+
+  const normalizedSuppliedColor = React.useMemo(
+    () => (suppliedColor ? safeColor(suppliedColor).toUpperCase() : null),
+    [suppliedColor]
+  );
+
   return (
     <Stack spacing={1.25}>
       <Stack
@@ -379,81 +407,76 @@ function ColorScale({
           borderRadius: 1.5
         }}
       >
-        {Array.from({ length: 12 }, (_, index) => {
-          const step = index + 1;
-
-          const value = safeColor(scale?.[step], '#808080');
-
+        {values.map(({ step, value, contrastColor }) => {
           const isSupplied =
-            Boolean(suppliedColor) &&
-            safeColor(suppliedColor).toUpperCase() === value.toUpperCase();
-
-          const contrastColor = getContrastColor(value);
+            normalizedSuppliedColor !== null &&
+            normalizedSuppliedColor === value.toUpperCase();
 
           return (
-            <Tooltip key={step} title={`Click to copy ${value}`} arrow>
-              <Box
-                role="button"
-                tabIndex={0}
-                aria-label={`Copy step ${step} color ${value}`}
-                onClick={() => onCopy(value)}
-                onKeyDown={(event) => {
-                  if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
+            <Box
+              key={step}
+              role="button"
+              tabIndex={0}
+              title={`Click to copy ${value}`}
+              aria-label={`Copy step ${step} color ${value}`}
+              onClick={() => onCopy(value)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
 
-                    onCopy(value);
-                  }
-                }}
+                  onCopy(value);
+                }
+              }}
+              sx={{
+                position: 'relative',
+                flex: 1,
+                height: 54,
+                backgroundColor: value,
+                borderRight: step !== 12 ? '1px solid' : undefined,
+                borderColor: alpha('#FFFFFF', 0.08),
+                cursor: 'copy',
+                transition: 'transform 150ms ease, filter 150ms ease',
+                zIndex: isSupplied ? 2 : 1,
+                willChange: 'transform',
+
+                '&:hover': {
+                  transform: 'scaleY(1.08)',
+                  filter: 'brightness(1.08)',
+                  zIndex: 3
+                },
+
+                '&:focus-visible': {
+                  outline: '2px solid',
+                  outlineColor: contrastColor,
+                  outlineOffset: -2,
+                  zIndex: 4
+                },
+
+                '&:active': {
+                  transform: 'scaleY(1.02)'
+                },
+
+                ...(isSupplied && {
+                  boxShadow: `inset 0 -3px 0 ${alpha('#FFFFFF', 0.95)}`
+                })
+              }}
+            >
+              <Typography
                 sx={{
-                  position: 'relative',
-                  flex: 1,
-                  height: 54,
-                  backgroundColor: value,
-                  borderRight: step !== 12 ? '1px solid' : undefined,
-                  borderColor: alpha('#FFFFFF', 0.08),
-                  cursor: 'copy',
-                  transition: 'transform 150ms ease, filter 150ms ease',
-                  zIndex: isSupplied ? 2 : 1,
-
-                  '&:hover': {
-                    transform: 'scaleY(1.08)',
-                    filter: 'brightness(1.08)',
-                    zIndex: 3
-                  },
-
-                  '&:focus-visible': {
-                    outline: '2px solid',
-                    outlineColor: contrastColor,
-                    outlineOffset: -2,
-                    zIndex: 4
-                  },
-
-                  '&:active': {
-                    transform: 'scaleY(1.02)'
-                  },
-
-                  ...(isSupplied && {
-                    boxShadow: `inset 0 -3px 0 ${alpha('#FFFFFF', 0.95)}`
-                  })
+                  position: 'absolute',
+                  top: 7,
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  fontFamily: 'monospace',
+                  fontSize: '0.6rem',
+                  fontWeight: 700,
+                  color: contrastColor,
+                  opacity: 0.9
                 }}
               >
-                <Typography
-                  sx={{
-                    position: 'absolute',
-                    top: 7,
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    fontFamily: 'monospace',
-                    fontSize: '0.6rem',
-                    fontWeight: 700,
-                    color: contrastColor,
-                    opacity: 0.9
-                  }}
-                >
-                  {step}
-                </Typography>
-              </Box>
-            </Tooltip>
+                {step}
+              </Typography>
+            </Box>
           );
         })}
       </Box>
@@ -485,13 +508,13 @@ function ColorScale({
       </Stack>
     </Stack>
   );
-}
+});
 
 /* ========================================================================== */
 /* COLOR CHIP                                                                  */
 /* ========================================================================== */
 
-function ColorChip({
+const ColorChip = React.memo(function ColorChip({
   label,
   value,
   onCopy
@@ -501,28 +524,27 @@ function ColorChip({
   onCopy: CopyColorHandler;
 }) {
   return (
-    <Tooltip title={`Click to copy ${value}`} arrow>
-      <Chip
-        size="small"
-        variant="outlined"
-        clickable
-        onClick={() => onCopy(value)}
-        label={`${label} ${value}`}
-        sx={{
-          fontFamily: 'monospace',
-          fontSize: '0.65rem',
-          cursor: 'copy'
-        }}
-      />
-    </Tooltip>
+    <Chip
+      size="small"
+      variant="outlined"
+      clickable
+      title={`Click to copy ${value}`}
+      onClick={() => onCopy(value)}
+      label={`${label} ${value}`}
+      sx={{
+        fontFamily: 'monospace',
+        fontSize: '0.65rem',
+        cursor: 'copy'
+      }}
+    />
   );
-}
+});
 
 /* ========================================================================== */
 /* PRESET CARD                                                                */
 /* ========================================================================== */
 
-function PresetCard({
+const PresetCard = React.memo(function PresetCard({
   name,
   preset,
   mode,
@@ -535,7 +557,10 @@ function PresetCard({
 }) {
   const theme = useTheme();
 
-  const colors = getPresetColors(name, preset);
+  const colors = React.useMemo(
+    () => getPresetColors(name, preset),
+    [name, preset]
+  );
 
   const { color, secondary, background, gray } = colors;
 
@@ -655,13 +680,25 @@ function PresetCard({
   /* GENERATED SCALES                                                       */
   /* ---------------------------------------------------------------------- */
 
-  const colorScale = createRadixScale(color, mode);
+  const colorScale = React.useMemo(
+    () => createRadixScale(color, mode),
+    [color, mode]
+  );
 
-  const secondaryScale = createRadixScale(secondary, mode);
+  const secondaryScale = React.useMemo(
+    () => createRadixScale(secondary, mode),
+    [secondary, mode]
+  );
 
-  const backgroundScale = createBackgroundScale(mode, background);
+  const backgroundScale = React.useMemo(
+    () => createBackgroundScale(mode, background),
+    [mode, background]
+  );
 
-  const grayScale = createGrayScale(mode, gray);
+  const grayScale = React.useMemo(
+    () => createGrayScale(mode, gray),
+    [mode, gray]
+  );
 
   /* ---------------------------------------------------------------------- */
   /* ICON                                                                    */
@@ -693,15 +730,13 @@ function PresetCard({
         }
       }}
     >
-      {/* ================================================================== */}
-      {/* HEADER                                                              */}
-      {/* ================================================================== */}
+      {/* HEADER */}
 
       <Stack spacing={0}>
-        <Box
+        <Stack
+          direction="row"
           sx={{
-            height: 8,
-            display: 'flex'
+            height: 8
           }}
         >
           <Box
@@ -724,7 +759,7 @@ function PresetCard({
               backgroundColor: background
             }}
           />
-        </Box>
+        </Stack>
 
         <Stack
           direction="row"
@@ -801,9 +836,7 @@ function PresetCard({
 
       <Divider />
 
-      {/* ================================================================== */}
-      {/* 60 / 30 / 10                                                       */}
-      {/* ================================================================== */}
+      {/* COLOR COMPOSITION */}
 
       <Box
         sx={{
@@ -832,108 +865,105 @@ function PresetCard({
               borderRadius: 1.5
             }}
           >
-            <Tooltip title={`Click to copy ${color}`} arrow>
-              <Box
-                role="button"
-                tabIndex={0}
-                aria-label={`Copy primary color ${color}`}
-                onClick={() => onCopy(color)}
-                onKeyDown={(event) => {
-                  if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
+            <Box
+              role="button"
+              tabIndex={0}
+              title={`Click to copy ${color}`}
+              aria-label={`Copy primary color ${color}`}
+              onClick={() => onCopy(color)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
 
-                    onCopy(color);
-                  }
-                }}
-                sx={{
-                  width: '10%',
-                  minWidth: 36,
-                  backgroundColor: color,
-                  cursor: 'copy',
-                  transition: 'filter 150ms ease, transform 150ms ease',
+                  onCopy(color);
+                }
+              }}
+              sx={{
+                width: '10%',
+                minWidth: 36,
+                backgroundColor: color,
+                cursor: 'copy',
+                transition: 'filter 150ms ease, transform 150ms ease',
 
-                  '&:hover': {
-                    filter: 'brightness(1.08)',
-                    transform: 'scaleY(1.08)'
-                  },
+                '&:hover': {
+                  filter: 'brightness(1.08)',
+                  transform: 'scaleY(1.08)'
+                },
 
-                  '&:focus-visible': {
-                    outline: '2px solid',
-                    outlineColor: getContrastColor(color),
-                    outlineOffset: -2,
-                    zIndex: 2
-                  }
-                }}
-              />
-            </Tooltip>
+                '&:focus-visible': {
+                  outline: '2px solid',
+                  outlineColor: getContrastColor(color),
+                  outlineOffset: -2,
+                  zIndex: 2
+                }
+              }}
+            />
 
-            <Tooltip title={`Click to copy ${secondary}`} arrow>
-              <Box
-                role="button"
-                tabIndex={0}
-                aria-label={`Copy secondary color ${secondary}`}
-                onClick={() => onCopy(secondary)}
-                onKeyDown={(event) => {
-                  if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
+            <Box
+              role="button"
+              tabIndex={0}
+              title={`Click to copy ${secondary}`}
+              aria-label={`Copy secondary color ${secondary}`}
+              onClick={() => onCopy(secondary)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
 
-                    onCopy(secondary);
-                  }
-                }}
-                sx={{
-                  width: '30%',
-                  backgroundColor: secondary,
-                  cursor: 'copy',
-                  transition: 'filter 150ms ease, transform 150ms ease',
+                  onCopy(secondary);
+                }
+              }}
+              sx={{
+                width: '30%',
+                backgroundColor: secondary,
+                cursor: 'copy',
+                transition: 'filter 150ms ease, transform 150ms ease',
 
-                  '&:hover': {
-                    filter: 'brightness(1.08)',
-                    transform: 'scaleY(1.08)'
-                  },
+                '&:hover': {
+                  filter: 'brightness(1.08)',
+                  transform: 'scaleY(1.08)'
+                },
 
-                  '&:focus-visible': {
-                    outline: '2px solid',
-                    outlineColor: getContrastColor(secondary),
-                    outlineOffset: -2,
-                    zIndex: 2
-                  }
-                }}
-              />
-            </Tooltip>
+                '&:focus-visible': {
+                  outline: '2px solid',
+                  outlineColor: getContrastColor(secondary),
+                  outlineOffset: -2,
+                  zIndex: 2
+                }
+              }}
+            />
 
-            <Tooltip title={`Click to copy ${background}`} arrow>
-              <Box
-                role="button"
-                tabIndex={0}
-                aria-label={`Copy background color ${background}`}
-                onClick={() => onCopy(background)}
-                onKeyDown={(event) => {
-                  if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
+            <Box
+              role="button"
+              tabIndex={0}
+              title={`Click to copy ${background}`}
+              aria-label={`Copy background color ${background}`}
+              onClick={() => onCopy(background)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
 
-                    onCopy(background);
-                  }
-                }}
-                sx={{
-                  width: '60%',
-                  backgroundColor: background,
-                  cursor: 'copy',
-                  transition: 'filter 150ms ease, transform 150ms ease',
+                  onCopy(background);
+                }
+              }}
+              sx={{
+                width: '60%',
+                backgroundColor: background,
+                cursor: 'copy',
+                transition: 'filter 150ms ease, transform 150ms ease',
 
-                  '&:hover': {
-                    filter: 'brightness(1.08)',
-                    transform: 'scaleY(1.08)'
-                  },
+                '&:hover': {
+                  filter: 'brightness(1.08)',
+                  transform: 'scaleY(1.08)'
+                },
 
-                  '&:focus-visible': {
-                    outline: '2px solid',
-                    outlineColor: getContrastColor(background),
-                    outlineOffset: -2,
-                    zIndex: 2
-                  }
-                }}
-              />
-            </Tooltip>
+                '&:focus-visible': {
+                  outline: '2px solid',
+                  outlineColor: getContrastColor(background),
+                  outlineOffset: -2,
+                  zIndex: 2
+                }
+              }}
+            />
           </Stack>
 
           <Stack
@@ -975,9 +1005,7 @@ function PresetCard({
 
       <Divider />
 
-      {/* ================================================================== */}
-      {/* BASE COLORS                                                         */}
-      {/* ================================================================== */}
+      {/* BASE COLORS */}
 
       <Box
         sx={{
@@ -1050,9 +1078,7 @@ function PresetCard({
 
       <Divider />
 
-      {/* ================================================================== */}
-      {/* PRIMARY SCALE                                                       */}
-      {/* ================================================================== */}
+      {/* PRIMARY SCALE */}
 
       <Box
         sx={{
@@ -1070,9 +1096,7 @@ function PresetCard({
 
       <Divider />
 
-      {/* ================================================================== */}
-      {/* SECONDARY SCALE                                                     */}
-      {/* ================================================================== */}
+      {/* SECONDARY SCALE */}
 
       <Box
         sx={{
@@ -1090,9 +1114,7 @@ function PresetCard({
 
       <Divider />
 
-      {/* ================================================================== */}
-      {/* BACKGROUND SCALE                                                    */}
-      {/* ================================================================== */}
+      {/* BACKGROUND SCALE */}
 
       <Box
         sx={{
@@ -1110,9 +1132,7 @@ function PresetCard({
 
       <Divider />
 
-      {/* ================================================================== */}
-      {/* GRAY SCALE                                                          */}
-      {/* ================================================================== */}
+      {/* GRAY SCALE */}
 
       <Box
         sx={{
@@ -1130,9 +1150,7 @@ function PresetCard({
 
       <Divider />
 
-      {/* ================================================================== */}
-      {/* SPECIAL TOKENS                                                      */}
-      {/* ================================================================== */}
+      {/* SPECIAL TOKENS */}
 
       <Box sx={{ p: 2.5 }}>
         <Stack spacing={1.5}>
@@ -1175,68 +1193,66 @@ function PresetCard({
                     sm: 3
                   }}
                 >
-                  <Tooltip title={`Click to copy ${token.value}`} arrow>
-                    <Box
-                      role="button"
-                      tabIndex={0}
-                      aria-label={`Copy ${token.label} color ${token.value}`}
-                      onClick={() => onCopy(token.value)}
-                      onKeyDown={(event) => {
-                        if (event.key === 'Enter' || event.key === ' ') {
-                          event.preventDefault();
+                  <Box
+                    role="button"
+                    tabIndex={0}
+                    title={`Click to copy ${token.value}`}
+                    aria-label={`Copy ${token.label} color ${token.value}`}
+                    onClick={() => onCopy(token.value)}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
 
-                          onCopy(token.value);
-                        }
-                      }}
+                        onCopy(token.value);
+                      }
+                    }}
+                    sx={{
+                      p: 1.25,
+                      minHeight: 68,
+                      borderRadius: 1.5,
+                      backgroundColor: token.value,
+                      border: '1px solid',
+                      borderColor: alpha('#FFFFFF', 0.08),
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between',
+                      cursor: 'copy',
+                      transition: 'transform 150ms ease, box-shadow 150ms ease',
+                      willChange: 'transform',
+
+                      '&:hover': {
+                        transform: 'translateY(-2px)',
+                        boxShadow: `0 6px 18px ${alpha(token.value, 0.3)}`
+                      },
+
+                      '&:focus-visible': {
+                        outline: '2px solid',
+                        outlineColor: contrast,
+                        outlineOffset: 2
+                      }
+                    }}
+                  >
+                    <Typography
                       sx={{
-                        p: 1.25,
-                        minHeight: 68,
-                        borderRadius: 1.5,
-                        backgroundColor: token.value,
-                        border: '1px solid',
-                        borderColor: alpha('#FFFFFF', 0.08),
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'space-between',
-                        cursor: 'copy',
-                        transition:
-                          'transform 150ms ease, filter 150ms ease, box-shadow 150ms ease',
-
-                        '&:hover': {
-                          transform: 'translateY(-2px)',
-                          filter: 'brightness(1.06)',
-                          boxShadow: `0 6px 18px ${alpha(token.value, 0.3)}`
-                        },
-
-                        '&:focus-visible': {
-                          outline: '2px solid',
-                          outlineColor: contrast,
-                          outlineOffset: 2
-                        }
+                        fontSize: '0.65rem',
+                        fontWeight: 700,
+                        color: contrast
                       }}
                     >
-                      <Typography
-                        sx={{
-                          fontSize: '0.65rem',
-                          fontWeight: 700,
-                          color: contrast
-                        }}
-                      >
-                        {token.label}
-                      </Typography>
+                      {token.label}
+                    </Typography>
 
-                      <Typography
-                        sx={{
-                          fontFamily: 'monospace',
-                          fontSize: '0.58rem',
-                          color: contrast,
-                          opacity: 0.85
-                        }}
-                      >
-                        {token.value}
-                      </Typography>
-                    </Box>
-                  </Tooltip>
+                    <Typography
+                      sx={{
+                        fontFamily: 'monospace',
+                        fontSize: '0.58rem',
+                        color: contrast,
+                        opacity: 0.85
+                      }}
+                    >
+                      {token.value}
+                    </Typography>
+                  </Box>
                 </Grid>
               );
             })}
@@ -1245,7 +1261,7 @@ function PresetCard({
       </Box>
     </Paper>
   );
-}
+});
 
 /* ========================================================================== */
 /* MAIN COMPONENT                                                             */
@@ -1253,7 +1269,6 @@ function PresetCard({
 
 export default function ColorPresetsSection() {
   const theme = useTheme();
-
   const mode = theme.palette.mode;
 
   const [copiedColor, setCopiedColor] = React.useState<string | null>(null);
@@ -1286,35 +1301,26 @@ export default function ColorPresetsSection() {
     };
   }, []);
 
-  const entries = Object.entries(THEME_SETS) as [
-    ThemeSetName,
-    (typeof THEME_SETS)[ThemeSetName]
-  ][];
+  const entries = React.useMemo(
+    () => Object.entries(THEME_SETS) as PresetEntry[],
+    []
+  );
 
-  const grouped = entries.reduce<
-    Record<string, [ThemeSetName, (typeof THEME_SETS)[ThemeSetName]][]>
-  >((groups, entry) => {
-    const category = entry[1].category ?? 'custom';
+  const grouped = React.useMemo(() => {
+    return entries.reduce<Record<string, PresetEntry[]>>((groups, entry) => {
+      const category = entry[1].category ?? 'custom';
 
-    if (!groups[category]) {
-      groups[category] = [];
-    }
+      if (!groups[category]) {
+        groups[category] = [];
+      }
 
-    groups[category].push(entry);
+      groups[category].push(entry);
 
-    return groups;
-  }, {});
+      return groups;
+    }, {});
+  }, [entries]);
 
   const { themeSet } = useThemeContext();
-
-  const categoryOrder = [
-    'classic',
-    'elements',
-    'mythology',
-    'minecraft',
-    'cosmic',
-    'custom'
-  ];
 
   return (
     <>
@@ -1328,10 +1334,6 @@ export default function ColorPresetsSection() {
           content="A flexible MUI theme system with dynamic color scales, semantic surfaces, typography, and responsive components."
         />
       </Head>
-
-      {/* ================================================================== */}
-      {/* INTRO                                                              */}
-      {/* ================================================================== */}
 
       <Stack
         id="color-presets"
@@ -1354,6 +1356,8 @@ export default function ColorPresetsSection() {
           }
         }}
       >
+        {/* INTRO */}
+
         <Box>
           <Stack>
             <Typography
@@ -1398,12 +1402,10 @@ export default function ColorPresetsSection() {
           </Stack>
         </Box>
 
-        {/* ================================================================== */}
-        {/* CATEGORY GROUPS                                                    */}
-        {/* ================================================================== */}
+        {/* CATEGORY GROUPS */}
 
         <Stack spacing={7}>
-          {categoryOrder.map((category) => {
+          {CATEGORY_ORDER.map((category) => {
             const presets = grouped[category];
 
             if (!presets?.length) {
@@ -1432,7 +1434,7 @@ export default function ColorPresetsSection() {
                   <Box
                     sx={{
                       flex: 1,
-                      height: '1px',
+                      height: 1,
                       backgroundColor: theme.grayScale[5]
                     }}
                   />
