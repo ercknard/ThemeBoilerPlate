@@ -130,7 +130,8 @@ export default function Home() {
             position: 'absolute',
             inset: 0,
             pointerEvents: 'none',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            display: { xs: 'none', md: 'block' }
           }}
         >
           <Box
@@ -174,7 +175,7 @@ export default function Home() {
           <Box
             sx={{
               position: 'absolute',
-
+              display: { xs: 'none', md: 'block' },
               width: 500,
               height: 500,
 

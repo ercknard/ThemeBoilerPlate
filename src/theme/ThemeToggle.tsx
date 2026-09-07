@@ -1182,39 +1182,6 @@ export default function ThemeToggle() {
               <ShuffleIcon fontSize="small" />
             </IconButton>
           </Tooltip>
-
-          {/* ====================================================== */}
-          {/* LIGHT / DARK                                           */}
-          {/* ====================================================== */}
-
-          <Tooltip title={isDarkMode ? 'Light mode' : 'Dark mode'}>
-            <IconButton
-              onClick={toggleTheme}
-              aria-label={
-                isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'
-              }
-              sx={{
-                width: 40,
-                height: 40,
-                display: {
-                  xs: 'flex',
-                  md: 'none'
-                },
-
-                borderRadius: 1.5,
-
-                transition: 'all 180ms ease',
-
-                '&:hover': {
-                  backgroundColor: alpha(theme.palette.primary.main, 0.08),
-
-                  color: theme.palette.primary.main
-                }
-              }}
-            >
-              {isDarkMode ? <LightModeIcon /> : <DarkModeIcon />}
-            </IconButton>
-          </Tooltip>
         </Stack>
       </Box>
 
@@ -1240,7 +1207,6 @@ export default function ThemeToggle() {
             sx={{
               width: 40,
               height: 40,
-              display: { xs: 'none', md: 'flex' },
               borderRadius: 1.5,
 
               transition: 'all 180ms ease',
