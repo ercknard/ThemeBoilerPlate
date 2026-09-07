@@ -6,6 +6,7 @@ import Head from 'next/head';
 
 import {
   Box,
+  Button,
   Chip,
   Divider,
   Grid,
@@ -548,11 +549,15 @@ const PresetCard = React.memo(function PresetCard({
   name,
   preset,
   mode,
+  themeSet,
+  onApply,
   onCopy
 }: {
   name: ThemeSetName;
   preset: ThemePreset;
   mode: 'light' | 'dark';
+  themeSet: ThemeSetName;
+  onApply: (name: ThemeSetName) => void;
   onCopy: CopyColorHandler;
 }) {
   const theme = useTheme();
@@ -563,6 +568,8 @@ const PresetCard = React.memo(function PresetCard({
   );
 
   const { color, secondary, background, gray } = colors;
+
+  const isActive = themeSet === name;
 
   /* ---------------------------------------------------------------------- */
   /* CUSTOM PRESET                                                          */
@@ -577,8 +584,21 @@ const PresetCard = React.memo(function PresetCard({
           p: 2.5,
           borderRadius: 3,
           border: '1px solid',
-          borderColor: alpha(theme.secondaryScale[7], 0.9),
-          backgroundColor: alpha(theme.backgroundScale[3], 0.65)
+          borderColor: isActive
+            ? theme.colorScale[8]
+            : alpha(theme.secondaryScale[7], 0.9),
+          backgroundColor: alpha(theme.backgroundScale[3], 0.65),
+          transition:
+            'border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease',
+
+          ...(isActive && {
+            boxShadow: `0 0 0 1px ${alpha(theme.colorScale[8], 0.35)}`
+          }),
+
+          '&:hover': {
+            borderColor: theme.colorScale[8],
+            transform: 'translateY(-2px)'
+          }
         }}
       >
         <Stack spacing={2.5}>
@@ -601,7 +621,12 @@ const PresetCard = React.memo(function PresetCard({
               }}
             />
 
-            <Box>
+            <Box
+              sx={{
+                minWidth: 0,
+                flex: 1
+              }}
+            >
               <Typography
                 variant="h6"
                 sx={{
@@ -612,7 +637,7 @@ const PresetCard = React.memo(function PresetCard({
               </Typography>
 
               <Chip
-                label="Custom"
+                label={isActive ? 'Applied' : 'Custom'}
                 size="small"
                 sx={{
                   mt: 0.75,
@@ -671,6 +696,20 @@ const PresetCard = React.memo(function PresetCard({
               <ColorSwatch value={gray} label="Gray" large onCopy={onCopy} />
             </Stack>
           </Stack>
+
+          <Button
+            fullWidth
+            variant={isActive ? 'contained' : 'outlined'}
+            disabled={isActive}
+            onClick={() => onApply(name)}
+            sx={{
+              borderRadius: 1.5,
+              textTransform: 'none',
+              fontWeight: 700
+            }}
+          >
+            {isActive ? 'Applied' : 'Apply theme'}
+          </Button>
         </Stack>
       </Paper>
     );
@@ -718,10 +757,16 @@ const PresetCard = React.memo(function PresetCard({
         overflow: 'hidden',
         borderRadius: 2,
         border: '1px solid',
-        borderColor: alpha(theme.secondaryScale[7], 0.9),
+        borderColor: isActive
+          ? theme.colorScale[8]
+          : alpha(theme.secondaryScale[7], 0.9),
         backgroundColor: colorScale[4],
         transition:
           'border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease',
+
+        ...(isActive && {
+          boxShadow: `0 0 0 1px ${alpha(theme.colorScale[8], 0.35)}`
+        }),
 
         '&:hover': {
           borderColor: alpha(theme.colorScale[8], 0.75),
@@ -809,7 +854,7 @@ const PresetCard = React.memo(function PresetCard({
               </Typography>
 
               <Chip
-                label={getCategoryLabel(preset.category)}
+                label={isActive ? 'Applied' : getCategoryLabel(preset.category)}
                 size="small"
                 sx={{
                   height: 22,
@@ -1259,6 +1304,93 @@ const PresetCard = React.memo(function PresetCard({
           </Grid>
         </Stack>
       </Box>
+
+      {/* APPLY THEME */}
+
+      <Stack
+        direction={{ xs: 'column', sm: 'row' }}
+        spacing={2}
+        sx={{
+          px: 2.5,
+          py: 2,
+          alignItems: {
+            xs: 'stretch',
+            sm: 'center'
+          },
+          justifyContent: 'space-between',
+          bgcolor: alpha(secondaryScale[1], 0.55),
+          borderTop: '1px solid',
+          borderColor: alpha(theme.secondaryScale[6], 0.5),
+          borderRadius: '0 0 8px 8px'
+        }}
+      >
+        <Stack
+          spacing={0.25}
+          sx={{
+            minWidth: 0
+          }}
+        >
+          <Typography
+            variant="caption"
+            sx={{
+              color: theme.grayScale[9],
+              textTransform: 'uppercase',
+              letterSpacing: '0.08em',
+              fontWeight: 700
+            }}
+          >
+            Theme preset
+          </Typography>
+
+          <Typography
+            variant="small"
+            sx={{
+              color: theme.grayScale[11],
+              fontFamily: 'monospace',
+              fontWeight: 600
+            }}
+          >
+            {isActive ? 'Currently active' : `Use ${preset.label}`}
+          </Typography>
+        </Stack>
+
+        <Button
+          variant={isActive ? 'contained' : 'contained'}
+          disabled={isActive}
+          onClick={() => onApply(name)}
+          sx={{
+            minWidth: {
+              xs: '100%',
+              sm: 150
+            },
+            minHeight: 42,
+            px: 2.5,
+            borderRadius: 2,
+            textTransform: 'none',
+            fontWeight: 700,
+            backgroundColor: alpha(colorScale[8], 0.25),
+            letterSpacing: '-0.01em',
+            boxShadow: isActive
+              ? `0 4px 14px ${alpha(colorScale[8], 0.25)}`
+              : 'none',
+            borderColor: alpha(colorScale[7], 0.7),
+
+            '&:hover': {
+              borderColor: colorScale[8],
+              backgroundColor: alpha(colorScale[8], 0.08)
+            },
+
+            '&.Mui-disabled': {
+              opacity: 1,
+              color: getContrastColor(colorScale[9]),
+              backgroundColor: colorScale[9],
+              borderColor: colorScale[9]
+            }
+          }}
+        >
+          {isActive ? '✓ Applied' : 'Apply Theme'}
+        </Button>
+      </Stack>
     </Paper>
   );
 });
@@ -1274,6 +1406,8 @@ export default function ColorPresetsSection() {
   const [copiedColor, setCopiedColor] = React.useState<string | null>(null);
 
   const copyTimerRef = React.useRef<number | null>(null);
+
+  const { themeSet, setThemeSet } = useThemeContext();
 
   const handleCopyColor = React.useCallback(async (value: unknown) => {
     const color = await copyColor(value);
@@ -1292,6 +1426,13 @@ export default function ColorPresetsSection() {
       setCopiedColor(null);
     }, 1600);
   }, []);
+
+  const handleApplyTheme = React.useCallback(
+    (name: ThemeSetName) => {
+      setThemeSet(name);
+    },
+    [setThemeSet]
+  );
 
   React.useEffect(() => {
     return () => {
@@ -1319,8 +1460,6 @@ export default function ColorPresetsSection() {
       return groups;
     }, {});
   }, [entries]);
-
-  const { themeSet } = useThemeContext();
 
   return (
     <>
@@ -1463,6 +1602,8 @@ export default function ColorPresetsSection() {
                         name={name}
                         preset={preset}
                         mode={mode}
+                        themeSet={themeSet}
+                        onApply={handleApplyTheme}
                         onCopy={handleCopyColor}
                       />
                     </Grid>
