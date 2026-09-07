@@ -267,7 +267,7 @@ export default function Home() {
 
                 '&::before': {
                   content: '""',
-
+                  display: { xs: 'none', md: 'block' },
                   position: 'absolute',
                   inset: '-25%',
 
@@ -437,7 +437,7 @@ export default function Home() {
                 content: '""',
 
                 position: 'absolute',
-
+                display: { xs: 'none', md: 'block' },
                 width: 550,
                 height: 550,
 
@@ -461,7 +461,7 @@ export default function Home() {
                 content: '""',
 
                 position: 'absolute',
-
+                display: { xs: 'none', md: 'block' },
                 width: 450,
                 height: 450,
 
@@ -1043,7 +1043,7 @@ export default function Home() {
                 content: '""',
 
                 position: 'absolute',
-
+                display: { xs: 'none', md: 'block' },
                 width: 350,
                 height: 350,
 
