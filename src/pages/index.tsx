@@ -476,11 +476,9 @@ export default function Home() {
               overflow: 'hidden',
 
               border: {
-                xs: '1px solid',
-                md: '2px solid'
+                xs: `1px solid ${alpha(secondary, 0.5)} `,
+                md: `2px solid ${alpha(secondary, 0.5)} `
               },
-
-              borderColor: alpha(secondary, 0.5),
 
               background: {
                 xs: alpha(surface, 0.96),
@@ -1266,74 +1264,222 @@ export default function Home() {
           </Box>
 
           {/* ================================================================= */}
-          {/* FOOTER                                                             */}
+          {/* FOOTER                                                           */}
           {/* ================================================================= */}
 
-          <Divider
+          <Box
+            component="footer"
             sx={{
               mt: {
                 xs: 6,
                 md: 10
               },
 
-              borderColor: alpha(secondary, 0.16)
-            }}
-          />
-
-          <Stack
-            direction={{
-              xs: 'column',
-              sm: 'row'
-            }}
-            spacing={2}
-            sx={{
-              alignItems: {
-                xs: 'flex-start',
-                sm: 'center'
+              pt: {
+                xs: 3,
+                md: 4
               },
 
-              justifyContent: 'space-between',
-
-              pt: 3
+              borderTop: `1px solid ${alpha(secondary, 0.5)}`
             }}
           >
-            <Typography
-              variant="body2"
+            <Stack
+              direction={{
+                xs: 'column',
+                sm: 'row'
+              }}
+              spacing={{
+                xs: 2.5,
+                sm: 3
+              }}
               sx={{
-                color: textSecondary
+                alignItems: {
+                  xs: 'flex-start',
+                  sm: 'center'
+                },
+
+                justifyContent: 'space-between'
               }}
             >
-              CryptechServices Theme System
-            </Typography>
+              {/* Brand */}
 
-            <Stack direction="row" spacing={1}>
-              <AppButton
-                component="a"
-                href="/documentation"
-                variant="text"
-                color="primary"
-                size="small"
-                startIcon={<PaletteIcon />}
+              <Stack
+                direction="row"
+                spacing={1.5}
+                sx={{
+                  alignItems: 'center',
+                  minWidth: 0
+                }}
               >
-                Theme
-              </AppButton>
+                <Box
+                  sx={{
+                    width: 34,
+                    height: 34,
+                    flexShrink: 0,
 
-              {GITHUB_URL && (
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+
+                    borderRadius: 1.5,
+
+                    backgroundColor: alpha(primary, 0.1),
+
+                    border: `1px solid ${alpha(primary, 0.2)}`,
+
+                    color: primary
+                  }}
+                >
+                  <PaletteIcon
+                    sx={{
+                      fontSize: 18
+                    }}
+                  />
+                </Box>
+
+                <Stack spacing={0}>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      fontWeight: 700,
+                      lineHeight: 1.3,
+                      color: textPrimary
+                    }}
+                  >
+                    CryptechServices
+                  </Typography>
+
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      color: textSecondary,
+                      lineHeight: 1.3
+                    }}
+                  >
+                    Theme System
+                  </Typography>
+                </Stack>
+              </Stack>
+
+              {/* Navigation */}
+
+              <Stack
+                direction="row"
+                spacing={0.5}
+                sx={{
+                  alignItems: 'center',
+                  flexWrap: 'wrap'
+                }}
+              >
                 <AppButton
                   component="a"
-                  href={GITHUB_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="/documentation"
                   variant="text"
-                  color="secondary"
+                  color="primary"
                   size="small"
-                  startIcon={<GitHubIcon />}
+                  startIcon={<PaletteIcon />}
+                  sx={{
+                    minHeight: 36,
+                    px: 1.25,
+                    borderRadius: 1.5,
+
+                    '&:hover': {
+                      backgroundColor: alpha(primary, 0.08)
+                    }
+                  }}
                 >
-                  GitHub
+                  Documentation
                 </AppButton>
-              )}
+
+                {GITHUB_URL && (
+                  <AppButton
+                    component="a"
+                    href={GITHUB_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    variant="text"
+                    color="secondary"
+                    size="small"
+                    startIcon={<GitHubIcon />}
+                    sx={{
+                      minHeight: 36,
+                      px: 1.25,
+                      borderRadius: 1.5,
+
+                      '&:hover': {
+                        backgroundColor: alpha(secondary, 0.08)
+                      }
+                    }}
+                  >
+                    GitHub
+                  </AppButton>
+                )}
+              </Stack>
             </Stack>
-          </Stack>
+
+            {/* Bottom line */}
+
+            <Stack
+              direction={{
+                xs: 'column',
+                sm: 'row'
+              }}
+              spacing={1}
+              sx={{
+                mt: 2.5,
+                pt: 2,
+
+                alignItems: {
+                  xs: 'flex-start',
+                  sm: 'center'
+                },
+
+                justifyContent: 'space-between',
+
+                borderTop: `1px solid ${alpha(secondary, 0.08)}`
+              }}
+            >
+              <Typography
+                variant="caption"
+                sx={{
+                  color: textSecondary
+                }}
+              >
+                Built with MUI · Designed for scalable interfaces
+              </Typography>
+
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{
+                  alignItems: 'center'
+                }}
+              >
+                <Box
+                  sx={{
+                    width: 6,
+                    height: 6,
+                    borderRadius: '50%',
+                    backgroundColor: primary,
+                    boxShadow: {
+                      xs: 'none',
+                      md: `0 0 10px ${alpha(primary, 0.6)}`
+                    }
+                  }}
+                />
+
+                <Typography
+                  variant="caption"
+                  sx={{
+                    color: textSecondary,
+                    fontFamily: 'monospace'
+                  }}
+                >
+                  {themeSet}
+                </Typography>
+              </Stack>
+            </Stack>
+          </Box>
         </Container>
       </Box>
     </>

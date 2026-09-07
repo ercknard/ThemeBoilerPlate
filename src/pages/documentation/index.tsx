@@ -378,74 +378,140 @@ export default function TypographyShowcase() {
 
               {activeTab === 'components' && <ComponentsSection />}
 
-              <Box sx={{ mt: '3rem' }}>
-                <Divider />
+              <Box
+                component="footer"
+                sx={{
+                  mt: {
+                    xs: 4,
+                    lg: 6
+                  }
+                }}
+              >
+                <Divider
+                  sx={{
+                    borderColor: alpha(theme.secondaryScale[7], 0.35)
+                  }}
+                />
 
-                <Box
+                <Stack
+                  direction={{
+                    xs: 'column',
+                    sm: 'row'
+                  }}
+                  spacing={{
+                    xs: 1.5,
+                    sm: 2
+                  }}
                   sx={{
                     mt: {
-                      xs: '1rem',
-                      lg: '3rem'
+                      xs: 2,
+                      lg: 3
                     },
 
-                    display: 'flex',
+                    pb: {
+                      xs: 2,
+                      lg: 0
+                    },
+
+                    alignItems: 'center',
                     justifyContent: 'center',
 
-                    paddingBottom: {
-                      xs: '1rem',
-                      lg: 0
-                    }
+                    color: theme.grayScale[11]
                   }}
                 >
+                  {/* Brand */}
+
+                  <Typography
+                    variant="small"
+                    sx={{
+                      color: theme.grayScale[11],
+                      fontWeight: 600,
+                      textAlign: 'center'
+                    }}
+                  >
+                    CryptechServices Design System
+                  </Typography>
+
+                  {/* Separator */}
+
+                  <Box
+                    component="span"
+                    aria-hidden
+                    sx={{
+                      display: {
+                        xs: 'none',
+                        sm: 'block'
+                      },
+
+                      width: 4,
+                      height: 4,
+
+                      borderRadius: '50%',
+
+                      backgroundColor: theme.grayScale[7]
+                    }}
+                  />
+
+                  {/* Navigation */}
+
                   <Stack
                     direction="row"
-                    spacing={2}
+                    spacing={0.5}
                     sx={{
                       alignItems: 'center',
-                      justifyContent: 'center',
-                      flexWrap: 'wrap'
+                      justifyContent: 'center'
                     }}
-                    useFlexGap
                   >
-                    <Typography
-                      variant="small"
-                      sx={{
-                        color: theme.grayScale[11]
-                      }}
-                    >
-                      CryptechServices Design System
-                    </Typography>
-
-                    <Typography
-                      variant="small"
-                      sx={{
-                        color: theme.grayScale[8]
-                      }}
-                    >
-                      •
-                    </Typography>
-
                     <Button
                       component="a"
                       href="/documentation"
                       size="small"
                       startIcon={<PaletteIcon />}
+                      sx={{
+                        minHeight: 34,
+                        px: 1.25,
+                        borderRadius: 1.5,
+
+                        color: theme.grayScale[10],
+
+                        '&:hover': {
+                          color: theme.colorScale[9],
+                          backgroundColor: alpha(theme.colorScale[9], 0.08)
+                        }
+                      }}
                     >
                       Theme
                     </Button>
 
-                    <Button
-                      component="a"
-                      href={GITHUB_URL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      size="small"
-                      startIcon={<GitHubIcon />}
-                    >
-                      GitHub
-                    </Button>
+                    {GITHUB_URL && (
+                      <Button
+                        component="a"
+                        href={GITHUB_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        size="small"
+                        startIcon={<GitHubIcon />}
+                        sx={{
+                          minHeight: 34,
+                          px: 1.25,
+                          borderRadius: 1.5,
+
+                          color: theme.grayScale[10],
+
+                          '&:hover': {
+                            color: theme.secondaryScale[9],
+                            backgroundColor: alpha(
+                              theme.secondaryScale[9],
+                              0.08
+                            )
+                          }
+                        }}
+                      >
+                        GitHub
+                      </Button>
+                    )}
                   </Stack>
-                </Box>
+                </Stack>
               </Box>
             </Stack>
           </Grid>
