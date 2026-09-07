@@ -179,7 +179,7 @@ export default function TypographyShowcase() {
 
                   top: {
                     xs: 64,
-                    md: 64
+                    md: 65
                   },
 
                   zIndex: 1,
