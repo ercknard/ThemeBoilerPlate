@@ -291,7 +291,7 @@ export default function OverViewTheme() {
               lg: 8
             },
             pt: {
-              xs: 4,
+              xs: 0,
               md: 6,
               lg: 5
             }
@@ -441,7 +441,7 @@ export default function OverViewTheme() {
                       xs: '100%',
                       md: 180
                     },
-                    display: 'flex',
+                    display: { xs: 'none', md: 'flex' },
                     justifyContent: {
                       xs: 'flex-start',
                       md: 'center'

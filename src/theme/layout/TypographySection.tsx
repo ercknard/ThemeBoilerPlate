@@ -39,7 +39,7 @@ export default function TypographySection() {
             lg: 8
           },
           pt: {
-            xs: 4,
+            xs: 0,
             md: 6,
             lg: 5
           }

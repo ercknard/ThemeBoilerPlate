@@ -333,7 +333,7 @@ export default function ThemeToggle() {
         <FormControl
           size="small"
           sx={{
-            minWidth: 190
+            minWidth: { xs: '100%', md: 190 }
           }}
         >
           <Select
@@ -529,25 +529,26 @@ export default function ThemeToggle() {
               );
             }}
             sx={{
-              minWidth: 220,
+              width: { xs: '100%', md: 'auto' },
+              minWidth: { xs: '100%', md: 220 },
 
               borderRadius: 2.5,
 
               background: isDarkMode
                 ? `
-                  linear-gradient(
-                    135deg,
-                    ${alpha(activeTheme.secondary, 0.75)},
-                    ${alpha(activeTheme.color, 0.15)}
-                  )
-                `
+      linear-gradient(
+        135deg,
+        ${alpha(activeTheme.secondary, 0.75)},
+        ${alpha(activeTheme.color, 0.15)}
+      )
+    `
                 : `
-                  linear-gradient(
-                    135deg,
-                    ${alpha(activeTheme.color, 0.75)},
-                    ${alpha(activeTheme.secondary, 0.15)}
-                  )
-                `,
+      linear-gradient(
+        135deg,
+        ${alpha(activeTheme.color, 0.75)},
+        ${alpha(activeTheme.secondary, 0.15)}
+      )
+    `,
 
               borderColor: alpha(activeTheme.color, isDarkMode ? 0.45 : 0.25),
 
@@ -559,12 +560,12 @@ export default function ThemeToggle() {
 
                 boxShadow: isDarkMode
                   ? `
-                    0 0 0 1px ${alpha(activeTheme.color, 0.12)},
-                    0 0 22px ${alpha(activeTheme.color, 0.12)}
-                  `
+        0 0 0 1px ${alpha(activeTheme.color, 0.12)},
+        0 0 22px ${alpha(activeTheme.color, 0.12)}
+      `
                   : `
-                    0 3px 14px ${alpha(activeTheme.color, 0.12)}
-                  `
+        0 3px 14px ${alpha(activeTheme.color, 0.12)}
+      `
               },
 
               '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
@@ -578,7 +579,6 @@ export default function ThemeToggle() {
               '& .MuiSelect-select': {
                 py: 1,
                 px: 1.5,
-
                 display: 'flex',
                 alignItems: 'center'
               },
@@ -1023,10 +1023,17 @@ export default function ThemeToggle() {
         <Stack
           direction="row"
           sx={{
+            width: { xs: '100%', md: 'auto' },
             display: 'flex',
             alignItems: 'center',
             gap: 1,
-            flexWrap: 'wrap'
+            flexWrap: 'wrap',
+
+            // Only distribute controls on mobile
+            justifyContent: {
+              xs: 'space-between',
+              md: 'flex-start'
+            }
           }}
         >
           {/* ====================================================== */}
@@ -1163,8 +1170,8 @@ export default function ThemeToggle() {
                   borderColor: activeTheme.color,
 
                   boxShadow: `
-                    0 0 18px ${alpha(activeTheme.color, 0.2)}
-                  `
+            0 0 18px ${alpha(activeTheme.color, 0.2)}
+          `
                 },
 
                 '&:active': {
@@ -1179,6 +1186,35 @@ export default function ThemeToggle() {
           {/* ====================================================== */}
           {/* LIGHT / DARK                                           */}
           {/* ====================================================== */}
+
+          <Tooltip title={isDarkMode ? 'Light mode' : 'Dark mode'}>
+            <IconButton
+              onClick={toggleTheme}
+              aria-label={
+                isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'
+              }
+              sx={{
+                width: 40,
+                height: 40,
+                display: {
+                  xs: 'flex',
+                  md: 'none'
+                },
+
+                borderRadius: 1.5,
+
+                transition: 'all 180ms ease',
+
+                '&:hover': {
+                  backgroundColor: alpha(theme.palette.primary.main, 0.08),
+
+                  color: theme.palette.primary.main
+                }
+              }}
+            >
+              {isDarkMode ? <LightModeIcon /> : <DarkModeIcon />}
+            </IconButton>
+          </Tooltip>
         </Stack>
       </Box>
 
@@ -1204,7 +1240,7 @@ export default function ThemeToggle() {
             sx={{
               width: 40,
               height: 40,
-
+              display: { xs: 'none', md: 'flex' },
               borderRadius: 1.5,
 
               transition: 'all 180ms ease',

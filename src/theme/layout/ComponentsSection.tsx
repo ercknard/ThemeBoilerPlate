@@ -80,7 +80,7 @@ export default function ComponentsSection() {
         />
       </Head>
       <Stack
-        spacing={{ xs: 5, md: 8 }}
+        spacing={{ xs: 2.5, md: 8 }}
         sx={{
           px: {
             xs: 2,
@@ -89,7 +89,7 @@ export default function ComponentsSection() {
             lg: 8
           },
           pt: {
-            xs: 4,
+            xs: 0,
             md: 6,
             lg: 5
           }
@@ -222,7 +222,7 @@ export default function ComponentsSection() {
         {/* COMPONENT SECTIONS                                                */}
         {/* ================================================================ */}
 
-        <Stack spacing={{ xs: 5, md: 6 }}>
+        <Stack spacing={{ xs: 2.5, md: 4 }}>
           {/* ============================================================ */}
           {/* ALERTS                                                       */}
           {/* ============================================================ */}

@@ -128,11 +128,19 @@ export default function TypographyShowcase() {
           </Grid>
 
           <Grid
-            size={{ xs: 12, xl: 8.5, xxxxl: 7.15 }}
-            sx={{ minHeight: { md: '100vh' }, py: 5 }}
+            size={{ xs: 12, xl: 9.5, xxl: 8.5, xxxxl: 7.15 }}
+            sx={{ minHeight: { md: '100vh' }, py: { xs: 0, lg: 5 } }}
           >
             <Stack spacing={{ xs: 5, md: 3 }}>
-              <Stack>
+              <Stack
+                sx={{
+                  px: {
+                    xs: `1rem !important`,
+                    md: `2rem !important`,
+                    lg: `0 !important`
+                  }
+                }}
+              >
                 <Typography
                   variant="overlineCustom"
                   sx={{ color: theme.colorScale[9] }}
@@ -155,18 +163,20 @@ export default function TypographyShowcase() {
 
               <Box
                 sx={{
-                  display: { xs: 'flex', md: 'none' },
-                  position: 'sticky',
+                  display: { xs: 'flex', lg: 'none' },
                   top: 0,
-                  zIndex: 100,
-                  py: 1.5
+                  zIndex: 100
                 }}
               >
                 {/* Keep the mobile tabs in the page shell; navigation content is shared with the desktop sidebar. */}
                 <Stack
                   direction="row"
                   spacing={1}
-                  sx={{ width: '100%', overflowX: 'auto' }}
+                  sx={{
+                    width: '100%',
+                    overflowX: 'auto',
+                    px: { xs: `2rem !important`, md: 0 }
+                  }}
                 >
                   {(
                     [
@@ -198,7 +208,15 @@ export default function TypographyShowcase() {
               <Box sx={{ mt: '3rem' }}>
                 <Divider />
                 <Box
-                  sx={{ mt: '3rem', display: 'flex', justifyContent: 'center' }}
+                  sx={{
+                    mt: { xs: '1rem', lg: '3rem' },
+                    display: 'flex',
+                    justifyContent: 'center',
+                    paddingBottom: {
+                      xs: `1rem`,
+                      lg: 0
+                    }
+                  }}
                 >
                   <Stack
                     direction="row"
