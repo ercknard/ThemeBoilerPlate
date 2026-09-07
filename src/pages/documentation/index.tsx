@@ -18,7 +18,7 @@ import { useState } from 'react';
 import { useThemeContext } from '@/contexts/themeContext';
 import { THEME_SETS, type ThemeSetName } from '@/theme/theme';
 import ThemeToggle from '@/theme/ThemeToggle';
-import { AppPaper } from '@/theme/components/CustomComponents';
+import { AppPaper, AppTab, AppTabs } from '@/theme/components/CustomComponents';
 import OverviewSection from '@/theme/layout/OverviewSection';
 import TypographySection from '@/theme/layout/TypographySection';
 import ColorsSection from '@/theme/layout/ColorsSection';
@@ -134,7 +134,7 @@ export default function TypographyShowcase() {
               py: { xs: 4, lg: 5 }
             }}
           >
-            <Stack spacing={{ xs: 5, md: 3 }}>
+            <Stack spacing={{ xs: 2, md: 3 }}>
               <Stack
                 sx={{
                   px: {
@@ -203,19 +203,53 @@ export default function TypographyShowcase() {
 
               <Box
                 sx={{
-                  display: { xs: 'flex', lg: 'none' },
-                  top: 0,
-                  zIndex: 100
+                  display: { xs: 'block', lg: 'none' },
+                  width: '100%',
+                  px: { xs: 1.5, sm: 2 },
+                  mb: 2
                 }}
               >
-                {/* Keep the mobile tabs in the page shell; navigation content is shared with the desktop sidebar. */}
-                <Stack
-                  direction="row"
-                  spacing={1}
+                <AppTabs
+                  value={activeTab}
+                  onChange={(_, value) => setActiveTab(value as ShowcaseTab)}
+                  variant="scrollable"
+                  scrollButtons={false}
                   sx={{
                     width: '100%',
-                    overflowX: 'auto',
-                    px: { xs: `2rem !important`, md: 0 }
+
+                    minHeight: 44,
+
+                    p: 0.5,
+
+                    border: '1px solid',
+                    borderColor: alpha(theme.secondaryScale[6], 0.8),
+
+                    borderRadius: 2.5,
+
+                    backgroundColor: alpha(
+                      theme.backgroundScale[2],
+                      theme.palette.mode === 'dark' ? 0.7 : 0.9
+                    ),
+
+                    backdropFilter: 'blur(14px)',
+                    WebkitBackdropFilter: 'blur(14px)',
+
+                    '& .MuiTabs-flexContainer': {
+                      gap: 0.5
+                    },
+
+                    '& .MuiTabs-scroller': {
+                      overflowX: 'auto !important',
+                      scrollbarWidth: 'none',
+
+                      '&::-webkit-scrollbar': {
+                        display: 'none'
+                      }
+                    },
+
+                    '& .MuiTabs-indicator': {
+                      display: 'none'
+                    }
                   }}
                 >
                   {(
@@ -226,17 +260,51 @@ export default function TypographyShowcase() {
                       'components'
                     ] as ShowcaseTab[]
                   ).map((tab) => (
-                    <Button
+                    <AppTab
                       key={tab}
-                      size="small"
-                      variant={activeTab === tab ? 'contained' : 'text'}
-                      onClick={() => setActiveTab(tab)}
-                      sx={{ flexShrink: 0 }}
-                    >
-                      {tab[0].toUpperCase() + tab.slice(1)}
-                    </Button>
+                      value={tab}
+                      label={tab}
+                      sx={{
+                        flex: '0 0 auto',
+
+                        minWidth: {
+                          xs: 90,
+                          sm: 105
+                        },
+
+                        minHeight: 36,
+
+                        px: 1.5,
+
+                        borderRadius: 2,
+
+                        fontSize: {
+                          xs: '0.75rem',
+                          sm: '0.8rem'
+                        },
+
+                        '&.Mui-selected': {
+                          color: theme.colorScale.contrast,
+
+                          background: `linear-gradient(
+              135deg,
+              ${theme.colorScale[9]},
+              ${theme.secondaryScale[9]}
+            )`,
+
+                          boxShadow: `0 3px 12px ${alpha(
+                            theme.colorScale[9],
+                            0.2
+                          )}`
+                        },
+
+                        '&:hover': {
+                          backgroundColor: alpha(theme.colorScale[9], 0.07)
+                        }
+                      }}
+                    />
                   ))}
-                </Stack>
+                </AppTabs>
               </Box>
 
               {activeTab === 'overview' && <OverviewSection />}

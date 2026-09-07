@@ -89,7 +89,9 @@ export default function Home() {
           position: 'relative',
           overflow: 'hidden',
 
-          background: `
+          background: {
+            xs: `${background}`,
+            lg: `
             radial-gradient(
               circle at 50% -20%,
               ${alpha(primaryStrong, 0.75)},
@@ -106,7 +108,8 @@ export default function Home() {
               transparent 38%
             ),
             ${background}
-          `,
+          `
+          },
 
           color: textPrimary,
 
