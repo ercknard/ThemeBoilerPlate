@@ -224,7 +224,7 @@ export default function TypographyShowcase() {
                     border: '1px solid',
                     borderColor: alpha(theme.secondaryScale[6], 0.8),
 
-                    borderRadius: 2,
+                    borderRadius: 2.5,
 
                     backgroundColor: alpha(
                       theme.backgroundScale[2],
