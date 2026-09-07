@@ -1272,7 +1272,11 @@ export function TypographyUsageSection() {
                 spacing={2}
                 sx={{
                   p: 3,
-                  backgroundColor: theme.secondaryScale[3]
+                  bgcolor: theme.secondaryScale[3],
+                  borderBottomLeftRadius: 12,
+                  borderBottomRightRadius: 12,
+                  borderTopLeftRadius: 0,
+                  borderTopRightRadius: 0
                 }}
               >
                 <Box
