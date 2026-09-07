@@ -24,6 +24,7 @@ import { useThemeContext } from '@/contexts/themeContext';
 import { AppButton, AppChip } from '@/theme/components/CustomComponents';
 
 import { THEME_ICONS, THEME_SETS } from '@/theme/theme';
+import { usePathname } from 'next/navigation';
 
 const GITHUB_URL = process.env.NEXT_PUBLIC_GITHUB_URL;
 
@@ -55,6 +56,10 @@ export default function Navbar() {
 
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
+  const pathname = usePathname();
+
+  const isDocumentationPage = pathname === '/documentation';
+
   return (
     <AppBar
       position="sticky"
@@ -64,7 +69,9 @@ export default function Navbar() {
         top: 0,
         zIndex: theme.zIndex.appBar,
 
-        background: `linear-gradient(
+        background: isDocumentationPage
+          ? `${alpha(theme.backgroundScale[5], 1)}`
+          : `linear-gradient(
           to bottom,
           ${alpha(theme.colorScale[2], 1)} 0%,
           ${alpha(theme.colorScale[2], 1)} 70%,
@@ -72,7 +79,9 @@ export default function Navbar() {
         )`,
 
         boxShadow: 'none',
-        borderBottom: `1px solid ${alpha(secondary, 0.5)}`,
+        borderBottom: isDocumentationPage
+          ? `unset`
+          : `2px solid ${alpha(secondary, 0.5)}`,
         backdropFilter: 'blur(14px)',
         WebkitBackdropFilter: 'blur(14px)'
       }}

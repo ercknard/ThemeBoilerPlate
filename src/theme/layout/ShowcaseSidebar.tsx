@@ -421,7 +421,7 @@ export default function ShowcaseSidebar({
 
           borderRight: `1px solid ${secondaryScale[7]}`,
 
-          backgroundColor: alpha(backgroundScale[5], 0.75),
+          backgroundColor: alpha(backgroundScale[5], 1),
 
           boxSizing: 'border-box',
 

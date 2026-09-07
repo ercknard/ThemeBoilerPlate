@@ -177,22 +177,12 @@ export default function TypographyShowcase() {
                   width: '100%',
                   position: 'sticky',
 
-                  top: {
-                    xs: 64,
-                    md: 65
-                  },
+                  top: 66,
 
                   zIndex: 1,
 
-                  height: {
-                    xs: 'calc(100vh - 64px)',
-                    md: 'calc(100vh - 64px)'
-                  },
-
-                  maxHeight: {
-                    xs: 'calc(100vh - 64px)',
-                    md: 'calc(100vh - 64px)'
-                  }
+                  height: 'calc(100vh - 66px)',
+                  maxHeight: 'calc(100vh - 66px)'
                 }}
               >
                 <ShowcaseSidebar
