@@ -14,53 +14,64 @@ export type ColorScale = Record<number, string> & {
 export const customTypography = [
   {
     variant: 'display' as const,
-    description: 'Large hero and landing-page text',
-    text: 'Display Typography'
+    description: 'Large hero and landing-page text.',
+    text: 'Display Typography',
+    size: 'clamp(2.75rem, 6vw, 5rem)'
   },
   {
     variant: 'title' as const,
-    description: 'Main page titles',
-    text: 'Title Typography'
+    description: 'Primary page and feature titles.',
+    text: 'Page Title',
+    size: 'clamp(2rem, 4vw, 3rem)'
   },
   {
     variant: 'sectionTitle' as const,
-    description: 'Section headings',
-    text: 'Section Title Typography'
+    description: 'Section and content-area titles.',
+    text: 'Section Title',
+    size: 'clamp(1.5rem, 2.5vw, 2rem)'
   },
   {
     variant: 'lead' as const,
-    description: 'Introductory paragraphs',
-    text: 'Lead Typography'
+    description:
+      'Introductory text used to emphasize important supporting content.',
+    text: 'Lead Typography',
+    size: 'clamp(1.05rem, 1.5vw, 1.25rem)'
   },
   {
     variant: 'large' as const,
-    description: 'Larger body text',
-    text: 'Large Typography'
+    description: 'Large supporting text for prominent interface content.',
+    text: 'Large Typography',
+    size: 'clamp(1rem, 1.2vw, 1.125rem)'
   },
   {
     variant: 'medium' as const,
-    description: 'Default content text',
-    text: 'Medium Typography'
+    description: 'Medium-sized supporting interface text.',
+    text: 'Medium Typography',
+    size: 'clamp(0.9rem, 1vw, 1rem)'
   },
   {
     variant: 'small' as const,
-    description: 'Secondary content',
-    text: 'Small Typography'
+    description: 'Compact supporting text and secondary information.',
+    text: 'Small Typography',
+    size: 'clamp(0.75rem, 0.85vw, 0.875rem)'
   },
   {
     variant: 'label' as const,
-    description: 'Form labels and UI labels',
-    text: 'Label Typography'
+    description: 'Form labels and emphasized UI labels.',
+    text: 'Form Label',
+    size: 'clamp(0.7rem, 0.8vw, 0.8rem)'
   },
   {
     variant: 'overlineCustom' as const,
-    description: 'Small uppercase category text',
-    text: 'Overline Typography'
+    description: 'Custom uppercase labels for specialized UI.',
+    text: 'CUSTOM OVERLINE',
+    size: 'clamp(0.65rem, 0.7vw, 0.75rem)'
   },
   {
     variant: 'code' as const,
-    description: 'Code and technical values',
-    text: 'const value = "CryptechServices";'
+    description: 'Monospace typography for code and technical values.',
+    text: 'const typography = theme.typography;',
+    size: 'clamp(0.75rem, 0.85vw, 0.875rem)'
   }
 ];
 

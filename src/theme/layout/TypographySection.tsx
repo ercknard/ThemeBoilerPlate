@@ -95,34 +95,40 @@ export default function TypographySection() {
                   {
                     variant: 'h1' as const,
                     label: 'Heading 1',
-                    description: 'Primary page-level heading.'
+                    description: 'Primary page-level heading.',
+                    size: 'clamp(2.25rem, 4vw, 3.5rem)'
                   },
                   {
                     variant: 'h2' as const,
                     label: 'Heading 2',
-                    description: 'Major section heading.'
+                    description: 'Major section heading.',
+                    size: 'clamp(1.875rem, 3.5vw, 3rem)'
                   },
                   {
                     variant: 'h3' as const,
                     label: 'Heading 3',
-                    description: 'Secondary section heading.'
+                    description: 'Secondary section heading.',
+                    size: 'clamp(1.625rem, 3vw, 2.5rem)'
                   },
                   {
                     variant: 'h4' as const,
                     label: 'Heading 4',
-                    description: 'Content group heading.'
+                    description: 'Content group heading.',
+                    size: 'clamp(1.375rem, 2.5vw, 2rem)'
                   },
                   {
                     variant: 'h5' as const,
                     label: 'Heading 5',
-                    description: 'Smaller content heading.'
+                    description: 'Smaller content heading.',
+                    size: 'clamp(1.2rem, 2vw, 1.5rem)'
                   },
                   {
                     variant: 'h6' as const,
                     label: 'Heading 6',
-                    description: 'Compact heading.'
+                    description: 'Compact heading.',
+                    size: 'clamp(1.05rem, 1.5vw, 1.25rem)'
                   }
-                ].map((item, index) => (
+                ].map((item, index, items) => (
                   <React.Fragment key={item.variant}>
                     <Box
                       sx={{
@@ -133,10 +139,10 @@ export default function TypographySection() {
                         display: 'grid',
                         gridTemplateColumns: {
                           xs: '1fr',
-                          md: '140px 1fr'
+                          md: '180px 1fr'
                         },
                         gap: {
-                          xs: 1,
+                          xs: 1.5,
                           md: 3
                         },
                         alignItems: 'center'
@@ -159,6 +165,20 @@ export default function TypographySection() {
                         <Typography
                           variant="small"
                           sx={{
+                            display: 'block',
+                            mt: 0.5,
+                            color: grayScale[11],
+                            fontFamily: 'monospace',
+                            fontSize: '0.7rem',
+                            wordBreak: 'break-word'
+                          }}
+                        >
+                          {item.size}
+                        </Typography>
+
+                        <Typography
+                          variant="small"
+                          sx={{
                             display: {
                               xs: 'none',
                               md: 'block'
@@ -176,155 +196,126 @@ export default function TypographySection() {
                       </Typography>
                     </Box>
 
-                    {index < 5 && <AppDivider />}
+                    {index < items.length - 1 && <AppDivider />}
                   </React.Fragment>
                 ))}
 
                 <AppDivider sx={{ my: 2 }} />
 
-                {/* ---------------------------------------------------------- */}
-                {/* BODY / SUPPORTING TYPES                                    */}
-                {/* ---------------------------------------------------------- */}
-
                 <Stack spacing={3}>
-                  <Box>
-                    <Typography
-                      variant="caption"
+                  {[
+                    {
+                      variant: 'subtitle1' as const,
+                      description: 'Supporting text for headings and sections.',
+                      text: 'Supporting text for headings and sections.',
+                      size: 'clamp(0.95rem, 1.2vw, 1rem)'
+                    },
+                    {
+                      variant: 'subtitle2' as const,
+                      description:
+                        'Smaller supporting text for secondary content.',
+                      text: 'Smaller supporting text for secondary content.',
+                      size: 'clamp(0.825rem, 1vw, 0.875rem)'
+                    },
+                    {
+                      variant: 'body1' as const,
+                      description:
+                        'Primary body text for normal application content.',
+                      text: 'This is the primary body text used for normal application content. It uses a comfortable line height for longer reading and general interface content.',
+                      size: 'clamp(0.9rem, 1vw, 1rem)'
+                    },
+                    {
+                      variant: 'body2' as const,
+                      description:
+                        'Secondary body text, descriptions, metadata, and supporting UI.',
+                      text: 'Smaller body text for secondary information, descriptions, metadata, and supporting UI content.',
+                      size: 'clamp(0.8rem, 0.9vw, 0.875rem)'
+                    },
+                    {
+                      variant: 'button' as const,
+                      description: 'Typography used for interactive buttons.',
+                      text: 'BUTTON TYPOGRAPHY',
+                      size: 'clamp(0.8rem, 0.9vw, 0.875rem)'
+                    },
+                    {
+                      variant: 'caption' as const,
+                      description: 'Small supporting information and metadata.',
+                      text: 'Small supporting information and metadata.',
+                      size: 'clamp(0.7rem, 0.8vw, 0.75rem)'
+                    },
+                    {
+                      variant: 'overline' as const,
+                      description: 'Uppercase labels and category indicators.',
+                      text: 'OVERLINE LABEL',
+                      size: 'clamp(0.65rem, 0.7vw, 0.7rem)'
+                    }
+                  ].map((item) => (
+                    <Box
+                      key={item.variant}
                       sx={{
-                        display: 'block',
-                        mb: 0.75,
-                        color: secondaryScale[11],
-                        fontWeight: 700,
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.08em'
+                        display: 'grid',
+                        gridTemplateColumns: {
+                          xs: '1fr',
+                          md: '180px 1fr'
+                        },
+                        gap: {
+                          xs: 1.5,
+                          md: 3
+                        },
+                        alignItems: 'start'
                       }}
                     >
-                      subtitle1
-                    </Typography>
+                      <Box>
+                        <Typography
+                          variant="caption"
+                          sx={{
+                            display: 'block',
+                            mb: 0.5,
+                            color: secondaryScale[11],
+                            fontWeight: 700,
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.08em'
+                          }}
+                        >
+                          {item.variant}
+                        </Typography>
 
-                    <Typography variant="subtitle1">
-                      Supporting text for headings and sections.
-                    </Typography>
-                  </Box>
+                        <Typography
+                          variant="caption"
+                          sx={{
+                            display: 'block',
+                            color: grayScale[11],
+                            fontFamily: 'monospace',
+                            fontSize: '0.7rem',
+                            lineHeight: 1.5,
+                            wordBreak: 'break-word'
+                          }}
+                        >
+                          {item.size}
+                        </Typography>
 
-                  <Box>
-                    <Typography
-                      variant="caption"
-                      sx={{
-                        display: 'block',
-                        mb: 0.75,
-                        color: secondaryScale[11],
-                        fontWeight: 700,
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.08em'
-                      }}
-                    >
-                      subtitle2
-                    </Typography>
+                        <Typography
+                          variant="caption"
+                          sx={{
+                            display: {
+                              xs: 'none',
+                              md: 'block'
+                            },
+                            mt: 0.5,
+                            color: grayScale[11]
+                          }}
+                        >
+                          {item.description}
+                        </Typography>
+                      </Box>
 
-                    <Typography variant="subtitle2">
-                      Smaller supporting text for secondary content.
-                    </Typography>
-                  </Box>
-
-                  <Box>
-                    <Typography
-                      variant="caption"
-                      sx={{
-                        display: 'block',
-                        mb: 0.75,
-                        color: secondaryScale[11],
-                        fontWeight: 700,
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.08em'
-                      }}
-                    >
-                      body1
-                    </Typography>
-
-                    <Typography variant="body1">
-                      This is the primary body text used for normal application
-                      content. It uses a comfortable line height for longer
-                      reading and general interface content.
-                    </Typography>
-                  </Box>
-
-                  <Box>
-                    <Typography
-                      variant="caption"
-                      sx={{
-                        display: 'block',
-                        mb: 0.75,
-                        color: secondaryScale[11],
-                        fontWeight: 700,
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.08em'
-                      }}
-                    >
-                      body2
-                    </Typography>
-
-                    <Typography variant="body2">
-                      Smaller body text for secondary information, descriptions,
-                      metadata, and supporting UI content.
-                    </Typography>
-                  </Box>
-
-                  <Box>
-                    <Typography
-                      variant="caption"
-                      sx={{
-                        display: 'block',
-                        mb: 0.75,
-                        color: secondaryScale[11],
-                        fontWeight: 700,
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.08em'
-                      }}
-                    >
-                      button
-                    </Typography>
-
-                    <Typography variant="button">BUTTON TYPOGRAPHY</Typography>
-                  </Box>
-
-                  <Box>
-                    <Typography
-                      variant="caption"
-                      sx={{
-                        display: 'block',
-                        mb: 0.75,
-                        color: secondaryScale[11],
-                        fontWeight: 700,
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.08em'
-                      }}
-                    >
-                      caption
-                    </Typography>
-
-                    <Typography variant="caption">
-                      Small supporting information and metadata.
-                    </Typography>
-                  </Box>
-
-                  <Box>
-                    <Typography
-                      variant="caption"
-                      sx={{
-                        display: 'block',
-                        mb: 0.75,
-                        color: secondaryScale[11],
-                        fontWeight: 700,
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.08em'
-                      }}
-                    >
-                      overline
-                    </Typography>
-
-                    <Typography variant="overline">OVERLINE LABEL</Typography>
-                  </Box>
+                      <Box>
+                        <Typography variant={item.variant}>
+                          {item.text}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  ))}
                 </Stack>
               </Stack>
             </AppPaper>
@@ -382,46 +373,62 @@ export default function TypographySection() {
                   }}
                 >
                   <Stack spacing={2}>
-                    {/* Variant metadata */}
-
                     <Stack
                       direction="row"
                       spacing={1}
                       sx={{
                         minWidth: 0,
-                        alignItems: 'center'
+                        alignItems: 'flex-start'
                       }}
                     >
                       <Box
                         sx={{
                           width: 8,
                           height: 8,
+                          mt: '.25rem !important',
                           flexShrink: 0,
                           borderRadius: '50%',
                           bgcolor: secondaryScale[8]
                         }}
                       />
 
-                      <Typography
-                        variant="caption"
-                        sx={{
-                          color: secondaryScale[11],
-                          fontWeight: 700,
-                          textTransform: 'uppercase',
-                          letterSpacing: '0.08em'
-                        }}
-                      >
-                        {item.variant}
-                      </Typography>
-                    </Stack>
+                      <Box sx={{ minWidth: 0 }}>
+                        <Typography
+                          variant="caption"
+                          sx={{
+                            display: 'block',
+                            color: secondaryScale[11],
+                            fontWeight: 700,
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.08em'
+                          }}
+                        >
+                          {item.variant}
+                        </Typography>
 
-                    {/* Preview */}
+                        <Typography
+                          variant="caption"
+                          sx={{
+                            display: 'block',
+                            mt: 0.5,
+                            color: grayScale[11],
+                            fontFamily: 'monospace',
+                            fontSize: '0.7rem',
+                            lineHeight: 1.5,
+                            wordBreak: 'break-word'
+                          }}
+                        >
+                          {item.size}
+                        </Typography>
+                      </Box>
+                    </Stack>
 
                     <Box
                       sx={{
                         minHeight: 90,
                         display: 'flex',
-                        alignItems: 'center'
+                        alignItems: 'center',
+                        overflow: 'hidden'
                       }}
                     >
                       <Typography variant={item.variant}>
@@ -430,8 +437,6 @@ export default function TypographySection() {
                     </Box>
 
                     <AppDivider />
-
-                    {/* Description */}
 
                     <Typography
                       variant="small"

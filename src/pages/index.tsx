@@ -362,7 +362,7 @@ export default function Home() {
                   letterSpacing: '0.16em'
                 }}
               >
-                CRYPTECHSERVICES
+                CRYPTECH SERVICES
               </Typography>
 
               <Typography
@@ -1346,7 +1346,7 @@ export default function Home() {
                       color: textPrimary
                     }}
                   >
-                    CryptechServices
+                    Cryptech Services
                   </Typography>
 
                   <Typography
@@ -1436,7 +1436,7 @@ export default function Home() {
 
                 justifyContent: 'space-between',
 
-                borderTop: `1px solid ${alpha(secondary, 0.08)}`
+                borderTop: `1px solid ${alpha(secondary, 0.25)}`
               }}
             >
               <Typography

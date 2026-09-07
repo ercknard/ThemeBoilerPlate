@@ -429,7 +429,7 @@ export default function TypographyShowcase() {
                       textAlign: 'center'
                     }}
                   >
-                    CryptechServices Design System
+                    Cryptech Services Design System
                   </Typography>
 
                   {/* Separator */}
