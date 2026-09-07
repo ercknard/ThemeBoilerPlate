@@ -1,3 +1,5 @@
+'use client';
+
 import Head from 'next/head';
 import Image from 'next/image';
 
@@ -19,6 +21,10 @@ import SkyEffects from '@/theme/common/SkyEffects';
 import { AppButton, AppChip } from '@/theme/components/CustomComponents';
 import ThemeToggle from '@/theme/ThemeToggle';
 import { THEME_ICONS, THEME_SETS } from '@/theme/theme';
+
+/* ========================================================================== */
+/* CONSTANTS                                                                  */
+/* ========================================================================== */
 
 const GITHUB_URL = process.env.NEXT_PUBLIC_GITHUB_URL;
 
@@ -48,6 +54,10 @@ const FEATURES = [
       'Designed around MUI components, tokens, responsive breakpoints, and the sx styling system.'
   }
 ];
+
+/* ========================================================================== */
+/* HOME                                                                       */
+/* ========================================================================== */
 
 export default function Home() {
   const theme = useTheme();
@@ -88,8 +98,15 @@ export default function Home() {
           position: 'relative',
           overflow: 'hidden',
 
+          /*
+           * Keep mobile extremely simple.
+           * Desktop gets the decorative gradient system.
+           */
+          backgroundColor: background,
+
           background: {
-            xs: `${background}`,
+            xs: background,
+
             lg: `
               radial-gradient(
                 circle at 50% -20%,
@@ -112,13 +129,33 @@ export default function Home() {
 
           color: textPrimary,
 
-          transition: `
-            background 0.8s ease-in-out,
-            color 0.8s ease-in-out
-          `
+          transition: {
+            xs: 'none',
+            md: `
+              background 0.8s ease-in-out,
+              color 0.8s ease-in-out
+            `
+          }
         }}
       >
-        <SkyEffects color={primary} />
+        {/* ================================================================== */}
+        {/* SKY EFFECTS                                                        */}
+        {/* ================================================================== */}
+
+        <Box
+          sx={{
+            display: {
+              xs: 'none',
+              md: 'block'
+            }
+          }}
+        >
+          <SkyEffects color={primary} />
+        </Box>
+
+        {/* ================================================================== */}
+        {/* DESKTOP DECORATIVE GLOW                                           */}
+        {/* ================================================================== */}
 
         <Box
           sx={{
@@ -126,32 +163,29 @@ export default function Home() {
             inset: 0,
             pointerEvents: 'none',
             overflow: 'hidden',
-            display: { xs: 'none', md: 'block' }
+
+            display: {
+              xs: 'none',
+              md: 'block'
+            }
           }}
         >
+          {/* Primary glow */}
+
           <Box
             sx={{
               position: 'absolute',
 
               width: {
-                xs: 300,
                 md: 600
               },
 
               height: {
-                xs: 300,
                 md: 600
               },
 
-              top: {
-                xs: -180,
-                md: -300
-              },
-
-              left: {
-                xs: '50%',
-                md: '15%'
-              },
+              top: -300,
+              left: '15%',
 
               transform: 'translateX(-50%)',
 
@@ -167,10 +201,12 @@ export default function Home() {
             }}
           />
 
+          {/* Secondary glow */}
+
           <Box
             sx={{
               position: 'absolute',
-              display: { xs: 'none', md: 'block' },
+
               width: 500,
               height: 500,
 
@@ -190,6 +226,10 @@ export default function Home() {
           />
         </Box>
 
+        {/* ================================================================== */}
+        {/* MAIN CONTAINER                                                     */}
+        {/* ================================================================== */}
+
         <Container
           maxWidth="xl"
           sx={{
@@ -197,12 +237,16 @@ export default function Home() {
             zIndex: 2,
 
             py: {
-              xs: 6,
+              xs: 5,
               sm: 8,
               md: 10
             }
           }}
         >
+          {/* ================================================================= */}
+          {/* HERO                                                              */}
+          {/* ================================================================= */}
+
           <Stack
             spacing={3}
             sx={{
@@ -210,18 +254,20 @@ export default function Home() {
               textAlign: 'center'
             }}
           >
+            {/* Theme logo */}
+
             <Box
               sx={{
                 position: 'relative',
 
                 width: {
-                  xs: 110,
+                  xs: 100,
                   sm: 140,
                   md: 160
                 },
 
                 height: {
-                  xs: 110,
+                  xs: 100,
                   sm: 140,
                   md: 160
                 },
@@ -252,7 +298,12 @@ export default function Home() {
 
                 '&::before': {
                   content: '""',
-                  display: { xs: 'none', md: 'block' },
+
+                  display: {
+                    xs: 'none',
+                    md: 'block'
+                  },
+
                   position: 'absolute',
                   inset: '-25%',
 
@@ -277,13 +328,17 @@ export default function Home() {
                 alt={`${themeSet} theme`}
                 fill
                 priority
-                sizes="160px"
+                sizes="(max-width: 600px) 100px, 160px"
                 style={{
                   objectFit: 'contain',
 
                   filter: `
-                    drop-shadow(0 0 10px ${alpha(primary, 0.5)})
-                    drop-shadow(0 0 30px ${alpha(primary, 0.35)})
+                    drop-shadow(
+                      0 0 10px ${alpha(primary, 0.5)}
+                    )
+                    drop-shadow(
+                      0 0 30px ${alpha(primary, 0.35)}
+                    )
                   `,
 
                   animation: 'logoFloat 4s ease-in-out infinite'
@@ -291,7 +346,14 @@ export default function Home() {
               />
             </Box>
 
-            <Stack spacing={1} sx={{ alignItems: 'center' }}>
+            {/* Hero text */}
+
+            <Stack
+              spacing={1}
+              sx={{
+                alignItems: 'center'
+              }}
+            >
               <Typography
                 variant="overlineCustom"
                 sx={{
@@ -316,17 +378,32 @@ export default function Home() {
 
                   lineHeight: 1.05,
 
-                  background: `
-                    linear-gradient(
-                      135deg,
-                      ${textPrimary},
-                      ${alpha(primary, 0.8)}
-                    )
-                  `,
+                  background: {
+                    xs: 'none',
 
-                  backgroundClip: 'text',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent'
+                    md: `
+                      linear-gradient(
+                        135deg,
+                        ${textPrimary},
+                        ${alpha(primary, 0.8)}
+                      )
+                    `
+                  },
+
+                  backgroundClip: {
+                    xs: 'initial',
+                    md: 'text'
+                  },
+
+                  WebkitBackgroundClip: {
+                    xs: 'initial',
+                    md: 'text'
+                  },
+
+                  WebkitTextFillColor: {
+                    xs: 'initial',
+                    md: 'transparent'
+                  }
                 }}
               >
                 Theme Boilerplate
@@ -349,72 +426,109 @@ export default function Home() {
               </Typography>
             </Stack>
 
+            {/* Theme toggle */}
+
             <Box
               sx={{
                 p: 2,
                 borderRadius: 2,
-                backgroundColor: alpha(theme.secondaryScale[4], 1),
+
+                backgroundColor: theme.secondaryScale[4],
 
                 border: `1px solid ${alpha(secondary, 0.25)}`,
 
-                boxShadow: `
-                  0 10px 40px
-                  ${alpha('#000000', 0.16)}
-                `,
+                boxShadow: {
+                  xs: 'none',
+                  md: `
+                    0 10px 40px
+                    ${alpha('#000000', 0.16)}
+                  `
+                },
 
-                backdropFilter: 'blur(14px)'
+                backdropFilter: {
+                  xs: 'none',
+                  md: 'blur(14px)'
+                }
               }}
             >
               <ThemeToggle />
             </Box>
           </Stack>
 
+          {/* ================================================================= */}
+          {/* FEATURE HERO PANEL                                               */}
+          {/* ================================================================= */}
+
           <Box
             sx={{
               mt: {
-                xs: 6,
+                xs: 5,
                 md: 9
               },
 
               position: 'relative',
 
               borderRadius: {
-                xs: 4,
+                xs: 3,
                 md: 6
               },
 
               overflow: 'hidden',
 
-              border: `2px solid ${alpha(secondary, 0.5)}`,
+              border: {
+                xs: '1px solid',
+                md: '2px solid'
+              },
 
-              background: `
-                linear-gradient(
-                  135deg,
-                  ${alpha(surface, 0.92)},
-                  ${alpha(theme.secondaryScale[3], 0.78)}
-                )
-              `,
+              borderColor: alpha(secondary, 0.5),
 
-              boxShadow: `
-                0 30px 100px
-                ${alpha('#000000', 0.28)},
-                0 0 70px
-                ${alpha(secondary, 0.1)}
-              `,
+              background: {
+                xs: alpha(surface, 0.96),
 
-              backdropFilter: 'blur(18px)',
+                md: `
+                  linear-gradient(
+                    135deg,
+                    ${alpha(surface, 0.92)},
+                    ${alpha(theme.secondaryScale[3], 0.78)}
+                  )
+                `
+              },
 
-              transition: `
-                border-color 0.8s ease,
-                background 0.8s ease,
-                box-shadow 0.8s ease
-              `,
+              boxShadow: {
+                xs: 'none',
+                md: `
+                  0 30px 100px
+                  ${alpha('#000000', 0.28)},
+                  0 0 70px
+                  ${alpha(secondary, 0.1)}
+                `
+              },
+
+              backdropFilter: {
+                xs: 'none',
+                md: 'blur(18px)'
+              },
+
+              transition: {
+                xs: 'none',
+
+                md: `
+                  border-color 0.8s ease,
+                  background 0.8s ease,
+                  box-shadow 0.8s ease
+                `
+              },
 
               '&::before': {
                 content: '""',
 
                 position: 'absolute',
-                display: { xs: 'none', md: 'block' },
+
+                display: {
+                  xs: 'none',
+                  md: 'block'
+                },
+
                 width: 550,
                 height: 550,
 
@@ -438,7 +552,12 @@ export default function Home() {
                 content: '""',
 
                 position: 'absolute',
-                display: { xs: 'none', md: 'block' },
+
+                display: {
+                  xs: 'none',
+                  md: 'block'
+                },
+
                 width: 450,
                 height: 450,
 
@@ -469,11 +588,15 @@ export default function Home() {
                 zIndex: 1,
 
                 minHeight: {
-                  xs: 560,
+                  xs: 0,
                   md: 600
                 }
               }}
             >
+              {/* ============================================================= */}
+              {/* HERO COPY                                                      */}
+              {/* ============================================================= */}
+
               <Stack
                 spacing={3}
                 sx={{
@@ -481,13 +604,14 @@ export default function Home() {
                   flex: 1,
 
                   px: {
-                    xs: 3,
+                    xs: 2.5,
                     sm: 5,
                     md: 8
                   },
 
                   py: {
-                    xs: 6,
+                    xs: 4,
+                    sm: 6,
                     md: 8
                   }
                 }}
@@ -518,10 +642,14 @@ export default function Home() {
 
                     letterSpacing: '-0.035em',
 
-                    textShadow: `
-                      0 0 50px
-                      ${alpha(secondary, 0.22)}
-                    `
+                    textShadow: {
+                      xs: 'none',
+
+                      md: `
+                        0 0 50px
+                        ${alpha(secondary, 0.22)}
+                      `
+                    }
                   }}
                 >
                   Build beautiful interfaces with your theme.
@@ -566,19 +694,26 @@ export default function Home() {
                     endIcon={<ArrowForwardIcon />}
                     sx={{
                       px: 3.5,
-
                       minHeight: 48,
 
-                      boxShadow: `
-                        0 12px 35px
-                        ${alpha(primary, 0.35)}
-                      `,
+                      boxShadow: {
+                        xs: 'none',
+
+                        md: `
+                          0 12px 35px
+                          ${alpha(primary, 0.35)}
+                        `
+                      },
 
                       '&:hover': {
-                        boxShadow: `
-                          0 15px 45px
-                          ${alpha(primary, 0.48)}
-                        `
+                        boxShadow: {
+                          xs: 'none',
+
+                          md: `
+                            0 15px 45px
+                            ${alpha(primary, 0.48)}
+                          `
+                        }
                       }
                     }}
                   >
@@ -596,13 +731,18 @@ export default function Home() {
                     startIcon={<GitHubIcon />}
                     sx={{
                       px: 3.5,
-
                       minHeight: 48,
 
-                      backgroundColor: alpha(secondary, 0.08),
+                      backgroundColor: {
+                        xs: 'transparent',
+                        md: alpha(secondary, 0.08)
+                      },
 
                       '&:hover': {
-                        backgroundColor: alpha(secondary, 0.16)
+                        backgroundColor: {
+                          xs: 'transparent',
+                          md: alpha(secondary, 0.16)
+                        }
                       }
                     }}
                   >
@@ -610,6 +750,10 @@ export default function Home() {
                   </AppButton>
                 </Stack>
               </Stack>
+
+              {/* ============================================================= */}
+              {/* DESKTOP PREVIEW                                                */}
+              {/* ============================================================= */}
 
               <Box
                 sx={{
@@ -659,6 +803,8 @@ export default function Home() {
                   }}
                 >
                   <Stack spacing={1.5}>
+                    {/* Preview header */}
+
                     <Box
                       sx={{
                         height: 42,
@@ -701,6 +847,8 @@ export default function Home() {
                         Theme Preview
                       </Typography>
                     </Box>
+
+                    {/* Preview body */}
 
                     <Box
                       sx={{
@@ -749,6 +897,8 @@ export default function Home() {
                           />
                         </Stack>
 
+                        {/* Preview gradient */}
+
                         <Box
                           sx={{
                             height: 105,
@@ -771,6 +921,8 @@ export default function Home() {
                             `
                           }}
                         />
+
+                        {/* Preview colors */}
 
                         <Stack direction="row" spacing={1}>
                           {[primary, secondary, textPrimary, textSecondary].map(
@@ -808,13 +960,18 @@ export default function Home() {
             </Stack>
           </Box>
 
+          {/* ================================================================= */}
+          {/* FEATURES INTRO                                                    */}
+          {/* ================================================================= */}
+
           <Stack
             spacing={2}
             sx={{
               alignItems: 'center',
               textAlign: 'center',
+
               mt: {
-                xs: 10,
+                xs: 8,
                 md: 14
               }
             }}
@@ -856,6 +1013,10 @@ export default function Home() {
             </Typography>
           </Stack>
 
+          {/* ================================================================= */}
+          {/* FEATURES                                                           */}
+          {/* ================================================================= */}
+
           <Box
             sx={{
               mt: 5,
@@ -878,38 +1039,61 @@ export default function Home() {
                   position: 'relative',
 
                   p: {
-                    xs: 3,
+                    xs: 2.5,
                     md: 3.5
                   },
 
-                  minHeight: 220,
+                  minHeight: {
+                    xs: 0,
+                    md: 220
+                  },
 
                   borderRadius: 3,
 
-                  backgroundColor: alpha(theme.secondaryScale[4], 1),
+                  backgroundColor: theme.secondaryScale[4],
 
                   border: `1px solid ${alpha(secondary, 0.18)}`,
 
-                  backdropFilter: 'blur(14px)',
+                  backdropFilter: {
+                    xs: 'none',
+                    md: 'blur(14px)'
+                  },
 
-                  transition: `
-                    transform 0.3s ease,
-                    border-color 0.3s ease,
-                    background-color 0.3s ease,
-                    box-shadow 0.3s ease
-                  `,
+                  transition: {
+                    xs: 'none',
+
+                    md: `
+                      transform 0.3s ease,
+                      border-color 0.3s ease,
+                      background-color 0.3s ease,
+                      box-shadow 0.3s ease
+                    `
+                  },
 
                   '&:hover': {
-                    transform: 'translateY(-6px)',
+                    transform: {
+                      xs: 'none',
+                      md: 'translateY(-6px)'
+                    },
 
-                    backgroundColor: alpha(surface, 0.8),
+                    backgroundColor: {
+                      xs: theme.secondaryScale[4],
+                      md: alpha(surface, 0.8)
+                    },
 
-                    borderColor: alpha(primary, 0.4),
+                    borderColor: {
+                      xs: alpha(secondary, 0.18),
+                      md: alpha(primary, 0.4)
+                    },
 
-                    boxShadow: `
-                      0 18px 50px
-                      ${alpha('#000000', 0.2)}
-                    `
+                    boxShadow: {
+                      xs: 'none',
+
+                      md: `
+                        0 18px 50px
+                        ${alpha('#000000', 0.2)}
+                      `
+                    }
                   }
                 }}
               >
@@ -958,39 +1142,55 @@ export default function Home() {
             ))}
           </Box>
 
+          {/* ================================================================= */}
+          {/* CTA                                                                */}
+          {/* ================================================================= */}
+
           <Box
             sx={{
               mt: {
-                xs: 6,
+                xs: 5,
                 md: 8
               },
 
               p: {
-                xs: 3,
+                xs: 2.5,
                 sm: 4,
                 md: 5
               },
 
-              borderRadius: 4,
+              borderRadius: {
+                xs: 3,
+                md: 4
+              },
 
               position: 'relative',
               overflow: 'hidden',
 
               border: `1px solid ${alpha(primary, 0.25)}`,
 
-              background: `
-                linear-gradient(
-                  135deg,
-                  ${alpha(primary, 0.1)},
-                  ${alpha(secondary, 0.1)}
-                )
-              `,
+              background: {
+                xs: alpha(primary, 0.07),
+
+                md: `
+                  linear-gradient(
+                    135deg,
+                    ${alpha(primary, 0.1)},
+                    ${alpha(secondary, 0.1)}
+                  )
+                `
+              },
 
               '&::before': {
                 content: '""',
 
                 position: 'absolute',
-                display: { xs: 'none', md: 'block' },
+
+                display: {
+                  xs: 'none',
+                  md: 'block'
+                },
+
                 width: 350,
                 height: 350,
 
@@ -1020,7 +1220,9 @@ export default function Home() {
                   xs: 'flex-start',
                   md: 'center'
                 },
+
                 justifyContent: 'space-between',
+
                 position: 'relative',
                 zIndex: 1
               }}
@@ -1063,10 +1265,14 @@ export default function Home() {
             </Stack>
           </Box>
 
+          {/* ================================================================= */}
+          {/* FOOTER                                                             */}
+          {/* ================================================================= */}
+
           <Divider
             sx={{
               mt: {
-                xs: 8,
+                xs: 6,
                 md: 10
               },
 
@@ -1085,7 +1291,9 @@ export default function Home() {
                 xs: 'flex-start',
                 sm: 'center'
               },
+
               justifyContent: 'space-between',
+
               pt: 3
             }}
           >
