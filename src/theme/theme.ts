@@ -1116,14 +1116,14 @@ export type CustomThemeColors = {
 
 export const getThemeFromSet = (
   mode: PaletteMode,
-  set: ThemeSetName = 'blue',
+  set: ThemeSetName = 'olympus',
   customColors?: CustomThemeColors,
   fontFamily = 'Inter'
 ) => {
   const colors =
     set === 'custom'
       ? (customColors ?? DEFAULT_CUSTOM_COLORS)
-      : (THEME_SETS[set] ?? THEME_SETS.blue);
+      : (THEME_SETS[set] ?? THEME_SETS.olympus);
 
   /* ------------------------------------------------------------------------ */
   /* 10% — PRIMARY                                                           */
@@ -1488,6 +1488,6 @@ export const getThemeFromSet = (
 /* DEFAULT THEME                                                             */
 /* ========================================================================== */
 
-export const theme = getThemeFromSet('dark', 'blue');
+export const theme = getThemeFromSet('dark', 'olympus');
 
 export default theme;

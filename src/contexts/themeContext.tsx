@@ -107,7 +107,7 @@ const FONT_FAMILY_STORAGE_KEY = 'theme-font-family';
 /* DEFAULTS                                                                   */
 /* ========================================================================== */
 
-const DEFAULT_THEME_SET: ThemeSetName = 'blue';
+const DEFAULT_THEME_SET: ThemeSetName = 'olympus';
 
 const DEFAULT_CUSTOM_COLORS: CustomColors = {
   color: '#4967C9',
