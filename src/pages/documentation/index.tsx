@@ -257,6 +257,7 @@ export default function TypographyShowcase() {
                       'overview',
                       'typography',
                       'colors',
+                      'presets',
                       'components'
                     ] as ShowcaseTab[]
                   ).map((tab) => (
@@ -266,6 +267,7 @@ export default function TypographyShowcase() {
                       label={tab}
                       sx={{
                         flex: '0 0 auto',
+                        textTransform: 'capitalize',
 
                         minWidth: {
                           xs: 90,
