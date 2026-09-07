@@ -128,10 +128,10 @@ export default function TypographyShowcase() {
           </Grid>
 
           <Grid
-            size={{ xs: 12, xl: 9.5, xxl: 8.5, xxxxl: 7.15 }}
+            size={{ xs: 12, lg: 9.5, xxl: 8.5, xxxxl: 7.15 }}
             sx={{
               minHeight: { md: '100vh' },
-              py: { xs: 0, lg: 5 }
+              py: { xs: 4, lg: 5 }
             }}
           >
             <Stack spacing={{ xs: 5, md: 3 }}>
@@ -148,14 +148,25 @@ export default function TypographyShowcase() {
                   variant="overlineCustom"
                   sx={{
                     color: theme.colorScale[9],
-                    pl: { xs: '2rem !important', xxl: 'unset' }
+                    pl: {
+                      xs: '0rem !important',
+                      lg: '2rem !important',
+                      xxl: 'unset'
+                    }
                   }}
                 >
                   Design System
                 </Typography>
                 <Typography
                   variant="title"
-                  sx={{ mt: 1, pl: { xs: '2rem !important', xxl: 'unset' } }}
+                  sx={{
+                    mt: 1,
+                    pl: {
+                      xs: '0rem !important',
+                      lg: '2rem !important',
+                      xxl: 'unset'
+                    }
+                  }}
                 >
                   Typography & Colors
                 </Typography>
@@ -165,7 +176,11 @@ export default function TypographyShowcase() {
                     color: theme.grayScale[11],
                     mt: 2,
                     mb: 2,
-                    pl: { xs: '2rem !important', xxl: 'unset' }
+                    pl: {
+                      xs: '0rem !important',
+                      lg: '2rem !important',
+                      xxl: 'unset'
+                    }
                   }}
                 >
                   A complete showcase of the typography variants, semantic color
@@ -173,7 +188,15 @@ export default function TypographyShowcase() {
                   throughout the application.
                 </Typography>
 
-                <Box sx={{ px: { xs: '2rem !important', xxl: 'unset' } }}>
+                <Box
+                  sx={{
+                    px: {
+                      xs: '0rem !important',
+                      lg: '2rem !important',
+                      xxl: 'unset'
+                    }
+                  }}
+                >
                   <Divider />
                 </Box>
               </Stack>

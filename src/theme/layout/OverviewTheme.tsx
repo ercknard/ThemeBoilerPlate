@@ -295,7 +295,8 @@ export default function OverViewTheme() {
               xs: 0,
               md: 6,
               lg: 5
-            }
+            },
+            pb: { xs: 4, md: 'unset' }
           }}
         >
           <AppCard
