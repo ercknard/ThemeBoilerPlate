@@ -30,6 +30,7 @@ import { AppButton, AppChip } from '@/theme/components/CustomComponents';
 import ThemeToggle from '@/theme/ThemeToggle';
 import { THEME_ICONS, THEME_SETS } from '@/theme/theme';
 import React from 'react';
+import Navbar from '@/theme/layout/Navbar';
 
 /* ========================================================================== */
 /* CONSTANTS                                                                  */
@@ -112,6 +113,8 @@ export default function Home() {
 
         <meta name="theme-color" content={background} />
       </Head>
+
+      <Navbar />
 
       <Box
         sx={{

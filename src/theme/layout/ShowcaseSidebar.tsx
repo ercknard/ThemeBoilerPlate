@@ -398,11 +398,8 @@ export default function ShowcaseSidebar({
       component="aside"
       sx={{
         width: '100%',
-        position: 'sticky',
-        top: 0,
-        zIndex: 1200,
-        height: '100vh',
-        maxHeight: '100vh'
+        height: '100%',
+        minHeight: 0
       }}
     >
       <AppPaper
@@ -413,10 +410,8 @@ export default function ShowcaseSidebar({
             xs: 1,
             sm: 1.25
           },
-
           display: 'flex',
           flexDirection: 'column',
-
           overflow: 'hidden',
 
           borderRadius: 0,
@@ -450,12 +445,13 @@ export default function ShowcaseSidebar({
             position: 'relative',
             zIndex: 2,
             pb: 1,
+            pl: 1,
             alignItems: 'center',
             textAlign: 'center',
             borderBottom: `2px solid ${secondaryScale[7]}`
           }}
         >
-          <Box
+          {/* <Box
             component={Link}
             href="/"
             sx={{
@@ -483,7 +479,7 @@ export default function ShowcaseSidebar({
                 objectFit: 'contain'
               }}
             />
-          </Box>
+          </Box> */}
 
           <Stack
             sx={{
@@ -600,7 +596,8 @@ export default function ShowcaseSidebar({
           sx={{
             mt: 'auto',
             px: 1.25,
-            pb: 1
+            pb: 1,
+            flexShrink: 0
           }}
         >
           <Divider sx={{ mb: 1.5 }} />

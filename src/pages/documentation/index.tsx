@@ -34,6 +34,7 @@ import ShowcaseSidebar, {
   type ShowcaseTab
 } from '@/theme/layout/ShowcaseSidebar';
 import TypographySection from '@/theme/layout/TypographySection';
+import Navbar from '@/theme/layout/Navbar';
 
 const GITHUB_URL = process.env.NEXT_PUBLIC_GITHUB_URL;
 
@@ -142,6 +143,8 @@ export default function TypographyShowcase() {
         />
       </Head>
 
+      <Navbar />
+
       <Box
         sx={{
           minHeight: '100vh',
@@ -173,10 +176,23 @@ export default function TypographyShowcase() {
                 sx={{
                   width: '100%',
                   position: 'sticky',
-                  top: 0,
-                  zIndex: 1200,
-                  height: '100vh',
-                  maxHeight: '100vh'
+
+                  top: {
+                    xs: 64,
+                    md: 64
+                  },
+
+                  zIndex: 1,
+
+                  height: {
+                    xs: 'calc(100vh - 64px)',
+                    md: 'calc(100vh - 64px)'
+                  },
+
+                  maxHeight: {
+                    xs: 'calc(100vh - 64px)',
+                    md: 'calc(100vh - 64px)'
+                  }
                 }}
               >
                 <ShowcaseSidebar
