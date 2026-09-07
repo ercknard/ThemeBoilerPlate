@@ -45,7 +45,8 @@ export default function ColorsSection() {
             xs: 2,
             sm: 3,
             md: 4,
-            lg: 8
+            lg: 4,
+            xxl: 8
           },
           pt: {
             xs: 0,

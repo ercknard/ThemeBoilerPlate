@@ -1002,10 +1002,11 @@ export default function ColorPresetsSection() {
             xs: 2,
             sm: 3,
             md: 4,
-            lg: 8
+            lg: 4,
+            xxl: 8
           },
           pt: {
-            xs: 4,
+            xs: 0,
             md: 6,
             lg: 5
           }

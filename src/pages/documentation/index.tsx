@@ -91,7 +91,7 @@ export default function TypographyShowcase() {
         <Grid
           container
           columns={12}
-          spacing={4}
+          spacing={{ xs: 0, xxl: 4 }}
           sx={{
             position: 'relative',
             zIndex: 1,
@@ -129,7 +129,10 @@ export default function TypographyShowcase() {
 
           <Grid
             size={{ xs: 12, xl: 9.5, xxl: 8.5, xxxxl: 7.15 }}
-            sx={{ minHeight: { md: '100vh' }, py: { xs: 0, lg: 5 } }}
+            sx={{
+              minHeight: { md: '100vh' },
+              py: { xs: 0, lg: 5 }
+            }}
           >
             <Stack spacing={{ xs: 5, md: 3 }}>
               <Stack
@@ -143,22 +146,36 @@ export default function TypographyShowcase() {
               >
                 <Typography
                   variant="overlineCustom"
-                  sx={{ color: theme.colorScale[9] }}
+                  sx={{
+                    color: theme.colorScale[9],
+                    pl: { xs: '2rem !important', xxl: 'unset' }
+                  }}
                 >
                   Design System
                 </Typography>
-                <Typography variant="title" sx={{ mt: 1 }}>
+                <Typography
+                  variant="title"
+                  sx={{ mt: 1, pl: { xs: '2rem !important', xxl: 'unset' } }}
+                >
                   Typography & Colors
                 </Typography>
                 <Typography
                   variant="large"
-                  sx={{ color: theme.grayScale[11], mt: 2, mb: 2 }}
+                  sx={{
+                    color: theme.grayScale[11],
+                    mt: 2,
+                    mb: 2,
+                    pl: { xs: '2rem !important', xxl: 'unset' }
+                  }}
                 >
                   A complete showcase of the typography variants, semantic color
                   scales, spacing, components, and responsive behavior used
                   throughout the application.
                 </Typography>
-                <Divider />
+
+                <Box sx={{ px: { xs: '2rem !important', xxl: 'unset' } }}>
+                  <Divider />
+                </Box>
               </Stack>
 
               <Box

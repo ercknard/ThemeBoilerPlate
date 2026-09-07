@@ -272,7 +272,7 @@ export default function OverViewTheme() {
           color: 'text.primary',
           pb: {
             xs: 6,
-            md: 10
+            md: 2
           }
         }}
       >
@@ -288,7 +288,8 @@ export default function OverViewTheme() {
               xs: 2,
               sm: 3,
               md: 4,
-              lg: 8
+              lg: 4,
+              xxl: 8
             },
             pt: {
               xs: 0,
@@ -496,10 +497,11 @@ export default function OverViewTheme() {
               xs: 2,
               sm: 3,
               md: 4,
-              lg: 8
+              lg: 4,
+              xxl: 8
             },
             pt: {
-              xs: 4,
+              xs: 0,
               md: 6,
               lg: 5
             }
@@ -880,7 +882,7 @@ export default function OverViewTheme() {
                   gridTemplateColumns: {
                     xs: '1fr',
                     md: 'repeat(2, 1fr)',
-                    xl: 'repeat(4, 1fr)'
+                    xxl: 'repeat(4, 1fr)'
                   },
 
                   gap: 2
