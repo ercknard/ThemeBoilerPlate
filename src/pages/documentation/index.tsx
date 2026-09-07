@@ -1,6 +1,10 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+
 import Head from 'next/head';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+
 import {
   Box,
   Button,
@@ -11,31 +15,54 @@ import {
   useMediaQuery
 } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
+
 import GitHubIcon from '@mui/icons-material/GitHub';
 import PaletteIcon from '@mui/icons-material/Palette';
-import { useState } from 'react';
 
 import { useThemeContext } from '@/contexts/themeContext';
-import { THEME_SETS, type ThemeSetName } from '@/theme/theme';
-import ThemeToggle from '@/theme/ThemeToggle';
-import { AppPaper, AppTab, AppTabs } from '@/theme/components/CustomComponents';
-import OverviewSection from '@/theme/layout/OverviewSection';
-import TypographySection from '@/theme/layout/TypographySection';
+import { THEME_SETS } from '@/theme/theme';
+
+import { AppTab, AppTabs } from '@/theme/components/CustomComponents';
+import FloatingThemeControls from '@/theme/components/FloatingThemeControls';
+
 import ColorsSection from '@/theme/layout/ColorsSection';
 import ComponentsSection from '@/theme/layout/ComponentsSection';
+import ColorPresetsSection from '@/theme/layout/ColorPresetSection';
+import OverviewSection from '@/theme/layout/OverviewSection';
 import ShowcaseSidebar, {
   type MenuKey,
   type ShowcaseTab
 } from '@/theme/layout/ShowcaseSidebar';
-import ColorPresetsSection from '@/theme/layout/ColorPresetSection';
-import FloatingThemeControls from '@/theme/components/FloatingThemeControls';
+import TypographySection from '@/theme/layout/TypographySection';
 
 const GITHUB_URL = process.env.NEXT_PUBLIC_GITHUB_URL;
 
+const SHOWCASE_TABS: ShowcaseTab[] = [
+  'overview',
+  'typography',
+  'colors',
+  'presets',
+  'components'
+];
+
+function isShowcaseTab(value: string | null): value is ShowcaseTab {
+  return value !== null && SHOWCASE_TABS.includes(value as ShowcaseTab);
+}
+
 export default function TypographyShowcase() {
   const theme = useTheme();
-  const [activeTab, setActiveTab] = useState<ShowcaseTab>('overview');
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
+
+  const tabFromUrl = searchParams.get('tab');
+
+  const [activeTab, setActiveTab] = useState<ShowcaseTab>(
+    isShowcaseTab(tabFromUrl) ? tabFromUrl : 'overview'
+  );
+
   const [openMenus, setOpenMenus] = useState<Record<MenuKey, boolean>>({
     overview: false,
     typography: false,
@@ -46,12 +73,43 @@ export default function TypographyShowcase() {
 
   const { themeSet } = useThemeContext();
 
+  useEffect(() => {
+    if (isShowcaseTab(tabFromUrl)) {
+      setActiveTab(tabFromUrl);
+    } else {
+      setActiveTab('overview');
+    }
+  }, [tabFromUrl]);
+
+  const handleTabChange = (tab: ShowcaseTab) => {
+    setActiveTab(tab);
+
+    const params = new URLSearchParams(searchParams.toString());
+    const orderedParams = new URLSearchParams();
+
+    orderedParams.set('tab', tab);
+
+    params.forEach((value, key) => {
+      if (key !== 'tab') {
+        orderedParams.append(key, value);
+      }
+    });
+
+    router.replace(`${pathname}?${orderedParams.toString()}`, {
+      scroll: false
+    });
+  };
+
   const toggleMenu = (menu: MenuKey) => {
-    setOpenMenus((prev) => ({ ...prev, [menu]: !prev[menu] }));
+    setOpenMenus((prev) => ({
+      ...prev,
+      [menu]: !prev[menu]
+    }));
   };
 
   const openMenuAndScroll = (menu: ShowcaseTab, sectionId: string) => {
-    setActiveTab(menu);
+    handleTabChange(menu);
+
     setOpenMenus({
       overview: false,
       typography: false,
@@ -60,11 +118,13 @@ export default function TypographyShowcase() {
       presets: false,
       [menu]: true
     });
+
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        document
-          .getElementById(sectionId)
-          ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        document.getElementById(sectionId)?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center'
+        });
       });
     });
   };
@@ -75,6 +135,7 @@ export default function TypographyShowcase() {
         <title>
           Typography & Colors | {THEME_SETS[themeSet]?.label ?? 'Custom'}
         </title>
+
         <meta
           name="description"
           content="Typography and color system showcase"
@@ -102,7 +163,10 @@ export default function TypographyShowcase() {
         >
           <Grid
             size={{ xs: 12, md: 2.5 }}
-            sx={{ display: 'flex', alignItems: 'flex-start' }}
+            sx={{
+              display: 'flex',
+              alignItems: 'flex-start'
+            }}
           >
             {!isMobile && (
               <Box
@@ -118,7 +182,9 @@ export default function TypographyShowcase() {
                 <ShowcaseSidebar
                   activeTab={activeTab}
                   openMenus={openMenus}
-                  setActiveTab={setActiveTab}
+                  setActiveTab={(tab) => {
+                    handleTabChange(tab);
+                  }}
                   toggleMenu={toggleMenu}
                   openMenuAndScroll={openMenuAndScroll}
                   themeSet={themeSet}
@@ -128,7 +194,12 @@ export default function TypographyShowcase() {
           </Grid>
 
           <Grid
-            size={{ xs: 12, lg: 9.5, xxl: 8.5, xxxxl: 7.15 }}
+            size={{
+              xs: 12,
+              lg: 9.5,
+              xxl: 8.5,
+              xxxxl: 7.15
+            }}
             sx={{
               minHeight: { md: '100vh' },
               py: { xs: 4, lg: 5 }
@@ -138,9 +209,9 @@ export default function TypographyShowcase() {
               <Stack
                 sx={{
                   px: {
-                    xs: `1rem !important`,
-                    md: `2rem !important`,
-                    lg: `0 !important`
+                    xs: '1rem !important',
+                    md: '2rem !important',
+                    lg: '0 !important'
                   }
                 }}
               >
@@ -157,6 +228,7 @@ export default function TypographyShowcase() {
                 >
                   Design System
                 </Typography>
+
                 <Typography
                   variant="title"
                   sx={{
@@ -170,6 +242,7 @@ export default function TypographyShowcase() {
                 >
                   Typography & Colors
                 </Typography>
+
                 <Typography
                   variant="large"
                   sx={{
@@ -211,26 +284,22 @@ export default function TypographyShowcase() {
               >
                 <AppTabs
                   value={activeTab}
-                  onChange={(_, value) => setActiveTab(value as ShowcaseTab)}
+                  onChange={(_, value) => {
+                    handleTabChange(value as ShowcaseTab);
+                  }}
                   variant="scrollable"
                   scrollButtons={false}
                   sx={{
                     width: '100%',
-
                     minHeight: 44,
-
                     p: 0.5,
-
                     border: '1px solid',
                     borderColor: alpha(theme.secondaryScale[6], 0.8),
-
                     borderRadius: 2.5,
-
                     backgroundColor: alpha(
                       theme.backgroundScale[2],
                       theme.palette.mode === 'dark' ? 0.7 : 0.9
                     ),
-
                     backdropFilter: 'blur(14px)',
                     WebkitBackdropFilter: 'blur(14px)',
 
@@ -252,15 +321,7 @@ export default function TypographyShowcase() {
                     }
                   }}
                 >
-                  {(
-                    [
-                      'overview',
-                      'typography',
-                      'colors',
-                      'presets',
-                      'components'
-                    ] as ShowcaseTab[]
-                  ).map((tab) => (
+                  {SHOWCASE_TABS.map((tab) => (
                     <AppTab
                       key={tab}
                       value={tab}
@@ -275,9 +336,7 @@ export default function TypographyShowcase() {
                         },
 
                         minHeight: 36,
-
                         px: 1.5,
-
                         borderRadius: 2,
 
                         fontSize: {
@@ -289,10 +348,10 @@ export default function TypographyShowcase() {
                           color: theme.colorScale.contrast,
 
                           background: `linear-gradient(
-              135deg,
-              ${theme.colorScale[9]},
-              ${theme.secondaryScale[9]}
-            )`,
+                            135deg,
+                            ${theme.colorScale[9]},
+                            ${theme.secondaryScale[9]}
+                          )`,
 
                           boxShadow: `0 3px 12px ${alpha(
                             theme.colorScale[9],
@@ -310,20 +369,30 @@ export default function TypographyShowcase() {
               </Box>
 
               {activeTab === 'overview' && <OverviewSection />}
+
               {activeTab === 'typography' && <TypographySection />}
+
               {activeTab === 'colors' && <ColorsSection />}
+
               {activeTab === 'presets' && <ColorPresetsSection />}
+
               {activeTab === 'components' && <ComponentsSection />}
 
               <Box sx={{ mt: '3rem' }}>
                 <Divider />
+
                 <Box
                   sx={{
-                    mt: { xs: '1rem', lg: '3rem' },
+                    mt: {
+                      xs: '1rem',
+                      lg: '3rem'
+                    },
+
                     display: 'flex',
                     justifyContent: 'center',
+
                     paddingBottom: {
-                      xs: `1rem`,
+                      xs: '1rem',
                       lg: 0
                     }
                   }}
@@ -340,16 +409,22 @@ export default function TypographyShowcase() {
                   >
                     <Typography
                       variant="small"
-                      sx={{ color: theme.grayScale[11] }}
+                      sx={{
+                        color: theme.grayScale[11]
+                      }}
                     >
                       CryptechServices Design System
                     </Typography>
+
                     <Typography
                       variant="small"
-                      sx={{ color: theme.grayScale[8] }}
+                      sx={{
+                        color: theme.grayScale[8]
+                      }}
                     >
                       •
                     </Typography>
+
                     <Button
                       component="a"
                       href="/documentation"
@@ -358,6 +433,7 @@ export default function TypographyShowcase() {
                     >
                       Theme
                     </Button>
+
                     <Button
                       component="a"
                       href={GITHUB_URL}

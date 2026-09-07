@@ -1,10 +1,14 @@
 'use client';
 
 import Head from 'next/head';
+import { useCallback, useState } from 'react';
+
 import { Box, CardContent, Stack, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+
 import { THEME_SETS } from '@/theme/theme';
 import { useThemeContext } from '@/contexts/themeContext';
+
 import {
   AppCard,
   AppDivider,
@@ -12,19 +16,81 @@ import {
   AppButton,
   AppChip
 } from '@/theme/components/CustomComponents';
+
 import {
   ColorScaleSection,
   ColorUsageCard
 } from '@/theme/components/ShowcaseComponents';
+
 import { colorGroups } from '@/utils/showcase-data';
 
 export default function ColorsSection() {
   const theme = useTheme();
   const { themeSet } = useThemeContext();
+
   const colorScale = theme.colorScale;
   const secondaryScale = theme.secondaryScale;
   const grayScale = theme.grayScale;
   const backgroundScale = theme.backgroundScale;
+
+  const [copiedColor, setCopiedColor] = useState<string | null>(null);
+
+  const copyColor = useCallback(async (color: string) => {
+    if (!color) return;
+
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(color);
+      } else {
+        const textarea = document.createElement('textarea');
+
+        textarea.value = color;
+        textarea.style.position = 'fixed';
+        textarea.style.left = '-9999px';
+        textarea.style.top = '-9999px';
+
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+      }
+
+      setCopiedColor(color);
+
+      window.setTimeout(() => {
+        setCopiedColor((current) => (current === color ? null : current));
+      }, 1400);
+    } catch {
+      setCopiedColor(null);
+    }
+  }, []);
+
+  const copyOnKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLElement>, color: string) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        void copyColor(color);
+      }
+    },
+    [copyColor]
+  );
+
+  const getCopySx = (color: string) => ({
+    cursor: 'copy',
+    transition:
+      'transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease',
+
+    '&:hover': {
+      transform: 'translateY(-2px)',
+      boxShadow: `0 8px 24px ${color}`
+    },
+
+    '&:active': {
+      transform: 'scale(0.99)'
+    }
+  });
 
   return (
     <>
@@ -38,6 +104,60 @@ export default function ColorsSection() {
           content="A flexible MUI theme system with dynamic color scales, semantic surfaces, typography, and responsive components."
         />
       </Head>
+
+      {/* ================================================================ */}
+      {/* COPY FEEDBACK                                                    */}
+      {/* ================================================================ */}
+
+      {copiedColor && (
+        <Box
+          role="status"
+          aria-live="polite"
+          sx={{
+            position: 'fixed',
+            left: '50%',
+            bottom: {
+              xs: 16,
+              sm: 24
+            },
+            zIndex: theme.zIndex.snackbar,
+            transform: 'translateX(-50%)',
+            px: 1.75,
+            py: 1,
+            borderRadius: 2,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1,
+            backgroundColor: grayScale[12],
+            color: backgroundScale[1],
+            boxShadow: `0 10px 30px ${grayScale[7]}`,
+            pointerEvents: 'none',
+            whiteSpace: 'nowrap'
+          }}
+        >
+          <Box
+            aria-hidden
+            sx={{
+              width: 16,
+              height: 16,
+              flexShrink: 0,
+              borderRadius: '50%',
+              backgroundColor: copiedColor,
+              border: `1px solid ${grayScale[6]}`
+            }}
+          />
+
+          <Typography
+            variant="small"
+            sx={{
+              fontWeight: 700
+            }}
+          >
+            {copiedColor} copied
+          </Typography>
+        </Box>
+      )}
+
       <Stack
         spacing={{ xs: 6, md: 8 }}
         sx={{
@@ -56,7 +176,7 @@ export default function ColorsSection() {
         }}
       >
         {/* ================================================================ */}
-        {/* PAGE INTRO                                                        */}
+        {/* PAGE INTRO                                                       */}
         {/* ================================================================ */}
 
         <Box id="colors">
@@ -72,6 +192,7 @@ export default function ColorsSection() {
               >
                 Colors
               </Typography>
+
               <Typography variant="sectionTitle">Color Relationship</Typography>
 
               <Typography
@@ -86,9 +207,9 @@ export default function ColorsSection() {
               </Typography>
             </Stack>
 
-            {/* -------------------------------------------------------------- */}
-            {/* 60 / 30 / 10 VISUAL SYSTEM                                    */}
-            {/* -------------------------------------------------------------- */}
+            {/* ============================================================ */}
+            {/* 60 / 30 / 10 VISUAL SYSTEM                                  */}
+            {/* ============================================================ */}
 
             <AppCard
               id="overview-color-relationship"
@@ -134,7 +255,7 @@ export default function ColorsSection() {
                         variant="body2"
                         sx={{
                           mt: 1,
-                          color: theme.grayScale[11]
+                          color: grayScale[11]
                         }}
                       >
                         The interface follows a 60 / 30 / 10 visual hierarchy to
@@ -150,23 +271,27 @@ export default function ColorsSection() {
                   <Box
                     sx={{
                       display: 'grid',
-
                       gridTemplateColumns: {
                         xs: '1fr',
                         md: '6fr 3fr 1fr'
                       },
-
                       minHeight: {
                         xs: 'auto',
                         md: 130
                       },
-
                       gap: 1
                     }}
                   >
                     {/* 60% */}
 
                     <Box
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`Copy ${backgroundScale[2]}`}
+                      onClick={() => void copyColor(backgroundScale[2])}
+                      onKeyDown={(event) =>
+                        copyOnKeyDown(event, backgroundScale[2])
+                      }
                       sx={{
                         minHeight: 110,
                         p: 3,
@@ -174,15 +299,16 @@ export default function ColorsSection() {
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'space-between',
-                        backgroundColor: theme.backgroundScale[2],
-                        border: `1px solid ${theme.grayScale[6]}`
+                        backgroundColor: backgroundScale[2],
+                        border: `1px solid ${grayScale[6]}`,
+                        ...getCopySx(backgroundScale[2])
                       }}
                     >
                       <Typography
                         variant="h3"
                         sx={{
                           fontWeight: 800,
-                          color: theme.backgroundScale[12]
+                          color: backgroundScale[12]
                         }}
                       >
                         60%
@@ -193,7 +319,7 @@ export default function ColorsSection() {
                           variant="medium"
                           sx={{
                             fontWeight: 700,
-                            color: theme.backgroundScale[12]
+                            color: backgroundScale[12]
                           }}
                         >
                           Background
@@ -204,7 +330,7 @@ export default function ColorsSection() {
                           sx={{
                             display: 'block',
                             mt: 0.5,
-                            color: theme.grayScale[10]
+                            color: grayScale[10]
                           }}
                         >
                           Dominant surfaces and page areas.
@@ -215,6 +341,13 @@ export default function ColorsSection() {
                     {/* 30% */}
 
                     <Box
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`Copy ${secondaryScale[3]}`}
+                      onClick={() => void copyColor(secondaryScale[3])}
+                      onKeyDown={(event) =>
+                        copyOnKeyDown(event, secondaryScale[3])
+                      }
                       sx={{
                         minHeight: 110,
                         p: 3,
@@ -222,15 +355,16 @@ export default function ColorsSection() {
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'space-between',
-                        backgroundColor: theme.secondaryScale[3],
-                        border: `1px solid ${theme.secondaryScale[7]}`
+                        backgroundColor: secondaryScale[3],
+                        border: `1px solid ${secondaryScale[7]}`,
+                        ...getCopySx(secondaryScale[3])
                       }}
                     >
                       <Typography
                         variant="h3"
                         sx={{
                           fontWeight: 800,
-                          color: theme.secondaryScale[11]
+                          color: secondaryScale[11]
                         }}
                       >
                         30%
@@ -241,7 +375,7 @@ export default function ColorsSection() {
                           variant="medium"
                           sx={{
                             fontWeight: 700,
-                            color: theme.secondaryScale[11]
+                            color: secondaryScale[11]
                           }}
                         >
                           Secondary
@@ -252,7 +386,7 @@ export default function ColorsSection() {
                           sx={{
                             display: 'block',
                             mt: 0.5,
-                            color: theme.secondaryScale[10]
+                            color: secondaryScale[10]
                           }}
                         >
                           Supporting surfaces and structure.
@@ -263,6 +397,11 @@ export default function ColorsSection() {
                     {/* 10% */}
 
                     <Box
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`Copy ${colorScale[3]}`}
+                      onClick={() => void copyColor(colorScale[3])}
+                      onKeyDown={(event) => copyOnKeyDown(event, colorScale[3])}
                       sx={{
                         minHeight: 110,
                         p: 3,
@@ -270,15 +409,16 @@ export default function ColorsSection() {
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'space-between',
-                        backgroundColor: theme.colorScale[3],
-                        border: `1px solid ${theme.colorScale[7]}`
+                        backgroundColor: colorScale[3],
+                        border: `1px solid ${colorScale[7]}`,
+                        ...getCopySx(colorScale[3])
                       }}
                     >
                       <Typography
                         variant="h3"
                         sx={{
                           fontWeight: 800,
-                          color: theme.colorScale[11]
+                          color: colorScale[11]
                         }}
                       >
                         10%
@@ -289,7 +429,7 @@ export default function ColorsSection() {
                           variant="medium"
                           sx={{
                             fontWeight: 700,
-                            color: theme.colorScale[11]
+                            color: colorScale[11]
                           }}
                         >
                           Primary
@@ -300,7 +440,7 @@ export default function ColorsSection() {
                           sx={{
                             display: 'block',
                             mt: 0.5,
-                            color: theme.colorScale[10]
+                            color: colorScale[10]
                           }}
                         >
                           Actions and active states.
@@ -315,7 +455,7 @@ export default function ColorsSection() {
         </Box>
 
         {/* ================================================================ */}
-        {/* COLOR SCALES                                                      */}
+        {/* COLOR SCALES                                                     */}
         {/* ================================================================ */}
 
         <Box id="colors-scales">
@@ -337,8 +477,6 @@ export default function ColorsSection() {
             </Box>
 
             <Stack spacing={4}>
-              {/* PRIMARY */}
-
               <ColorScaleSection
                 title="Primary / Color Scale"
                 description="The primary accent used for important actions, active states, links, selected elements, emphasis, and key interaction."
@@ -346,8 +484,6 @@ export default function ColorsSection() {
                 colorName="Primary"
                 semanticGroups={colorGroups}
               />
-
-              {/* SECONDARY */}
 
               <ColorScaleSection
                 title="Secondary Scale"
@@ -357,8 +493,6 @@ export default function ColorsSection() {
                 semanticGroups={colorGroups}
               />
 
-              {/* GRAY */}
-
               <ColorScaleSection
                 title="Gray / Neutral Scale"
                 description="The neutral utility scale used for text hierarchy, disabled states, borders, dividers, inactive controls, and supporting interface elements."
@@ -366,8 +500,6 @@ export default function ColorsSection() {
                 colorName="Gray"
                 semanticGroups={colorGroups}
               />
-
-              {/* BACKGROUND */}
 
               <ColorScaleSection
                 title="Background Scale"
@@ -381,7 +513,7 @@ export default function ColorsSection() {
         </Box>
 
         {/* ================================================================ */}
-        {/* HOW TO USE                                                        */}
+        {/* HOW TO USE                                                       */}
         {/* ================================================================ */}
 
         <Box id="colors-how-to-use-colors">
@@ -559,7 +691,7 @@ const colorScale = theme.colorScale;
         </Box>
 
         {/* ================================================================ */}
-        {/* SEMANTIC QUICK REFERENCE                                         */}
+        {/* SEMANTIC QUICK REFERENCE                                        */}
         {/* ================================================================ */}
 
         <Box id="colors-quick-reference">
@@ -637,9 +769,20 @@ const colorScale = theme.colorScale;
                   }}
                 >
                   <Box
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`Copy ${item.color}`}
+                    onClick={() => void copyColor(item.color)}
+                    onKeyDown={(event) => copyOnKeyDown(event, item.color)}
                     sx={{
                       height: 8,
-                      backgroundColor: item.color
+                      backgroundColor: item.color,
+                      cursor: 'copy',
+                      transition: 'height 160ms ease',
+
+                      '&:hover': {
+                        height: 12
+                      }
                     }}
                   />
 
@@ -667,13 +810,19 @@ const colorScale = theme.colorScale;
                       </Typography>
 
                       <Box
+                        role="button"
+                        tabIndex={0}
+                        aria-label={`Copy ${item.color}`}
+                        onClick={() => void copyColor(item.color)}
+                        onKeyDown={(event) => copyOnKeyDown(event, item.color)}
                         sx={{
                           width: 32,
                           height: 32,
                           flexShrink: 0,
                           borderRadius: 1.5,
                           backgroundColor: item.color,
-                          border: `1px solid ${secondaryScale[6]}`
+                          border: `1px solid ${secondaryScale[6]}`,
+                          ...getCopySx(item.color)
                         }}
                       />
                     </Stack>
@@ -713,6 +862,25 @@ const colorScale = theme.colorScale;
                     >
                       {item.scale}
                     </Typography>
+
+                    <Typography
+                      variant="code"
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`Copy ${item.color}`}
+                      onClick={() => void copyColor(item.color)}
+                      onKeyDown={(event) => copyOnKeyDown(event, item.color)}
+                      sx={{
+                        color: grayScale[9],
+                        wordBreak: 'break-word',
+                        cursor: 'copy',
+                        '&:hover': {
+                          color: colorScale[9]
+                        }
+                      }}
+                    >
+                      {item.color}
+                    </Typography>
                   </Stack>
                 </AppPaper>
               ))}
@@ -721,7 +889,7 @@ const colorScale = theme.colorScale;
         </Box>
 
         {/* ================================================================ */}
-        {/* COLOR USAGE                                                       */}
+        {/* COLOR USAGE                                                      */}
         {/* ================================================================ */}
 
         <Box id="colors-color-usage">
@@ -754,9 +922,9 @@ const colorScale = theme.colorScale;
               }}
             >
               <Stack spacing={4}>
-                {/* ========================================================== */}
-                {/* SURFACE HIERARCHY                                           */}
-                {/* ========================================================== */}
+                {/* ======================================================== */}
+                {/* SURFACE HIERARCHY                                         */}
+                {/* ======================================================== */}
 
                 <Box>
                   <Typography
@@ -773,11 +941,19 @@ const colorScale = theme.colorScale;
                     {/* Background */}
 
                     <Box
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`Copy ${backgroundScale[5]}`}
+                      onClick={() => void copyColor(backgroundScale[5])}
+                      onKeyDown={(event) =>
+                        copyOnKeyDown(event, backgroundScale[5])
+                      }
                       sx={{
                         p: 2.5,
                         borderRadius: 2,
                         backgroundColor: backgroundScale[5],
-                        border: `1px solid ${secondaryScale[6]}`
+                        border: `1px solid ${secondaryScale[6]}`,
+                        ...getCopySx(backgroundScale[5])
                       }}
                     >
                       <Typography
@@ -799,6 +975,13 @@ const colorScale = theme.colorScale;
                     {/* Secondary */}
 
                     <Box
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`Copy ${secondaryScale[3]}`}
+                      onClick={() => void copyColor(secondaryScale[3])}
+                      onKeyDown={(event) =>
+                        copyOnKeyDown(event, secondaryScale[3])
+                      }
                       sx={{
                         ml: {
                           xs: 1,
@@ -807,7 +990,8 @@ const colorScale = theme.colorScale;
                         p: 2.5,
                         borderRadius: 2,
                         backgroundColor: secondaryScale[3],
-                        border: `1px solid ${secondaryScale[7]}`
+                        border: `1px solid ${secondaryScale[7]}`,
+                        ...getCopySx(secondaryScale[3])
                       }}
                     >
                       <Typography
@@ -834,6 +1018,11 @@ const colorScale = theme.colorScale;
                     {/* Gray */}
 
                     <Box
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`Copy ${grayScale[3]}`}
+                      onClick={() => void copyColor(grayScale[3])}
+                      onKeyDown={(event) => copyOnKeyDown(event, grayScale[3])}
                       sx={{
                         ml: {
                           xs: 2,
@@ -842,7 +1031,8 @@ const colorScale = theme.colorScale;
                         p: 2.5,
                         borderRadius: 2,
                         backgroundColor: grayScale[3],
-                        border: `1px solid ${grayScale[6]}`
+                        border: `1px solid ${grayScale[6]}`,
+                        ...getCopySx(grayScale[3])
                       }}
                     >
                       <Typography
@@ -870,9 +1060,9 @@ const colorScale = theme.colorScale;
 
                 <AppDivider />
 
-                {/* ========================================================== */}
-                {/* INTERACTIVE                                                 */}
-                {/* ========================================================== */}
+                {/* ======================================================== */}
+                {/* INTERACTIVE                                               */}
+                {/* ======================================================== */}
 
                 <Box>
                   <Typography
@@ -898,16 +1088,25 @@ const colorScale = theme.colorScale;
                       }
                     }}
                   >
-                    <AppButton variant="contained" color="primary">
+                    <AppButton
+                      variant="contained"
+                      color="primary"
+                      onClick={() => void copyColor(colorScale[9])}
+                    >
                       Primary
                     </AppButton>
 
-                    <AppButton variant="outlined" color="secondary">
+                    <AppButton
+                      variant="outlined"
+                      color="secondary"
+                      onClick={() => void copyColor(secondaryScale[7])}
+                    >
                       Secondary
                     </AppButton>
 
                     <AppButton
                       variant="text"
+                      onClick={() => void copyColor(grayScale[11])}
                       sx={{
                         color: grayScale[11],
                         '&:hover': {
@@ -922,9 +1121,9 @@ const colorScale = theme.colorScale;
 
                 <AppDivider />
 
-                {/* ========================================================== */}
-                {/* CONNECTIONS                                                 */}
-                {/* ========================================================== */}
+                {/* ======================================================== */}
+                {/* CONNECTIONS                                               */}
+                {/* ======================================================== */}
 
                 <Box>
                   <Typography
@@ -958,6 +1157,12 @@ const colorScale = theme.colorScale;
 
                     <Box
                       aria-hidden
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => void copyColor(secondaryScale[7])}
+                      onKeyDown={(event) =>
+                        copyOnKeyDown(event, secondaryScale[7])
+                      }
                       sx={{
                         position: 'absolute',
                         left: '12%',
@@ -965,7 +1170,8 @@ const colorScale = theme.colorScale;
                         top: '50%',
                         height: 2,
                         transform: 'translateY(-50%)',
-                        backgroundColor: secondaryScale[7]
+                        backgroundColor: secondaryScale[7],
+                        cursor: 'copy'
                       }}
                     />
 
@@ -982,19 +1188,34 @@ const colorScale = theme.colorScale;
                       {/* Secondary node */}
 
                       <Box
+                        role="button"
+                        tabIndex={0}
+                        aria-label={`Copy ${secondaryScale[9]}`}
+                        onClick={() => void copyColor(secondaryScale[9])}
+                        onKeyDown={(event) =>
+                          copyOnKeyDown(event, secondaryScale[9])
+                        }
                         sx={{
                           width: 14,
                           height: 14,
                           flexShrink: 0,
                           borderRadius: '50%',
                           backgroundColor: secondaryScale[9],
-                          boxShadow: `0 0 0 5px ${secondaryScale[3]}`
+                          boxShadow: `0 0 0 5px ${secondaryScale[3]}`,
+                          cursor: 'copy'
                         }}
                       />
 
                       {/* Relationship */}
 
                       <Box
+                        role="button"
+                        tabIndex={0}
+                        aria-label={`Copy ${secondaryScale[3]}`}
+                        onClick={() => void copyColor(secondaryScale[3])}
+                        onKeyDown={(event) =>
+                          copyOnKeyDown(event, secondaryScale[3])
+                        }
                         sx={{
                           mx: 2,
                           px: {
@@ -1005,7 +1226,8 @@ const colorScale = theme.colorScale;
                           borderRadius: 2,
                           backgroundColor: secondaryScale[3],
                           border: `1px solid ${secondaryScale[7]}`,
-                          boxShadow: `0 4px 16px ${secondaryScale[2]}`
+                          boxShadow: `0 4px 16px ${secondaryScale[2]}`,
+                          cursor: 'copy'
                         }}
                       >
                         <Typography
@@ -1023,13 +1245,21 @@ const colorScale = theme.colorScale;
                       {/* Primary node */}
 
                       <Box
+                        role="button"
+                        tabIndex={0}
+                        aria-label={`Copy ${colorScale[9]}`}
+                        onClick={() => void copyColor(colorScale[9])}
+                        onKeyDown={(event) =>
+                          copyOnKeyDown(event, colorScale[9])
+                        }
                         sx={{
                           width: 14,
                           height: 14,
                           flexShrink: 0,
                           borderRadius: '50%',
                           backgroundColor: colorScale[9],
-                          boxShadow: `0 0 0 5px ${colorScale[3]}`
+                          boxShadow: `0 0 0 5px ${colorScale[3]}`,
+                          cursor: 'copy'
                         }}
                       />
                     </Stack>
@@ -1038,9 +1268,9 @@ const colorScale = theme.colorScale;
 
                 <AppDivider />
 
-                {/* ========================================================== */}
-                {/* COMPONENTS                                                  */}
-                {/* ========================================================== */}
+                {/* ======================================================== */}
+                {/* COMPONENTS                                                */}
+                {/* ======================================================== */}
 
                 <Box>
                   <Typography
@@ -1063,36 +1293,44 @@ const colorScale = theme.colorScale;
                   >
                     <AppChip
                       label="Neutral"
+                      onClick={() => void copyColor(grayScale[3])}
                       sx={{
                         backgroundColor: grayScale[3],
                         color: grayScale[11],
-                        border: `1px solid ${grayScale[6]}`
+                        border: `1px solid ${grayScale[6]}`,
+                        cursor: 'copy'
                       }}
                     />
 
                     <AppChip
                       label="Secondary"
+                      onClick={() => void copyColor(secondaryScale[3])}
                       sx={{
                         backgroundColor: secondaryScale[3],
                         color: secondaryScale[12],
-                        border: `1px solid ${secondaryScale[6]}`
+                        border: `1px solid ${secondaryScale[6]}`,
+                        cursor: 'copy'
                       }}
                     />
 
                     <AppChip
                       label="Active"
+                      onClick={() => void copyColor(colorScale[5])}
                       sx={{
                         backgroundColor: colorScale[5],
                         color: colorScale[12],
-                        border: `1px solid ${colorScale[7]}`
+                        border: `1px solid ${colorScale[7]}`,
+                        cursor: 'copy'
                       }}
                     />
 
                     <AppChip
                       label="Primary"
+                      onClick={() => void copyColor(colorScale[9])}
                       sx={{
                         backgroundColor: colorScale[9],
-                        color: colorScale.contrast
+                        color: colorScale.contrast,
+                        cursor: 'copy'
                       }}
                     />
                   </Stack>
@@ -1103,7 +1341,7 @@ const colorScale = theme.colorScale;
         </Box>
 
         {/* ================================================================ */}
-        {/* TEXT COLORS                                                       */}
+        {/* TEXT COLORS                                                      */}
         {/* ================================================================ */}
 
         <Box id="colors-text-colors">
@@ -1154,11 +1392,17 @@ const colorScale = theme.colorScale;
                   {/* Primary text */}
 
                   <Box
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`Copy ${grayScale[12]}`}
+                    onClick={() => void copyColor(grayScale[12])}
+                    onKeyDown={(event) => copyOnKeyDown(event, grayScale[12])}
                     sx={{
                       p: 2,
                       borderRadius: 2,
                       backgroundColor: backgroundScale[3],
-                      border: `1px solid ${secondaryScale[6]}`
+                      border: `1px solid ${secondaryScale[6]}`,
+                      ...getCopySx(grayScale[12])
                     }}
                   >
                     <Typography
@@ -1178,18 +1422,24 @@ const colorScale = theme.colorScale;
                         color: grayScale[10]
                       }}
                     >
-                      grayScale[12]
+                      grayScale[12] · {grayScale[12]}
                     </Typography>
                   </Box>
 
                   {/* Supporting text */}
 
                   <Box
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`Copy ${grayScale[11]}`}
+                    onClick={() => void copyColor(grayScale[11])}
+                    onKeyDown={(event) => copyOnKeyDown(event, grayScale[11])}
                     sx={{
                       p: 2,
                       borderRadius: 2,
                       backgroundColor: backgroundScale[3],
-                      border: `1px solid ${secondaryScale[6]}`
+                      border: `1px solid ${secondaryScale[6]}`,
+                      ...getCopySx(grayScale[11])
                     }}
                   >
                     <Typography
@@ -1209,18 +1459,26 @@ const colorScale = theme.colorScale;
                         color: grayScale[10]
                       }}
                     >
-                      grayScale[11]
+                      grayScale[11] · {grayScale[11]}
                     </Typography>
                   </Box>
 
                   {/* Secondary text */}
 
                   <Box
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`Copy ${secondaryScale[11]}`}
+                    onClick={() => void copyColor(secondaryScale[11])}
+                    onKeyDown={(event) =>
+                      copyOnKeyDown(event, secondaryScale[11])
+                    }
                     sx={{
                       p: 2,
                       borderRadius: 2,
                       backgroundColor: secondaryScale[2],
-                      border: `1px solid ${secondaryScale[6]}`
+                      border: `1px solid ${secondaryScale[6]}`,
+                      ...getCopySx(secondaryScale[11])
                     }}
                   >
                     <Typography
@@ -1240,18 +1498,24 @@ const colorScale = theme.colorScale;
                         color: secondaryScale[10]
                       }}
                     >
-                      secondaryScale[11]
+                      secondaryScale[11] · {secondaryScale[11]}
                     </Typography>
                   </Box>
 
                   {/* Primary accent */}
 
                   <Box
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`Copy ${colorScale[12]}`}
+                    onClick={() => void copyColor(colorScale[12])}
+                    onKeyDown={(event) => copyOnKeyDown(event, colorScale[12])}
                     sx={{
                       p: 2,
                       borderRadius: 2,
                       backgroundColor: colorScale[2],
-                      border: `1px solid ${colorScale[6]}`
+                      border: `1px solid ${colorScale[6]}`,
+                      ...getCopySx(colorScale[12])
                     }}
                   >
                     <Typography
@@ -1272,18 +1536,24 @@ const colorScale = theme.colorScale;
                         color: colorScale[11]
                       }}
                     >
-                      colorScale[12]
+                      colorScale[12] · {colorScale[12]}
                     </Typography>
                   </Box>
 
                   {/* Accent supporting */}
 
                   <Box
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`Copy ${colorScale[11]}`}
+                    onClick={() => void copyColor(colorScale[11])}
+                    onKeyDown={(event) => copyOnKeyDown(event, colorScale[11])}
                     sx={{
                       p: 2,
                       borderRadius: 2,
                       backgroundColor: colorScale[2],
-                      border: `1px solid ${colorScale[5]}`
+                      border: `1px solid ${colorScale[5]}`,
+                      ...getCopySx(colorScale[11])
                     }}
                   >
                     <Typography
@@ -1303,18 +1573,24 @@ const colorScale = theme.colorScale;
                         color: colorScale[10]
                       }}
                     >
-                      colorScale[11]
+                      colorScale[11] · {colorScale[11]}
                     </Typography>
                   </Box>
 
                   {/* Muted */}
 
                   <Box
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`Copy ${grayScale[9]}`}
+                    onClick={() => void copyColor(grayScale[9])}
+                    onKeyDown={(event) => copyOnKeyDown(event, grayScale[9])}
                     sx={{
                       p: 2,
                       borderRadius: 2,
                       backgroundColor: grayScale[2],
-                      border: `1px solid ${grayScale[6]}`
+                      border: `1px solid ${grayScale[6]}`,
+                      ...getCopySx(grayScale[9])
                     }}
                   >
                     <Typography
@@ -1334,7 +1610,7 @@ const colorScale = theme.colorScale;
                         color: grayScale[10]
                       }}
                     >
-                      grayScale[9]
+                      grayScale[9] · {grayScale[9]}
                     </Typography>
                   </Box>
                 </Stack>

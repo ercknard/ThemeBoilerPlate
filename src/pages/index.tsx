@@ -5,21 +5,20 @@ import { Box, Container, Divider, Stack, Typography } from '@mui/material';
 
 import { alpha, useTheme } from '@mui/material/styles';
 
-import GitHubIcon from '@mui/icons-material/GitHub';
-import PaletteIcon from '@mui/icons-material/Palette';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import ColorLensIcon from '@mui/icons-material/ColorLens';
+import GitHubIcon from '@mui/icons-material/GitHub';
 import LayersIcon from '@mui/icons-material/Layers';
+import PaletteIcon from '@mui/icons-material/Palette';
 import SpeedIcon from '@mui/icons-material/Speed';
 
 import { useThemeContext } from '@/contexts/themeContext';
 
-import ThemeToggle from '@/theme/ThemeToggle';
-
-import { AppButton, AppChip } from '@/theme/components/CustomComponents';
 import SkyEffects from '@/theme/common/SkyEffects';
-import { THEME_SETS, THEME_ICONS, type ThemeSetName } from '@/theme/theme';
+import { AppButton, AppChip } from '@/theme/components/CustomComponents';
+import ThemeToggle from '@/theme/ThemeToggle';
+import { THEME_ICONS, THEME_SETS } from '@/theme/theme';
 
 const GITHUB_URL = process.env.NEXT_PUBLIC_GITHUB_URL;
 
@@ -92,23 +91,23 @@ export default function Home() {
           background: {
             xs: `${background}`,
             lg: `
-            radial-gradient(
-              circle at 50% -20%,
-              ${alpha(primaryStrong, 0.75)},
-              transparent 42%
-            ),
-            radial-gradient(
-              circle at 100% 50%,
-              ${alpha(secondaryStrong, 0.5)},
-              transparent 38%
-            ),
-            radial-gradient(
-              circle at 0% 50%,
-              ${alpha(secondaryStrong, 0.5)},
-              transparent 38%
-            ),
-            ${background}
-          `
+              radial-gradient(
+                circle at 50% -20%,
+                ${alpha(primaryStrong, 0.75)},
+                transparent 42%
+              ),
+              radial-gradient(
+                circle at 100% 50%,
+                ${alpha(secondaryStrong, 0.5)},
+                transparent 38%
+              ),
+              radial-gradient(
+                circle at 0% 50%,
+                ${alpha(secondaryStrong, 0.5)},
+                transparent 38%
+              ),
+              ${background}
+            `
           },
 
           color: textPrimary,
@@ -120,10 +119,6 @@ export default function Home() {
         }}
       >
         <SkyEffects color={primary} />
-
-        {/* ============================================================ */}
-        {/* BACKGROUND DECORATION                                        */}
-        {/* ============================================================ */}
 
         <Box
           sx={{
@@ -195,10 +190,6 @@ export default function Home() {
           />
         </Box>
 
-        {/* ============================================================ */}
-        {/* MAIN CONTENT                                                 */}
-        {/* ============================================================ */}
-
         <Container
           maxWidth="xl"
           sx={{
@@ -212,10 +203,6 @@ export default function Home() {
             }
           }}
         >
-          {/* ========================================================== */}
-          {/* HEADER                                                      */}
-          {/* ========================================================== */}
-
           <Stack
             spacing={3}
             sx={{
@@ -223,8 +210,6 @@ export default function Home() {
               textAlign: 'center'
             }}
           >
-            {/* LOGO */}
-
             <Box
               sx={{
                 position: 'relative',
@@ -306,8 +291,6 @@ export default function Home() {
               />
             </Box>
 
-            {/* BRAND */}
-
             <Stack spacing={1} sx={{ alignItems: 'center' }}>
               <Typography
                 variant="overlineCustom"
@@ -366,8 +349,6 @@ export default function Home() {
               </Typography>
             </Stack>
 
-            {/* THEME TOGGLE */}
-
             <Box
               sx={{
                 p: 2,
@@ -387,10 +368,6 @@ export default function Home() {
               <ThemeToggle />
             </Box>
           </Stack>
-
-          {/* ========================================================== */}
-          {/* HERO                                                        */}
-          {/* ========================================================== */}
 
           <Box
             sx={{
@@ -497,10 +474,6 @@ export default function Home() {
                 }
               }}
             >
-              {/* ====================================================== */}
-              {/* HERO COPY                                               */}
-              {/* ====================================================== */}
-
               <Stack
                 spacing={3}
                 sx={{
@@ -574,8 +547,6 @@ export default function Home() {
                   components designed to work together seamlessly.
                 </Typography>
 
-                {/* ACTIONS */}
-
                 <Stack
                   direction={{
                     xs: 'column',
@@ -640,10 +611,6 @@ export default function Home() {
                 </Stack>
               </Stack>
 
-              {/* ====================================================== */}
-              {/* VISUAL PREVIEW                                          */}
-              {/* ====================================================== */}
-
               <Box
                 sx={{
                   display: {
@@ -692,8 +659,6 @@ export default function Home() {
                   }}
                 >
                   <Stack spacing={1.5}>
-                    {/* WINDOW */}
-
                     <Box
                       sx={{
                         height: 42,
@@ -736,8 +701,6 @@ export default function Home() {
                         Theme Preview
                       </Typography>
                     </Box>
-
-                    {/* CONTENT */}
 
                     <Box
                       sx={{
@@ -786,8 +749,6 @@ export default function Home() {
                           />
                         </Stack>
 
-                        {/* COLOR PREVIEW */}
-
                         <Box
                           sx={{
                             height: 105,
@@ -810,8 +771,6 @@ export default function Home() {
                             `
                           }}
                         />
-
-                        {/* COLOR TOKENS */}
 
                         <Stack direction="row" spacing={1}>
                           {[primary, secondary, textPrimary, textSecondary].map(
@@ -848,10 +807,6 @@ export default function Home() {
               </Box>
             </Stack>
           </Box>
-
-          {/* ========================================================== */}
-          {/* FEATURE INTRO                                               */}
-          {/* ========================================================== */}
 
           <Stack
             spacing={2}
@@ -900,10 +855,6 @@ export default function Home() {
               and surfaces visually consistent across your application.
             </Typography>
           </Stack>
-
-          {/* ========================================================== */}
-          {/* FEATURES                                                     */}
-          {/* ========================================================== */}
 
           <Box
             sx={{
@@ -1006,10 +957,6 @@ export default function Home() {
               </Box>
             ))}
           </Box>
-
-          {/* ========================================================== */}
-          {/* THEME CTA                                                   */}
-          {/* ========================================================== */}
 
           <Box
             sx={{
@@ -1115,10 +1062,6 @@ export default function Home() {
               </AppButton>
             </Stack>
           </Box>
-
-          {/* ========================================================== */}
-          {/* FOOTER                                                      */}
-          {/* ========================================================== */}
 
           <Divider
             sx={{

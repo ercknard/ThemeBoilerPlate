@@ -1,8 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useCallback, useState } from 'react';
+
 import { Box, Button, Chip, Divider, Stack, Typography } from '@mui/material';
+
 import { useTheme } from '@mui/material/styles';
+
 export { default as PlayArrowIcon } from '@mui/icons-material/PlayArrow';
 export { default as DownloadOutlinedIcon } from '@mui/icons-material/DownloadOutlined';
 export { default as AutoAwesomeIcon } from '@mui/icons-material/AutoAwesome';
@@ -16,6 +19,7 @@ export { default as CloudUploadOutlinedIcon } from '@mui/icons-material/CloudUpl
 export { default as InfoOutlinedIcon } from '@mui/icons-material/InfoOutlined';
 export { default as CheckCircleOutlineOutlinedIcon } from '@mui/icons-material/CheckCircleOutlineOutlined';
 export { default as ErrorOutlineOutlinedIcon } from '@mui/icons-material/ErrorOutlineOutlined';
+
 import {
   AppButton,
   AppChip,
@@ -24,8 +28,132 @@ import {
   AppCard,
   AppTooltip
 } from '@/theme/components/CustomComponents';
+
 import { isLightColor, getScaleName } from '@/utils/color';
+
 import type { ColorScale, ColorStep } from '@/utils/showcase-data';
+
+/* ========================================================================== */
+/* COLOR COPY HOOK                                                            */
+/* ========================================================================== */
+
+function useCopyColor() {
+  const [copiedColor, setCopiedColor] = useState<string | null>(null);
+
+  const copyColor = useCallback(async (color: string) => {
+    if (!color) return;
+
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(color);
+      } else {
+        const textarea = document.createElement('textarea');
+
+        textarea.value = color;
+        textarea.style.position = 'fixed';
+        textarea.style.left = '-9999px';
+        textarea.style.top = '-9999px';
+        textarea.style.opacity = '0';
+
+        document.body.appendChild(textarea);
+
+        textarea.focus();
+        textarea.select();
+
+        document.execCommand('copy');
+
+        document.body.removeChild(textarea);
+      }
+
+      setCopiedColor(color);
+
+      window.setTimeout(() => {
+        setCopiedColor((current) => (current === color ? null : current));
+      }, 1400);
+    } catch {
+      setCopiedColor(null);
+    }
+  }, []);
+
+  const copyOnKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLElement>, color: string) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        void copyColor(color);
+      }
+    },
+    [copyColor]
+  );
+
+  return {
+    copiedColor,
+    copyColor,
+    copyOnKeyDown
+  };
+}
+
+/* ========================================================================== */
+/* COLOR COPY FEEDBACK                                                        */
+/* ========================================================================== */
+
+function ColorCopyFeedback({ color }: { color: string | null }) {
+  const theme = useTheme();
+
+  if (!color) return null;
+
+  return (
+    <Box
+      role="status"
+      aria-live="polite"
+      sx={{
+        position: 'fixed',
+        left: '50%',
+        bottom: {
+          xs: 16,
+          sm: 24
+        },
+        zIndex: theme.zIndex.snackbar,
+        transform: 'translateX(-50%)',
+        px: 1.75,
+        py: 1,
+        borderRadius: 2,
+        display: 'flex',
+        alignItems: 'center',
+        gap: 1,
+        backgroundColor: theme.grayScale[12],
+        color: theme.backgroundScale[1],
+        boxShadow: `0 10px 30px ${theme.grayScale[7]}`,
+        pointerEvents: 'none',
+        whiteSpace: 'nowrap'
+      }}
+    >
+      <Box
+        aria-hidden
+        sx={{
+          width: 16,
+          height: 16,
+          flexShrink: 0,
+          borderRadius: '50%',
+          backgroundColor: color,
+          border: `1px solid ${theme.grayScale[6]}`
+        }}
+      />
+
+      <Typography
+        variant="small"
+        sx={{
+          fontWeight: 700
+        }}
+      >
+        {color} copied
+      </Typography>
+    </Box>
+  );
+}
+
+/* ========================================================================== */
+/* COLOR USAGE CARD                                                           */
+/* ========================================================================== */
 
 export function ColorUsageCard({
   title,
@@ -46,94 +174,118 @@ export function ColorUsageCard({
 }) {
   const theme = useTheme();
 
+  const { copiedColor, copyColor, copyOnKeyDown } = useCopyColor();
+
   return (
-    <AppPaper
-      variant="outlined"
-      sx={{
-        overflow: 'hidden'
-      }}
-    >
-      <Box
+    <>
+      <ColorCopyFeedback color={copiedColor} />
+
+      <AppPaper
+        variant="outlined"
         sx={{
-          p: {
-            xs: 2,
-            sm: 3,
-            md: 4
-          }
-        }}
-      >
-        <Stack spacing={1}>
-          <Typography variant="h5">{title}</Typography>
-
-          <Typography
-            variant="small"
-            sx={{
-              color: theme.grayScale[11]
-            }}
-          >
-            {description}
-          </Typography>
-        </Stack>
-      </Box>
-
-      <Divider />
-
-      <Box
-        sx={{
-          backgroundColor: theme.secondaryScale[3],
-          p: {
-            xs: 2,
-            sm: 3,
-            md: 4
-          }
+          overflow: 'hidden'
         }}
       >
         <Box
-          component="pre"
           sx={{
-            m: 0,
-            p: 2.5,
-            borderRadius: 2,
-            overflowX: 'auto',
-            backgroundColor: background,
-            color: textColor,
-            fontFamily: 'monospace',
-            fontSize: '0.85rem',
-            lineHeight: 1.7,
-            border: `1px solid ${theme.secondaryScale[6]}`
+            p: {
+              xs: 2,
+              sm: 3,
+              md: 4
+            }
           }}
         >
-          {code}
+          <Stack spacing={1}>
+            <Typography variant="h5">{title}</Typography>
+
+            <Typography
+              variant="small"
+              sx={{
+                color: theme.grayScale[11]
+              }}
+            >
+              {description}
+            </Typography>
+          </Stack>
         </Box>
 
-        <Stack
-          direction="row"
-          spacing={1}
+        <Divider />
+
+        <Box
           sx={{
-            mt: 2,
-            flexWrap: 'wrap'
+            backgroundColor: theme.secondaryScale[3],
+            p: {
+              xs: 2,
+              sm: 3,
+              md: 4
+            }
           }}
-          useFlexGap
         >
-          {steps.map((step) => (
-            <Chip
-              key={step}
-              label={`${getScaleName(scale)}[${step}]`}
-              sx={{
-                backgroundColor: scale[step],
-                color: isLightColor(scale[step]) ? '#000' : '#fff'
-              }}
-            />
-          ))}
-        </Stack>
-      </Box>
-    </AppPaper>
+          {/* CODE PREVIEW */}
+
+          <Box
+            component="pre"
+            sx={{
+              m: 0,
+              p: 2.5,
+              borderRadius: 2,
+              overflowX: 'auto',
+              backgroundColor: background,
+              color: textColor,
+              fontFamily: 'monospace',
+              fontSize: '0.85rem',
+              lineHeight: 1.7,
+              border: `1px solid ${theme.secondaryScale[6]}`
+            }}
+          >
+            {code}
+          </Box>
+
+          {/* COLOR TOKENS */}
+
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{
+              mt: 2,
+              flexWrap: 'wrap'
+            }}
+            useFlexGap
+          >
+            {steps.map((step) => {
+              const color = scale[step];
+
+              if (!color) return null;
+
+              return (
+                <Chip
+                  key={step}
+                  label={`${getScaleName(scale)}[${step}]`}
+                  onClick={() => void copyColor(color)}
+                  onKeyDown={(event) => copyOnKeyDown(event, color)}
+                  clickable
+                  sx={{
+                    backgroundColor: color,
+                    color: isLightColor(color) ? '#000' : '#fff',
+                    cursor: 'copy',
+                    border: `1px solid ${theme.secondaryScale[6]}`,
+                    transition: 'transform 160ms ease, box-shadow 160ms ease',
+
+                    '&:hover': {
+                      backgroundColor: color,
+                      transform: 'translateY(-2px)',
+                      boxShadow: `0 5px 16px ${color}`
+                    }
+                  }}
+                />
+              );
+            })}
+          </Stack>
+        </Box>
+      </AppPaper>
+    </>
   );
 }
-
-/* ========================================================================== */
-/* SCALE NAME                                                                 */
-/* ========================================================================== */
 
 /* ========================================================================== */
 /* COLOR SCALE SECTION                                                        */
@@ -158,6 +310,8 @@ export function ColorScaleSection({
 }) {
   const theme = useTheme();
 
+  const { copiedColor, copyColor, copyOnKeyDown } = useCopyColor();
+
   const isPrimary = colorName === 'Primary';
   const isSecondary = colorName === 'Secondary';
   const isGray = colorName === 'Gray';
@@ -169,284 +323,334 @@ export function ColorScaleSection({
       : theme.secondaryScale[6];
 
   return (
-    <AppPaper
-      variant="outlined"
-      sx={{
-        overflow: 'hidden'
-      }}
-    >
-      {/* ================================================================== */}
-      {/* HEADER                                                              */}
-      {/* ================================================================== */}
+    <>
+      <ColorCopyFeedback color={copiedColor} />
 
-      <Box
+      <AppPaper
+        variant="outlined"
         sx={{
-          p: {
-            xs: 2,
-            sm: 3,
-            md: 4
-          }
+          overflow: 'hidden',
+          borderColor: sectionBorder
         }}
       >
-        <Stack spacing={0.5}>
-          <Stack
-            direction="row"
-            spacing={1}
-            sx={{
-              alignItems: 'center',
-              flexWrap: 'wrap'
-            }}
-          >
-            <Typography variant="h5">{title}</Typography>
+        {/* ================================================================ */}
+        {/* HEADER                                                            */}
+        {/* ================================================================ */}
 
-            <Chip
-              size="small"
-              label={
-                isPrimary
-                  ? '10%'
-                  : isSecondary
-                    ? '30%'
-                    : isGray
-                      ? 'Neutral'
-                      : '60%'
-              }
+        <Box
+          sx={{
+            p: {
+              xs: 2,
+              sm: 3,
+              md: 4
+            }
+          }}
+        >
+          <Stack spacing={0.5}>
+            <Stack
+              direction="row"
+              spacing={1}
               sx={{
-                backgroundColor: isPrimary
-                  ? theme.colorScale[3]
-                  : isSecondary
-                    ? theme.secondaryScale[3]
-                    : isGray
-                      ? theme.grayScale[3]
-                      : theme.backgroundScale[3],
-
-                color: isPrimary
-                  ? theme.colorScale[11]
-                  : isSecondary
-                    ? theme.secondaryScale[11]
-                    : isGray
-                      ? theme.grayScale[11]
-                      : theme.backgroundScale[11]
+                alignItems: 'center',
+                flexWrap: 'wrap'
               }}
-            />
-          </Stack>
+            >
+              <Typography variant="h5">{title}</Typography>
 
-          <Typography
-            variant="body2"
-            sx={{
-              color: theme.grayScale[11]
-            }}
-          >
-            {description}
-          </Typography>
-        </Stack>
-      </Box>
+              <Chip
+                size="small"
+                label={
+                  isPrimary
+                    ? '10%'
+                    : isSecondary
+                      ? '30%'
+                      : isGray
+                        ? 'Neutral'
+                        : '60%'
+                }
+                sx={{
+                  backgroundColor: isPrimary
+                    ? theme.colorScale[3]
+                    : isSecondary
+                      ? theme.secondaryScale[3]
+                      : isGray
+                        ? theme.grayScale[3]
+                        : theme.backgroundScale[3],
 
-      {/* ================================================================== */}
-      {/* FULL 1–12 SCALE                                                     */}
-      {/* ================================================================== */}
-
-      <Box
-        sx={{
-          p: 2,
-          pt: 0,
-          display: 'grid',
-          gridTemplateColumns: {
-            xs: 'repeat(3, 1fr)',
-            sm: 'repeat(4, 1fr)',
-            md: 'repeat(6, 1fr)',
-            lg: 'repeat(12, 1fr)'
-          }
-        }}
-      >
-        {Array.from(
-          {
-            length: 12
-          },
-          (_, index) => index + 1
-        ).map((step) => {
-          const color = scale[step];
-
-          return <ColorScaleItem key={step} step={step} color={color} />;
-        })}
-      </Box>
-
-      <Divider />
-
-      {/* ================================================================== */}
-      {/* SEMANTIC GROUPS                                                     */}
-      {/* ================================================================== */}
-
-      {semanticGroups.map((group, groupIndex) => (
-        <Box key={group.title}>
-          {groupIndex > 0 && <Divider />}
-
-          <Box
-            sx={{
-              p: {
-                xs: 2,
-                sm: 3,
-                md: 4
-              },
-              pb: {
-                xs: 2,
-                sm: 2,
-                md: 3
-              }
-            }}
-          >
-            <Typography variant="h5">{group.title}</Typography>
+                  color: isPrimary
+                    ? theme.colorScale[11]
+                    : isSecondary
+                      ? theme.secondaryScale[11]
+                      : isGray
+                        ? theme.grayScale[11]
+                        : theme.backgroundScale[11]
+                }}
+              />
+            </Stack>
 
             <Typography
-              variant="small"
+              variant="body2"
               sx={{
-                mt: 0.5,
-                display: 'block',
                 color: theme.grayScale[11]
               }}
             >
-              {group.description}
+              {description}
             </Typography>
+          </Stack>
+        </Box>
+
+        {/* ================================================================ */}
+        {/* FULL 1–12 SCALE                                                   */}
+        {/* ================================================================ */}
+
+        <Box
+          sx={{
+            p: 2,
+            pt: 0,
+            display: 'grid',
+            gridTemplateColumns: {
+              xs: 'repeat(3, 1fr)',
+              sm: 'repeat(4, 1fr)',
+              md: 'repeat(6, 1fr)',
+              lg: 'repeat(12, 1fr)'
+            }
+          }}
+        >
+          {Array.from(
+            {
+              length: 12
+            },
+            (_, index) => index + 1
+          ).map((step) => {
+            const color = scale[step];
+
+            return (
+              <ColorScaleItem
+                key={step}
+                step={step}
+                color={color}
+                onClick={copyColor}
+                onKeyDown={copyOnKeyDown}
+              />
+            );
+          })}
+        </Box>
+
+        <Divider />
+
+        {/* ================================================================ */}
+        {/* SEMANTIC GROUPS                                                   */}
+        {/* ================================================================ */}
+
+        {semanticGroups.map((group, groupIndex) => (
+          <Box key={group.title}>
+            {groupIndex > 0 && <Divider />}
+
+            <Box
+              sx={{
+                p: {
+                  xs: 2,
+                  sm: 3,
+                  md: 4
+                },
+                pb: {
+                  xs: 2,
+                  sm: 2,
+                  md: 3
+                }
+              }}
+            >
+              <Typography variant="h5">{group.title}</Typography>
+
+              <Typography
+                variant="small"
+                sx={{
+                  mt: 0.5,
+                  display: 'block',
+                  color: theme.grayScale[11]
+                }}
+              >
+                {group.description}
+              </Typography>
+            </Box>
+
+            <Box
+              sx={{
+                p: 2,
+                backgroundColor: theme.secondaryScale[3],
+                display: 'grid',
+                gridTemplateColumns: {
+                  xs:
+                    group.steps.length === 2
+                      ? 'repeat(2, 1fr)'
+                      : 'repeat(3, 1fr)',
+                  sm: `repeat(${group.steps.length}, 1fr)`
+                }
+              }}
+            >
+              {group.steps.map((item) => {
+                const color = scale[item.step];
+
+                return (
+                  <ColorScaleItem
+                    key={item.step}
+                    step={item.step}
+                    title={item.title}
+                    description={item.description}
+                    color={color}
+                    large
+                    onClick={copyColor}
+                    onKeyDown={copyOnKeyDown}
+                  />
+                );
+              })}
+            </Box>
           </Box>
+        ))}
+
+        {/* ================================================================ */}
+        {/* SEMANTIC TOKENS                                                   */}
+        {/* ================================================================ */}
+
+        <Divider />
+
+        <Box
+          sx={{
+            p: {
+              xs: 2,
+              sm: 3,
+              md: 4
+            }
+          }}
+        >
+          <Typography variant="h5">Semantic Tokens</Typography>
+
+          <Typography
+            variant="small"
+            sx={{
+              mt: 0.5,
+              mb: 3,
+              display: 'block',
+              color: theme.grayScale[11]
+            }}
+          >
+            Additional semantic aliases generated from the{' '}
+            {colorName.toLowerCase()} scale.
+          </Typography>
 
           <Box
             sx={{
-              p: 2,
-              backgroundColor: theme.secondaryScale[3],
               display: 'grid',
               gridTemplateColumns: {
-                xs:
-                  group.steps.length === 2
-                    ? 'repeat(2, 1fr)'
-                    : 'repeat(3, 1fr)',
-                sm: `repeat(${group.steps.length}, 1fr)`
-              }
+                xs: 'repeat(2, 1fr)',
+                sm: 'repeat(4, 1fr)'
+              },
+              gap: 2
             }}
           >
-            {group.steps.map((item) => {
-              const color = scale[item.step];
+            {[
+              {
+                name: 'surface',
+                color: scale.surface
+              },
+              {
+                name: 'indicator',
+                color: scale.indicator
+              },
+              {
+                name: 'track',
+                color: scale.track
+              },
+              {
+                name: 'contrast',
+                color: scale.contrast
+              }
+            ].map((item) => {
+              if (!item.color) return null;
+
+              const lightText = isLightColor(item.color);
 
               return (
-                <ColorScaleItem
-                  key={item.step}
-                  step={item.step}
-                  title={item.title}
-                  description={item.description}
-                  color={color}
-                  large
-                />
+                <Box
+                  key={item.name}
+                  sx={{
+                    border: `1px solid ${theme.secondaryScale[6]}`,
+                    borderRadius: 2,
+                    overflow: 'hidden'
+                  }}
+                >
+                  {/* TOKEN COLOR */}
+
+                  <Box
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`Copy ${item.name} color ${item.color}`}
+                    onClick={() => void copyColor(item.color!)}
+                    onKeyDown={(event) => copyOnKeyDown(event, item.color!)}
+                    sx={{
+                      height: 90,
+                      backgroundColor: item.color,
+                      display: 'flex',
+                      alignItems: 'flex-end',
+                      justifyContent: 'space-between',
+                      p: 1.5,
+                      cursor: 'copy',
+                      transition: 'transform 160ms ease, opacity 160ms ease',
+
+                      '&:hover': {
+                        opacity: 0.9
+                      },
+
+                      '&:active': {
+                        transform: 'scale(0.99)'
+                      }
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        color: lightText ? '#000' : '#fff',
+                        fontWeight: 700
+                      }}
+                    >
+                      {item.name}
+                    </Typography>
+                  </Box>
+
+                  {/* TOKEN VALUE */}
+
+                  <Box
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`Copy ${item.color}`}
+                    onClick={() => void copyColor(item.color!)}
+                    onKeyDown={(event) => copyOnKeyDown(event, item.color!)}
+                    sx={{
+                      p: 1.5,
+                      backgroundColor: theme.backgroundScale[1],
+                      cursor: 'copy',
+
+                      '&:hover': {
+                        backgroundColor: theme.backgroundScale[2]
+                      }
+                    }}
+                  >
+                    <Typography
+                      variant="code"
+                      sx={{
+                        wordBreak: 'break-all',
+                        color: theme.grayScale[11]
+                      }}
+                    >
+                      {item.color}
+                    </Typography>
+                  </Box>
+                </Box>
               );
             })}
           </Box>
         </Box>
-      ))}
-
-      {/* ================================================================== */}
-      {/* SEMANTIC TOKENS                                                     */}
-      {/* ================================================================== */}
-
-      <Divider />
-
-      <Box
-        sx={{
-          p: {
-            xs: 2,
-            sm: 3,
-            md: 4
-          }
-        }}
-      >
-        <Typography variant="h5">Semantic Tokens</Typography>
-
-        <Typography
-          variant="small"
-          sx={{
-            mt: 0.5,
-            mb: 3,
-            display: 'block',
-            color: theme.grayScale[11]
-          }}
-        >
-          Additional semantic aliases generated from the{' '}
-          {colorName.toLowerCase()} scale.
-        </Typography>
-
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: {
-              xs: 'repeat(2, 1fr)',
-              sm: 'repeat(4, 1fr)'
-            },
-            gap: 2
-          }}
-        >
-          {[
-            {
-              name: 'surface',
-              color: scale.surface
-            },
-            {
-              name: 'indicator',
-              color: scale.indicator
-            },
-            {
-              name: 'track',
-              color: scale.track
-            },
-            {
-              name: 'contrast',
-              color: scale.contrast
-            }
-          ].map((item) => (
-            <Box
-              key={item.name}
-              sx={{
-                border: `1px solid ${theme.secondaryScale[6]}`,
-                borderRadius: 2,
-                overflow: 'hidden'
-              }}
-            >
-              <Box
-                sx={{
-                  height: 90,
-                  backgroundColor: item.color,
-                  display: 'flex',
-                  alignItems: 'flex-end',
-                  p: 1.5
-                }}
-              >
-                <Typography
-                  sx={{
-                    color:
-                      item.color && isLightColor(item.color) ? '#000' : '#fff',
-                    fontWeight: 700
-                  }}
-                >
-                  {item.name}
-                </Typography>
-              </Box>
-
-              <Box
-                sx={{
-                  p: 1.5,
-                  backgroundColor: theme.backgroundScale[1]
-                }}
-              >
-                <Typography
-                  variant="code"
-                  sx={{
-                    wordBreak: 'break-all',
-                    color: theme.grayScale[11]
-                  }}
-                >
-                  {item.color}
-                </Typography>
-              </Box>
-            </Box>
-          ))}
-        </Box>
-      </Box>
-    </AppPaper>
+      </AppPaper>
+    </>
   );
 }
 
@@ -459,15 +663,20 @@ export function ColorScaleItem({
   color,
   title,
   description,
-  large = false
+  large = false,
+  onClick,
+  onKeyDown
 }: {
   step: number;
   color: string;
   title?: string;
   description?: string;
   large?: boolean;
+  onClick?: (color: string) => void;
+  onKeyDown?: (event: React.KeyboardEvent<HTMLElement>, color: string) => void;
 }) {
   const theme = useTheme();
+
   const useLightText = !isLightColor(color);
 
   return (
@@ -477,14 +686,20 @@ export function ColorScaleItem({
         margin: 0.5,
         border: `2px solid ${theme.secondaryScale[6]}`,
         borderRadius: 2,
-        backgroundColor: theme.secondaryScale[5]
+        backgroundColor: theme.secondaryScale[5],
+        overflow: 'hidden'
       }}
     >
-      {/* ================================================================== */}
-      {/* COLOR                                                               */}
-      {/* ================================================================== */}
+      {/* ================================================================ */}
+      {/* COLOR                                                             */}
+      {/* ================================================================ */}
 
       <Box
+        role="button"
+        tabIndex={0}
+        aria-label={`Copy color ${color}`}
+        onClick={() => onClick?.(color)}
+        onKeyDown={(event) => onKeyDown?.(event, color)}
         sx={{
           height: large
             ? {
@@ -506,6 +721,24 @@ export function ColorScaleItem({
           p: {
             xs: 1.5,
             sm: 2
+          },
+          cursor: 'copy',
+          transition:
+            'transform 160ms ease, filter 160ms ease, box-shadow 160ms ease',
+
+          '&:hover': {
+            filter: 'brightness(1.05)',
+            transform: 'scale(1.015)',
+            boxShadow: `0 6px 18px ${color}`
+          },
+
+          '&:active': {
+            transform: 'scale(0.99)'
+          },
+
+          '&:focus-visible': {
+            outline: `2px solid ${theme.colorScale[9]}`,
+            outlineOffset: 2
           }
         }}
       >
@@ -523,9 +756,9 @@ export function ColorScaleItem({
         </Typography>
       </Box>
 
-      {/* ================================================================== */}
-      {/* INFORMATION                                                         */}
-      {/* ================================================================== */}
+      {/* ================================================================ */}
+      {/* INFORMATION                                                       */}
+      {/* ================================================================ */}
 
       <Box
         sx={{
@@ -561,6 +794,11 @@ export function ColorScaleItem({
 
         <Typography
           variant="code"
+          role="button"
+          tabIndex={0}
+          aria-label={`Copy ${color}`}
+          onClick={() => onClick?.(color)}
+          onKeyDown={(event) => onKeyDown?.(event, color)}
           sx={{
             display: 'block',
             mt: 1,
@@ -569,7 +807,12 @@ export function ColorScaleItem({
               sm: '0.7rem'
             },
             wordBreak: 'break-all',
-            color: theme.grayScale[11]
+            color: theme.grayScale[11],
+            cursor: 'copy',
+
+            '&:hover': {
+              color: theme.colorScale[9]
+            }
           }}
         >
           {color}
@@ -705,7 +948,6 @@ export function SampleCard({
       sx={{
         p: 2.5,
         borderRadius: 2,
-
         borderColor: theme.secondaryScale[6],
         transition: 'all 0.2s ease',
 
@@ -795,7 +1037,6 @@ export function StatCard({
       sx={{
         p: 2.5,
         borderRadius: 2,
-
         borderColor: theme.secondaryScale[6]
       }}
     >
@@ -981,8 +1222,6 @@ export function TypographyUsageSection() {
             }}
           >
             <Stack>
-              {/* Header */}
-
               <Stack
                 direction={{
                   xs: 'column',
@@ -1029,11 +1268,12 @@ export function TypographyUsageSection() {
 
               <Divider />
 
-              {/* Live preview */}
-
               <Stack
                 spacing={2}
-                sx={{ p: 3, backgroundColor: theme.secondaryScale[3] }}
+                sx={{
+                  p: 3,
+                  backgroundColor: theme.secondaryScale[3]
+                }}
               >
                 <Box
                   sx={{
@@ -1050,8 +1290,6 @@ export function TypographyUsageSection() {
                     The quick brown fox jumps over the lazy dog.
                   </Typography>
                 </Box>
-
-                {/* Code */}
 
                 <Box
                   component="pre"

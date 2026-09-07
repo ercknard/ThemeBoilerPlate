@@ -15,6 +15,8 @@ import {
 
 import { alpha, useTheme } from '@mui/material/styles';
 
+import Head from 'next/head';
+
 import {
   DEFAULT_CUSTOM_COLORS,
   THEME_ICONS,
@@ -24,7 +26,6 @@ import {
   createRadixScale,
   type ThemeSetName
 } from '@/theme/theme';
-import Head from 'next/head';
 
 import { useThemeContext } from '@/contexts/themeContext';
 
@@ -41,16 +42,12 @@ type ColorPreset = {
   gray: string;
 };
 
+type CopyColorHandler = (value: unknown) => void;
+
 /* ========================================================================== */
 /* HELPERS                                                                    */
 /* ========================================================================== */
 
-/**
- * Guarantees that anything passed into color utilities is a valid string.
- * This prevents errors such as:
- *
- *   Cannot read properties of undefined (reading 'replace')
- */
 function safeColor(value: unknown, fallback = '#808080'): string {
   if (typeof value !== 'string') {
     return fallback;
@@ -74,9 +71,6 @@ function safeColor(value: unknown, fallback = '#808080'): string {
   return fallback;
 }
 
-/**
- * Returns readable text against a HEX background.
- */
 function getContrastColor(value: unknown): string {
   const hex = safeColor(value);
 
@@ -127,9 +121,6 @@ function getCategoryLabel(category: string): string {
   }
 }
 
-/**
- * Converts a THEME_SETS entry into guaranteed color values.
- */
 function getPresetColors(name: ThemeSetName, preset: ThemePreset): ColorPreset {
   if (name === 'custom' || !('color' in preset)) {
     return {
@@ -149,24 +140,142 @@ function getPresetColors(name: ThemeSetName, preset: ThemePreset): ColorPreset {
 }
 
 /* ========================================================================== */
+/* COPY COLOR                                                                 */
+/* ========================================================================== */
+
+async function copyColor(value: unknown): Promise<string | null> {
+  const color = safeColor(value);
+
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(color);
+
+      return color;
+    }
+
+    const textarea = document.createElement('textarea');
+
+    textarea.value = color;
+
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    textarea.style.top = '0';
+    textarea.style.opacity = '0';
+
+    document.body.appendChild(textarea);
+
+    textarea.focus();
+    textarea.select();
+
+    const copied = document.execCommand('copy');
+
+    textarea.remove();
+
+    return copied ? color : null;
+  } catch {
+    return null;
+  }
+}
+
+/* ========================================================================== */
+/* COLOR COPY FEEDBACK                                                        */
+/* ========================================================================== */
+
+function ColorCopyFeedback({ color }: { color: string | null }) {
+  const theme = useTheme();
+
+  if (!color) {
+    return null;
+  }
+
+  return (
+    <Box
+      role="status"
+      aria-live="polite"
+      sx={{
+        position: 'fixed',
+        left: '50%',
+        bottom: {
+          xs: 16,
+          sm: 24
+        },
+        zIndex: theme.zIndex.snackbar,
+        transform: 'translateX(-50%)',
+        px: 1.75,
+        py: 1,
+        borderRadius: 2,
+        display: 'flex',
+        alignItems: 'center',
+        gap: 1,
+        backgroundColor: theme.grayScale[12],
+        color: theme.backgroundScale[1],
+        boxShadow: `0 10px 30px ${theme.grayScale[7]}`,
+        pointerEvents: 'none',
+        whiteSpace: 'nowrap'
+      }}
+    >
+      <Box
+        aria-hidden
+        sx={{
+          width: 16,
+          height: 16,
+          flexShrink: 0,
+          borderRadius: '50%',
+          backgroundColor: color,
+          border: `1px solid ${theme.grayScale[6]}`
+        }}
+      />
+
+      <Typography
+        variant="small"
+        sx={{
+          fontWeight: 700
+        }}
+      >
+        {color} copied
+      </Typography>
+    </Box>
+  );
+}
+
+/* ========================================================================== */
 /* COLOR SWATCH                                                               */
 /* ========================================================================== */
 
 function ColorSwatch({
   value,
   label,
-  large = false
+  large = false,
+  onCopy
 }: {
   value: unknown;
   label: string;
   large?: boolean;
+  onCopy: CopyColorHandler;
 }) {
   const color = safeColor(value);
   const textColor = getContrastColor(color);
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+
+      onCopy(color);
+    }
+  };
+
   return (
-    <Tooltip title={`${label}: ${color}`} arrow>
+    <Tooltip title={`Click to copy ${color}`} arrow>
       <Box
+        role="button"
+        tabIndex={0}
+        aria-label={`Copy ${label} color ${color}`}
+        onClick={() => onCopy(color)}
+        onKeyDown={handleKeyDown}
         sx={{
           position: 'relative',
           flex: 1,
@@ -177,13 +286,23 @@ function ColorSwatch({
           borderColor: alpha('#FFFFFF', 0.08),
           transition:
             'transform 160ms ease, filter 160ms ease, box-shadow 160ms ease',
-          cursor: 'default',
+          cursor: 'copy',
 
           '&:hover': {
             transform: 'translateY(-2px)',
             filter: 'brightness(1.08)',
             zIndex: 2,
             boxShadow: `0 6px 20px ${alpha(color, 0.35)}`
+          },
+
+          '&:focus-visible': {
+            outline: '2px solid',
+            outlineColor: textColor,
+            outlineOffset: 2
+          },
+
+          '&:active': {
+            transform: 'translateY(0)'
           }
         }}
       >
@@ -214,11 +333,13 @@ function ColorSwatch({
 function ColorScale({
   title,
   scale,
-  suppliedColor
+  suppliedColor,
+  onCopy
 }: {
   title: string;
   scale: Record<number, string>;
   suppliedColor?: string;
+  onCopy: CopyColorHandler;
 }) {
   return (
     <Stack spacing={1.25}>
@@ -270,8 +391,19 @@ function ColorScale({
           const contrastColor = getContrastColor(value);
 
           return (
-            <Tooltip key={step} title={`Step ${step}: ${value}`} arrow>
+            <Tooltip key={step} title={`Click to copy ${value}`} arrow>
               <Box
+                role="button"
+                tabIndex={0}
+                aria-label={`Copy step ${step} color ${value}`}
+                onClick={() => onCopy(value)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+
+                    onCopy(value);
+                  }
+                }}
                 sx={{
                   position: 'relative',
                   flex: 1,
@@ -279,7 +411,7 @@ function ColorScale({
                   backgroundColor: value,
                   borderRight: step !== 12 ? '1px solid' : undefined,
                   borderColor: alpha('#FFFFFF', 0.08),
-                  cursor: 'default',
+                  cursor: 'copy',
                   transition: 'transform 150ms ease, filter 150ms ease',
                   zIndex: isSupplied ? 2 : 1,
 
@@ -287,6 +419,17 @@ function ColorScale({
                     transform: 'scaleY(1.08)',
                     filter: 'brightness(1.08)',
                     zIndex: 3
+                  },
+
+                  '&:focus-visible': {
+                    outline: '2px solid',
+                    outlineColor: contrastColor,
+                    outlineOffset: -2,
+                    zIndex: 4
+                  },
+
+                  '&:active': {
+                    transform: 'scaleY(1.02)'
                   },
 
                   ...(isSupplied && {
@@ -322,15 +465,56 @@ function ColorScale({
           justifyContent: 'space-between'
         }}
       >
-        <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+        <Typography
+          variant="caption"
+          sx={{
+            color: 'text.secondary'
+          }}
+        >
           Subtle
         </Typography>
 
-        <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+        <Typography
+          variant="caption"
+          sx={{
+            color: 'text.secondary'
+          }}
+        >
           Strong
         </Typography>
       </Stack>
     </Stack>
+  );
+}
+
+/* ========================================================================== */
+/* COLOR CHIP                                                                  */
+/* ========================================================================== */
+
+function ColorChip({
+  label,
+  value,
+  onCopy
+}: {
+  label: string;
+  value: string;
+  onCopy: CopyColorHandler;
+}) {
+  return (
+    <Tooltip title={`Click to copy ${value}`} arrow>
+      <Chip
+        size="small"
+        variant="outlined"
+        clickable
+        onClick={() => onCopy(value)}
+        label={`${label} ${value}`}
+        sx={{
+          fontFamily: 'monospace',
+          fontSize: '0.65rem',
+          cursor: 'copy'
+        }}
+      />
+    </Tooltip>
   );
 }
 
@@ -341,11 +525,13 @@ function ColorScale({
 function PresetCard({
   name,
   preset,
-  mode
+  mode,
+  onCopy
 }: {
   name: ThemeSetName;
   preset: ThemePreset;
   mode: 'light' | 'dark';
+  onCopy: CopyColorHandler;
 }) {
   const theme = useTheme();
 
@@ -391,7 +577,12 @@ function PresetCard({
             />
 
             <Box>
-              <Typography variant="h6" sx={{ fontWeight: 700 }}>
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: 700
+                }}
+              >
                 {preset.label}
               </Typography>
 
@@ -431,13 +622,28 @@ function PresetCard({
             </Typography>
 
             <Stack direction="row" spacing={0.75}>
-              <ColorSwatch value={color} label="Primary" large />
+              <ColorSwatch
+                value={color}
+                label="Primary"
+                large
+                onCopy={onCopy}
+              />
 
-              <ColorSwatch value={secondary} label="Secondary" large />
+              <ColorSwatch
+                value={secondary}
+                label="Secondary"
+                large
+                onCopy={onCopy}
+              />
 
-              <ColorSwatch value={background} label="Background" large />
+              <ColorSwatch
+                value={background}
+                label="Background"
+                large
+                onCopy={onCopy}
+              />
 
-              <ColorSwatch value={gray} label="Gray" large />
+              <ColorSwatch value={gray} label="Gray" large onCopy={onCopy} />
             </Stack>
           </Stack>
         </Stack>
@@ -617,43 +823,118 @@ function PresetCard({
             Color composition
           </Typography>
 
-          <Box
+          <Stack
+            direction="row"
             sx={{
-              display: 'flex',
               width: '100%',
               height: 34,
               overflow: 'hidden',
               borderRadius: 1.5
             }}
           >
-            <Tooltip title={`Primary · ${color}`} arrow>
+            <Tooltip title={`Click to copy ${color}`} arrow>
               <Box
+                role="button"
+                tabIndex={0}
+                aria-label={`Copy primary color ${color}`}
+                onClick={() => onCopy(color)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+
+                    onCopy(color);
+                  }
+                }}
                 sx={{
                   width: '10%',
                   minWidth: 36,
-                  backgroundColor: color
+                  backgroundColor: color,
+                  cursor: 'copy',
+                  transition: 'filter 150ms ease, transform 150ms ease',
+
+                  '&:hover': {
+                    filter: 'brightness(1.08)',
+                    transform: 'scaleY(1.08)'
+                  },
+
+                  '&:focus-visible': {
+                    outline: '2px solid',
+                    outlineColor: getContrastColor(color),
+                    outlineOffset: -2,
+                    zIndex: 2
+                  }
                 }}
               />
             </Tooltip>
 
-            <Tooltip title={`Secondary · ${secondary}`} arrow>
+            <Tooltip title={`Click to copy ${secondary}`} arrow>
               <Box
+                role="button"
+                tabIndex={0}
+                aria-label={`Copy secondary color ${secondary}`}
+                onClick={() => onCopy(secondary)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+
+                    onCopy(secondary);
+                  }
+                }}
                 sx={{
                   width: '30%',
-                  backgroundColor: secondary
+                  backgroundColor: secondary,
+                  cursor: 'copy',
+                  transition: 'filter 150ms ease, transform 150ms ease',
+
+                  '&:hover': {
+                    filter: 'brightness(1.08)',
+                    transform: 'scaleY(1.08)'
+                  },
+
+                  '&:focus-visible': {
+                    outline: '2px solid',
+                    outlineColor: getContrastColor(secondary),
+                    outlineOffset: -2,
+                    zIndex: 2
+                  }
                 }}
               />
             </Tooltip>
 
-            <Tooltip title={`Background · ${background}`} arrow>
+            <Tooltip title={`Click to copy ${background}`} arrow>
               <Box
+                role="button"
+                tabIndex={0}
+                aria-label={`Copy background color ${background}`}
+                onClick={() => onCopy(background)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+
+                    onCopy(background);
+                  }
+                }}
                 sx={{
                   width: '60%',
-                  backgroundColor: background
+                  backgroundColor: background,
+                  cursor: 'copy',
+                  transition: 'filter 150ms ease, transform 150ms ease',
+
+                  '&:hover': {
+                    filter: 'brightness(1.08)',
+                    transform: 'scaleY(1.08)'
+                  },
+
+                  '&:focus-visible': {
+                    outline: '2px solid',
+                    outlineColor: getContrastColor(background),
+                    outlineOffset: -2,
+                    zIndex: 2
+                  }
                 }}
               />
             </Tooltip>
-          </Box>
+          </Stack>
 
           <Stack
             direction="row"
@@ -662,15 +943,30 @@ function PresetCard({
               gap: 1
             }}
           >
-            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+            <Typography
+              variant="caption"
+              sx={{
+                color: 'text.secondary'
+              }}
+            >
               10% Primary
             </Typography>
 
-            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+            <Typography
+              variant="caption"
+              sx={{
+                color: 'text.secondary'
+              }}
+            >
               30% Secondary
             </Typography>
 
-            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+            <Typography
+              variant="caption"
+              sx={{
+                color: 'text.secondary'
+              }}
+            >
               60% Background
             </Typography>
           </Stack>
@@ -708,13 +1004,28 @@ function PresetCard({
                 width: '100%'
               }}
             >
-              <ColorSwatch value={color} label="Primary" large />
+              <ColorSwatch
+                value={color}
+                label="Primary"
+                large
+                onCopy={onCopy}
+              />
 
-              <ColorSwatch value={secondary} label="Secondary" large />
+              <ColorSwatch
+                value={secondary}
+                label="Secondary"
+                large
+                onCopy={onCopy}
+              />
 
-              <ColorSwatch value={background} label="Background" large />
+              <ColorSwatch
+                value={background}
+                label="Background"
+                large
+                onCopy={onCopy}
+              />
 
-              <ColorSwatch value={gray} label="Gray" large />
+              <ColorSwatch value={gray} label="Gray" large onCopy={onCopy} />
             </Stack>
           </Stack>
 
@@ -726,45 +1037,13 @@ function PresetCard({
             }}
             useFlexGap
           >
-            <Chip
-              size="small"
-              variant="outlined"
-              label={`Primary ${color}`}
-              sx={{
-                fontFamily: 'monospace',
-                fontSize: '0.65rem'
-              }}
-            />
+            <ColorChip label="Primary" value={color} onCopy={onCopy} />
 
-            <Chip
-              size="small"
-              variant="outlined"
-              label={`Secondary ${secondary}`}
-              sx={{
-                fontFamily: 'monospace',
-                fontSize: '0.65rem'
-              }}
-            />
+            <ColorChip label="Secondary" value={secondary} onCopy={onCopy} />
 
-            <Chip
-              size="small"
-              variant="outlined"
-              label={`Background ${background}`}
-              sx={{
-                fontFamily: 'monospace',
-                fontSize: '0.65rem'
-              }}
-            />
+            <ColorChip label="Background" value={background} onCopy={onCopy} />
 
-            <Chip
-              size="small"
-              variant="outlined"
-              label={`Gray ${gray}`}
-              sx={{
-                fontFamily: 'monospace',
-                fontSize: '0.65rem'
-              }}
-            />
+            <ColorChip label="Gray" value={gray} onCopy={onCopy} />
           </Stack>
         </Stack>
       </Box>
@@ -785,6 +1064,7 @@ function PresetCard({
           title="Primary scale"
           scale={colorScale}
           suppliedColor={color}
+          onCopy={onCopy}
         />
       </Box>
 
@@ -804,6 +1084,7 @@ function PresetCard({
           title="Secondary scale"
           scale={secondaryScale}
           suppliedColor={secondary}
+          onCopy={onCopy}
         />
       </Box>
 
@@ -823,6 +1104,7 @@ function PresetCard({
           title="Background scale"
           scale={backgroundScale}
           suppliedColor={background}
+          onCopy={onCopy}
         />
       </Box>
 
@@ -842,6 +1124,7 @@ function PresetCard({
           title="Gray / neutral scale"
           scale={grayScale}
           suppliedColor={gray}
+          onCopy={onCopy}
         />
       </Box>
 
@@ -892,8 +1175,19 @@ function PresetCard({
                     sm: 3
                   }}
                 >
-                  <Tooltip title={`${token.label}: ${token.value}`} arrow>
+                  <Tooltip title={`Click to copy ${token.value}`} arrow>
                     <Box
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`Copy ${token.label} color ${token.value}`}
+                      onClick={() => onCopy(token.value)}
+                      onKeyDown={(event) => {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                          event.preventDefault();
+
+                          onCopy(token.value);
+                        }
+                      }}
                       sx={{
                         p: 1.25,
                         minHeight: 68,
@@ -904,7 +1198,21 @@ function PresetCard({
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'space-between',
-                        cursor: 'default'
+                        cursor: 'copy',
+                        transition:
+                          'transform 150ms ease, filter 150ms ease, box-shadow 150ms ease',
+
+                        '&:hover': {
+                          transform: 'translateY(-2px)',
+                          filter: 'brightness(1.06)',
+                          boxShadow: `0 6px 18px ${alpha(token.value, 0.3)}`
+                        },
+
+                        '&:focus-visible': {
+                          outline: '2px solid',
+                          outlineColor: contrast,
+                          outlineOffset: 2
+                        }
                       }}
                     >
                       <Typography
@@ -948,6 +1256,36 @@ export default function ColorPresetsSection() {
 
   const mode = theme.palette.mode;
 
+  const [copiedColor, setCopiedColor] = React.useState<string | null>(null);
+
+  const copyTimerRef = React.useRef<number | null>(null);
+
+  const handleCopyColor = React.useCallback(async (value: unknown) => {
+    const color = await copyColor(value);
+
+    if (!color) {
+      return;
+    }
+
+    setCopiedColor(color);
+
+    if (copyTimerRef.current !== null) {
+      window.clearTimeout(copyTimerRef.current);
+    }
+
+    copyTimerRef.current = window.setTimeout(() => {
+      setCopiedColor(null);
+    }, 1600);
+  }, []);
+
+  React.useEffect(() => {
+    return () => {
+      if (copyTimerRef.current !== null) {
+        window.clearTimeout(copyTimerRef.current);
+      }
+    };
+  }, []);
+
   const entries = Object.entries(THEME_SETS) as [
     ThemeSetName,
     (typeof THEME_SETS)[ThemeSetName]
@@ -990,13 +1328,17 @@ export default function ColorPresetsSection() {
           content="A flexible MUI theme system with dynamic color scales, semantic surfaces, typography, and responsive components."
         />
       </Head>
+
       {/* ================================================================== */}
       {/* INTRO                                                              */}
       {/* ================================================================== */}
 
       <Stack
         id="color-presets"
-        spacing={{ xs: 5, md: 8 }}
+        spacing={{
+          xs: 5,
+          md: 8
+        }}
         sx={{
           px: {
             xs: 2,
@@ -1115,7 +1457,12 @@ export default function ColorPresetsSection() {
                         xxxl: 6
                       }}
                     >
-                      <PresetCard name={name} preset={preset} mode={mode} />
+                      <PresetCard
+                        name={name}
+                        preset={preset}
+                        mode={mode}
+                        onCopy={handleCopyColor}
+                      />
                     </Grid>
                   ))}
                 </Grid>
@@ -1124,6 +1471,8 @@ export default function ColorPresetsSection() {
           })}
         </Stack>
       </Stack>
+
+      <ColorCopyFeedback color={copiedColor} />
     </>
   );
 }
