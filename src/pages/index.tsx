@@ -3,7 +3,15 @@
 import Head from 'next/head';
 import Image from 'next/image';
 
-import { Box, Container, Divider, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Chip,
+  Container,
+  Divider,
+  Paper,
+  Stack,
+  Typography
+} from '@mui/material';
 
 import { alpha, useTheme } from '@mui/material/styles';
 
@@ -21,6 +29,7 @@ import SkyEffects from '@/theme/common/SkyEffects';
 import { AppButton, AppChip } from '@/theme/components/CustomComponents';
 import ThemeToggle from '@/theme/ThemeToggle';
 import { THEME_ICONS, THEME_SETS } from '@/theme/theme';
+import React from 'react';
 
 /* ========================================================================== */
 /* CONSTANTS                                                                  */
@@ -62,8 +71,10 @@ const FEATURES = [
 export default function Home() {
   const theme = useTheme();
   const { themeSet } = useThemeContext();
-
+  const [activeThemeOpen, setActiveThemeOpen] = React.useState(false);
   const themeIcon = THEME_ICONS[themeSet];
+
+  const activeTheme = THEME_SETS[themeSet];
 
   const primary = theme.colorScale[9];
   const primaryStrong = theme.colorScale[8];
@@ -453,6 +464,277 @@ export default function Home() {
             >
               <ThemeToggle />
             </Box>
+
+            {/* =============================================================== */}
+            {/* ACTIVE THEME CARD                                               */}
+            {/* =============================================================== */}
+
+            <Paper
+              elevation={0}
+              sx={{
+                mt: 1.5,
+                width: '100%',
+                maxWidth: 520,
+                overflow: 'hidden',
+
+                borderRadius: 2.5,
+
+                backgroundColor: theme.secondaryScale[4],
+
+                border: `1px solid ${alpha(secondary, 0.25)}`,
+
+                backdropFilter: {
+                  xs: 'none',
+                  md: 'blur(14px)'
+                }
+              }}
+            >
+              <Box
+                component="button"
+                type="button"
+                onClick={() => setActiveThemeOpen((prev) => !prev)}
+                aria-expanded={activeThemeOpen}
+                sx={{
+                  width: '100%',
+                  border: 0,
+                  outline: 0,
+                  cursor: 'pointer',
+
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+
+                  p: 1.5,
+
+                  color: textPrimary,
+
+                  backgroundColor: 'transparent',
+
+                  textAlign: 'left',
+
+                  '&:hover': {
+                    backgroundColor: alpha(secondary, 0.06)
+                  }
+                }}
+              >
+                <Stack
+                  direction="row"
+                  spacing={1.25}
+                  sx={{
+                    alignItems: 'center',
+                    minWidth: 0
+                  }}
+                >
+                  <Box
+                    sx={{
+                      width: 38,
+                      height: 38,
+                      flexShrink: 0,
+
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+
+                      borderRadius: 1.5,
+
+                      backgroundColor: alpha(primary, 0.1),
+
+                      border: `1px solid ${alpha(primary, 0.2)}`
+                    }}
+                  >
+                    <Image
+                      src={themeIcon}
+                      alt=""
+                      width={28}
+                      height={28}
+                      style={{
+                        objectFit: 'contain'
+                      }}
+                    />
+                  </Box>
+
+                  <Stack
+                    spacing={0.25}
+                    sx={{
+                      minWidth: 0
+                    }}
+                  >
+                    <Stack
+                      direction="row"
+                      spacing={1}
+                      sx={{
+                        alignItems: 'center',
+                        flexWrap: 'wrap'
+                      }}
+                    >
+                      <Typography
+                        variant="subtitle2"
+                        sx={{
+                          fontWeight: 800,
+                          lineHeight: 1.2
+                        }}
+                      >
+                        {activeTheme?.label ?? themeSet}
+                      </Typography>
+
+                      <Chip
+                        label="ACTIVE"
+                        size="small"
+                        color="primary"
+                        sx={{
+                          height: 20,
+                          fontSize: '0.65rem',
+                          fontWeight: 800
+                        }}
+                      />
+                    </Stack>
+
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        color: textSecondary,
+                        textTransform: 'capitalize'
+                      }}
+                    >
+                      {activeTheme?.category ?? 'Theme'}
+                    </Typography>
+                  </Stack>
+                </Stack>
+
+                <Box
+                  sx={{
+                    ml: 1,
+                    flexShrink: 0,
+
+                    width: 30,
+                    height: 30,
+
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+
+                    borderRadius: '50%',
+
+                    color: textSecondary,
+
+                    transition: 'transform 0.25s ease',
+
+                    transform: activeThemeOpen
+                      ? 'rotate(180deg)'
+                      : 'rotate(0deg)'
+                  }}
+                >
+                  <ArrowForwardIcon
+                    sx={{
+                      fontSize: 18,
+                      transform: 'rotate(90deg)'
+                    }}
+                  />
+                </Box>
+              </Box>
+
+              <Box
+                sx={{
+                  display: 'grid',
+                  gridTemplateRows: activeThemeOpen ? '1fr' : '0fr',
+
+                  transition: 'grid-template-rows 0.3s ease'
+                }}
+              >
+                <Box
+                  sx={{
+                    overflow: 'hidden'
+                  }}
+                >
+                  <Box
+                    sx={{
+                      px: 1.5,
+                      pb: 1.5
+                    }}
+                  >
+                    <Divider
+                      sx={{
+                        mb: 1.5,
+                        borderColor: alpha(secondary, 0.15)
+                      }}
+                    />
+
+                    <Stack spacing={1.25}>
+                      {[
+                        {
+                          label: 'Primary',
+                          value: primary
+                        },
+                        {
+                          label: 'Secondary',
+                          value: secondary
+                        },
+                        {
+                          label: 'Surface',
+                          value: surface
+                        },
+                        {
+                          label: 'Background',
+                          value: background
+                        }
+                      ].map((item) => (
+                        <Stack
+                          key={item.label}
+                          direction="row"
+                          spacing={1}
+                          sx={{
+                            alignItems: 'center',
+                            justifyContent: 'space-between'
+                          }}
+                        >
+                          <Typography
+                            variant="caption"
+                            sx={{
+                              color: textSecondary,
+                              fontWeight: 600
+                            }}
+                          >
+                            {item.label}
+                          </Typography>
+
+                          <Stack
+                            direction="row"
+                            spacing={0.75}
+                            sx={{
+                              alignItems: 'center'
+                            }}
+                          >
+                            <Box
+                              sx={{
+                                width: 26,
+                                height: 26,
+
+                                borderRadius: 1,
+
+                                backgroundColor: item.value,
+
+                                border: `1px solid ${alpha(textPrimary, 0.12)}`
+                              }}
+                            />
+
+                            <Typography
+                              variant="caption"
+                              sx={{
+                                color: textSecondary,
+                                fontFamily: 'monospace',
+                                fontSize: '0.7rem'
+                              }}
+                            >
+                              {item.value}
+                            </Typography>
+                          </Stack>
+                        </Stack>
+                      ))}
+                    </Stack>
+                  </Box>
+                </Box>
+              </Box>
+            </Paper>
           </Stack>
 
           {/* ================================================================= */}
@@ -463,7 +745,7 @@ export default function Home() {
             sx={{
               mt: {
                 xs: 5,
-                md: 9
+                md: 4
               },
 
               position: 'relative',
