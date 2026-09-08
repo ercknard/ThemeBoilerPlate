@@ -26,7 +26,11 @@ import SpeedIcon from '@mui/icons-material/Speed';
 import { useThemeContext } from '@/contexts/themeContext';
 
 import SkyEffects from '@/theme/common/SkyEffects';
-import { AppButton, AppChip } from '@/theme/components/CustomComponents';
+import {
+  AppButton,
+  AppCard,
+  AppChip
+} from '@/theme/components/CustomComponents';
 import ThemeToggle from '@/theme/ThemeToggle';
 import { THEME_ICONS, THEME_SETS } from '@/theme/theme';
 import React from 'react';
@@ -1883,7 +1887,7 @@ export default function Home() {
             }}
           >
             {FEATURES.map((feature) => (
-              <Box
+              <AppCard
                 key={feature.title}
                 sx={{
                   position: 'relative',
@@ -1928,7 +1932,7 @@ export default function Home() {
 
                     backgroundColor: {
                       xs: theme.secondaryScale[4],
-                      md: alpha(surface, 0.8)
+                      md: theme.secondaryScale[5]
                     },
 
                     borderColor: {
@@ -1988,7 +1992,7 @@ export default function Home() {
                     {feature.description}
                   </Typography>
                 </Stack>
-              </Box>
+              </AppCard>
             ))}
           </Box>
 
