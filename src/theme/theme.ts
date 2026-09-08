@@ -686,7 +686,7 @@ export const THEME_ICONS: Record<keyof typeof THEME_SETS, string> = {
   sunset: '/static/images/logo-sunset.png',
   azure: '/static/images/logo-azure.png',
   twilight: '/static/images/logo-twilight.png',
-  ivory: '/static/images/logo-ivory.png',
+  ivory: '/static/images/logo-crimson-forest.png',
 
   custom: '/static/images/favicon.png'
 };
