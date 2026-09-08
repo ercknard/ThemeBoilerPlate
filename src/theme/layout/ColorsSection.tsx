@@ -84,7 +84,7 @@ export default function ColorsSection() {
 
     '&:hover': {
       transform: 'translateY(-2px)',
-      boxShadow: `0 8px 24px ${color}`
+      boxShadow: `0 1px 5px ${color}`
     },
 
     '&:active': {
