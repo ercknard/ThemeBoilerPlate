@@ -621,6 +621,247 @@ export default function OverViewTheme() {
             </Box>
 
             {/* ================================================================ */}
+            {/* RESPONSIVE BREAKPOINTS                                          */}
+            {/* ================================================================ */}
+
+            <AppCard
+              id="overview-breakpoints"
+              sx={{
+                boxShadow: 'none'
+              }}
+            >
+              <CardContent
+                sx={{
+                  p: {
+                    xs: 2.5,
+                    sm: 3,
+                    md: 4
+                  }
+                }}
+              >
+                <Stack
+                  sx={{
+                    gap: 3
+                  }}
+                >
+                  <Box>
+                    <Stack
+                      sx={{
+                        flexDirection: {
+                          xs: 'column',
+                          sm: 'row'
+                        },
+                        gap: 2,
+                        justifyContent: 'space-between',
+                        alignItems: {
+                          xs: 'flex-start',
+                          sm: 'center'
+                        }
+                      }}
+                    >
+                      <Box>
+                        <Typography
+                          variant="h5"
+                          sx={{
+                            fontWeight: 700
+                          }}
+                        >
+                          Responsive Breakpoints
+                        </Typography>
+
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            mt: 1,
+                            color: theme.grayScale[11],
+                            maxWidth: 760
+                          }}
+                        >
+                          The theme uses a consistent breakpoint system to adapt
+                          layouts, spacing, typography, and component behavior
+                          across different screen sizes.
+                        </Typography>
+                      </Box>
+
+                      <AppChip label="Responsive" color="primary" />
+                    </Stack>
+                  </Box>
+
+                  <Box
+                    sx={{
+                      display: 'grid',
+                      gridTemplateColumns: {
+                        xs: 'repeat(2, 1fr)',
+                        sm: 'repeat(4, 1fr)',
+                        lg: 'repeat(8, 1fr)'
+                      },
+                      gap: 1
+                    }}
+                  >
+                    {[
+                      ['xs', '0px'],
+                      ['sm', '600px'],
+                      ['md', '960px'],
+                      ['lg', '1280px'],
+                      ['xl', '1440px'],
+                      ['xxl', '1600px'],
+                      ['xxxl', '1920px'],
+                      ['xxxxl', '2560px']
+                    ].map(([name, width]) => (
+                      <Box
+                        key={name}
+                        sx={{
+                          p: 1.5,
+                          borderRadius: 1.5,
+                          backgroundColor: theme.backgroundScale[2],
+                          border: `1px solid ${theme.grayScale[6]}`,
+                          textAlign: 'center'
+                        }}
+                      >
+                        <Typography
+                          variant="medium"
+                          sx={{
+                            display: 'block',
+                            fontWeight: 700,
+                            color: theme.colorScale[11]
+                          }}
+                        >
+                          {name}
+                        </Typography>
+
+                        <Typography
+                          variant="small"
+                          sx={{
+                            display: 'block',
+                            mt: 0.25,
+                            color: theme.grayScale[10]
+                          }}
+                        >
+                          {width}
+                        </Typography>
+                      </Box>
+                    ))}
+                  </Box>
+
+                  <Stack
+                    sx={{
+                      gap: 1.5,
+                      p: 2,
+                      borderRadius: 2,
+                      backgroundColor: theme.secondaryScale[2],
+                      border: `1px solid ${theme.secondaryScale[6]}`
+                    }}
+                  >
+                    <Typography
+                      variant="medium"
+                      sx={{
+                        fontWeight: 700,
+                        color: theme.secondaryScale[11]
+                      }}
+                    >
+                      How responsive styles work
+                    </Typography>
+
+                    <Typography
+                      variant="small"
+                      sx={{
+                        color: theme.grayScale[11],
+                        lineHeight: 1.6
+                      }}
+                    >
+                      Components can change their layout, spacing, sizing, and
+                      visibility at each breakpoint using the MUI responsive
+                      styling system. Smaller breakpoints provide the mobile
+                      foundation, while larger breakpoints progressively enhance
+                      the layout for tablets, desktops, and large displays.
+                    </Typography>
+
+                    <Box
+                      sx={{
+                        display: 'grid',
+                        gridTemplateColumns: {
+                          xs: '1fr',
+                          sm: 'repeat(3, 1fr)'
+                        },
+                        gap: 1.5,
+                        mt: 0.5
+                      }}
+                    >
+                      <Box>
+                        <Typography
+                          variant="small"
+                          sx={{
+                            fontWeight: 700,
+                            color: theme.grayScale[12]
+                          }}
+                        >
+                          Mobile
+                        </Typography>
+
+                        <Typography
+                          variant="small"
+                          sx={{
+                            display: 'block',
+                            mt: 0.25,
+                            color: theme.grayScale[10]
+                          }}
+                        >
+                          xs · sm
+                        </Typography>
+                      </Box>
+
+                      <Box>
+                        <Typography
+                          variant="small"
+                          sx={{
+                            fontWeight: 700,
+                            color: theme.grayScale[12]
+                          }}
+                        >
+                          Desktop
+                        </Typography>
+
+                        <Typography
+                          variant="small"
+                          sx={{
+                            display: 'block',
+                            mt: 0.25,
+                            color: theme.grayScale[10]
+                          }}
+                        >
+                          md · lg · xl
+                        </Typography>
+                      </Box>
+
+                      <Box>
+                        <Typography
+                          variant="small"
+                          sx={{
+                            fontWeight: 700,
+                            color: theme.grayScale[12]
+                          }}
+                        >
+                          Large displays
+                        </Typography>
+
+                        <Typography
+                          variant="small"
+                          sx={{
+                            display: 'block',
+                            mt: 0.25,
+                            color: theme.grayScale[10]
+                          }}
+                        >
+                          xxl · xxxl · xxxxl
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </Stack>
+                </Stack>
+              </CardContent>
+            </AppCard>
+
+            {/* ================================================================ */}
             {/* 60 / 30 / 10                                                     */}
             {/* ================================================================ */}
 
