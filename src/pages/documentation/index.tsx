@@ -66,23 +66,33 @@ export default function TypographyShowcase() {
     isShowcaseTab(tabFromUrl) ? tabFromUrl : 'overview'
   );
 
-  const [openMenus, setOpenMenus] = useState<Record<MenuKey, boolean>>({
-    overview: true,
-    typography: false,
-    colors: false,
-    breakpoints: false,
-    components: false,
-    presets: false
-  });
+  const [openMenus, setOpenMenus] = useState<Record<MenuKey, boolean>>(() => {
+    const initialTab = isShowcaseTab(tabFromUrl) ? tabFromUrl : 'overview';
 
+    return {
+      overview: initialTab === 'overview',
+      typography: initialTab === 'typography',
+      colors: initialTab === 'colors',
+      breakpoints: initialTab === 'breakpoints',
+      components: initialTab === 'components',
+      presets: initialTab === 'presets'
+    };
+  });
   const { themeSet } = useThemeContext();
 
   useEffect(() => {
-    if (isShowcaseTab(tabFromUrl)) {
-      setActiveTab(tabFromUrl);
-    } else {
-      setActiveTab('overview');
-    }
+    const tab = isShowcaseTab(tabFromUrl) ? tabFromUrl : 'overview';
+
+    setActiveTab(tab);
+
+    setOpenMenus({
+      overview: tab === 'overview',
+      typography: tab === 'typography',
+      colors: tab === 'colors',
+      breakpoints: tab === 'breakpoints',
+      components: tab === 'components',
+      presets: tab === 'presets'
+    });
   }, [tabFromUrl]);
 
   const handleTabChange = (tab: ShowcaseTab) => {

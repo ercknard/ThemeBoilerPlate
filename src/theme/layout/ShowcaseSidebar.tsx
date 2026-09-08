@@ -370,7 +370,18 @@ export default function ShowcaseSidebar({
           selected={isActive}
           onClick={() => {
             setActiveTab(menu);
-            toggleMenu(menu);
+
+            Object.keys(openMenus).forEach((key) => {
+              const menuKey = key as MenuKey;
+
+              if (menuKey !== menu && openMenus[menuKey]) {
+                toggleMenu(menuKey);
+              }
+            });
+
+            if (!openMenus[menu]) {
+              toggleMenu(menu);
+            }
           }}
           sx={{
             minHeight: 44,
@@ -456,7 +467,7 @@ export default function ShowcaseSidebar({
 
           borderRight: `1px solid ${secondaryScale[7]}`,
 
-          backgroundColor: alpha(backgroundScale[5], 0.75),
+          backgroundColor: alpha(backgroundScale[5], 1),
 
           boxSizing: 'border-box',
 

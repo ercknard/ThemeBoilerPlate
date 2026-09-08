@@ -80,7 +80,7 @@ export default function Navbar() {
 
         boxShadow: 'none',
         borderBottom: isDocumentationPage
-          ? `unset`
+          ? `2px solid ${alpha(secondary, 0.25)}`
           : `2px solid ${alpha(secondary, 0.5)}`,
         backdropFilter: 'blur(14px)',
         WebkitBackdropFilter: 'blur(14px)'
@@ -91,7 +91,7 @@ export default function Navbar() {
         sx={{
           minHeight: {
             xs: 64,
-            md: 64
+            md: 65
           },
 
           px: {
