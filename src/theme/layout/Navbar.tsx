@@ -10,6 +10,7 @@ import {
   Toolbar,
   Typography
 } from '@mui/material';
+import Portal from '@mui/material/Portal';
 
 import { alpha, useTheme } from '@mui/material/styles';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
@@ -62,7 +63,7 @@ export default function Navbar() {
 
   return (
     <AppBar
-      position="sticky"
+      position={isDocumentationPage ? 'sticky' : 'absolute'}
       elevation={0}
       color="transparent"
       sx={{
@@ -70,20 +71,21 @@ export default function Navbar() {
         zIndex: theme.zIndex.appBar,
 
         background: isDocumentationPage
-          ? `${alpha(theme.backgroundScale[5], 1)}`
+          ? {
+              xs: alpha(theme.backgroundScale[3], 1),
+              md: alpha(theme.backgroundScale[5], 1)
+            }
           : `linear-gradient(
-          to bottom,
-          ${alpha(theme.colorScale[2], 1)} 0%,
-          ${alpha(theme.colorScale[2], 1)} 70%,
-          ${alpha(theme.colorScale[2], 1)} 100%
-        )`,
+        to bottom,
+        ${alpha(theme.colorScale[2], 0)} 0%,
+        ${alpha(theme.colorScale[2], 0)} 70%,
+        ${alpha(theme.colorScale[2], 0)} 100%
+      )`,
 
         boxShadow: 'none',
         borderBottom: isDocumentationPage
           ? `2px solid ${alpha(secondary, 0.25)}`
-          : `2px solid ${alpha(secondary, 0.5)}`,
-        backdropFilter: 'blur(14px)',
-        WebkitBackdropFilter: 'blur(14px)'
+          : `unset`
       }}
     >
       <Toolbar
@@ -563,141 +565,336 @@ export default function Navbar() {
       <Box
         sx={{
           display: {
-            xs: 'grid',
+            xs: 'block',
             md: 'none'
-          },
-
-          gridTemplateRows: mobileOpen ? '1fr' : '0fr',
-
-          transition: 'grid-template-rows 0.25s ease'
+          }
         }}
       >
+        {/* Backdrop */}
+        <Box
+          onClick={() => setMobileOpen(false)}
+          sx={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: theme.zIndex.drawer - 1,
+
+            backgroundColor: alpha('#000', 0.5),
+
+            opacity: mobileOpen ? 1 : 0,
+            visibility: mobileOpen ? 'visible' : 'hidden',
+
+            transition: 'opacity 0.25s ease, visibility 0.25s ease'
+          }}
+        />
+
+        {/* Drawer */}
         <Box
           sx={{
-            minHeight: 0,
-            overflow: 'hidden'
+            display: {
+              xs: 'block',
+              md: 'none'
+            }
           }}
         >
-          <Box
-            sx={{
-              pb: 2,
+          <Portal>
+            {/* Backdrop */}
+            <Box
+              onClick={() => setMobileOpen(false)}
+              sx={{
+                position: 'fixed',
+                inset: 0,
 
-              pt: 0.5,
+                zIndex: 9998,
 
-              borderTop: `1px solid ${alpha(secondary, 0.12)}`
-            }}
-          >
-            <Stack spacing={0.5}>
-              {navItems.map((item) => {
-                const icon =
-                  item.href === '/' ? (
-                    <HomeOutlinedIcon
-                      sx={{
-                        fontSize: 18
-                      }}
-                    />
-                  ) : (
-                    <DescriptionOutlinedIcon
-                      sx={{
-                        fontSize: 18
-                      }}
-                    />
-                  );
+                backgroundColor: alpha('#000', 0.5),
 
-                return (
-                  <AppButton
-                    key={item.href}
-                    component="a"
-                    href={item.href}
-                    variant="text"
-                    color="inherit"
-                    startIcon={icon}
-                    onClick={() => setMobileOpen(false)}
+                opacity: mobileOpen ? 1 : 0,
+
+                visibility: mobileOpen ? 'visible' : 'hidden',
+
+                pointerEvents: mobileOpen ? 'auto' : 'none',
+
+                transition: 'opacity 0.25s ease, visibility 0.25s ease'
+              }}
+            />
+
+            {/* Right Drawer */}
+            <Box
+              sx={{
+                position: 'fixed',
+
+                top: 0,
+                right: 0,
+
+                width: {
+                  xs: 'min(82vw, 320px)',
+                  sm: 320
+                },
+
+                height: '100dvh',
+
+                zIndex: 9999,
+
+                display: 'flex',
+                flexDirection: 'column',
+
+                overflow: 'hidden',
+
+                backgroundColor: theme.backgroundScale[4],
+
+                borderLeft: `1px solid ${alpha(secondary, 0.2)}`,
+
+                boxShadow: `-12px 0 40px ${alpha('#000', 0.35)}`,
+
+                transform: mobileOpen ? 'translateX(0)' : 'translateX(100%)',
+
+                transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+              }}
+            >
+              {/* Header */}
+              <Box
+                sx={{
+                  flexShrink: 0,
+
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+
+                  minHeight: 72,
+
+                  px: 2,
+
+                  borderBottom: `1px solid ${alpha(secondary, 0.12)}`
+                }}
+              >
+                {/* Logo + Branding */}
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1.25,
+
+                    minWidth: 0
+                  }}
+                >
+                  <Box
+                    component="img"
+                    src={themeIcon}
+                    alt="Cryptech Services"
                     sx={{
-                      justifyContent: 'flex-start',
+                      width: 36,
+                      height: 36,
 
-                      minHeight: 46,
+                      objectFit: 'contain',
 
-                      px: 1.5,
+                      flexShrink: 0
+                    }}
+                  />
 
-                      borderRadius: 2,
+                  <Box
+                    sx={{
+                      minWidth: 0,
 
-                      color: textSecondary,
-
-                      fontWeight: 600,
-
-                      '& .MuiButton-startIcon': {
-                        marginRight: 1,
-                        marginLeft: 0
-                      },
-
-                      '&:hover': {
-                        color: textPrimary,
-
-                        backgroundColor: alpha(primary, 0.07)
-                      }
+                      display: 'flex',
+                      flexDirection: 'column'
                     }}
                   >
-                    {item.label}
-                  </AppButton>
-                );
-              })}
+                    <Box
+                      component="span"
+                      sx={{
+                        color: textPrimary,
 
-              {GITHUB_URL && (
+                        fontSize: 15,
+                        lineHeight: 1.2,
+
+                        fontWeight: 700,
+
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis'
+                      }}
+                    >
+                      Cryptech Services
+                    </Box>
+
+                    <Box
+                      component="span"
+                      sx={{
+                        mt: 0.25,
+
+                        color: textSecondary,
+
+                        fontSize: 11,
+                        lineHeight: 1.2,
+
+                        fontWeight: 500,
+
+                        letterSpacing: '0.08em'
+                      }}
+                    >
+                      THEME SYSTEM
+                    </Box>
+                  </Box>
+                </Box>
+
+                {/* Close */}
                 <AppButton
-                  component="a"
-                  href={GITHUB_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
                   variant="text"
                   color="inherit"
-                  startIcon={
-                    <GitHubIcon
-                      sx={{
-                        fontSize: 18
-                      }}
-                    />
-                  }
+                  onClick={() => setMobileOpen(false)}
+                  aria-label="Close navigation"
                   sx={{
-                    justifyContent: 'flex-start',
+                    minWidth: 40,
+                    width: 40,
+                    height: 40,
 
-                    minHeight: 46,
+                    p: 0,
 
-                    px: 1.5,
+                    flexShrink: 0,
 
                     borderRadius: 2,
 
                     color: textSecondary,
 
-                    fontWeight: 600,
-
-                    '& .MuiButton-startIcon': {
-                      marginRight: 1,
-                      marginLeft: 0
-                    },
-
                     '&:hover': {
                       color: textPrimary,
-
                       backgroundColor: alpha(primary, 0.07)
                     }
                   }}
                 >
-                  GitHub
+                  <CloseIcon
+                    sx={{
+                      fontSize: 21
+                    }}
+                  />
                 </AppButton>
-              )}
+              </Box>
 
-              {/* MOBILE THEME */}
-
+              {/* Navigation */}
               <Box
                 sx={{
-                  display: {
-                    xs: 'block',
-                    sm: 'none'
-                  },
+                  flex: 1,
 
-                  pt: 1,
-                  px: 1
+                  minHeight: 0,
+
+                  overflowY: 'auto',
+
+                  px: 1.5,
+                  py: 2
+                }}
+              >
+                <Stack spacing={0.5}>
+                  {navItems.map((item) => {
+                    const icon =
+                      item.href === '/' ? (
+                        <HomeOutlinedIcon
+                          sx={{
+                            fontSize: 19
+                          }}
+                        />
+                      ) : (
+                        <DescriptionOutlinedIcon
+                          sx={{
+                            fontSize: 19
+                          }}
+                        />
+                      );
+
+                    return (
+                      <AppButton
+                        key={item.href}
+                        component="a"
+                        href={item.href}
+                        variant="text"
+                        color="inherit"
+                        startIcon={icon}
+                        onClick={() => setMobileOpen(false)}
+                        sx={{
+                          justifyContent: 'flex-start',
+
+                          width: '100%',
+                          minHeight: 48,
+
+                          px: 1.5,
+
+                          borderRadius: 2.5,
+
+                          color: textSecondary,
+
+                          fontWeight: 600,
+
+                          '& .MuiButton-startIcon': {
+                            marginRight: 1.25,
+                            marginLeft: 0
+                          },
+
+                          '&:hover': {
+                            color: textPrimary,
+
+                            backgroundColor: alpha(primary, 0.07)
+                          }
+                        }}
+                      >
+                        {item.label}
+                      </AppButton>
+                    );
+                  })}
+
+                  {GITHUB_URL && (
+                    <AppButton
+                      component="a"
+                      href={GITHUB_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      variant="text"
+                      color="inherit"
+                      startIcon={
+                        <GitHubIcon
+                          sx={{
+                            fontSize: 19
+                          }}
+                        />
+                      }
+                      sx={{
+                        justifyContent: 'flex-start',
+
+                        width: '100%',
+                        minHeight: 48,
+
+                        px: 1.5,
+
+                        borderRadius: 2.5,
+
+                        color: textSecondary,
+
+                        fontWeight: 600,
+
+                        '& .MuiButton-startIcon': {
+                          marginRight: 1.25,
+                          marginLeft: 0
+                        },
+
+                        '&:hover': {
+                          color: textPrimary,
+
+                          backgroundColor: alpha(primary, 0.07)
+                        }
+                      }}
+                    >
+                      GitHub
+                    </AppButton>
+                  )}
+                </Stack>
+              </Box>
+
+              {/* Footer */}
+              <Box
+                sx={{
+                  flexShrink: 0,
+
+                  p: 2,
+
+                  borderTop: `1px solid ${alpha(secondary, 0.12)}`
                 }}
               >
                 <AppChip
@@ -705,13 +902,17 @@ export default function Navbar() {
                   color="secondary"
                   size="small"
                   sx={{
+                    width: '100%',
+                    height: 36,
+
                     fontWeight: 700,
+
                     textTransform: 'capitalize'
                   }}
                 />
               </Box>
-            </Stack>
-          </Box>
+            </Box>
+          </Portal>
         </Box>
       </Box>
     </AppBar>

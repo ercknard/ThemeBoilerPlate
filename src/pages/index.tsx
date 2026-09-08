@@ -135,37 +135,38 @@ export default function Home() {
           background: {
             xs: background,
 
-            lg: `
-              radial-gradient(
-                circle at 50% -20%,
-                ${alpha(primaryStrong, 0.75)},
-                transparent 42%
-              ),
-              ${background}
-            `
-
             // lg: `
             //   radial-gradient(
             //     circle at 50% -20%,
             //     ${alpha(primaryStrong, 0.75)},
             //     transparent 42%
             //   ),
-            //   radial-gradient(
-            //     circle at 100% 50%,
-            //     ${alpha(secondaryStrong, 0.5)},
-            //     transparent 38%
-            //   ),
-            //   radial-gradient(
-            //     circle at 0% 50%,
-            //     ${alpha(secondaryStrong, 0.5)},
-            //     transparent 38%
-            //   ),
             //   ${background}
             // `
+
+            lg: `
+              radial-gradient(
+                circle at 50% -20%,
+                ${alpha(primaryStrong, 0.75)},
+                transparent 42%
+              ),
+              radial-gradient(
+                circle at 100% 50%,
+                ${alpha(secondaryStrong, 0.5)},
+                transparent 38%
+              ),
+              radial-gradient(
+                circle at 0% 50%,
+                ${alpha(secondaryStrong, 0.5)},
+                transparent 38%
+              ),
+              ${background}
+            `
           },
 
           color: textPrimary,
 
+          paddingTop: 5,
           transition: {
             xs: 'none',
             md: `
@@ -190,7 +191,7 @@ export default function Home() {
           <SkyEffects color={primary} />
         </Box>
 
-        <Box
+        {/* <Box
           sx={{
             position: 'absolute',
             top: 0,
@@ -608,7 +609,7 @@ export default function Home() {
               />
             </g>
           </svg>
-        </Box>
+        </Box> */}
 
         <Box
           sx={{
