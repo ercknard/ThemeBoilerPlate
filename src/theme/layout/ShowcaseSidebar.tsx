@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 
 import {
@@ -26,6 +25,8 @@ import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import FormatPaintIcon from '@mui/icons-material/FormatPaint';
 import LocalBarSharpIcon from '@mui/icons-material/LocalBarSharp';
+import DevicesOutlinedIcon from '@mui/icons-material/DevicesOutlined';
+import AspectRatioOutlinedIcon from '@mui/icons-material/AspectRatioOutlined';
 
 import { AppPaper } from '@/theme/components/CustomComponents';
 import { THEME_SETS, THEME_ICONS } from '@/theme/theme';
@@ -36,6 +37,7 @@ export type ShowcaseTab =
   | 'typography'
   | 'colors'
   | 'presets'
+  | 'breakpoints'
   | 'components';
 
 export type MenuKey = ShowcaseTab;
@@ -96,8 +98,6 @@ export default function ShowcaseSidebar({
   const secondaryScale = theme.secondaryScale;
   const grayScale = theme.grayScale;
   const backgroundScale = theme.backgroundScale;
-
-  const themeIcon = THEME_ICONS[themeSet];
 
   /* ======================================================================== */
   /* COLOR PRESET CATEGORIES                                                  */
@@ -165,21 +165,53 @@ export default function ShowcaseSidebar({
       }
     ],
 
-    /*
-     * Color Presets are generated directly from THEME_SETS.
-     *
-     * Example:
-     *
-     * Classic
-     * Mythology
-     * Minecraft
-     * Cosmic
-     * Custom
-     */
     presets: presetCategories.map((category) => ({
       label: getCategoryLabel(category),
       id: `color-presets-${category}`
     })),
+
+    breakpoints: [
+      {
+        label: 'Overview',
+        id: 'breakpoints-overview'
+      },
+      {
+        label: 'Current Breakpoint',
+        id: 'breakpoints-current'
+      },
+      {
+        label: 'Responsive Grid',
+        id: 'breakpoints-responsive-grid'
+      },
+      {
+        label: 'Responsive Spacing',
+        id: 'breakpoints-responsive-spacing'
+      },
+      {
+        label: 'Responsive Typography',
+        id: 'breakpoints-responsive-typography'
+      },
+      {
+        label: 'Responsive Hero',
+        id: 'breakpoints-responsive-hero'
+      },
+      {
+        label: 'Responsive Container',
+        id: 'breakpoints-responsive-container'
+      },
+      {
+        label: 'Responsive Visibility',
+        id: 'breakpoints-responsive-visibility'
+      },
+      {
+        label: 'Breakpoint Reference',
+        id: 'breakpoints-reference'
+      },
+      {
+        label: 'Breakpoint Usage',
+        id: 'breakpoints-usage'
+      }
+    ],
 
     components: [
       {
@@ -234,6 +266,7 @@ export default function ShowcaseSidebar({
     typography: TextFieldsOutlinedIcon,
     colors: ColorLensOutlinedIcon,
     presets: FormatPaintIcon,
+    breakpoints: DevicesOutlinedIcon,
     components: WidgetsOutlinedIcon
   };
 
@@ -242,6 +275,7 @@ export default function ShowcaseSidebar({
     typography: FormatSizeOutlinedIcon,
     colors: PaletteOutlinedIcon,
     presets: LocalBarSharpIcon,
+    breakpoints: AspectRatioOutlinedIcon,
     components: GridViewOutlinedIcon
   };
 
@@ -324,6 +358,7 @@ export default function ShowcaseSidebar({
       typography: 'Typography',
       colors: 'Colors',
       presets: 'Color Presets',
+      breakpoints: 'Breakpoints',
       components: 'Components'
     };
 
@@ -451,36 +486,6 @@ export default function ShowcaseSidebar({
             borderBottom: `2px solid ${secondaryScale[7]}`
           }}
         >
-          {/* <Box
-            component={Link}
-            href="/"
-            sx={{
-              width: 60,
-              height: 60,
-              position: 'relative',
-              display: 'block',
-              flexShrink: 0,
-              cursor: 'pointer',
-              textDecoration: 'none',
-              transition: 'filter 0.2s ease',
-
-              '&:hover': {
-                filter: 'brightness(1.15)'
-              }
-            }}
-          >
-            <Image
-              src={themeIcon}
-              alt={`${themeSet} theme`}
-              fill
-              priority
-              sizes="60px"
-              style={{
-                objectFit: 'contain'
-              }}
-            />
-          </Box> */}
-
           <Stack
             sx={{
               py: 1.75,
@@ -585,6 +590,7 @@ export default function ShowcaseSidebar({
           {renderMenu('typography')}
           {renderMenu('colors')}
           {renderMenu('presets')}
+          {renderMenu('breakpoints')}
           {renderMenu('components')}
         </List>
 

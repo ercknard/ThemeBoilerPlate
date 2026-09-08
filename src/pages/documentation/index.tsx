@@ -35,6 +35,7 @@ import ShowcaseSidebar, {
 } from '@/theme/layout/ShowcaseSidebar';
 import TypographySection from '@/theme/layout/TypographySection';
 import Navbar from '@/theme/layout/Navbar';
+import BreakpointsSection from '@/theme/layout/BreakpointsSection';
 
 const GITHUB_URL = process.env.NEXT_PUBLIC_GITHUB_URL;
 
@@ -43,6 +44,7 @@ const SHOWCASE_TABS: ShowcaseTab[] = [
   'typography',
   'colors',
   'presets',
+  'breakpoints',
   'components'
 ];
 
@@ -65,9 +67,10 @@ export default function TypographyShowcase() {
   );
 
   const [openMenus, setOpenMenus] = useState<Record<MenuKey, boolean>>({
-    overview: false,
+    overview: true,
     typography: false,
     colors: false,
+    breakpoints: false,
     components: false,
     presets: false
   });
@@ -115,6 +118,7 @@ export default function TypographyShowcase() {
       overview: false,
       typography: false,
       colors: false,
+      breakpoints: false,
       components: false,
       presets: false,
       [menu]: true
@@ -381,6 +385,8 @@ export default function TypographyShowcase() {
               {activeTab === 'colors' && <ColorsSection />}
 
               {activeTab === 'presets' && <ColorPresetsSection />}
+
+              {activeTab === 'breakpoints' && <BreakpointsSection />}
 
               {activeTab === 'components' && <ComponentsSection />}
 
