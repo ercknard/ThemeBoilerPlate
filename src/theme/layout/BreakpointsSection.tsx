@@ -1559,8 +1559,18 @@ export default function BreakpointsSection() {
         <Box id="breakpoints-usage">
           <Stack spacing={3}>
             <Box>
-              <Typography variant="sectionTitle" gutterBottom>
+              <Typography
+                variant="overlineCustom"
+                sx={{
+                  display: 'block',
+                  mb: 1,
+                  color: colorScale[9]
+                }}
+              >
                 Breakpoint Usage
+              </Typography>
+              <Typography variant="sectionTitle" gutterBottom>
+                How to Set Breakpoints
               </Typography>
 
               <Typography
