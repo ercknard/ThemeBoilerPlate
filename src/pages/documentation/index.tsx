@@ -235,10 +235,11 @@ export default function TypographyShowcase() {
                   }
                 }}
               >
-                <Typography
-                  variant="overlineCustom"
+                <Stack
+                  direction="row"
+                  spacing={1}
                   sx={{
-                    color: theme.colorScale[9],
+                    alignItems: 'center',
                     pl: {
                       xs: '0rem !important',
                       lg: '2rem !important',
@@ -246,8 +247,24 @@ export default function TypographyShowcase() {
                     }
                   }}
                 >
-                  Design System
-                </Typography>
+                  <Box
+                    sx={{
+                      width: 8,
+                      height: 8,
+                      borderRadius: '50%',
+                      backgroundColor: theme.colorScale[9],
+                      boxShadow: `0 0 0 5px ${alpha(theme.colorScale[9], 0.1)}`
+                    }}
+                  />
+                  <Typography
+                    variant="overlineCustom"
+                    sx={{
+                      color: theme.colorScale[9]
+                    }}
+                  >
+                    Design System
+                  </Typography>
+                </Stack>
 
                 <Typography
                   variant="title"
@@ -313,6 +330,7 @@ export default function TypographyShowcase() {
                     width: '100%',
                     minHeight: 44,
                     p: 0.5,
+                    color: theme.colorScale[12],
                     border: '1px solid',
                     borderColor: alpha(theme.secondaryScale[6], 0.8),
                     borderRadius: 2.5,
@@ -365,7 +383,7 @@ export default function TypographyShowcase() {
                         },
 
                         '&.Mui-selected': {
-                          color: theme.colorScale.contrast,
+                          color: theme.colorScale[12],
 
                           background: `linear-gradient(
                             135deg,

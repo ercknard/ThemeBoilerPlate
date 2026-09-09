@@ -19,6 +19,7 @@ import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import CloseIcon from '@mui/icons-material/Close';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import MenuIcon from '@mui/icons-material/Menu';
+import SmartDisplayIcon from '@mui/icons-material/SmartDisplay';
 
 import { useThemeContext } from '@/contexts/themeContext';
 
@@ -31,8 +32,8 @@ const GITHUB_URL = process.env.NEXT_PUBLIC_GITHUB_URL;
 
 const navItems = [
   {
-    label: 'Home',
-    href: '/'
+    label: 'Playground',
+    href: '/playground'
   },
   {
     label: 'Documentation',
@@ -59,18 +60,18 @@ export default function Navbar() {
 
   const pathname = usePathname();
 
-  const isDocumentationPage = pathname === '/documentation';
+  const isDocumentationPage = pathname === '/';
 
   return (
     <AppBar
-      position={isDocumentationPage ? 'sticky' : 'absolute'}
+      position={!isDocumentationPage ? 'sticky' : 'absolute'}
       elevation={0}
       color="transparent"
       sx={{
         top: 0,
         zIndex: theme.zIndex.appBar,
 
-        background: isDocumentationPage
+        background: !isDocumentationPage
           ? {
               xs: alpha(theme.backgroundScale[3], 1),
               md: alpha(theme.backgroundScale[5], 1)
@@ -83,7 +84,7 @@ export default function Navbar() {
       )`,
 
         boxShadow: 'none',
-        borderBottom: isDocumentationPage
+        borderBottom: !isDocumentationPage
           ? `2px solid ${alpha(secondary, 0.25)}`
           : `unset`
       }}
@@ -232,9 +233,17 @@ export default function Navbar() {
           }}
         >
           {navItems.map((item) => {
+            const isActive =
+              item.href === '/'
+                ? pathname === '/'
+                : pathname === item.href ||
+                  pathname.startsWith(`${item.href}/`);
+
             const icon =
               item.href === '/' ? (
                 <HomeOutlinedIcon sx={{ fontSize: 18 }} />
+              ) : item.href === '/playground' ? (
+                <SmartDisplayIcon sx={{ fontSize: 18 }} />
               ) : (
                 <DescriptionOutlinedIcon sx={{ fontSize: 18 }} />
               );
@@ -255,21 +264,36 @@ export default function Navbar() {
 
                   px: 2,
 
-                  borderRadius: 2.25,
+                  borderRadius: 1,
 
-                  color: textSecondary,
+                  color: isActive ? textPrimary : textSecondary,
 
-                  fontWeight: 650,
+                  fontWeight: isActive ? 700 : 650,
 
                   overflow: 'hidden',
 
+                  background: isActive
+                    ? `linear-gradient(
+        135deg,
+        ${alpha(primary, 0.16)},
+        ${alpha(secondary, 0.12)}
+      )`
+                    : 'transparent',
+
+                  boxShadow: isActive
+                    ? `inset 0 0 0 1px ${alpha(primary, 0.12)}`
+                    : 'none',
+
                   transition:
-                    'color 180ms ease, background-color 180ms ease, transform 180ms ease',
+                    'color 180ms ease, background-color 180ms ease, transform 180ms ease, box-shadow 180ms ease',
 
                   '& .MuiButton-startIcon': {
                     position: 'relative',
                     zIndex: 1,
-                    transition: 'transform 180ms ease'
+
+                    color: isActive ? primary : 'inherit',
+
+                    transition: 'transform 180ms ease, color 180ms ease'
                   },
 
                   '&::before': {
@@ -282,14 +306,14 @@ export default function Navbar() {
                     borderRadius: 'inherit',
 
                     background: `linear-gradient(
-              135deg,
-              ${alpha(primary, 0.14)},
-              ${alpha(secondary, 0.1)}
-            )`,
+      135deg,
+      ${alpha(primary, 0.14)},
+      ${alpha(secondary, 0.1)}
+    )`,
 
-                    opacity: 0,
+                    opacity: isActive ? 1 : 0,
 
-                    transform: 'scale(0.85)',
+                    transform: isActive ? 'scale(1)' : 'scale(0.85)',
 
                     transition: 'opacity 180ms ease, transform 180ms ease'
                   },
@@ -302,16 +326,16 @@ export default function Navbar() {
                     left: '50%',
                     bottom: 3,
 
-                    width: 0,
+                    width: isActive ? '55%' : 0,
                     height: 2,
 
                     borderRadius: 999,
 
                     background: `linear-gradient(
-              90deg,
-              ${primary},
-              ${secondary}
-            )`,
+      90deg,
+      ${primary},
+      ${secondary}
+    )`,
 
                     transform: 'translateX(-50%)',
 
@@ -325,6 +349,8 @@ export default function Navbar() {
 
                     transform: 'translateY(-1px)',
 
+                    boxShadow: `inset 0 0 0 1px ${alpha(primary, 0.1)}`,
+
                     '&::before': {
                       opacity: 1,
                       transform: 'scale(1)'
@@ -335,6 +361,7 @@ export default function Navbar() {
                     },
 
                     '& .MuiButton-startIcon': {
+                      color: primary,
                       transform: 'translateY(-1px) scale(1.08)'
                     }
                   },
@@ -380,7 +407,7 @@ export default function Navbar() {
 
                 px: 2,
 
-                borderRadius: 2.25,
+                borderRadius: 1,
 
                 color: textSecondary,
 
@@ -544,7 +571,7 @@ export default function Navbar() {
 
               color: textPrimary,
 
-              borderRadius: 2,
+              borderRadius: 1,
 
               '&:hover': {
                 backgroundColor: alpha(primary, 0.08)
@@ -752,7 +779,7 @@ export default function Navbar() {
 
                     flexShrink: 0,
 
-                    borderRadius: 2,
+                    borderRadius: 1,
 
                     color: textSecondary,
 
@@ -785,19 +812,19 @@ export default function Navbar() {
               >
                 <Stack spacing={0.5}>
                   {navItems.map((item) => {
+                    const isActive =
+                      item.href === '/'
+                        ? pathname === '/'
+                        : pathname === item.href ||
+                          pathname.startsWith(`${item.href}/`);
+
                     const icon =
                       item.href === '/' ? (
-                        <HomeOutlinedIcon
-                          sx={{
-                            fontSize: 19
-                          }}
-                        />
+                        <HomeOutlinedIcon sx={{ fontSize: 18 }} />
+                      ) : item.href === '/playground' ? (
+                        <SmartDisplayIcon sx={{ fontSize: 18 }} />
                       ) : (
-                        <DescriptionOutlinedIcon
-                          sx={{
-                            fontSize: 19
-                          }}
-                        />
+                        <DescriptionOutlinedIcon sx={{ fontSize: 18 }} />
                       );
 
                     return (
@@ -810,6 +837,8 @@ export default function Navbar() {
                         startIcon={icon}
                         onClick={() => setMobileOpen(false)}
                         sx={{
+                          position: 'relative',
+
                           justifyContent: 'flex-start',
 
                           width: '100%',
@@ -817,21 +846,39 @@ export default function Navbar() {
 
                           px: 1.5,
 
-                          borderRadius: 2.5,
+                          borderRadius: 1,
 
-                          color: textSecondary,
+                          color: isActive ? textPrimary : textSecondary,
 
-                          fontWeight: 600,
+                          fontWeight: isActive ? 700 : 600,
+
+                          background: isActive
+                            ? `linear-gradient(
+        135deg,
+        ${alpha(primary, 0.14)},
+        ${alpha(secondary, 0.1)}
+      )`
+                            : 'transparent',
+
+                          boxShadow: isActive
+                            ? `inset 0 0 0 1px ${alpha(primary, 0.12)}`
+                            : 'none',
 
                           '& .MuiButton-startIcon': {
                             marginRight: 1.25,
-                            marginLeft: 0
+                            marginLeft: 0,
+
+                            color: isActive ? primary : 'inherit'
                           },
 
                           '&:hover': {
                             color: textPrimary,
 
-                            backgroundColor: alpha(primary, 0.07)
+                            backgroundColor: alpha(primary, 0.07),
+
+                            '& .MuiButton-startIcon': {
+                              color: primary
+                            }
                           }
                         }}
                       >
@@ -863,7 +910,7 @@ export default function Navbar() {
 
                         px: 1.5,
 
-                        borderRadius: 2.5,
+                        borderRadius: 1,
 
                         color: textSecondary,
 
