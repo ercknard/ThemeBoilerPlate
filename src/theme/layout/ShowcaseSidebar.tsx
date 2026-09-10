@@ -485,8 +485,8 @@ export default function ShowcaseSidebar({
             position: 'absolute',
             bottom: -6,
             left: 0,
-            width: '50vw',
-            opacity: 0.25,
+            width: '35vw',
+            opacity: 0.1,
             display: {
               xs: 'none',
               md: 'block'
