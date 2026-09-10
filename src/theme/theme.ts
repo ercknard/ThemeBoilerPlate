@@ -847,31 +847,51 @@ export const THEME_SETS = {
   galaxy: {
     label: 'Galaxy',
     category: 'cosmic',
-    color: '#5967C7',
-    secondary: '#A855F7',
-    gray: '#242638',
-    background: '#070914',
-    icon: '#818CF8'
+    color: '#59639A',
+    secondary: '#78689C',
+    gray: '#292B35',
+    background: '#080A12',
+    icon: '#7E89C0'
   },
 
   nebula: {
     label: 'Nebula',
     category: 'cosmic',
-    color: '#C04AD9',
-    secondary: '#E85D9E',
-    gray: '#302333',
-    background: '#0D050F',
-    icon: '#E879F9'
+    color: '#985FA8',
+    secondary: '#8A6A91',
+    gray: '#302933',
+    background: '#0B080E',
+    icon: '#B27CBE'
   },
 
   supernova: {
     label: 'Supernova',
     category: 'cosmic',
-    color: '#E05A2A',
-    secondary: '#F0B429',
-    gray: '#332722',
-    background: '#100704',
-    icon: '#FF8A4C'
+    color: '#B96B3E',
+    secondary: '#A87945',
+    gray: '#302A25',
+    background: '#0D0906',
+    icon: '#D28A56'
+  },
+
+  blackHole: {
+    label: 'Black Hole',
+    category: 'cosmic',
+    color: '#72558F',
+    secondary: '#9A6252',
+    gray: '#252129',
+    background: '#040305',
+    icon: '#9672B5'
+  },
+
+  quasar: {
+    label: 'Quasar',
+    category: 'cosmic',
+    color: '#A65D7A',
+    secondary: '#557C98',
+    gray: '#2C282D',
+    background: '#090709',
+    icon: '#C17B96'
   },
 
   starlight: {
@@ -884,24 +904,14 @@ export const THEME_SETS = {
     icon: '#E0EEFF'
   },
 
-  blackHole: {
-    label: 'Black Hole',
-    category: 'cosmic',
-    color: '#8B5CF6',
-    secondary: '#DC2626',
-    gray: '#211B29',
-    background: '#020203',
-    icon: '#B794F6'
-  },
-
   aurora: {
     label: 'Aurora',
     category: 'cosmic',
-    color: '#20B486',
-    secondary: '#5B7CFA',
-    gray: '#202C2B',
-    background: '#04100D',
-    icon: '#5EEAD4'
+    color: '#4FB3A8',
+    secondary: '#6B72C8',
+    gray: '#252A35',
+    background: '#070B12',
+    icon: '#6FE0D1'
   },
 
   eclipse: {
@@ -912,16 +922,6 @@ export const THEME_SETS = {
     gray: '#302A20',
     background: '#0C0904',
     icon: '#F5D76E'
-  },
-
-  quasar: {
-    label: 'Quasar',
-    category: 'cosmic',
-    color: '#E84D8A',
-    secondary: '#36A9E1',
-    gray: '#30232C',
-    background: '#0C060B',
-    icon: '#FF79AD'
   },
 
   void: {
