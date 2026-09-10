@@ -1139,11 +1139,11 @@ export const THEME_SETS = {
   gryffindor: {
     label: 'Gryffindor',
     category: 'hogwarts',
-    color: '#AE0001',
-    secondary: '#D3A625',
-    gray: '#302322',
-    background: '#100607',
-    icon: '#D3A625'
+    color: '#8F2F32',
+    secondary: '#B18A3A',
+    gray: '#30282A',
+    background: '#0D0809',
+    icon: '#C2A04A'
   },
 
   slytherin: {
