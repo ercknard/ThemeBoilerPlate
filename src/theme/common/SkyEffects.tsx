@@ -20,7 +20,7 @@ interface StarsProps {
 const Stars = memo(({ color }: StarsProps) => {
   const stars = useMemo<Star[]>(
     () =>
-      Array.from({ length: 150 }, (_, i) => ({
+      Array.from({ length: 100 }, (_, i) => ({
         id: i,
         top: (i * 37.7) % 100,
         left: (i * 61.3) % 100,
