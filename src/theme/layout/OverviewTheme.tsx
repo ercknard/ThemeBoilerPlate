@@ -1688,15 +1688,25 @@ export default function OverViewTheme() {
                     <Typography
                       variant="h6"
                       sx={{
-                        mb: 2,
                         fontWeight: 700
                       }}
                     >
                       Theme Control
                     </Typography>
 
+                    <Typography
+                      variant="small"
+                      sx={{
+                        color: theme.grayScale[10]
+                      }}
+                    >
+                      Toggle between the available theme modes while preserving
+                      the same semantic relationships.
+                    </Typography>
+
                     <Stack
                       sx={{
+                        mt: 2,
                         flexDirection: {
                           xs: 'column',
                           sm: 'row'
@@ -1709,16 +1719,6 @@ export default function OverViewTheme() {
                       }}
                     >
                       <ThemeToggle />
-
-                      <Typography
-                        variant="small"
-                        sx={{
-                          color: theme.grayScale[10]
-                        }}
-                      >
-                        Toggle between the available theme modes while
-                        preserving the same semantic relationships.
-                      </Typography>
                     </Stack>
                   </Box>
                 </Stack>
