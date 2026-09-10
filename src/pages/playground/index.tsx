@@ -553,7 +553,7 @@ function ColorInspector({
                   justifyContent: 'flex-start',
                   alignItems: 'center',
                   gap: 1,
-                  color: selected ? theme.colorScale[12] : 'text.primary',
+                  color: selected ? '#ffffff' : 'text.primary',
                   backgroundColor: selected
                     ? theme.colorScale[9]
                     : alpha(theme.grayScale[4], 0.35),
@@ -1511,7 +1511,7 @@ function ColorPreview({
             sx={{
               alignSelf: 'flex-start',
               backgroundColor: alpha(theme.colorScale[9], 0.12),
-              color: theme.colorScale.contrast,
+              color: theme.colorScale[12],
               border: `1px solid ${alpha(theme.colorScale[9], 0.15)}`
             }}
           />
@@ -1519,6 +1519,7 @@ function ColorPreview({
           <Typography
             variant="h2"
             sx={{
+              color: theme.colorScale[12],
               fontWeight: 900,
               letterSpacing: '-0.045em',
               fontSize: {
@@ -1535,6 +1536,7 @@ function ColorPreview({
 
           <Typography
             sx={{
+              color: theme.colorScale[11],
               maxWidth: 650,
               opacity: 0.82,
               fontSize: {
@@ -1576,7 +1578,7 @@ function ColorPreview({
             <Button
               variant="outlined"
               sx={{
-                color: theme.colorScale.contrast,
+                color: theme.colorScale[11],
                 borderColor: alpha(theme.colorScale[9], 0.25)
               }}
             >
@@ -1610,6 +1612,7 @@ function ColorPreview({
                   height: '100%',
                   borderRadius: 2.5,
                   transition: 'transform 180ms ease, border-color 180ms ease',
+                  backgroundColor: theme.secondaryScale[4],
                   '&:hover': {
                     transform: 'translateY(-4px)',
                     borderColor: alpha(selectedColor, 0.45)
@@ -2053,14 +2056,17 @@ function ComponentPreview({ component }: { component: ComponentType }) {
               xs: 2,
               sm: 4
             },
-            borderRadius: 3,
+            borderRadius: 1.5,
             border: '1px dashed',
             borderColor: theme.grayScale[6],
-            background: `radial-gradient(
-              circle at center,
-              ${alpha(theme.colorScale[9], 0.08)},
-              transparent 60%
-            )`
+            background: `
+  radial-gradient(
+    circle at center,
+    ${alpha(theme.colorScale[9], 0.25)},
+    transparent 60%
+  ),
+  ${theme.secondaryScale[4]}
+`
           }}
         >
           <ComponentContent component={component} />
