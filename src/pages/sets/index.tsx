@@ -995,7 +995,7 @@ export default function ThemeGalleryPage() {
 
                   borderBottom: `1px solid ${theme.grayScale[6]}`,
 
-                  backgroundColor: theme.secondaryScale[3]
+                  backgroundColor: theme.secondaryScale[5]
                 }}
               >
                 <Stack
