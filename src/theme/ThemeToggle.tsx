@@ -89,6 +89,7 @@ export default function ThemeToggle() {
     'cosmic',
     'elemements',
     'mythology',
+    'hogwarts',
     'premium'
   ] as const;
 

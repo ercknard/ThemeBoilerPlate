@@ -650,18 +650,26 @@ export const THEME_ICONS: Record<keyof typeof THEME_SETS, string> = {
   green: '/static/images/logo-green.png',
 
   olympus: '/static/images/logo-olympus.png',
-  end: '/static/images/logo-end.png',
 
+  end: '/static/images/logo-end.png',
   ocean: '/static/images/logo-ocean.png',
   desert: '/static/images/logo-desert.png',
   soulSandValley: '/static/images/logo-soul-sand-valley.png',
-  crimsonForest: '/static/images/logo-crimson-forest.png',
+  crimsonForest: '/static/images/logo-ivory.png',
   warpedForest: '/static/images/logo-warped-forest.png',
   basaltDeltas: '/static/images/logo-basalt-deltas.png',
   paleGarden: '/static/images/logo-pale-garden.png',
   deepDark: '/static/images/logo-deep-dark.png',
 
   galaxy: '/static/images/logo-galaxy.png',
+  nebula: '/static/images/logo-nebula.png',
+  supernova: '/static/images/logo-supernova.png',
+  starlight: '/static/images/logo-starlight.png',
+  blackHole: '/static/images/logo-black-hole.png',
+  aurora: '/static/images/logo-aurora.png',
+  eclipse: '/static/images/logo-eclipse.png',
+  quasar: '/static/images/logo-quasar.png',
+  void: '/static/images/logo-void.png',
 
   zeus: '/static/images/logo-zeus.png',
   hera: '/static/images/logo-hera.png',
@@ -678,17 +686,22 @@ export const THEME_ICONS: Record<keyof typeof THEME_SETS, string> = {
   hestia: '/static/images/logo-hestia.png',
   hades: '/static/images/logo-hades.png',
 
-  fire: '/static/images/logo-fire.png',
-  water: '/static/images/logo-water.png',
-  earth: '/static/images/logo-earth.png',
-  air: '/static/images/logo-air.png',
-
-  monochrome: '/static/images/logo-monochrome.png',
-
   sunset: '/static/images/logo-sunset.png',
   azure: '/static/images/logo-azure.png',
   twilight: '/static/images/logo-twilight.png',
   ivory: '/static/images/logo-crimson-forest.png',
+
+  monochrome: '/static/images/logo-monochrome.png',
+
+  gryffindor: '/static/images/logo-fire.png',
+  slytherin: '/static/images/logo-slytherin.png',
+  ravenclaw: '/static/images/logo-hermes.png',
+  hufflepuff: '/static/images/logo-hufflepuff.png',
+
+  fire: '/static/images/logo-fire.png',
+  water: '/static/images/logo-water.png',
+  earth: '/static/images/logo-earth.png',
+  air: '/static/images/logo-air.png',
 
   custom: '/static/images/favicon.png'
 };
@@ -737,10 +750,6 @@ export const THEME_SETS = {
     background: '#08110C'
   },
 
-  // ============================================================
-  // MYTHOLOGY — OLYMPUS
-  // ============================================================
-
   olympus: {
     label: 'Olympus',
     category: 'mythology',
@@ -749,10 +758,6 @@ export const THEME_SETS = {
     gray: '#292B2F',
     background: '#0B0D11'
   },
-
-  // ============================================================
-  // MINECRAFT
-  // ============================================================
 
   end: {
     label: 'The End',
@@ -846,6 +851,86 @@ export const THEME_SETS = {
     secondary: '#3088B2',
     gray: '#202033',
     background: '#050611'
+  },
+
+  nebula: {
+    label: 'Nebula',
+    category: 'cosmic',
+    color: '#A04FC4',
+    secondary: '#3D78B5',
+    gray: '#282334',
+    background: '#08050F',
+    icon: '#C875E8'
+  },
+
+  supernova: {
+    label: 'Supernova',
+    category: 'cosmic',
+    color: '#D87532',
+    secondary: '#B44D70',
+    gray: '#332A27',
+    background: '#0E0806',
+    icon: '#F09A5C'
+  },
+
+  starlight: {
+    label: 'Starlight',
+    category: 'cosmic',
+    color: '#B9C7E8',
+    secondary: '#6879A8',
+    gray: '#272B36',
+    background: '#070A12',
+    icon: '#DCE6FF'
+  },
+
+  blackHole: {
+    label: 'Black Hole',
+    category: 'cosmic',
+    color: '#8C5BC4',
+    secondary: '#C26A3D',
+    gray: '#211C29',
+    background: '#030204',
+    icon: '#A97BE8'
+  },
+
+  aurora: {
+    label: 'Aurora',
+    category: 'cosmic',
+    color: '#4FB3A8',
+    secondary: '#6B72C8',
+    gray: '#252A35',
+    background: '#070B12',
+    icon: '#6FE0D1'
+  },
+
+  eclipse: {
+    label: 'Eclipse',
+    category: 'cosmic',
+    color: '#8A63C7',
+    secondary: '#C47A45',
+    gray: '#29242F',
+    background: '#08070D',
+    icon: '#B18AE8'
+  },
+
+  quasar: {
+    label: 'Quasar',
+    category: 'cosmic',
+    color: '#E07A5F',
+    secondary: '#5B8FC4',
+    gray: '#30282A',
+    background: '#0C0809',
+    icon: '#F0A080'
+  },
+
+  void: {
+    label: 'Void',
+    category: 'cosmic',
+    color: '#5B4B8A',
+    secondary: '#8A4F6D',
+    gray: '#25232C',
+    background: '#050308',
+    icon: '#9A78C2'
   },
 
   // ============================================================
@@ -992,6 +1077,10 @@ export const THEME_SETS = {
     icon: '#7549A2'
   },
 
+  // ============================================================
+  // PREMIUM
+  // ============================================================
+
   sunset: {
     label: 'Sunset',
     category: 'premium',
@@ -1040,6 +1129,50 @@ export const THEME_SETS = {
     gray: '#242424',
     background: '#080808',
     icon: '#F0F0F0'
+  },
+
+  // ============================================================
+  // HOGWARTS
+  // ============================================================
+
+  gryffindor: {
+    label: 'Gryffindor',
+    category: 'hogwarts',
+    color: '#AE0001',
+    secondary: '#D3A625',
+    gray: '#302322',
+    background: '#100607',
+    icon: '#D3A625'
+  },
+
+  slytherin: {
+    label: 'Slytherin',
+    category: 'hogwarts',
+    color: '#2A623D',
+    secondary: '#AAAAAA',
+    gray: '#202823',
+    background: '#060D09',
+    icon: '#74A57A'
+  },
+
+  ravenclaw: {
+    label: 'Ravenclaw',
+    category: 'hogwarts',
+    color: '#1F4E79',
+    secondary: '#946B2D',
+    gray: '#222A31',
+    background: '#060A10',
+    icon: '#B08A4A'
+  },
+
+  hufflepuff: {
+    label: 'Hufflepuff',
+    category: 'hogwarts',
+    color: '#ECB939',
+    secondary: '#372E29',
+    gray: '#302D25',
+    background: '#0E0C07',
+    icon: '#F4D66D'
   },
 
   // ============================================================

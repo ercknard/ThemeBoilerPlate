@@ -60,6 +60,7 @@ function ThemeGallery() {
     minecraft: 'Minecraft',
     cosmic: 'Cosmic',
     premium: 'Premium',
+    hogwarts: 'Hogwarts',
     elements: 'Elements'
   };
 
@@ -309,7 +310,7 @@ function ThemeGallery() {
           ${theme.backgroundScale[3]} 100%
         )`;
 
-          const cardBorder = isDark ? alpha(color, 0.28) : alpha(color, 0.2);
+          const cardBorder = isDark ? alpha(color, 0.35) : alpha(color, 0.35);
 
           const cardShadow = isDark
             ? `
@@ -352,7 +353,7 @@ function ThemeGallery() {
 
                 background: cardBackground,
 
-                border: '1px solid',
+                border: '2px solid',
                 borderColor: isActive ? color : cardBorder,
 
                 isolation: 'isolate',
