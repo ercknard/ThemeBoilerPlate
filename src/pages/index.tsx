@@ -198,7 +198,7 @@ export default function Home() {
             position: 'absolute',
             inset: 0,
 
-            opacity: isDark ? 0.15 : 0.05,
+            opacity: isDark ? 0.15 : 0.1,
 
             backgroundImage: `
                       linear-gradient(

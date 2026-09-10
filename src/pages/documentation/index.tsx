@@ -459,7 +459,7 @@ export default function TypographyShowcase() {
                         },
 
                         '&.Mui-selected': {
-                          color: theme.colorScale[12],
+                          color: '#ffffff',
 
                           background: `linear-gradient(
                             135deg,

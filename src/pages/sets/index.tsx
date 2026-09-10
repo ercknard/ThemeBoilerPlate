@@ -112,60 +112,84 @@ function ThemeGallery() {
           scrollButtons={false}
           allowScrollButtonsMobile
           sx={{
-            minHeight: 42,
+            width: '100%',
 
-            '& .MuiTabs-indicator': {
-              display: 'none'
-            },
+            minHeight: 36,
 
             '& .MuiTabs-flexContainer': {
               gap: 0.5
             },
 
-            '& .MuiTab-root': {
-              minHeight: 42,
-              minWidth: 'auto',
+            '& .MuiTabs-scroller': {
+              overflowX: 'auto !important',
+              scrollbarWidth: 'none',
 
-              px: {
-                xs: 1.5,
-                sm: 2
+              '&::-webkit-scrollbar': {
+                display: 'none'
+              }
+            },
+
+            '& .MuiTabs-indicator': {
+              display: 'none'
+            },
+
+            '& .MuiTab-root': {
+              flex: '0 0 auto',
+
+              minHeight: 36,
+
+              minWidth: {
+                xs: 90,
+                sm: 105
               },
+
+              px: 1.5,
 
               borderRadius: 2,
 
-              textTransform: 'none',
+              textTransform: 'capitalize',
 
               fontSize: {
-                xs: 12,
-                sm: 13
+                xs: '0.75rem',
+                sm: '0.8rem'
               },
 
-              fontWeight: 700,
+              fontWeight: 650,
 
               color: theme.grayScale[10],
 
               transition:
-                'background 180ms ease, color 180ms ease, box-shadow 180ms ease',
+                'color 180ms ease, background-color 180ms ease, box-shadow 180ms ease, transform 180ms ease',
+
+              '& .MuiTab-iconWrapper': {
+                fontSize: 18
+              },
+
+              '&.Mui-selected': {
+                color: '#ffffff',
+
+                background: `linear-gradient(
+                    135deg,
+                    ${theme.colorScale[9]},
+                    ${theme.secondaryScale[9]}
+                  )`,
+
+                boxShadow: `0 3px 12px ${alpha(theme.colorScale[9], 0.2)}`
+              },
 
               '&:hover': {
-                color: theme.grayScale[12],
-                backgroundColor: alpha(theme.colorScale[9], 0.06)
+                backgroundColor: alpha(theme.colorScale[9], 0.07)
+              },
+
+              '&.Mui-selected:hover': {
+                background: `linear-gradient(
+                    135deg,
+                    ${theme.colorScale[9]},
+                    ${theme.secondaryScale[9]}
+                  )`,
+
+                boxShadow: `0 4px 14px ${alpha(theme.colorScale[9], 0.26)}`
               }
-            },
-
-            '& .MuiTab-root.Mui-selected': {
-              color: theme.grayScale[12],
-
-              background: `linear-gradient(
-                135deg,
-                ${theme.colorScale[9]},
-                ${theme.secondaryScale[9]}
-              )`,
-
-              boxShadow: `
-                0 8px 24px
-                ${alpha(theme.colorScale[9], 0.16)}
-              `
             }
           }}
         >
@@ -218,17 +242,15 @@ function ThemeGallery() {
                         lineHeight: 1,
                         fontWeight: 800,
 
-                        color: isSelected
-                          ? theme.grayScale[12]
-                          : theme.grayScale[10],
+                        color: isSelected ? '#ffffff' : theme.grayScale[10],
 
                         backgroundColor: isSelected
-                          ? alpha(theme.grayScale[12], 0.14)
+                          ? alpha('#ffffff', 0.14)
                           : alpha(theme.grayScale[10], 0.08),
 
                         border: `1px solid ${
                           isSelected
-                            ? alpha(theme.grayScale[12], 0.16)
+                            ? alpha('#ffffff', 0.16)
                             : alpha(theme.grayScale[10], 0.1)
                         }`
                       }}
