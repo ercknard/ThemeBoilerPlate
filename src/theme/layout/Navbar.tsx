@@ -617,13 +617,13 @@ export default function Navbar() {
 
                 px: 1.25,
 
-                borderRadius: 1.5,
+                borderRadius: 1,
 
                 color: textPrimary,
 
                 fontWeight: 700,
 
-                backgroundColor: alpha(primary, 0.06),
+                backgroundColor: alpha(secondary, 0.25),
 
                 border: `1px solid ${alpha(primary, 0.12)}`,
 
@@ -895,7 +895,7 @@ export default function Navbar() {
             </Box>
           </Menu>
 
-          <Box
+          {/* <Box
             sx={{
               display: {
                 xs: 'none',
@@ -922,7 +922,7 @@ export default function Navbar() {
                 border: `1px solid ${alpha(secondary, 0.16)}`
               }}
             />
-          </Box>
+          </Box> */}
 
           <AppButton
             variant="text"
