@@ -6,6 +6,9 @@ import {
   AppBar,
   Box,
   Container,
+  Divider,
+  Menu,
+  MenuItem,
   Stack,
   Toolbar,
   Typography
@@ -19,7 +22,10 @@ import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import CloseIcon from '@mui/icons-material/Close';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import MenuIcon from '@mui/icons-material/Menu';
+import PaletteIcon from '@mui/icons-material/Palette';
 import SmartDisplayIcon from '@mui/icons-material/SmartDisplay';
+import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
+import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 
 import { useThemeContext } from '@/contexts/themeContext';
 
@@ -27,6 +33,7 @@ import { AppButton, AppChip } from '@/theme/components/CustomComponents';
 
 import { THEME_ICONS, THEME_SETS } from '@/theme/theme';
 import { usePathname } from 'next/navigation';
+import FormatPaintIcon from '@mui/icons-material/FormatPaint';
 
 const GITHUB_URL = process.env.NEXT_PUBLIC_GITHUB_URL;
 
@@ -36,14 +43,40 @@ const navItems = [
     href: '/playground'
   },
   {
+    label: 'Themes',
+    href: '/sets'
+  },
+  {
     label: 'Documentation',
     href: '/documentation'
   }
 ];
 
+type ThemeKey = keyof typeof THEME_SETS;
+
+type ThemeItem = {
+  label: string;
+  category: string;
+  color: string;
+  secondary: string;
+  gray: string;
+  background: string;
+  icon?: string;
+};
+
+const THEME_CATEGORY_LABELS: Record<string, string> = {
+  classic: 'Classic',
+  mythology: 'Mythology',
+  minecraft: 'Minecraft',
+  cosmic: 'Cosmic',
+  premium: 'Premium',
+  elements: 'Elements'
+};
+
 export default function Navbar() {
   const theme = useTheme();
-  const { themeSet } = useThemeContext();
+
+  const { themeSet, setThemeSet } = useThemeContext();
 
   const themeIcon = THEME_ICONS[themeSet];
   const activeTheme = THEME_SETS[themeSet];
@@ -51,16 +84,46 @@ export default function Navbar() {
   const primary = theme.colorScale[9];
   const secondary = theme.secondaryScale[9];
 
-  const background = theme.backgroundScale[1];
-
   const textPrimary = theme.grayScale[12];
   const textSecondary = theme.grayScale[10];
 
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [themeMenuAnchor, setThemeMenuAnchor] =
+    React.useState<null | HTMLElement>(null);
 
   const pathname = usePathname();
 
   const isDocumentationPage = pathname === '/';
+
+  const themeItems = Object.entries(THEME_SETS).filter(
+    ([key]) => key !== 'custom'
+  ) as [Exclude<ThemeKey, 'custom'>, ThemeItem][];
+
+  const themeCategories = Array.from(
+    new Set(themeItems.map(([, item]) => item.category))
+  );
+
+  const handleThemeChange = (key: Exclude<ThemeKey, 'custom'>) => {
+    setThemeSet(key);
+    setThemeMenuAnchor(null);
+    setMobileOpen(false);
+  };
+
+  const getNavIcon = (href: string) => {
+    switch (href) {
+      case '/playground':
+        return <SmartDisplayIcon sx={{ fontSize: 18 }} />;
+
+      case '/sets':
+        return <FormatPaintIcon sx={{ fontSize: 18 }} />;
+
+      case '/documentation':
+        return <DescriptionOutlinedIcon sx={{ fontSize: 18 }} />;
+
+      default:
+        return <HomeOutlinedIcon sx={{ fontSize: 18 }} />;
+    }
+  };
 
   return (
     <AppBar
@@ -77,16 +140,17 @@ export default function Navbar() {
               md: alpha(theme.backgroundScale[5], 1)
             }
           : `linear-gradient(
-        to bottom,
-        ${alpha(theme.colorScale[2], 0)} 0%,
-        ${alpha(theme.colorScale[2], 0)} 70%,
-        ${alpha(theme.colorScale[2], 0)} 100%
-      )`,
+              to bottom,
+              ${alpha(theme.colorScale[2], 0)} 0%,
+              ${alpha(theme.colorScale[2], 0)} 70%,
+              ${alpha(theme.colorScale[2], 0)} 100%
+            )`,
 
         boxShadow: 'none',
+
         borderBottom: !isDocumentationPage
           ? `2px solid ${alpha(secondary, 0.25)}`
-          : `unset`
+          : 'unset'
       }}
     >
       <Toolbar
@@ -105,8 +169,6 @@ export default function Navbar() {
           gap: 2
         }}
       >
-        {/* BRAND */}
-
         <AppButton
           component="a"
           href="/"
@@ -123,7 +185,13 @@ export default function Navbar() {
             }
           }}
         >
-          <Stack direction="row" spacing={1.25} sx={{ alignItems: 'center' }}>
+          <Stack
+            direction="row"
+            spacing={1.25}
+            sx={{
+              alignItems: 'center'
+            }}
+          >
             <Box
               sx={{
                 position: 'relative',
@@ -156,8 +224,8 @@ export default function Navbar() {
                     objectFit: 'contain',
 
                     filter: `drop-shadow(
-                        0 4px 12px ${alpha(primary, 0.25)}
-                      )`,
+                      0 4px 12px ${alpha(primary, 0.25)}
+                    )`,
 
                     transition: 'transform 0.3s ease',
 
@@ -209,11 +277,9 @@ export default function Navbar() {
           </Stack>
         </AppButton>
 
-        {/* DESKTOP NAVIGATION */}
-
         <Stack
           direction="row"
-          spacing={3}
+          spacing={2}
           sx={{
             display: {
               xs: 'none',
@@ -239,14 +305,7 @@ export default function Navbar() {
                 : pathname === item.href ||
                   pathname.startsWith(`${item.href}/`);
 
-            const icon =
-              item.href === '/' ? (
-                <HomeOutlinedIcon sx={{ fontSize: 18 }} />
-              ) : item.href === '/playground' ? (
-                <SmartDisplayIcon sx={{ fontSize: 18 }} />
-              ) : (
-                <DescriptionOutlinedIcon sx={{ fontSize: 18 }} />
-              );
+            const icon = getNavIcon(item.href);
 
             return (
               <AppButton
@@ -274,10 +333,10 @@ export default function Navbar() {
 
                   background: isActive
                     ? `linear-gradient(
-        135deg,
-        ${alpha(primary, 0.16)},
-        ${alpha(secondary, 0.12)}
-      )`
+                        135deg,
+                        ${alpha(primary, 0.16)},
+                        ${alpha(secondary, 0.12)}
+                      )`
                     : 'transparent',
 
                   boxShadow: isActive
@@ -306,10 +365,10 @@ export default function Navbar() {
                     borderRadius: 'inherit',
 
                     background: `linear-gradient(
-      135deg,
-      ${alpha(primary, 0.14)},
-      ${alpha(secondary, 0.1)}
-    )`,
+                      135deg,
+                      ${alpha(primary, 0.14)},
+                      ${alpha(secondary, 0.1)}
+                    )`,
 
                     opacity: isActive ? 1 : 0,
 
@@ -332,10 +391,10 @@ export default function Navbar() {
                     borderRadius: 999,
 
                     background: `linear-gradient(
-      90deg,
-      ${primary},
-      ${secondary}
-    )`,
+                      90deg,
+                      ${primary},
+                      ${secondary}
+                    )`,
 
                     transform: 'translateX(-50%)',
 
@@ -434,10 +493,10 @@ export default function Navbar() {
                   borderRadius: 'inherit',
 
                   background: `linear-gradient(
-            135deg,
-            ${alpha(secondary, 0.15)},
-            ${alpha(primary, 0.08)}
-          )`,
+                    135deg,
+                    ${alpha(secondary, 0.15)},
+                    ${alpha(primary, 0.08)}
+                  )`,
 
                   opacity: 0,
 
@@ -460,10 +519,10 @@ export default function Navbar() {
                   borderRadius: 999,
 
                   background: `linear-gradient(
-            90deg,
-            ${secondary},
-            ${primary}
-          )`,
+                    90deg,
+                    ${secondary},
+                    ${primary}
+                  )`,
 
                   transform: 'translateX(-50%)',
 
@@ -509,16 +568,332 @@ export default function Navbar() {
           )}
         </Stack>
 
-        {/* RIGHT SIDE */}
-
         <Box
           sx={{
             flex: 1
           }}
         />
 
-        <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-          {/* ACTIVE THEME */}
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{
+            alignItems: 'center'
+          }}
+        >
+          <Box
+            sx={{
+              display: {
+                xs: 'none',
+                sm: 'block'
+              }
+            }}
+          >
+            <AppButton
+              variant="text"
+              color="inherit"
+              size="small"
+              startIcon={
+                <PaletteIcon
+                  sx={{
+                    fontSize: 17
+                  }}
+                />
+              }
+              endIcon={
+                <KeyboardArrowDownRoundedIcon
+                  sx={{
+                    fontSize: 18
+                  }}
+                />
+              }
+              onClick={(event) => {
+                setThemeMenuAnchor(event.currentTarget);
+              }}
+              aria-haspopup="menu"
+              aria-expanded={Boolean(themeMenuAnchor)}
+              sx={{
+                minHeight: 36,
+
+                px: 1.25,
+
+                borderRadius: 1.5,
+
+                color: textPrimary,
+
+                fontWeight: 700,
+
+                backgroundColor: alpha(primary, 0.06),
+
+                border: `1px solid ${alpha(primary, 0.12)}`,
+
+                '&:hover': {
+                  backgroundColor: alpha(primary, 0.1),
+
+                  borderColor: alpha(primary, 0.2)
+                },
+
+                '& .MuiButton-startIcon': {
+                  color: primary
+                },
+
+                '& .MuiButton-endIcon': {
+                  color: textSecondary,
+
+                  transition: 'transform 180ms ease'
+                }
+              }}
+            >
+              {activeTheme?.label ?? themeSet}
+            </AppButton>
+          </Box>
+
+          <Menu
+            anchorEl={themeMenuAnchor}
+            open={Boolean(themeMenuAnchor)}
+            onClose={() => setThemeMenuAnchor(null)}
+            slotProps={{
+              paper: {
+                elevation: 0,
+                sx: {
+                  mt: 1,
+
+                  width: 310,
+
+                  maxHeight: 'min(70vh, 620px)',
+
+                  overflow: 'hidden',
+
+                  borderRadius: 2.5,
+
+                  backgroundColor: theme.backgroundScale[3],
+
+                  border: `1px solid ${alpha(theme.secondaryScale[6], 0.8)}`,
+
+                  boxShadow: `
+          0 20px 60px ${alpha(theme.grayScale[1], 0.2)}
+        `
+                }
+              }
+            }}
+          >
+            <Box
+              sx={{
+                px: 2,
+                py: 1.5,
+
+                background: `linear-gradient(
+                  135deg,
+                  ${alpha(primary, 0.08)},
+                  ${alpha(secondary, 0.05)}
+                )`,
+
+                borderBottom: `1px solid ${alpha(theme.secondaryScale[6], 0.6)}`
+              }}
+            >
+              <Typography
+                sx={{
+                  fontSize: 12,
+                  fontWeight: 800,
+                  color: textPrimary
+                }}
+              >
+                Theme Sets
+              </Typography>
+
+              <Typography
+                sx={{
+                  mt: 0.25,
+                  fontSize: 10,
+                  color: textSecondary
+                }}
+              >
+                Choose a theme for the entire design system.
+              </Typography>
+            </Box>
+
+            <Box
+              sx={{
+                maxHeight: 520,
+                overflowY: 'auto',
+
+                scrollbarWidth: 'none',
+                msOverflowStyle: 'none',
+
+                '&::-webkit-scrollbar': {
+                  display: 'none'
+                },
+
+                py: 0.75
+              }}
+            >
+              {themeCategories.map((category, categoryIndex) => {
+                const categoryItems = themeItems.filter(
+                  ([, item]) => item.category === category
+                );
+
+                return (
+                  <Box key={category}>
+                    {categoryIndex > 0 && (
+                      <Divider
+                        sx={{
+                          my: 0.75,
+
+                          borderColor: alpha(theme.secondaryScale[6], 0.5)
+                        }}
+                      />
+                    )}
+
+                    <Typography
+                      sx={{
+                        px: 2,
+                        pt: 0.75,
+                        pb: 0.5,
+
+                        fontSize: 9,
+                        fontWeight: 800,
+
+                        letterSpacing: '0.12em',
+                        textTransform: 'uppercase',
+
+                        color: theme.grayScale[8]
+                      }}
+                    >
+                      {THEME_CATEGORY_LABELS[category] ?? category}
+                    </Typography>
+
+                    {categoryItems.map(([key, item]) => {
+                      const isActive = themeSet === key;
+                      const icon = THEME_ICONS[key];
+
+                      return (
+                        <MenuItem
+                          key={key}
+                          selected={isActive}
+                          onClick={() => handleThemeChange(key)}
+                          sx={{
+                            minHeight: 48,
+
+                            mx: 0.75,
+                            px: 1.25,
+
+                            gap: 1.25,
+
+                            borderRadius: 1.5,
+
+                            color: textPrimary,
+
+                            '&.Mui-selected': {
+                              backgroundColor: alpha(item.color, 0.09)
+                            },
+
+                            '&.Mui-selected:hover': {
+                              backgroundColor: alpha(item.color, 0.13)
+                            },
+
+                            '&:hover': {
+                              backgroundColor: alpha(item.color, 0.06)
+                            }
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              width: 30,
+                              height: 30,
+
+                              flexShrink: 0,
+
+                              display: 'grid',
+                              placeItems: 'center',
+
+                              borderRadius: 1.5,
+
+                              backgroundColor: alpha(item.color, 0.08),
+
+                              border: `1px solid ${alpha(item.color, 0.16)}`
+                            }}
+                          >
+                            {icon ? (
+                              <Box
+                                component="img"
+                                src={icon}
+                                alt=""
+                                sx={{
+                                  width: 22,
+                                  height: 22,
+                                  objectFit: 'contain'
+                                }}
+                              />
+                            ) : (
+                              <Box
+                                sx={{
+                                  width: 9,
+                                  height: 9,
+
+                                  borderRadius: '50%',
+
+                                  backgroundColor: item.color
+                                }}
+                              />
+                            )}
+                          </Box>
+
+                          <Box
+                            sx={{
+                              flex: 1,
+                              minWidth: 0
+                            }}
+                          >
+                            <Typography
+                              sx={{
+                                fontSize: 12,
+                                fontWeight: isActive ? 800 : 650,
+
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap'
+                              }}
+                            >
+                              {item.label}
+                            </Typography>
+
+                            <Typography
+                              sx={{
+                                mt: 0.15,
+
+                                fontSize: 9,
+
+                                color: textSecondary,
+
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap'
+                              }}
+                            >
+                              {THEME_CATEGORY_LABELS[item.category] ??
+                                item.category}
+                            </Typography>
+                          </Box>
+
+                          {isActive && (
+                            <CheckRoundedIcon
+                              sx={{
+                                flexShrink: 0,
+
+                                fontSize: 18,
+
+                                color: item.color
+                              }}
+                            />
+                          )}
+                        </MenuItem>
+                      );
+                    })}
+                  </Box>
+                );
+              })}
+            </Box>
+          </Menu>
 
           <Box
             sx={{
@@ -548,8 +923,6 @@ export default function Navbar() {
               }}
             />
           </Box>
-
-          {/* MOBILE MENU BUTTON */}
 
           <AppButton
             variant="text"
@@ -587,8 +960,6 @@ export default function Navbar() {
         </Stack>
       </Toolbar>
 
-      {/* MOBILE NAVIGATION */}
-
       <Box
         sx={{
           display: {
@@ -597,12 +968,12 @@ export default function Navbar() {
           }
         }}
       >
-        {/* Backdrop */}
         <Box
           onClick={() => setMobileOpen(false)}
           sx={{
             position: 'fixed',
             inset: 0,
+
             zIndex: theme.zIndex.drawer - 1,
 
             backgroundColor: alpha('#000', 0.5),
@@ -614,17 +985,8 @@ export default function Navbar() {
           }}
         />
 
-        {/* Drawer */}
-        <Box
-          sx={{
-            display: {
-              xs: 'block',
-              md: 'none'
-            }
-          }}
-        >
+        <Box>
           <Portal>
-            {/* Backdrop */}
             <Box
               onClick={() => setMobileOpen(false)}
               sx={{
@@ -645,7 +1007,6 @@ export default function Navbar() {
               }}
             />
 
-            {/* Right Drawer */}
             <Box
               sx={{
                 position: 'fixed',
@@ -654,7 +1015,7 @@ export default function Navbar() {
                 right: 0,
 
                 width: {
-                  xs: 'min(82vw, 320px)',
+                  xs: 'min(88vw, 360px)',
                   sm: 320
                 },
 
@@ -678,7 +1039,6 @@ export default function Navbar() {
                 transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
               }}
             >
-              {/* Header */}
               <Box
                 sx={{
                   flexShrink: 0,
@@ -694,11 +1054,11 @@ export default function Navbar() {
                   borderBottom: `1px solid ${alpha(secondary, 0.12)}`
                 }}
               >
-                {/* Logo + Branding */}
                 <Box
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
+
                     gap: 1.25,
 
                     minWidth: 0
@@ -764,7 +1124,6 @@ export default function Navbar() {
                   </Box>
                 </Box>
 
-                {/* Close */}
                 <AppButton
                   variant="text"
                   color="inherit"
@@ -797,7 +1156,6 @@ export default function Navbar() {
                 </AppButton>
               </Box>
 
-              {/* Navigation */}
               <Box
                 sx={{
                   flex: 1,
@@ -818,14 +1176,7 @@ export default function Navbar() {
                         : pathname === item.href ||
                           pathname.startsWith(`${item.href}/`);
 
-                    const icon =
-                      item.href === '/' ? (
-                        <HomeOutlinedIcon sx={{ fontSize: 18 }} />
-                      ) : item.href === '/playground' ? (
-                        <SmartDisplayIcon sx={{ fontSize: 18 }} />
-                      ) : (
-                        <DescriptionOutlinedIcon sx={{ fontSize: 18 }} />
-                      );
+                    const icon = getNavIcon(item.href);
 
                     return (
                       <AppButton
@@ -854,10 +1205,10 @@ export default function Navbar() {
 
                           background: isActive
                             ? `linear-gradient(
-        135deg,
-        ${alpha(primary, 0.14)},
-        ${alpha(secondary, 0.1)}
-      )`
+                                135deg,
+                                ${alpha(primary, 0.14)},
+                                ${alpha(secondary, 0.1)}
+                              )`
                             : 'transparent',
 
                           boxShadow: isActive
@@ -932,9 +1283,203 @@ export default function Navbar() {
                     </AppButton>
                   )}
                 </Stack>
+
+                <Divider
+                  sx={{
+                    my: 2,
+
+                    borderColor: alpha(theme.secondaryScale[6], 0.6)
+                  }}
+                />
+
+                <Stack spacing={1}>
+                  <Stack
+                    direction="row"
+                    spacing={0.75}
+                    sx={{
+                      alignItems: 'center',
+                      px: 0.5
+                    }}
+                  >
+                    <PaletteIcon
+                      sx={{
+                        fontSize: 17,
+                        color: primary
+                      }}
+                    />
+
+                    <Typography
+                      sx={{
+                        fontSize: 11,
+                        fontWeight: 800,
+
+                        letterSpacing: '0.08em',
+                        textTransform: 'uppercase',
+
+                        color: textSecondary
+                      }}
+                    >
+                      Theme Sets
+                    </Typography>
+                  </Stack>
+
+                  {themeCategories.map((category) => {
+                    const categoryItems = themeItems.filter(
+                      ([, item]) => item.category === category
+                    );
+
+                    return (
+                      <Box key={category}>
+                        <Typography
+                          sx={{
+                            px: 0.75,
+                            pt: 0.75,
+                            pb: 0.5,
+
+                            fontSize: 9,
+                            fontWeight: 800,
+
+                            letterSpacing: '0.1em',
+                            textTransform: 'uppercase',
+
+                            color: theme.grayScale[8]
+                          }}
+                        >
+                          {THEME_CATEGORY_LABELS[category] ?? category}
+                        </Typography>
+
+                        <Stack spacing={0.25}>
+                          {categoryItems.map(([key, item]) => {
+                            const isActive = themeSet === key;
+                            const icon = THEME_ICONS[key];
+
+                            return (
+                              <AppButton
+                                key={key}
+                                variant="text"
+                                color="inherit"
+                                onClick={() => handleThemeChange(key)}
+                                sx={{
+                                  width: '100%',
+
+                                  minHeight: 46,
+
+                                  px: 1,
+
+                                  justifyContent: 'flex-start',
+
+                                  borderRadius: 1.5,
+
+                                  color: isActive ? textPrimary : textSecondary,
+
+                                  backgroundColor: isActive
+                                    ? alpha(item.color, 0.08)
+                                    : 'transparent',
+
+                                  border: '1px solid',
+                                  borderColor: isActive
+                                    ? alpha(item.color, 0.16)
+                                    : 'transparent',
+
+                                  '&:hover': {
+                                    color: textPrimary,
+
+                                    backgroundColor: alpha(item.color, 0.06)
+                                  }
+                                }}
+                              >
+                                <Box
+                                  sx={{
+                                    width: 28,
+                                    height: 28,
+
+                                    mr: 1,
+
+                                    flexShrink: 0,
+
+                                    display: 'grid',
+                                    placeItems: 'center',
+
+                                    borderRadius: 1.25,
+
+                                    backgroundColor: alpha(item.color, 0.08),
+
+                                    border: `1px solid ${alpha(
+                                      item.color,
+                                      0.15
+                                    )}`
+                                  }}
+                                >
+                                  {icon ? (
+                                    <Box
+                                      component="img"
+                                      src={icon}
+                                      alt=""
+                                      sx={{
+                                        width: 21,
+                                        height: 21,
+                                        objectFit: 'contain'
+                                      }}
+                                    />
+                                  ) : (
+                                    <Box
+                                      sx={{
+                                        width: 8,
+                                        height: 8,
+
+                                        borderRadius: '50%',
+
+                                        backgroundColor: item.color
+                                      }}
+                                    />
+                                  )}
+                                </Box>
+
+                                <Box
+                                  sx={{
+                                    flex: 1,
+                                    minWidth: 0,
+
+                                    textAlign: 'left'
+                                  }}
+                                >
+                                  <Typography
+                                    sx={{
+                                      fontSize: 11.5,
+                                      lineHeight: 1.2,
+
+                                      fontWeight: isActive ? 800 : 600,
+
+                                      overflow: 'hidden',
+                                      textOverflow: 'ellipsis',
+                                      whiteSpace: 'nowrap'
+                                    }}
+                                  >
+                                    {item.label}
+                                  </Typography>
+                                </Box>
+
+                                {isActive && (
+                                  <CheckRoundedIcon
+                                    sx={{
+                                      fontSize: 17,
+
+                                      flexShrink: 0,
+
+                                      color: item.color
+                                    }}
+                                  />
+                                )}
+                              </AppButton>
+                            );
+                          })}
+                        </Stack>
+                      </Box>
+                    );
+                  })}
+                </Stack>
               </Box>
 
-              {/* Footer */}
               <Box
                 sx={{
                   flexShrink: 0,

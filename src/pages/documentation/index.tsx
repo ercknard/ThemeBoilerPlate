@@ -162,6 +162,7 @@ export default function TypographyShowcase() {
       <Box
         sx={{
           minHeight: '100vh',
+          overflowX: 'clip',
           background: alpha(theme.backgroundScale[4], 0.75),
           color: 'text.primary'
         }}
@@ -221,10 +222,53 @@ export default function TypographyShowcase() {
               xxxxl: 7.15
             }}
             sx={{
+              minWidth: 0,
+              maxWidth: '100%',
               minHeight: { md: '100vh' },
-              py: { xs: 4, lg: 5 }
+              py: { xs: 4, lg: 5 },
+              overflowX: 'clip'
             }}
           >
+            <Box
+              sx={{
+                position: 'absolute',
+
+                top: -220,
+                left: '15%',
+
+                width: 500,
+                height: 500,
+
+                borderRadius: '50%',
+
+                backgroundColor: alpha(theme.colorScale[9], 0.1),
+
+                filter: 'blur(100px)',
+
+                pointerEvents: 'none'
+              }}
+            />
+
+            <Box
+              sx={{
+                position: 'absolute',
+
+                top: 500,
+                right: '-10%',
+
+                width: 500,
+                height: 500,
+
+                borderRadius: '50%',
+
+                backgroundColor: alpha(theme.secondaryScale[9], 0.06),
+
+                filter: 'blur(110px)',
+
+                pointerEvents: 'none'
+              }}
+            />
+
             <Stack spacing={{ xs: 2, md: 3 }}>
               <Stack
                 sx={{
