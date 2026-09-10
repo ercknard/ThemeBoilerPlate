@@ -146,7 +146,8 @@ export default function Home() {
             //   ${background}
             // `
 
-            lg: `
+            lg: isDark
+              ? `
               radial-gradient(
                 circle at 50% -20%,
                 ${alpha(primaryStrong, 0.75)},
@@ -154,12 +155,30 @@ export default function Home() {
               ),
               radial-gradient(
                 circle at 100% 50%,
-                ${alpha(secondaryStrong, 0.5)},
+                ${alpha(secondaryStrong, 0.4)},
                 transparent 38%
               ),
               radial-gradient(
                 circle at 0% 50%,
-                ${alpha(secondaryStrong, 0.5)},
+                ${alpha(secondaryStrong, 0.4)},
+                transparent 38%
+              ),
+              ${background}
+            `
+              : `
+              radial-gradient(
+                circle at 50% -20%,
+                ${alpha(primaryStrong, 0.5)},
+                transparent 42%
+              ),
+              radial-gradient(
+                circle at 100% 50%,
+                ${alpha(secondaryStrong, 0.25)},
+                transparent 38%
+              ),
+              radial-gradient(
+                circle at 0% 50%,
+                ${alpha(secondaryStrong, 0.25)},
                 transparent 38%
               ),
               ${background}
