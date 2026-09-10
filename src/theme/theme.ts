@@ -115,6 +115,7 @@ declare module '@mui/system' {
     xxl: true;
     xxxl: true;
     xxxxl: true;
+    xxxxxl: true;
   }
 }
 
@@ -126,7 +127,8 @@ const BREAKPOINTS = {
   xl: 1440,
   xxl: 1600,
   xxxl: 1920,
-  xxxxl: 2560
+  xxxxl: 2560,
+  xxxxxl: 3340
 };
 
 /* ========================================================================== */

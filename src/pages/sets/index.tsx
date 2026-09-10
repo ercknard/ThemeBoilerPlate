@@ -860,7 +860,7 @@ export default function ThemeGalleryPage() {
             position: 'absolute',
 
             top: -220,
-            left: { xs: '-10%', xxl: '2.5%', xxxxl: '15%' },
+            left: { xs: '-10%', xxl: '2.5%', xxxxl: '15%', xxxxxl: '20%' },
 
             width: 500,
             height: 500,
