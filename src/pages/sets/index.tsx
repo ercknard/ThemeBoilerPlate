@@ -431,7 +431,7 @@ function ThemeGallery() {
                     ? `
                   radial-gradient(
                     circle at 88% 12%,
-                    ${alpha(secondary, 0.2)} 0%,
+                    ${alpha(secondary, 0.1)} 0%,
                     transparent 38%
                   ),
                   radial-gradient(
@@ -778,6 +778,7 @@ export default function ThemeGalleryPage() {
   const activeTheme = THEME_SETS[themeSet]?.label ?? 'Custom';
 
   const themeCount = Object.keys(THEME_SETS).length - 1;
+  const isDark = theme.palette.mode === 'dark';
 
   return (
     <>
@@ -801,6 +802,35 @@ export default function ThemeGalleryPage() {
           backgroundColor: theme.backgroundScale[3]
         }}
       >
+        <Box
+          sx={{
+            position: 'absolute',
+            inset: 0,
+
+            opacity: isDark ? 0.1 : 0.075,
+
+            backgroundImage: `
+                                      linear-gradient(
+                                        ${alpha(theme.colorScale[9], 1)} 1px,
+                                        transparent 1px
+                                      ),
+                                      linear-gradient(
+                                        90deg,
+                                        ${alpha(theme.colorScale[9], 1)} 1px,
+                                        transparent 1px
+                                      )
+                                    `,
+
+            backgroundSize: '50px 50px',
+
+            maskImage: 'linear-gradient(to bottom, black, transparent 90%)',
+
+            WebkitMaskImage:
+              'linear-gradient(to bottom, black, transparent 90%)',
+
+            pointerEvents: 'none'
+          }}
+        />
         {/* Ambient background */}
 
         <Box

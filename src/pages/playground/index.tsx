@@ -2455,6 +2455,8 @@ export default function PlaygroundSection() {
     setComponent('button');
   };
 
+  const isDark = theme.palette.mode === 'dark';
+
   return (
     <>
       <Head>
@@ -2475,6 +2477,36 @@ export default function PlaygroundSection() {
           backgroundColor: theme.backgroundScale[3]
         }}
       >
+        <Box
+          sx={{
+            position: 'absolute',
+            inset: 0,
+
+            opacity: isDark ? 0.1 : 0.075,
+
+            backgroundImage: `
+                              linear-gradient(
+                                ${alpha(theme.colorScale[9], 1)} 1px,
+                                transparent 1px
+                              ),
+                              linear-gradient(
+                                90deg,
+                                ${alpha(theme.colorScale[9], 1)} 1px,
+                                transparent 1px
+                              )
+                            `,
+
+            backgroundSize: '50px 50px',
+
+            maskImage: 'linear-gradient(to bottom, black, transparent 90%)',
+
+            WebkitMaskImage:
+              'linear-gradient(to bottom, black, transparent 90%)',
+
+            pointerEvents: 'none'
+          }}
+        />
+
         <Box
           sx={{
             position: 'absolute',
