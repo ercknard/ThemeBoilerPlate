@@ -256,7 +256,6 @@ export default function TypographyShowcase() {
 
                 WebkitMaskImage:
                   'linear-gradient(to bottom, black, transparent 90%)',
-
                 pointerEvents: 'none'
               }}
             />
@@ -276,7 +275,7 @@ export default function TypographyShowcase() {
                 backgroundColor: alpha(theme.colorScale[9], 0.1),
 
                 filter: 'blur(100px)',
-
+                display: { xs: 'none', md: 'block' },
                 pointerEvents: 'none'
               }}
             />
@@ -296,7 +295,7 @@ export default function TypographyShowcase() {
                 backgroundColor: alpha(theme.secondaryScale[9], 0.06),
 
                 filter: 'blur(110px)',
-
+                display: { xs: 'none', md: 'block' },
                 pointerEvents: 'none'
               }}
             />

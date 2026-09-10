@@ -480,6 +480,55 @@ export default function ShowcaseSidebar({
           }
         }}
       >
+        <Box
+          sx={{
+            position: 'absolute',
+            bottom: -6,
+            left: 0,
+            width: '50vw',
+            opacity: 0.25,
+            display: {
+              xs: 'none',
+              md: 'block'
+            }
+          }}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 2400 800"
+            width="100%"
+            preserveAspectRatio="none"
+          >
+            <defs>
+              <linearGradient
+                id="theme-wave-gradient"
+                x1="50%"
+                y1="0%"
+                x2="50%"
+                y2="100%"
+              >
+                <stop offset="0%" stopColor={theme.colorScale[9]} />
+
+                <stop offset="100%" stopColor={theme.colorScale[7]} />
+              </linearGradient>
+            </defs>
+
+            <path
+              d="
+              M 0 323.089
+              Q 600 466.524 800 317.354
+              Q 1400 621.009 1600 321.322
+              Q 2200 548.547 2400 323.389
+              L 2400 800
+              L 0 800
+              L 0 323.202
+              Z
+            "
+              transform="translate(0 41.323)"
+              fill="url(#theme-wave-gradient)"
+            />
+          </svg>
+        </Box>
         {/* ================================================================== */}
         {/* HEADER                                                             */}
         {/* ================================================================== */}

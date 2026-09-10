@@ -860,7 +860,7 @@ export default function ThemeGalleryPage() {
             position: 'absolute',
 
             top: -220,
-            left: '10%',
+            left: { xs: '-10%', xxl: '2.5%', xxxxl: '10%' },
 
             width: 500,
             height: 500,
@@ -870,7 +870,7 @@ export default function ThemeGalleryPage() {
             backgroundColor: alpha(theme.colorScale[9], 0.1),
 
             filter: 'blur(100px)',
-
+            display: { xs: 'none', md: 'block' },
             pointerEvents: 'none'
           }}
         />
@@ -890,7 +890,7 @@ export default function ThemeGalleryPage() {
             backgroundColor: alpha(theme.secondaryScale[9], 0.06),
 
             filter: 'blur(110px)',
-
+            display: { xs: 'none', md: 'block' },
             pointerEvents: 'none'
           }}
         />
@@ -902,7 +902,7 @@ export default function ThemeGalleryPage() {
 
             width: '100%',
 
-            maxWidth: 1900,
+            maxWidth: 1600,
 
             mx: 'auto',
 

@@ -2517,8 +2517,9 @@ export default function PlaygroundSection() {
           sx={{
             position: 'absolute',
             top: -220,
-            left: '10%',
+            left: { xs: '-10%', xxl: '2.5%', xxxxl: '10%' },
             width: 500,
+            display: { xs: 'none', md: 'block' },
             height: 500,
             borderRadius: '50%',
             backgroundColor: alpha(theme.colorScale[9], 0.07),
@@ -2537,7 +2538,8 @@ export default function PlaygroundSection() {
             borderRadius: '50%',
             backgroundColor: alpha(theme.secondaryScale[9], 0.06),
             filter: 'blur(110px)',
-            pointerEvents: 'none'
+            pointerEvents: 'none',
+            display: { xs: 'none', md: 'block' }
           }}
         />
 
@@ -2546,7 +2548,7 @@ export default function PlaygroundSection() {
           sx={{
             position: 'relative',
             width: '100%',
-            maxWidth: 1900,
+            maxWidth: 1600,
             mx: 'auto',
             px: {
               xs: 1.5,
