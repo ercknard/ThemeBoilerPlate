@@ -667,9 +667,9 @@ export const THEME_ICONS: Record<keyof typeof THEME_SETS, string> = {
   starlight: '/static/images/logo-starlight.png',
   blackHole: '/static/images/logo-black-hole.png',
   aurora: '/static/images/logo-aurora.png',
-  eclipse: '/static/images/logo-eclipse.png',
-  quasar: '/static/images/logo-quasar.png',
-  void: '/static/images/logo-void.png',
+  eclipse: '/static/images/logo-gryffindor.png',
+  quasar: '/static/images/logo-aphrodite.png',
+  void: '/static/images/logo-monochrome.png',
 
   zeus: '/static/images/logo-zeus.png',
   hera: '/static/images/logo-hera.png',
@@ -847,90 +847,91 @@ export const THEME_SETS = {
   galaxy: {
     label: 'Galaxy',
     category: 'cosmic',
-    color: '#6650C4',
-    secondary: '#3088B2',
-    gray: '#202033',
-    background: '#050611'
+    color: '#5967C7',
+    secondary: '#A855F7',
+    gray: '#242638',
+    background: '#070914',
+    icon: '#818CF8'
   },
 
   nebula: {
     label: 'Nebula',
     category: 'cosmic',
-    color: '#A04FC4',
-    secondary: '#3D78B5',
-    gray: '#282334',
-    background: '#08050F',
-    icon: '#C875E8'
+    color: '#C04AD9',
+    secondary: '#E85D9E',
+    gray: '#302333',
+    background: '#0D050F',
+    icon: '#E879F9'
   },
 
   supernova: {
     label: 'Supernova',
     category: 'cosmic',
-    color: '#D87532',
-    secondary: '#B44D70',
-    gray: '#332A27',
-    background: '#0E0806',
-    icon: '#F09A5C'
+    color: '#E05A2A',
+    secondary: '#F0B429',
+    gray: '#332722',
+    background: '#100704',
+    icon: '#FF8A4C'
   },
 
   starlight: {
     label: 'Starlight',
     category: 'cosmic',
-    color: '#B9C7E8',
-    secondary: '#6879A8',
-    gray: '#272B36',
-    background: '#070A12',
-    icon: '#DCE6FF'
+    color: '#AFC8F5',
+    secondary: '#7DD3FC',
+    gray: '#282E3A',
+    background: '#060A12',
+    icon: '#E0EEFF'
   },
 
   blackHole: {
     label: 'Black Hole',
     category: 'cosmic',
-    color: '#8C5BC4',
-    secondary: '#C26A3D',
-    gray: '#211C29',
-    background: '#030204',
-    icon: '#A97BE8'
+    color: '#8B5CF6',
+    secondary: '#DC2626',
+    gray: '#211B29',
+    background: '#020203',
+    icon: '#B794F6'
   },
 
   aurora: {
     label: 'Aurora',
     category: 'cosmic',
-    color: '#4FB3A8',
-    secondary: '#6B72C8',
-    gray: '#252A35',
-    background: '#070B12',
-    icon: '#6FE0D1'
+    color: '#20B486',
+    secondary: '#5B7CFA',
+    gray: '#202C2B',
+    background: '#04100D',
+    icon: '#5EEAD4'
   },
 
   eclipse: {
     label: 'Eclipse',
     category: 'cosmic',
-    color: '#8A63C7',
-    secondary: '#C47A45',
-    gray: '#29242F',
-    background: '#08070D',
-    icon: '#B18AE8'
+    color: '#D6A329',
+    secondary: '#7C5C3B',
+    gray: '#302A20',
+    background: '#0C0904',
+    icon: '#F5D76E'
   },
 
   quasar: {
     label: 'Quasar',
     category: 'cosmic',
-    color: '#E07A5F',
-    secondary: '#5B8FC4',
-    gray: '#30282A',
-    background: '#0C0809',
-    icon: '#F0A080'
+    color: '#E84D8A',
+    secondary: '#36A9E1',
+    gray: '#30232C',
+    background: '#0C060B',
+    icon: '#FF79AD'
   },
 
   void: {
     label: 'Void',
     category: 'cosmic',
-    color: '#5B4B8A',
-    secondary: '#8A4F6D',
-    gray: '#25232C',
-    background: '#050308',
-    icon: '#9A78C2'
+    color: '#46505C',
+    secondary: '#7A8794',
+    gray: '#1D2024',
+    background: '#020304',
+    icon: '#AEB8C2'
   },
 
   // ============================================================
