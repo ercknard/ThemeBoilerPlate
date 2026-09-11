@@ -55,6 +55,8 @@ const CATEGORY_ORDER = [
   'elements',
   'mythology',
   'minecraft',
+  'premium',
+  'hogwarts',
   'cosmic',
   'custom'
 ] as const;
@@ -122,6 +124,12 @@ function getCategoryLabel(category: string): string {
 
     case 'cosmic':
       return 'Cosmic';
+
+    case 'hogwarts':
+      return 'Hogwarts';
+
+    case 'premium':
+      return 'Premium';
 
     case 'custom':
       return 'Custom';
