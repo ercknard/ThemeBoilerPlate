@@ -256,7 +256,8 @@ export default function TypographyShowcase() {
 
                 WebkitMaskImage:
                   'linear-gradient(to bottom, black, transparent 90%)',
-                pointerEvents: 'none'
+                pointerEvents: 'none',
+                zIndex: -1
               }}
             />
 

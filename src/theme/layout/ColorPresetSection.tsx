@@ -756,6 +756,7 @@ const PresetCard = React.memo(function PresetCard({
         height: '100%',
         overflow: 'hidden',
         borderRadius: 2,
+        zIndex: 10,
         border: '1px solid',
         borderColor: isActive
           ? theme.colorScale[8]
