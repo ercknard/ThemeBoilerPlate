@@ -57,7 +57,7 @@ export default function FloatingThemeControls() {
           onClick={() => setOpen((value) => !value)}
           aria-label={open ? 'Close theme controls' : 'Open theme controls'}
           sx={{
-            color: theme.secondaryScale[11],
+            color: '#ffffff',
             backgroundColor: theme.secondaryScale[8],
 
             border: `1px solid ${theme.secondaryScale[9]}`,
