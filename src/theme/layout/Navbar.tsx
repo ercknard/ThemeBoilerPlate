@@ -49,6 +49,10 @@ const navItems = [
   {
     label: 'Documentation',
     href: '/documentation'
+  },
+  {
+    label: 'Github',
+    href: '/github'
   }
 ];
 
@@ -119,6 +123,9 @@ export default function Navbar() {
 
       case '/documentation':
         return <DescriptionOutlinedIcon sx={{ fontSize: 18 }} />;
+
+      case '/github':
+        return <GitHubIcon sx={{ fontSize: 18 }} />;
 
       default:
         return <HomeOutlinedIcon sx={{ fontSize: 18 }} />;
@@ -443,7 +450,7 @@ export default function Navbar() {
             );
           })}
 
-          {GITHUB_URL && (
+          {/* {GITHUB_URL && (
             <AppButton
               component="a"
               href={GITHUB_URL}
@@ -565,7 +572,7 @@ export default function Navbar() {
                 GitHub
               </Box>
             </AppButton>
-          )}
+          )} */}
         </Stack>
 
         <Box
@@ -1238,7 +1245,7 @@ export default function Navbar() {
                     );
                   })}
 
-                  {GITHUB_URL && (
+                  {/* {GITHUB_URL && (
                     <AppButton
                       component="a"
                       href={GITHUB_URL}
@@ -1281,7 +1288,7 @@ export default function Navbar() {
                     >
                       GitHub
                     </AppButton>
-                  )}
+                  )} */}
                 </Stack>
 
                 <Divider

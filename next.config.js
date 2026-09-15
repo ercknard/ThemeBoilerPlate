@@ -22,6 +22,8 @@ const cspDev = `
 
   img-src
     'self'
+    https://avatars.githubusercontent.com
+    https://github.com
     blob:
     data:;
 
@@ -56,6 +58,8 @@ const cspProd = `
 
   img-src
     'self'
+    https://avatars.githubusercontent.com
+    https://github.com
     blob:
     data:;
 
