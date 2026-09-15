@@ -819,7 +819,7 @@ export default function GitHubPage() {
             position: 'absolute',
             inset: 0,
 
-            opacity: theme.palette.mode === 'dark' ? 0.1 : 0.06,
+            opacity: theme.palette.mode === 'dark' ? 0.1 : 0.075,
 
             backgroundImage: `
               linear-gradient(
@@ -849,29 +849,14 @@ export default function GitHubPage() {
         <Box
           sx={{
             position: 'absolute',
-
-            top: -250,
-            left: {
-              xs: '-20%',
-              md: '5%',
-              xxl: '12%',
-              xxxxl: '20%'
-            },
-
-            width: 550,
-            height: 550,
-
+            top: -220,
+            left: { xs: '-10%', xxl: '2.5%', xxxxl: '15%', xxxxxl: '20%' },
+            width: 500,
+            display: { xs: 'none', md: 'block' },
+            height: 500,
             borderRadius: '50%',
-
-            backgroundColor: alpha(theme.colorScale[9], 0.1),
-
-            filter: 'blur(120px)',
-
-            display: {
-              xs: 'none',
-              md: 'block'
-            },
-
+            backgroundColor: alpha(theme.colorScale[9], 0.07),
+            filter: 'blur(100px)',
             pointerEvents: 'none'
           }}
         />
@@ -879,25 +864,15 @@ export default function GitHubPage() {
         <Box
           sx={{
             position: 'absolute',
-
-            right: '-15%',
             top: 500,
-
+            right: '-10%',
             width: 500,
             height: 500,
-
             borderRadius: '50%',
-
-            backgroundColor: alpha(theme.secondaryScale[9], 0.07),
-
-            filter: 'blur(120px)',
-
-            display: {
-              xs: 'none',
-              md: 'block'
-            },
-
-            pointerEvents: 'none'
+            backgroundColor: alpha(theme.secondaryScale[9], 0.06),
+            filter: 'blur(110px)',
+            pointerEvents: 'none',
+            display: { xs: 'none', md: 'block' }
           }}
         />
 
