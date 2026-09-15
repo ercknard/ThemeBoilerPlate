@@ -1,5 +1,24 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
+const GITHUB_API = 'https://api.github.com';
+const GITHUB_API_VERSION = '2022-11-28';
+
+function githubHeaders(): HeadersInit {
+  const token = process.env.GITHUB_TOKEN;
+
+  return {
+    Accept: 'application/vnd.github+json',
+    'X-GitHub-Api-Version': GITHUB_API_VERSION,
+    'User-Agent': 'CryptechServices',
+
+    ...(token
+      ? {
+          Authorization: `Bearer ${token}`
+        }
+      : {})
+  };
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -30,27 +49,38 @@ export default async function handler(
 
   try {
     const response = await fetch(
-      `https://api.github.com/repos/${encodeURIComponent(
+      `${GITHUB_API}/repos/${encodeURIComponent(
         owner
       )}/${encodeURIComponent(repo)}`,
       {
-        headers: {
-          Accept: 'application/vnd.github+json',
-          'X-GitHub-Api-Version': '2026-03-10',
-          'User-Agent': 'CryptechServices'
-        }
+        headers: githubHeaders()
       }
     );
 
     const data = await response.json();
 
     if (!response.ok) {
+      if (response.status === 403) {
+        return res.status(403).json({
+          error: data?.message || 'GitHub API rate limit exceeded.',
+          status: 403,
+          rateLimited: true
+        });
+      }
+
       return res.status(response.status).json({
-        error: data?.message || `GitHub API returned status ${response.status}.`
+        error:
+          data?.message || `GitHub API returned status ${response.status}.`,
+        status: response.status
       });
     }
 
     res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
+
+    res.setHeader(
+      'X-GitHub-Authenticated',
+      process.env.GITHUB_TOKEN ? 'true' : 'false'
+    );
 
     return res.status(200).json(data);
   } catch (error) {
