@@ -1059,7 +1059,7 @@ export default function GitHubPage() {
                 background: `
       linear-gradient(
         135deg,
-        ${alpha(theme.colorScale[9], 0.09)} 0%,
+        ${alpha(theme.colorScale[3], 1)} 0%,
         ${alpha(theme.backgroundScale[2], 0.92)} 45%,
         ${alpha(theme.secondaryScale[9], 0.045)} 100%
       )
@@ -1344,9 +1344,10 @@ export default function GitHubPage() {
                 </Box>
 
                 {/* Metadata */}
-
                 <Box
                   sx={{
+                    position: 'relative',
+
                     px: {
                       xs: 2,
                       sm: 2.5,
@@ -1354,43 +1355,67 @@ export default function GitHubPage() {
                     },
 
                     py: {
-                      xs: 1.5,
-                      sm: 1.75
+                      xs: 1.25,
+                      sm: 1.5
                     },
 
                     borderTop: `1px solid ${alpha(
                       theme.secondaryScale[7],
-                      0.45
+                      0.5
                     )}`,
 
-                    backgroundColor: alpha(theme.secondaryScale[5], 0.38)
+                    background: `
+      linear-gradient(
+        90deg,
+        ${alpha(theme.secondaryScale[5], 0.5)} 0%,
+        ${alpha(theme.secondaryScale[5], 0.5)} 50%,
+        ${alpha(theme.secondaryScale[5], 0.5)} 100%
+      )
+    `
                   }}
                 >
                   <Stack
                     direction="row"
                     spacing={{
                       xs: 1,
-                      sm: 2
+                      sm: 1.25
                     }}
                     sx={{
                       alignItems: 'center',
-                      flexWrap: 'wrap'
+                      flexWrap: 'wrap',
+                      rowGap: 1
                     }}
                   >
                     {/* Language */}
 
                     {repository.language && (
-                      <Stack
-                        direction="row"
-                        spacing={0.75}
+                      <Box
                         sx={{
-                          alignItems: 'center'
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: 0.75,
+
+                          px: 1,
+                          py: 0.55,
+
+                          borderRadius: 1.5,
+
+                          backgroundColor: alpha(theme.colorScale[9], 0.055),
+
+                          border: `1px solid ${alpha(
+                            theme.colorScale[9],
+                            0.11
+                          )}`
                         }}
                       >
                         <Box
                           sx={{
+                            position: 'relative',
+
                             width: 7,
                             height: 7,
+
+                            flexShrink: 0,
 
                             borderRadius: '50%',
 
@@ -1406,74 +1431,128 @@ export default function GitHubPage() {
                         <Typography
                           sx={{
                             fontSize: 10,
+                            lineHeight: 1,
+
                             fontWeight: 700,
+
                             color: theme.grayScale[10]
                           }}
                         >
                           {repository.language}
                         </Typography>
-                      </Stack>
+                      </Box>
                     )}
 
-                    {/* Divider */}
+                    {/* Separator */}
 
                     {repository.language && (
                       <Box
                         sx={{
                           width: 1,
-                          height: 18,
+                          height: 4,
 
-                          backgroundColor: alpha(theme.secondaryScale[7], 0.65)
+                          flexShrink: 0,
+
+                          backgroundColor: alpha(theme.secondaryScale[7], 0.55)
                         }}
                       />
                     )}
 
-                    {/* Branch */}
+                    {/* Default branch */}
 
-                    <Stack
-                      direction="row"
-                      spacing={0.65}
+                    <Box
                       sx={{
-                        alignItems: 'center'
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 0.75,
+
+                        minWidth: 0
                       }}
                     >
-                      <CodeRoundedIcon
+                      <Box
                         sx={{
-                          fontSize: 14,
-                          color: theme.grayScale[8]
-                        }}
-                      />
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
 
-                      <Typography
-                        sx={{
-                          fontSize: 10,
-                          color: theme.grayScale[9]
-                        }}
-                      >
-                        Default branch
-                      </Typography>
+                          width: 23,
+                          height: 23,
 
-                      <Typography
-                        component="code"
-                        sx={{
-                          px: 0.7,
-                          py: 0.25,
+                          flexShrink: 0,
 
-                          borderRadius: 1,
-
-                          fontSize: 10,
-                          fontWeight: 700,
-
-                          color: theme.grayScale[11],
+                          borderRadius: 1.25,
 
                           backgroundColor: alpha(theme.grayScale[8], 0.08),
 
                           border: `1px solid ${alpha(theme.grayScale[8], 0.1)}`
                         }}
                       >
-                        {repository.default_branch}
-                      </Typography>
-                    </Stack>
+                        <CodeRoundedIcon
+                          sx={{
+                            fontSize: 13,
+
+                            color: theme.grayScale[9]
+                          }}
+                        />
+                      </Box>
+
+                      <Stack
+                        spacing={0.1}
+                        sx={{
+                          minWidth: 0
+                        }}
+                      >
+                        <Typography
+                          sx={{
+                            fontSize: 8,
+
+                            lineHeight: 1,
+
+                            fontWeight: 700,
+
+                            letterSpacing: '0.08em',
+
+                            textTransform: 'uppercase',
+
+                            color: theme.grayScale[7]
+                          }}
+                        >
+                          Default branch
+                        </Typography>
+
+                        <Typography
+                          component="code"
+                          sx={{
+                            overflow: 'hidden',
+
+                            fontSize: 10,
+                            lineHeight: 1.2,
+
+                            fontWeight: 700,
+
+                            whiteSpace: 'nowrap',
+                            textOverflow: 'ellipsis',
+
+                            color: theme.grayScale[11]
+                          }}
+                        >
+                          {repository.default_branch}
+                        </Typography>
+                      </Stack>
+                    </Box>
+
+                    {/* Spacer */}
+
+                    <Box
+                      sx={{
+                        flex: 1,
+
+                        display: {
+                          xs: 'none',
+                          sm: 'block'
+                        }
+                      }}
+                    />
 
                     {/* Repository status */}
 
@@ -1481,49 +1560,66 @@ export default function GitHubPage() {
                       sx={{
                         display: {
                           xs: 'none',
-                          sm: 'block'
+                          sm: 'inline-flex'
                         },
 
-                        width: 1,
-                        height: 18,
-
-                        backgroundColor: alpha(theme.secondaryScale[7], 0.65)
-                      }}
-                    />
-
-                    <Stack
-                      direction="row"
-                      spacing={0.65}
-                      sx={{
                         alignItems: 'center',
+                        gap: 0.8,
 
-                        display: {
-                          xs: 'none',
-                          sm: 'flex'
-                        }
+                        px: 1.1,
+                        py: 0.55,
+
+                        borderRadius: 10,
+
+                        backgroundColor: alpha(theme.colorScale[9], 0.055),
+
+                        border: `1px solid ${alpha(theme.colorScale[9], 0.1)}`
                       }}
                     >
                       <Box
                         sx={{
+                          position: 'relative',
+
                           width: 6,
                           height: 6,
 
                           borderRadius: '50%',
 
-                          backgroundColor: theme.colorScale[9]
+                          backgroundColor: theme.colorScale[9],
+
+                          '&::after': {
+                            content: '""',
+
+                            position: 'absolute',
+
+                            inset: -3,
+
+                            borderRadius: '50%',
+
+                            border: `1px solid ${alpha(
+                              theme.colorScale[9],
+                              0.18
+                            )}`
+                          }
                         }}
                       />
 
                       <Typography
                         sx={{
-                          fontSize: 10,
+                          fontSize: 9,
+
+                          lineHeight: 1,
+
                           fontWeight: 700,
+
+                          letterSpacing: '0.04em',
+
                           color: theme.grayScale[9]
                         }}
                       >
                         Active repository
                       </Typography>
-                    </Stack>
+                    </Box>
                   </Stack>
                 </Box>
               </Stack>
