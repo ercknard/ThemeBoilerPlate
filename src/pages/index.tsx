@@ -697,6 +697,7 @@ export default function Home() {
                     >
                       <Typography
                         variant="subtitle2"
+                        component="span"
                         sx={{
                           fontWeight: 800,
                           lineHeight: 1.2
@@ -708,11 +709,17 @@ export default function Home() {
                       <Chip
                         label="ACTIVE"
                         size="small"
-                        color="primary"
                         sx={{
                           height: 20,
                           fontSize: '0.65rem',
-                          fontWeight: 800
+                          fontWeight: 800,
+
+                          color: theme.backgroundScale[1],
+                          backgroundColor: theme.colorScale[9],
+
+                          '& .MuiChip-icon': {
+                            color: theme.backgroundScale[1]
+                          }
                         }}
                       />
                     </Stack>
@@ -1607,6 +1614,7 @@ export default function Home() {
 
                   <Typography
                     variant="h6"
+                    component="h3"
                     sx={{
                       fontWeight: 700
                     }}
