@@ -1048,7 +1048,7 @@ export default function ThemeToggle() {
               id="primary-color"
               type="color"
               size="small"
-              label="Primary color"
+              label=""
               value={activeTheme.color}
               onChange={(event) =>
                 handleColorChange('color', event.target.value)
@@ -1074,7 +1074,7 @@ export default function ThemeToggle() {
               id="secondary-color"
               type="color"
               size="small"
-              label="Secondary color"
+              label=""
               value={activeTheme.secondary}
               onChange={(event) =>
                 handleColorChange('secondary', event.target.value)
@@ -1100,7 +1100,7 @@ export default function ThemeToggle() {
               id="gray-color"
               type="color"
               size="small"
-              label="Gray color"
+              label=""
               value={activeTheme.gray}
               onChange={(event) =>
                 handleColorChange('gray', event.target.value)
@@ -1126,7 +1126,7 @@ export default function ThemeToggle() {
               id="background-color"
               type="color"
               size="small"
-              label="Background color"
+              label=""
               value={activeTheme.background}
               onChange={(event) =>
                 handleColorChange('background', event.target.value)
