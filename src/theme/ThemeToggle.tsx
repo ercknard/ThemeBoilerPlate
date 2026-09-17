@@ -340,6 +340,7 @@ export default function ThemeToggle() {
         >
           <Select
             value={themeSet}
+            aria-label="Theme preset"
             onChange={handleThemeSetChange}
             fullWidth
             displayEmpty
@@ -1044,8 +1045,10 @@ export default function ThemeToggle() {
 
           <Tooltip title="Primary color">
             <TextField
+              id="primary-color"
               type="color"
               size="small"
+              label="Primary color"
               value={activeTheme.color}
               onChange={(event) =>
                 handleColorChange('color', event.target.value)
@@ -1068,8 +1071,10 @@ export default function ThemeToggle() {
 
           <Tooltip title="Secondary color">
             <TextField
+              id="secondary-color"
               type="color"
               size="small"
+              label="Secondary color"
               value={activeTheme.secondary}
               onChange={(event) =>
                 handleColorChange('secondary', event.target.value)
@@ -1092,8 +1097,10 @@ export default function ThemeToggle() {
 
           <Tooltip title="Gray color">
             <TextField
+              id="gray-color"
               type="color"
               size="small"
+              label="Gray color"
               value={activeTheme.gray}
               onChange={(event) =>
                 handleColorChange('gray', event.target.value)
@@ -1116,8 +1123,10 @@ export default function ThemeToggle() {
 
           <Tooltip title="Background color">
             <TextField
+              id="background-color"
               type="color"
               size="small"
+              label="Background color"
               value={activeTheme.background}
               onChange={(event) =>
                 handleColorChange('background', event.target.value)
